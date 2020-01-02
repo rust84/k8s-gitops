@@ -24,7 +24,7 @@ spec:
       enabled: true
       annotations:
         kubernetes.io/ingress.class: "nginx"
-    timezone: "America/New_York"
+    timezone: "Europe/London"
     podAnnotations:
       backup.velero.io/backup-volumes: config
     persistence:
@@ -38,7 +38,7 @@ spec:
       tv:
         enabled: true
         existingClaim: nfs-media-pvc
-        subPath: Videos
+        subPath: tv
         accessMode: ReadWriteMany
     resources:
       requests:

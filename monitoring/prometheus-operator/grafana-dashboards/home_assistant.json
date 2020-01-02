@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "6.4.1"
+      "version": "6.5.2"
     },
     {
       "type": "panel",
@@ -39,11 +39,13 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
-        "enable": true,
+        "datasource": "${DS_HOME_ASSISTANT}",
+        "enable": false,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
+        "limit": 100,
         "name": "Annotations & Alerts",
+        "showIn": 0,
         "type": "dashboard"
       }
     ]
@@ -68,6 +70,7 @@
         "x": 0,
         "y": 0
       },
+      "hiddenSeries": false,
       "id": 12,
       "interval": "",
       "legend": {
@@ -91,14 +94,14 @@
       "renderer": "flot",
       "seriesOverrides": [
         {
-          "alias": "Downstairs Inside Humidity",
+          "alias": "Upstairs Inside Humidity",
           "color": "#FFA6B0",
           "dashes": true,
           "fill": 0,
           "yaxis": 2
         },
         {
-          "alias": "Outside Humidity",
+          "alias": "Dark Sky Outside Humidity",
           "color": "#FFCB7D",
           "dashes": true,
           "fill": 0,
@@ -110,7 +113,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "Downstairs Observed Temperature",
+          "alias": "Upstairs Landing Temperature",
           "groupBy": [
             {
               "params": [
@@ -125,8 +128,7 @@
               "type": "fill"
             }
           ],
-          "hide": false,
-          "measurement": "°F",
+          "measurement": "°C",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "A",
@@ -155,12 +157,12 @@
               "condition": "AND",
               "key": "entity_id",
               "operator": "=",
-              "value": "downstairs_thermostat_temperature"
+              "value": "dht_temp"
             }
           ]
         },
         {
-          "alias": "Downstairs Target Temperature",
+          "alias": "Upstairs Office Temperature",
           "groupBy": [
             {
               "params": [
@@ -175,58 +177,7 @@
               "type": "fill"
             }
           ],
-          "hide": false,
-          "measurement": "°F",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "domain",
-              "operator": "=",
-              "value": "sensor"
-            },
-            {
-              "condition": "AND",
-              "key": "entity_id",
-              "operator": "=",
-              "value": "downstairs_thermostat_target"
-            }
-          ]
-        },
-        {
-          "alias": "Upstairs Observed Temperature",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "previous"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": true,
-          "measurement": "°F",
+          "measurement": "°C",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "B",
@@ -255,12 +206,12 @@
               "condition": "AND",
               "key": "entity_id",
               "operator": "=",
-              "value": "master_bedroom_thermostat_nest_temperature"
+              "value": "temperature"
             }
           ]
         },
         {
-          "alias": "Upstairs Target Temperature",
+          "alias": "Dark Sky Outside Temperature",
           "groupBy": [
             {
               "params": [
@@ -275,8 +226,56 @@
               "type": "fill"
             }
           ],
-          "hide": true,
-          "measurement": "°F",
+          "measurement": "°C",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "C",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "mean"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "domain",
+              "operator": "=",
+              "value": "sensor"
+            },
+            {
+              "condition": "AND",
+              "key": "entity_id",
+              "operator": "=",
+              "value": "dark_sky_temperature"
+            }
+          ]
+        },
+        {
+          "alias": "Upstairs Inside Humidity",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "previous"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "%",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "D",
@@ -305,12 +304,12 @@
               "condition": "AND",
               "key": "entity_id",
               "operator": "=",
-              "value": "master_bedroom_thermostat_nest_target"
+              "value": "humidity"
             }
           ]
         },
         {
-          "alias": "Outside Temperature",
+          "alias": "Dark Sky Outside Humidity",
           "groupBy": [
             {
               "params": [
@@ -325,8 +324,7 @@
               "type": "fill"
             }
           ],
-          "hide": false,
-          "measurement": "°F",
+          "measurement": "%",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "E",
@@ -355,105 +353,7 @@
               "condition": "AND",
               "key": "entity_id",
               "operator": "=",
-              "value": "weather_temperature"
-            }
-          ]
-        },
-        {
-          "alias": "Downstairs Inside Humidity",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "previous"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "%",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "F",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "domain",
-              "operator": "=",
-              "value": "sensor"
-            },
-            {
-              "condition": "AND",
-              "key": "entity_id",
-              "operator": "=",
-              "value": "downstairs_thermostat_humidity"
-            }
-          ]
-        },
-        {
-          "alias": "Outside Humidity",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "previous"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "%",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "G",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "domain",
-              "operator": "=",
-              "value": "sensor"
-            },
-            {
-              "condition": "AND",
-              "key": "entity_id",
-              "operator": "=",
-              "value": "weather_humidity"
+              "value": "dark_sky_humidity"
             }
           ]
         }
@@ -479,7 +379,7 @@
       },
       "yaxes": [
         {
-          "format": "farenheit",
+          "format": "celsius",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -615,7 +515,7 @@
       "showTransitionCount": false,
       "targets": [
         {
-          "alias": "Downstairs HVAC State",
+          "alias": "Landing Motion Sensor State",
           "groupBy": [
             {
               "params": [
@@ -631,7 +531,7 @@
             }
           ],
           "hide": false,
-          "measurement": "sensor.downstairs_thermostat_hvac_state",
+          "measurement": "sensor.motion",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "A",
@@ -640,121 +540,7 @@
             [
               {
                 "params": [
-                  "state"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "distinct"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Upstairs HVAC State",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": true,
-          "measurement": "sensor.master_bedroom_thermostat_nest_hvac_state",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "state"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "distinct"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Basement HVAC State",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "null"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": true,
-          "measurement": "sensor.basement_thermostat_hvac_state",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "state"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "distinct"
-              }
-            ]
-          ],
-          "tags": []
-        },
-        {
-          "alias": "Downstairs Temperature",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "previous"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "°F",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
+                  "friendly_name_str"
                 ],
                 "type": "field"
               },
@@ -774,7 +560,56 @@
               "condition": "AND",
               "key": "entity_id",
               "operator": "=",
-              "value": "downstairs_thermostat_temperature"
+              "value": "motion"
+            }
+          ]
+        },
+        {
+          "alias": "Camera Motion Sensor State",
+          "groupBy": [
+            {
+              "params": [
+                "$__interval"
+              ],
+              "type": "time"
+            },
+            {
+              "params": [
+                "null"
+              ],
+              "type": "fill"
+            }
+          ],
+          "measurement": "binary_sensor.dafang_motion_sensor",
+          "orderByTime": "ASC",
+          "policy": "default",
+          "refId": "B",
+          "resultFormat": "time_series",
+          "select": [
+            [
+              {
+                "params": [
+                  "friendly_name_str"
+                ],
+                "type": "field"
+              },
+              {
+                "params": [],
+                "type": "last"
+              }
+            ]
+          ],
+          "tags": [
+            {
+              "key": "domain",
+              "operator": "=",
+              "value": "binary_sensor"
+            },
+            {
+              "condition": "AND",
+              "key": "entity_id",
+              "operator": "=",
+              "value": "dafang_motion_sensor"
             }
           ]
         }
@@ -822,7 +657,7 @@
       },
       "timeShift": null,
       "timeTextColor": "#d8d9da",
-      "title": "HVAC State",
+      "title": "Motion State",
       "transparent": true,
       "type": "natel-discrete-panel",
       "units": "short",
@@ -835,8 +670,8 @@
         },
         {
           "op": "=",
-          "text": "on",
-          "value": "0"
+          "text": "Motion",
+          "value": "dafang motion sensor"
         }
       ],
       "valueTextColor": "#000000",
@@ -858,6 +693,7 @@
         "x": 0,
         "y": 15
       },
+      "hiddenSeries": false,
       "id": 5,
       "legend": {
         "avg": false,
@@ -907,7 +743,7 @@
               "type": "fill"
             }
           ],
-          "measurement": "mph",
+          "measurement": "m/s",
           "orderByTime": "ASC",
           "policy": "default",
           "refId": "A",
@@ -926,7 +762,19 @@
               }
             ]
           ],
-          "tags": []
+          "tags": [
+            {
+              "key": "domain",
+              "operator": "=",
+              "value": "sensor"
+            },
+            {
+              "condition": "AND",
+              "key": "entity_id",
+              "operator": "=",
+              "value": "dark_sky_wind_speed"
+            }
+          ]
         }
       ],
       "thresholds": [
@@ -959,697 +807,11 @@
       },
       "yaxes": [
         {
-          "format": "velocitymph",
+          "format": "velocityms",
           "label": null,
           "logBase": 1,
           "max": null,
           "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_HOME_ASSISTANT}",
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 0,
-        "y": 24
-      },
-      "id": 2,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "paceLength": 10,
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "dsType": "influxdb",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "previous"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "sensor.jeffs_phone_battery_state",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "Battery Level"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Jeff's iPhone Battery State",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "percent",
-          "label": null,
-          "logBase": 1,
-          "max": "100",
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_HOME_ASSISTANT}",
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 7,
-        "w": 12,
-        "x": 12,
-        "y": 24
-      },
-      "id": 3,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "paceLength": 10,
-      "percentage": false,
-      "pointradius": 5,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "dsType": "influxdb",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "previous"
-              ],
-              "type": "fill"
-            }
-          ],
-          "measurement": "sensor.jennifers_phone_battery_state",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "Battery Level"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "mean"
-              }
-            ]
-          ],
-          "tags": []
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Jen's iPhone Battery State",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "percent",
-          "label": null,
-          "logBase": 1,
-          "max": "100",
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_HOME_ASSISTANT}",
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 31
-      },
-      "id": 9,
-      "interval": "",
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null as zero",
-      "options": {
-        "dataLinks": []
-      },
-      "paceLength": 10,
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "$tag_entity_id",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "entity_id"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "previous"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dBm",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "A",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "entity_id",
-              "operator": "=",
-              "value": "jeff_basement_rssi"
-            },
-            {
-              "condition": "OR",
-              "key": "entity_id",
-              "operator": "=",
-              "value": "jeff_dining_rssi"
-            },
-            {
-              "condition": "OR",
-              "key": "entity_id",
-              "operator": "=",
-              "value": "jeff_garage_rssi"
-            },
-            {
-              "condition": "OR",
-              "key": "entity_id",
-              "operator": "=",
-              "value": "jeff_livingroom_rssi"
-            }
-          ]
-        },
-        {
-          "alias": "$tag_entity_id",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "entity_id"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "previous"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": true,
-          "measurement": "dBm",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "C",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "entity_id",
-              "operator": "=",
-              "value": "jeff_basement_rssi_raw"
-            },
-            {
-              "condition": "OR",
-              "key": "entity_id",
-              "operator": "=",
-              "value": "jeff_dining_rssi_raw"
-            },
-            {
-              "condition": "OR",
-              "key": "entity_id",
-              "operator": "=",
-              "value": "jeff_garage_rssi_raw"
-            },
-            {
-              "condition": "OR",
-              "key": "entity_id",
-              "operator": "=",
-              "value": "jeff_livingroom_rssi_raw"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Jeff's Phone Bluetooth RSSI",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": null,
-          "format": "dBm",
-          "label": null,
-          "logBase": 1,
-          "max": "0",
-          "min": "-40",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": "${DS_HOME_ASSISTANT}",
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 12,
-        "y": 31
-      },
-      "id": 10,
-      "interval": "",
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "links": [],
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "paceLength": 10,
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "alias": "$tag_entity_id",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "entity_id"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "previous"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": false,
-          "measurement": "dBm",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "B",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "entity_id",
-              "operator": "=",
-              "value": "jen_basement_rssi"
-            },
-            {
-              "condition": "OR",
-              "key": "entity_id",
-              "operator": "=",
-              "value": "jen_dining_rssi"
-            },
-            {
-              "condition": "OR",
-              "key": "entity_id",
-              "operator": "=",
-              "value": "jen_garage_rssi"
-            },
-            {
-              "condition": "OR",
-              "key": "entity_id",
-              "operator": "=",
-              "value": "jen_livingroom_rssi"
-            }
-          ]
-        },
-        {
-          "alias": "$tag_entity_id",
-          "groupBy": [
-            {
-              "params": [
-                "$__interval"
-              ],
-              "type": "time"
-            },
-            {
-              "params": [
-                "entity_id"
-              ],
-              "type": "tag"
-            },
-            {
-              "params": [
-                "previous"
-              ],
-              "type": "fill"
-            }
-          ],
-          "hide": true,
-          "measurement": "dBm",
-          "orderByTime": "ASC",
-          "policy": "default",
-          "refId": "D",
-          "resultFormat": "time_series",
-          "select": [
-            [
-              {
-                "params": [
-                  "value"
-                ],
-                "type": "field"
-              },
-              {
-                "params": [],
-                "type": "last"
-              }
-            ]
-          ],
-          "tags": [
-            {
-              "key": "entity_id",
-              "operator": "=",
-              "value": "jen_basement_rssi_raw"
-            },
-            {
-              "condition": "OR",
-              "key": "entity_id",
-              "operator": "=",
-              "value": "jen_dining_rssi_raw"
-            },
-            {
-              "condition": "OR",
-              "key": "entity_id",
-              "operator": "=",
-              "value": "jen_garage_rssi_raw"
-            },
-            {
-              "condition": "OR",
-              "key": "entity_id",
-              "operator": "=",
-              "value": "jen_livingroom_rssi_raw"
-            }
-          ]
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Jen's Phone Bluetooth RSSI",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "transparent": true,
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "decimals": null,
-          "format": "dBm",
-          "label": null,
-          "logBase": 1,
-          "max": "0",
-          "min": "-99",
           "show": true
         },
         {
@@ -1668,7 +830,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 20,
+  "schemaVersion": 21,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -1706,5 +868,5 @@
   "timezone": "",
   "title": "Home Assistant",
   "uid": "000000024",
-  "version": 7
+  "version": 10
 }

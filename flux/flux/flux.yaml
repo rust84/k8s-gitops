@@ -13,6 +13,22 @@ spec:
     repository: https://charts.fluxcd.io/
     name: flux
     version: 1.0.0
-  valuesFrom:
-  - externalSourceRef:
-      url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/flux/flux/flux-values.yaml
+  values:
+    helmOperator:
+      create: false
+    git:
+      url: "git@github.com:rust84/k8s-gitops"
+    registry:
+      rps: 1
+      burst: 1
+    memcached:
+      tolerations:
+      - key: "arm"
+        operator: "Exists"
+    additionalArgs:
+    - --connect=ws://fluxcloud
+    prometheus:
+      enabled: true
+    syncGarbageCollection:
+      enabled: true
+      dry: false

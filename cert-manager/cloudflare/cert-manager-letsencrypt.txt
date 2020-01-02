@@ -16,7 +16,6 @@ spec:
           apiKeySecretRef:
             name: cloudflare-api-key
             key: api-key
-
 ---
 apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
@@ -48,6 +47,7 @@ spec:
   dnsNames:
   - $DOMAIN
   - '*.$DOMAIN'
+  - '*.k.$DOMAIN'
   - '*.nd.$DOMAIN'
   acme:
     config:
@@ -56,7 +56,8 @@ spec:
       domains:
       - $DOMAIN
       - '*.$DOMAIN'
+      - '*.k.$DOMAIN'
       - '*.nd.$DOMAIN'
   issuerRef:
-    name: letsencrypt-prod
+    name: letsencrypt-test
     kind: ClusterIssuer

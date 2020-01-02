@@ -10,8 +10,8 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: 10.0.7.7
-    path: "/tank/media/Downloads"
+    server: 192.168.1.56
+    path: "/volume2/media/downloads"
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim

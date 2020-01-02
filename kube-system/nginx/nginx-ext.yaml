@@ -1,0 +1,46 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: nginx-ingress-ext
+  namespace: kube-system
+  annotations:
+    fluxcd.io/ignore: false
+    fluxcd.io/automated: "false"
+    fluxcd.io/tag.chart-image: semver:~0.
+spec:
+  releaseName: nginx-ingress-ext
+  rollback:
+    enable: true
+  chart:
+    repository: https://kubernetes-charts.storage.googleapis.com/
+    name: nginx-ingress
+    version: 1.27.0
+  values:
+    controller:
+      ingressClass: external
+      # image:
+      #   repository: quay.io/kubernetes-ingress-controller/nginx-ingress-controller
+      #   tag: "0.25.1"
+      replicaCount: 1
+      service:
+        loadBalancerIP: 10.20.0.151
+        externalTrafficPolicy: Local
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          namespace: kube-system
+        prometheusRule:
+          enabled: false
+      # tolerations:
+      # - key: "arm"
+      #   operator: "Exists"
+      extraArgs:
+        default-ssl-certificate: "kube-system/acme-crt-secret"
+      resources:
+        requests:
+          memory: 500Mi
+          cpu: 25m
+        limits:
+          memory: 600Mi

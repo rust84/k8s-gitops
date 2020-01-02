@@ -35,9 +35,9 @@ initVault() {
   while [ $VAULT_READY != 0 ]; do
     kubectl -n kube-system wait --for condition=Initialized pod/vault-0 > /dev/null 2>&1
     VAULT_READY="$?"
-    if [ $VAULT_READY != 0 ]; then 
+    if [ $VAULT_READY != 0 ]; then
       echo "waiting for vault pod to be somewhat ready..."
-      sleep 10; 
+      sleep 10;
     fi
   done
   sleep 2
@@ -148,47 +148,43 @@ EOF
 loadSecretsToVault() {
   message "writing secrets to vault"
   vault kv put secrets/flux/fluxcloud slack_url="$SLACK_WEBHOOK_URL"
-  vault kv put secrets/kube-system/nginx-basic-auth-jeff auth="$JEFF_AUTH"
   vault kv put secrets/cert-manager/cloudflare-api-key api-key="$CF_API_KEY"
 
   ####################
   # helm chart values
   ####################
   kvault "kube-system/kured/kured-helm-values.txt"
-  # kvault "kube-system/longhorn/longhorn-helm-values.txt"
-  kvault "kube-system/oauth2-proxy/oauth2-proxy-helm-values.txt"
-  kvault "logs/kibana/kibana-helm-values.txt"
   kvault "monitoring/botkube/botkube-helm-values.txt"
   kvault "monitoring/chronograf/chronograf-helm-values.txt"
-  kvault "monitoring/comcast/comcast-helm-values.txt"
   kvault "monitoring/prometheus-operator/prometheus-operator-helm-values.txt"
   kvault "monitoring/uptimerobot/uptimerobot-helm-values.txt"
-  kvault "default/frigate/frigate-helm-values.txt"
   kvault "default/goldilocks/goldilocks-helm-values.txt"
   kvault "default/home-assistant/home-assistant-helm-values.txt"
   kvault "default/home-assistant/postgresql-helm-values.txt"
+  kvault "default/home-assistant/mysql-helm-values.txt"
   kvault "default/hubot/hubot-helm-values.txt"
   kvault "default/minio/minio-helm-values.txt"
-  # kvault "default/nextcloud/nextcloud-helm-values.txt"
-  kvault "default/node-red/node-red-helm-values.txt"
+  #kvault "default/nextcloud/nextcloud-helm-values.txt"
+  #kvault "default/node-red/node-red-helm-values.txt"
   kvault "default/nzbget/nzbget-helm-values.txt"
   kvault "default/pihole/pihole-helm-values.txt"
   kvault "default/plex/plex-helm-values.txt"
-  kvault "default/qbittorrent/qbittorrent-helm-values.txt"
   kvault "default/rabbitmq/rabbitmq-helm-values.txt"
   kvault "default/radarr/radarr-helm-values.txt"
-  kvault "default/rtorrent-flood/rtorrent-flood-helm-values.txt"
   kvault "default/sonarr/sonarr-helm-values.txt"
-  kvault "default/teslamate/teslamate-helm-values.txt"
   kvault "default/unifi/unifi-helm-values.txt"
   kvault "velero/velero/velero-helm-values.txt"
+  kvault "default/nzbhydra/nzbhydra-helm-values.txt"
+  kvault "default/ombi/ombi-helm-values.txt"
+  kvault "default/organizr/organizr-helm-values.txt"
+  kvault "default/tautulli/tautulli-helm-values.txt"
 }
 
 FIRST_RUN=1
 export KUBECONFIG="$REPO_ROOT/setup/kubeconfig"
 initVault
 loginVault
-if [ $FIRST_RUN == 0 ]; then 
+if [ $FIRST_RUN == 0 ]; then
   setupVaultSecretsOperator
 fi
 loadSecretsToVault

@@ -41,11 +41,20 @@ spec:
             path = "/vault/data"
           }
           seal "transit" {
-            address = "http://lb:8200"
+            address = "http://192.168.1.56:8200"
             disable_renewal = "false"
             key_name = "autounseal"
             mount_path = "transit/"
             tls_skip_verify = "true"
           }
-    # ui:
-    #   enabled: true
+      ingress:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: "nginx"
+        hosts:
+          - host: vault.k.microserver.space
+            paths: ["/"]
+    ui:
+      enabled: true
+    injector:
+      enabled: false

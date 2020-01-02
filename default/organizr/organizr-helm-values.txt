@@ -1,0 +1,6 @@
+ingress:
+  path: /
+  hosts: [o.k.$DOMAIN]
+  tls:
+  - hosts:
+    - o.k.$DOMAIN

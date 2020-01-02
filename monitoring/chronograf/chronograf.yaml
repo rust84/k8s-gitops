@@ -22,7 +22,7 @@
 #       tag: "1.7.14"
 #     persistence:
 #       enabled: true
-#       storageClass: nfs-client
+#       storageClass: "rook-ceph-block"
 #     ingress:
 #       enabled: true
 #       annotations:

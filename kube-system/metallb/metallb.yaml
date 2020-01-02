@@ -17,7 +17,7 @@ spec:
         - name: default
           protocol: layer2
           addresses:
-          - 10.2.0.100-10.2.0.250
+          - 10.20.0.110-10.20.0.250
     controller:
       tolerations:
       - key: "arm"

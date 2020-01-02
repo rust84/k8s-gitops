@@ -44,12 +44,15 @@ spec:
               name: fluxcloud
               key: slack_url
         - name: SLACK_CHANNEL
-          value: "#notifications"
+          value: "#flux"
+        # Or configure multiple channels
+        # (comma separated <channel>=<namespace>) string:
+        #  value: "#kubernetes=*,#team=team"
         - name: SLACK_USERNAME
-          value: Flux Deployer
+          value: k3s Deployer
         - name: SLACK_ICON_EMOJI
-          value: ":heart:"
+          value: ":wizard:"
         - name: GITHUB_URL
-          value: "https://github.com/billimek/k8s-gitops/"
+          value: "https://github.com/rust84/k8s-gitops/"
         - name: LISTEN_ADDRESS
           value: ":3032"

@@ -21,13 +21,9 @@ spec:
       # image:
       #   repository: quay.io/kubernetes-ingress-controller/nginx-ingress-controller
       #   tag: "0.25.1"
-      replicaCount: 2
-      config:
-        custom-http-errors: 404,403,500,503
-        # global-auth-url: "http://oauth2-proxy.kube-system.svc.cluster.local/oauth2/auth"
-        # global-auth-signin: "https://auth.$server_name/oauth2/start"
+      replicaCount: 1
       service:
-        loadBalancerIP: 10.2.0.150
+        loadBalancerIP: 10.20.0.150
         externalTrafficPolicy: Local
       metrics:
         enabled: true
@@ -47,14 +43,3 @@ spec:
           cpu: 25m
         limits:
           memory: 600Mi
-    defaultBackend:
-      enabled: true
-      image:
-        repository: billimek/custom-error-pages
-        tag: 0.4.4
-      resources:
-        requests:
-          memory: 250Mi
-          cpu: 25m
-        limits:
-          memory: 350Mi

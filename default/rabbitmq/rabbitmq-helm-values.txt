@@ -1,9 +1,9 @@
 
 ingress:
-  hostName: rabbitmq.$DOMAIN
+  hostName: rabbitmq.k.$DOMAIN
   tls:
   - hosts:
-    - rabbitmq.$DOMAIN
+    - rabbitmq.k.$DOMAIN
 managementPassword: $RABBITMQ_PASSWORD
 rabbitmqUsername: admin
 rabbitmqPassword: $RABBITMQ_PASSWORD

@@ -1,0 +1,10 @@
+apiVersion: ricoberger.de/v1alpha1
+kind: VaultSecret
+metadata:
+  name: mysql-helm-values
+  namespace: default
+spec:
+  keys:
+    - values.yaml
+  path: secrets/default/home-assistant/mysql-helm-values
+  type: Opaque

@@ -1,5 +1,5 @@
 ingress:
-  hosts: [sonarr.$DOMAIN]
+  hosts: [sonarr.k.$DOMAIN]
   tls:
   - hosts:
-    - sonarr.$DOMAIN
+    - sonarr.k.$DOMAIN

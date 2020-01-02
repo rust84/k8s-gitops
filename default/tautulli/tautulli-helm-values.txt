@@ -1,0 +1,5 @@
+ingress:
+  hosts: [tautulli.k.$DOMAIN]
+  tls:
+  - hosts:
+    - tautulli.k.$DOMAIN

@@ -1,11 +1,8 @@
 dashboard:
   ingress:
-    hosts: 
-      - host: goldilocks.$DOMAIN
+    hosts:
+      - host: goldilocks.k.$DOMAIN
         paths: ["/"]
     tls:
     - hosts:
-      - goldilocks.$DOMAIN
-    annotations:
-      nginx.ingress.kubernetes.io/auth-url: "https://auth.$DOMAIN/oauth2/auth"
-      nginx.ingress.kubernetes.io/auth-signin: https://auth.$DOMAIN/oauth2/start
+      - goldilocks.k.$DOMAIN

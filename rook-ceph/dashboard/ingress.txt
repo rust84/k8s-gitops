@@ -12,9 +12,9 @@ metadata:
 spec:
   tls:
    - hosts:
-     - rook.$DOMAIN
+     - rook.k.$DOMAIN
   rules:
-  - host: rook.$DOMAIN
+  - host: rook.k.$DOMAIN
     http:
       paths:
       - path: /
