@@ -174,12 +174,11 @@ spec:
           honor_labels: true
           static_configs:
           - targets:
-            - k3s-node-1:19999
-            - k3s-node-2:19999
-            - k3s-node-3:19999
-            - k3s-node-4:19999
-            - k3s-node-5:19999
-            - k3s-node-6:19999
-            - k3s-node-7:19999
+            - k3s-0:19999
+            - k3s-1:19999
+            - k3s-2:19999
+            - k3s-5:19999
+            - k3s-6:19999
+            - k3s-7:19999
   valueFileSecrets:
   - name: "prometheus-operator-helm-values"
