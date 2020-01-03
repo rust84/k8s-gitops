@@ -3,7 +3,7 @@
 # nodes
 K3S_MASTER="k3s-0"
 K3S_WORKERS_AMD64="k3s-1 k3s-2"
-K3S_WORKERS_RPI=""
+K3S_WORKERS_RPI="k3s-5 k3s-6 k3s-7"
 K3S_VERSION="v1.0.1"
 
 REPO_ROOT=$(git rev-parse --show-toplevel)
