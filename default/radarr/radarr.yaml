@@ -6,7 +6,7 @@ metadata:
   namespace: default
   annotations:
     fluxcd.io/automated: "true"
-    fluxcd.io/tag.chart-image: 'glob:amd64-v0.*.*.*'
+    fluxcd.io/tag.chart-image: semver:~5
 spec:
   releaseName: radarr
   rollback:
@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: linuxserver/radarr
-      tag: 'amd64-v0.2.0.1450-ls46'
+      tag: '5.14'
     ingress:
       enabled: true
       annotations:
