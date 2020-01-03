@@ -1,53 +1,53 @@
----
-apiVersion: helm.fluxcd.io/v1
-kind: HelmRelease
-metadata:
-  name: ombi
-  namespace: default
-  labels:
-    traffic-type: external
-  annotations:
-    fluxcd.io/automated: "true"
-    fluxcd.io/tag.chart-image: 'glob:v3.*.*'
-spec:
-  releaseName: ombi
-  chart:
-    repository: https://rust84.github.io/helmcharts/
-    name: ombi
-    version: 0.1.4
-  values:
-    image:
-      repository: linuxserver/ombi
-      tag: v3.0.4892-ls41
-    env:
-    - name: PUID
-      value: "1000"
-    - name: PGID
-      value: "1000"
-    - name: "TZ"
-      value: "Europe/London"
-    service:
-      type: LoadBalancer
-      loadBalancerIP: 10.20.0.115
-    ingress:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: "external"
-    strategy:
-      type: Recreate
-    podAnnotations:
-      backup.velero.io/backup-volumes: config
-    persistence:
-      config:
-        enabled: true
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: rook-ceph-block
-    resources:
-      limits:
-        memory: 262144k
-      requests:
-        cpu: 25m
-        memory: 262144k
-  valueFileSecrets:
-  - name: "ombi-helm-values"
+# ---
+# apiVersion: helm.fluxcd.io/v1
+# kind: HelmRelease
+# metadata:
+#   name: ombi
+#   namespace: default
+#   labels:
+#     traffic-type: external
+#   annotations:
+#     fluxcd.io/automated: "true"
+#     fluxcd.io/tag.chart-image: 'glob:v3.*.*'
+# spec:
+#   releaseName: ombi
+#   chart:
+#     repository: https://rust84.github.io/helmcharts/
+#     name: ombi
+#     version: 0.1.4
+#   values:
+#     image:
+#       repository: linuxserver/ombi
+#       tag: v3.0.4892-ls41
+#     env:
+#     - name: PUID
+#       value: "1000"
+#     - name: PGID
+#       value: "1000"
+#     - name: "TZ"
+#       value: "Europe/London"
+#     service:
+#       type: LoadBalancer
+#       loadBalancerIP: 10.20.0.115
+#     ingress:
+#       enabled: true
+#       annotations:
+#         kubernetes.io/ingress.class: "external"
+#     strategy:
+#       type: Recreate
+#     podAnnotations:
+#       backup.velero.io/backup-volumes: config
+#     persistence:
+#       config:
+#         enabled: true
+#         accessMode: ReadWriteOnce
+#         size: 1Gi
+#         storageClass: rook-ceph-block
+#     resources:
+#       limits:
+#         memory: 262144k
+#       requests:
+#         cpu: 25m
+#         memory: 262144k
+#   valueFileSecrets:
+#   - name: "ombi-helm-values"
