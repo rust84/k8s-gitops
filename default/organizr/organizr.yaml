@@ -1,41 +1,41 @@
-# ---
-# apiVersion: helm.fluxcd.io/v1
-# kind: HelmRelease
-# metadata:
-#   name: organizr
-#   namespace: default
-#   labels:
-#     traffic-type: external
-#   annotations:
-#     flux.weave.works/automated: "false"
-#     flux.weave.works/tag.chart-image: 'glob:latest'
-# spec:
-#   releaseName: organizr
-#   chart:
-#     repository: https://rust84.github.io/helmcharts/
-#     name: organizr
-#     version: 0.1.4
-#   values:
-#     image:
-#       repository: organizrtools/organizr-v2
-#       tag: latest
-#     ingress:
-#       enabled: true
-#       annotations:
-#         kubernetes.io/ingress.class: "nginx"
-#     podAnnotations:
-#       backup.velero.io/backup-volumes: config
-#     persistence:
-#       config:
-#         enabled: true
-#         accessMode: ReadWriteOnce
-#         size: 1Gi
-#         storageClass: rook-ceph-block
-#     resources:
-#       limits:
-#         memory: 262144k
-#       requests:
-#         cpu: 25m
-#         memory: 262144k
-#   valueFileSecrets:
-#   - name: "organizr-helm-values"
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: organizr
+  namespace: default
+  labels:
+    traffic-type: external
+  annotations:
+    flux.weave.works/automated: "false"
+    flux.weave.works/tag.chart-image: 'glob:latest'
+spec:
+  releaseName: organizr
+  chart:
+    repository: https://rust84.github.io/helmcharts/
+    name: organizr
+    version: 0.1.4
+  values:
+    image:
+      repository: organizrtools/organizr-v2
+      tag: latest
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: "nginx"
+    podAnnotations:
+      backup.velero.io/backup-volumes: config
+    persistence:
+      config:
+        enabled: true
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: rook-ceph-block
+    resources:
+      limits:
+        memory: 262144k
+      requests:
+        cpu: 25m
+        memory: 262144k
+  valueFileSecrets:
+  - name: "organizr-helm-values"
