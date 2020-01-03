@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: linuxserver/radarr
-      tag: '5.14'
+      tag: 'amd64-v0.2.0.1450-ls46'
     ingress:
       enabled: true
       annotations:
