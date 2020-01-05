@@ -5,6 +5,7 @@ K3S_MASTER="k3s-0"
 K3S_WORKERS_AMD64="k3s-1 k3s-2"
 K3S_WORKERS_RPI="k3s-5 k3s-6 k3s-7"
 K3S_VERSION="v1.0.1"
+USER="ubuntu"
 
 REPO_ROOT=$(git rev-parse --show-toplevel)
 
@@ -16,6 +17,7 @@ need "curl"
 need "ssh"
 need "kubectl"
 need "helm"
+need "k3sup"
 
 message() {
   echo -e "\n######################################################################"
@@ -40,11 +42,18 @@ ks3amd64WorkerNodes() {
 }
 
 ks3armWorkerNodes() {
-  NODE_TOKEN=$(ssh -o "StrictHostKeyChecking=no" ubuntu@"$K3S_MASTER" "sudo cat /var/lib/rancher/k3s/server/node-token")
   for node in $K3S_WORKERS_RPI; do
     message "joining pi4 $node to $K3S_MASTER"
-    EXTRA_ARGS=""
-    ssh -o "StrictHostKeyChecking=no" pi@"$node" "curl -sfL https://get.k3s.io | K3S_URL=https://k3s-0:6443 K3S_TOKEN=$NODE_TOKEN INSTALL_K3S_VERSION='$K3S_VERSION' sh -s - --node-taint arm=true:NoExecute --data-dir /mnt/usb/var/lib/rancher $EXTRA_ARGS"
+    k3sup join --ip "${node}" \
+        --server-ip "${K3S_MASTER}" \
+        --k3s-version "${K3S_VERSION}" \
+        --user "${USER}" \
+        --ssh-key "~/.ssh/id_ed25519" \
+        --k3s-extra-args "--node-taint arm=true:NoExecute --data-dir /mnt/usb/var/lib/rancher"
+    sleep 10
+
+    message "Labeling ${node} as node-role.kubernetes.io/worker=worker"
+    kubectl label node ${node} node-role.kubernetes.io/worker=worker
   done
 }
 

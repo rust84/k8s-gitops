@@ -1,0 +1,23 @@
+---
+
+- hosts: all
+  become: true
+  gather_facts: true
+
+  vars_files:
+    - vars.yml
+
+  #
+  # @CHANGEME - Review each role to make sure it's doing what you want to do
+  #
+  tasks:
+    # - include_role:
+    #     name: system
+    #   tags: ['system']
+    # - include_role:
+    #     name: user
+    #   tags: ['user']
+    - include_role:
+        name: userland
+      when: deploy_target != 'vagrant'
+      tags: ['userland']
