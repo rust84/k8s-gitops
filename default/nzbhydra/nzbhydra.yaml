@@ -16,7 +16,7 @@ spec:
   values:
     image:
       repository: binhex/arch-nzbhydra2
-      tag: '2.10.6-1-01'
+      tag: '2.10.8-1-01'
     ingress:
       enabled: true
       annotations:
