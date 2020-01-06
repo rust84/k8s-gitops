@@ -15,7 +15,7 @@ spec:
     version: 1.0.2
   values:
     image:
-      repository: tautulli/tautulli
+      repository: linuxserver/tautulli
       tag: v2.1.42-ls34
     puid: 1000
     pgid: 1000
