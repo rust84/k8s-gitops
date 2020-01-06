@@ -8,24 +8,21 @@ metadata:
     traffic-type: external
   annotations:
     fluxcd.io/automated: "true"
-    fluxcd.io/tag.chart-image: 'glob:v3.*.*'
+    fluxcd.io/tag.chart-image: 'regexp:^([0-9]+\.[0-9]+-ls.*)$'
 spec:
   releaseName: ombi
   chart:
-    repository: https://rust84.github.io/helmcharts/
+    repository: https://billimek.com/billimek-charts/
     name: ombi
-    version: 0.1.4
+    version: 1.0.2
   values:
     image:
       repository: linuxserver/ombi
-      tag: v3.0.4892-ls41
-    env:
-    - name: PUID
-      value: "1000"
-    - name: PGID
-      value: "1000"
-    - name: "TZ"
-      value: "Europe/London"
+      tag: 3.0.4958-ls72
+    strategyType: Recreate
+    timezone: Europe/London
+    puid: 1000
+    pgid: 1000
     service:
       type: LoadBalancer
       loadBalancerIP: 10.20.0.115
@@ -33,8 +30,7 @@ spec:
       enabled: true
       annotations:
         kubernetes.io/ingress.class: "external"
-    strategy:
-      type: Recreate
+
     podAnnotations:
       backup.velero.io/backup-volumes: config
     persistence:
@@ -45,9 +41,9 @@ spec:
         storageClass: rook-ceph-block
     resources:
       limits:
-        memory: 262144k
+        memory: 256Mi
       requests:
         cpu: 25m
-        memory: 262144k
+        memory: 256Mi
   valueFileSecrets:
   - name: "ombi-helm-values"
