@@ -47,6 +47,7 @@ spec:
             mount_path = "transit/"
             tls_skip_verify = "true"
           }
+          log_level="debug"
       ingress:
         enabled: true
         annotations:
