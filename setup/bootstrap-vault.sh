@@ -83,8 +83,8 @@ initVault() {
   if [ "$sealed_status" == "true" ]; then
     echo "unsealing vault"
     for replica in $REPLIACS; do
-      echo "unsealing vault-transit-${replica}"
-      kubectl -n kube-system exec "vault-ha-${replica}" -- vault operator unseal "$VAULT_TRANSIT_RECOVERY_TOKEN" || exit 1
+      echo "unsealing vault-ha-${replica}"
+      kubectl -n kube-system exec "vault-ha-${replica}" -- vault operator unseal "$VAULT_RECOVERY_TOKEN" || exit 1
     done
   fi
 }
@@ -92,7 +92,8 @@ initVault() {
 portForwardVault() {
   message "port-forwarding vault"
   kubectl -n kube-system port-forward svc/vault-ha 8200:8200 >/dev/null 2>&1 &
-  VAULT_FWD_PID=$!
+  export VAULT_FWD_PID=$!
+
   sleep 5
 }
 
@@ -188,6 +189,8 @@ loadSecretsToVault() {
 
 FIRST_RUN=1
 export KUBECONFIG="$REPO_ROOT/setup/kubeconfig"
+export VAULT_ADDR='http://127.0.0.1:8200'
+
 initVault
 portForwardVault
 loginVault
