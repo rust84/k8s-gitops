@@ -177,8 +177,8 @@ spec:
             - k3s-0:19999
             - k3s-1:19999
             - k3s-2:19999
-            - k3s-5:19999
-            - k3s-6:19999
+            - pi4-a:19999
+            - pi4-b:19999
             - pi4-c:19999
   valueFileSecrets:
   - name: "prometheus-operator-helm-values"
