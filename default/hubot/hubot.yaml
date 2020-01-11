@@ -31,7 +31,6 @@ spec:
       - hubot-http-status
       - hubot-grafana
       - hubot-alias
-      - hubot-home-assistant
     redis:
       enabled: false
   valueFileSecrets:
