@@ -161,7 +161,7 @@ loadSecretsToVault() {
   # helm chart values
   ####################
   kvault "kube-system/kured/kured-helm-values.txt"
-  kvault "kube-system/vault/vault-kms-helm-values.txt"
+  kvault "kube-system/vault/vault-helm-values.txt"
   kvault "monitoring/botkube/botkube-helm-values.txt"
   kvault "monitoring/chronograf/chronograf-helm-values.txt"
   kvault "monitoring/prometheus-operator/prometheus-operator-helm-values.txt"
