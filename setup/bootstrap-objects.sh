@@ -28,6 +28,8 @@ installManualObjects(){
   ##########
   # secrets
   ##########
+  envsubst < "$REPO_ROOT"/kube-system/vault/vault-helm-values.txt | tee values.yaml | kubectl -n kube-system create secret generic vault-helm-values  --from-file=values.yaml
+  rm values.yaml
 
   ###################
   # nginx-external
