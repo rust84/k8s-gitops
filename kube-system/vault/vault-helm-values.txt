@@ -3,3 +3,10 @@ server:
     AWS_REGION: eu-west-1
     AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
     AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: "nginx"
+    hosts:
+      - host: vault.k.$DOMAIN
+        paths: ["/"]

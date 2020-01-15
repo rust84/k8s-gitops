@@ -42,5 +42,7 @@ spec:
             region = "eu-west-1"
             kms_key_id = "a81860c8-fe5b-4095-aa46-53cf10b375ff"
           }
+    ui:
+      enabled: true
   valueFileSecrets:
   - name: "vault-helm-values"
