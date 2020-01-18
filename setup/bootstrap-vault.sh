@@ -168,7 +168,6 @@ loadSecretsToVault() {
   kvault "monitoring/uptimerobot/uptimerobot-helm-values.txt"
   kvault "default/goldilocks/goldilocks-helm-values.txt"
   kvault "default/home-assistant/home-assistant-helm-values.txt"
-  kvault "default/home-assistant/postgresql-helm-values.txt"
   kvault "default/home-assistant/mysql-helm-values.txt"
   kvault "default/hubot/hubot-helm-values.txt"
   kvault "default/minio/minio-helm-values.txt"
