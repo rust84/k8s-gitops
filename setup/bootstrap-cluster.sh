@@ -4,7 +4,7 @@
 K3S_MASTER="k3s-0"
 K3S_WORKERS_AMD64="k3s-1 k3s-2"
 K3S_WORKERS_RPI="pi4-a pi4-b pi4-c"
-K3S_VERSION="v1.17.0+k3s.1"
+K3S_VERSION="v1.17.2+k3s1"
 
 REPO_ROOT=$(git rev-parse --show-toplevel)
 
@@ -44,7 +44,7 @@ ks3armWorkerNodes() {
   for node in $K3S_WORKERS_RPI; do
     message "joining pi4 $node to $K3S_MASTER"
     EXTRA_ARGS=""
-    ssh -o "StrictHostKeyChecking=no" pi@"$node" "curl -sfL https://get.k3s.io | K3S_URL=https://k3s-0:6443 K3S_TOKEN=$NODE_TOKEN INSTALL_K3S_VERSION='$K3S_VERSION' sh -s - --node-taint arm=true:NoExecute --data-dir /mnt/usb/var/lib/rancher $EXTRA_ARGS"
+    ssh -o "StrictHostKeyChecking=no" ubuntu@"$node" "curl -sfL https://get.k3s.io | K3S_URL=https://k3s-0:6443 K3S_TOKEN=$NODE_TOKEN INSTALL_K3S_VERSION='$K3S_VERSION' sh -s - --node-taint arm=true:NoExecute --data-dir /mnt/usb/var/lib/rancher $EXTRA_ARGS"
   done
 }
 
