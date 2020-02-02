@@ -29,9 +29,10 @@ spec:
     timezone: "Europe/London"
     persistence:
       downloads:
-        enabled: true
-        existingClaim: nfs-media-pvc
-        subPath: downloads
+        enabled: false
+      extraMounts:
+        - name: media
+          claimName: nfs-media-pvc
       config:
         enabled: true
         storageClass: "nfs-client"

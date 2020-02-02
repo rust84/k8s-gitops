@@ -6,8 +6,8 @@ chartsSyncInterval: "5m"
 statusUpdateInterval: "5m"
 prometheus:
   enabled: true
-configureRepositories:
-  enable: true
-  repositories:
-    - name: rust84
-      url: https://rust84.github.io/helmcharts/
+  serviceMonitor:
+    create: true
+    interval: 30s
+    scrapeTimeout: 10s
+    namespace: flux

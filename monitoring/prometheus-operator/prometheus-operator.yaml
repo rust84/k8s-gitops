@@ -86,7 +86,7 @@ spec:
             url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
             datasource: Prometheus
           ceph-cluster:
-            url: https://grafana.com/api/dashboards/2842/revisions/10/download
+            url: https://grafana.com/api/dashboards/2842/revisions/11/download
             datasource: Prometheus
           ceph-osd:
             url: https://grafana.com/api/dashboards/5336/revisions/3/download
@@ -100,6 +100,27 @@ spec:
           netdata:
             url: https://raw.githubusercontent.com/rust84/k3s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/netdata.json
             datasource: Prometheus
+          velero:
+            url: https://grafana.com/api/dashboards/11055/revisions/2/download
+            datasource: Prometheus
+          flux:
+            url: https://grafana.com/api/dashboards/10475/revisions/1/download
+            datasource: Prometheus
+          # cable-modem-stats:
+          #   url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/cable_modem_stats.json
+          #   datasource: influxdb
+          # comcast-sucks:
+          #   url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/comcast_sucks.json
+          #   datasource: influxdb
+          # home-assistant:
+          #   url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/home_assistant.json
+          #   datasource: influxdb
+          # ups:
+          #   url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/ups.json
+          #   datasource: influxdb
+          # netdata:
+          #   url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/netdata.json
+          #   datasource: Prometheus
       additionalDataSources:
       - name: loki
         type: loki
@@ -141,6 +162,8 @@ spec:
     prometheus-node-exporter:
       tolerations:
       - key: "arm"
+        operator: "Exists"
+      - key: "armhf"
         operator: "Exists"
     prometheus:
       ingress:
