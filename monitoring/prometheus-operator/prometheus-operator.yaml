@@ -106,17 +106,8 @@ spec:
           flux:
             url: https://grafana.com/api/dashboards/10475/revisions/1/download
             datasource: Prometheus
-          # cable-modem-stats:
-          #   url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/cable_modem_stats.json
-          #   datasource: influxdb
-          # comcast-sucks:
-          #   url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/comcast_sucks.json
-          #   datasource: influxdb
           # home-assistant:
           #   url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/home_assistant.json
-          #   datasource: influxdb
-          # ups:
-          #   url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/ups.json
           #   datasource: influxdb
           # netdata:
           #   url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/netdata.json
@@ -200,6 +191,7 @@ spec:
             - k3s-0:19999
             - k3s-1:19999
             - k3s-2:19999
+            - k3s-3:19999
             - pi4-a:19999
             - pi4-b:19999
             - pi4-c:19999
