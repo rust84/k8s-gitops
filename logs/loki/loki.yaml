@@ -35,9 +35,9 @@ spec:
         tag: v1.3.0
       serviceMonitor:
         enabled: true
-      tolerations:
-      - key: "arm"
-        operator: "Exists"
+      # tolerations:
+      # - key: "arm"
+      #   operator: "Exists"
       extraScrapeConfigs:
       - job_name: syslog
         syslog:
