@@ -17,7 +17,7 @@ spec:
   values:
     image:
       repository: grafana/grafana-image-renderer
-      tag: 1.0.9
+      tag: 1.0.10
     resources:
       limits:
         memory: "2048Mi"
