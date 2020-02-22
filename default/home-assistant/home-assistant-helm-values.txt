@@ -1,9 +1,9 @@
 ingress:
   hosts:
-  - hass.k.$DOMAIN
+  - hass.$DOMAIN
   tls:
   - hosts:
-    - hass.k.$DOMAIN
+    - hass.$DOMAIN
 configurator:
   ingress:
     hosts:
