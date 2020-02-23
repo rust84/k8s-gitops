@@ -10,7 +10,7 @@ spec:
     enabled: true
   chart:
     git: https://github.com/hashicorp/consul-helm
-    ref: v0.15.0
+    ref: v0.17.0
     path: .
   values:
     server:
@@ -23,4 +23,8 @@ spec:
       tolerations: |
         - key: "arm"
           operator: "Exists"
-
+    ui:
+      enabled: "true"
+      service:
+        enabled: true
+        type: ClusterIP

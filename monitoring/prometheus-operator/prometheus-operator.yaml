@@ -13,7 +13,7 @@ spec:
   chart:
     repository: https://kubernetes-charts.storage.googleapis.com/
     name: prometheus-operator
-    version: 8.4.0
+    version: 8.9.2
   values:
     server:
       resources:
@@ -165,6 +165,15 @@ spec:
 #        image:
 #          repository: quay.io/prometheus/prometheus
 #          tag: v2.9.1
+        ruleSelector: {}
+        ruleNamespaceSelector: {}
+        ruleSelectorNilUsesHelmValues: false
+        serviceMonitorSelector: {}
+        serviceMonitorNamespaceSelector: {}
+        serviceMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelector: {}
+        podMonitorNamespaceSelector: {}
+        podMonitorSelectorNilUsesHelmValues: false
         retention: 30d
         enableAdminAPI: true
         serviceMonitorSelectorNilUsesHelmValues: false
