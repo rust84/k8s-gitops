@@ -20,7 +20,7 @@ spec:
   values:
     image:
       repository: pihole/pihole
-      tag: release-v4.3.4
+      tag: 4.3.2-1
     replicaCount: 2
     doh:
       enabled: true
