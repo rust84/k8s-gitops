@@ -14,13 +14,13 @@ spec:
   rollback:
     enable: true
   chart:
-    git: https://github.com/MoJo2600/pihole-kubernetes.git
-    ref: 1.0.0
-    path: pihole
+    repository: https://mojo2600.github.io/pihole-kubernetes/
+    name: pihole
+    version: 1.3.2
   values:
     image:
       repository: pihole/pihole
-      tag: 4.3.2-1
+      tag: release-v4.3.4
     replicaCount: 2
     doh:
       enabled: true
