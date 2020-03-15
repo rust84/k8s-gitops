@@ -160,6 +160,7 @@ loadSecretsToVault() {
   ####################
   # helm chart values
   ####################
+  kvault "default/blocky/blocky-helm-values.txt"
   kvault "kube-system/kured/kured-helm-values.txt"
   kvault "kube-system/vault/vault-helm-values.txt"
   kvault "monitoring/botkube/botkube-helm-values.txt"
@@ -168,7 +169,7 @@ loadSecretsToVault() {
   kvault "monitoring/uptimerobot/uptimerobot-helm-values.txt"
   kvault "default/goldilocks/goldilocks-helm-values.txt"
   kvault "default/home-assistant/home-assistant-helm-values.txt"
-  kvault "default/home-assistant/mysql-helm-values.txt"
+  kvault "default/home-assistant/postgresql-helm-values.txt"
   kvault "default/hubot/hubot-helm-values.txt"
   kvault "default/minio/minio-helm-values.txt"
   kvault "default/node-red/node-red-helm-values.txt"

@@ -106,12 +106,9 @@ spec:
           flux:
             url: https://grafana.com/api/dashboards/10475/revisions/1/download
             datasource: Prometheus
-          # home-assistant:
-          #   url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/home_assistant.json
-          #   datasource: influxdb
-          # netdata:
-          #   url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/netdata.json
-          #   datasource: Prometheus
+          blocky:
+            url: https://raw.githubusercontent.com/0xERR0R/blocky/master/docs/blocky-grafana.json
+            datasource: Prometheus
       additionalDataSources:
       - name: loki
         type: loki
