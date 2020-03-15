@@ -68,6 +68,7 @@ spec:
           kubernetes.io/ingress.class: "nginx"
       plugins:
       - natel-discrete-panel
+      - grafana-piechart-panel
       dashboardProviders:
         dashboardproviders.yaml:
           apiVersion: 1
