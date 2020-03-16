@@ -51,7 +51,7 @@ spec:
         eventrouter:
         pipeline_stages:
         - match:
-          selector: '{name="eventrouter"}'
+          selector: '{app="eventrouter"}'
           stages:
           - json:
               expressions:
