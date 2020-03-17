@@ -174,7 +174,6 @@ spec:
         podMonitorSelectorNilUsesHelmValues: false
         retention: 30d
         enableAdminAPI: true
-        serviceMonitorSelectorNilUsesHelmValues: false
         storageSpec:
           volumeClaimTemplate:
             spec:
