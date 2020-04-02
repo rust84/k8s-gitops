@@ -25,9 +25,9 @@ spec:
       enabled: true
       annotations:
         kubernetes.io/ingress.class: external
-    # tolerations:
-    # - key: "arm"
-    #   operator: "Exists"
+    tolerations:
+    - key: "arm"
+      operator: "Exists"
     resources:
       requests:
         memory: 350Mi
