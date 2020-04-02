@@ -13,9 +13,9 @@ spec:
   rollback:
     enable: true
   chart:
-    repository: https://kubernetes-charts.storage.googleapis.com/
+    repository: https://helm.influxdata.com/
     name: influxdb
-    version: 4.2.3
+    version: 4.3.6
   values:
     image:
       repository: "influxdb"
@@ -34,6 +34,10 @@ spec:
       timeoutSeconds: 10
     readinessProbe:
       timeoutSeconds: 10
+    startupProbe:
+      enabled: true
+      failureThreshold: 6
+      periodSeconds: 5
     config:
       opentsdb:
         enabled: true
