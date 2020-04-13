@@ -25,7 +25,7 @@ spec:
     pgid: 1000
     service:
       type: LoadBalancer
-      loadBalancerIP: 10.20.0.115
+      loadBalancerIP: 10.1.0.115
     ingress:
       enabled: true
       annotations:
