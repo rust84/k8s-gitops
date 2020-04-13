@@ -24,7 +24,7 @@ spec:
       #   tag: "0.25.1"
       replicaCount: 1
       service:
-        loadBalancerIP: 10.20.0.151
+        loadBalancerIP: 10.1.0.151
         externalTrafficPolicy: Local
       metrics:
         enabled: true
