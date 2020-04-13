@@ -35,3 +35,8 @@ spec:
       tolerations:
       - key: "arm"
         operator: "Exists"
+    prometheus:
+      serviceMonitor:
+        enabled: true
+      prometheusRule:
+        enabled: true
