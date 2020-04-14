@@ -29,10 +29,10 @@ spec:
     config:
       upstream:
         externalResolvers:
-        - udp:8.8.8.8
-        - udp:8.8.4.4
-        - udp:1.1.1.1
-        - tcp-tls:1.0.0.1:853
+        - https://dns1.nextdns.io/dd8d64
+        - https://dns2.nextdns.io/dd8d64
+        - tcp-tls:dd8d64.dns1.nextdns.io:853
+        - tcp-tls:dd8d64.dns2.nextdns.io:853
         - https://cloudflare-dns.com/dns-query
       conditional:
         mapping:
