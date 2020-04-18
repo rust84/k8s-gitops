@@ -4,6 +4,9 @@ alertmanager:
     tls:
     - hosts:
       - prom-alert.k.$DOMAIN
+  config:
+    global:
+      slack_api_url: "$SLACK_WEBOOK_URL_ALERT"
 prometheus:
   ingress:
     hosts: [prom-server.k.$DOMAIN]

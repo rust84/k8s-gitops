@@ -40,6 +40,37 @@ spec:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: "nginx"
+      config:
+        route:
+          group_by: ['job']
+          group_wait: 30s
+          group_interval: 5m
+          repeat_interval: 12h
+          receiver: 'null'
+          routes:
+          - match:
+              alertname: Watchdog
+            receiver: 'null'
+          - match:
+              severity: warning
+            receiver: 'slack'
+          - match:
+              severity: critical
+            receiver: 'slack'
+        receivers:
+        - name: 'null'
+        - name: 'slack'
+          slack_configs:
+          - channel: '#alerts'
+            icon_emoji: ':skull_and_crossbones:'
+            username: 'alertman'
+        # - name: 'mail'
+        #   email_configs:
+        #   - to: 'test@example.com'
+        #     html: '{{ template "email.test.html" . }}'
+        # templateFiles:
+        #   test_mail.tmpl: |-
+        #     {{ define "email.test.html" }}{{ .ExternalURL | reReplaceAll ".alertmanager\.(.)" "$1" }}{{ end }}
     grafana:
       image:
         repository: grafana/grafana
