@@ -41,6 +41,7 @@ spec:
         annotations:
           kubernetes.io/ingress.class: "nginx"
       config:
+        templates: ["*.tmpl"]
         route:
           group_by: ['job']
           group_wait: 30s
@@ -88,18 +89,6 @@ spec:
                   {{- end -}}
               {{- end -}}
               alertname%3D"{{ .CommonLabels.alertname }}"%7D
-          {{- end }}
-
-          {{ define "__alert_severity_prefix" -}}
-              {{ if ne .Status "firing" -}}
-              :lgtm:
-              {{- else if eq .Labels.severity "critical" -}}
-              :fire:
-              {{- else if eq .Labels.severity "warning" -}}
-              :warning:
-              {{- else -}}
-              :question:
-              {{- end }}
           {{- end }}
 
           {{ define "__alert_severity_prefix_title" -}}
