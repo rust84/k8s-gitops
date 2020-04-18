@@ -85,7 +85,7 @@ spec:
               {{ .ExternalURL }}/#/silences/new?filter=%7B
               {{- range .CommonLabels.SortedPairs -}}
                   {{- if ne .Name "alertname" -}}
-                      {{- .Name }}%3D"{{- .Value -}}"%2C%20
+                      {{- .Name }}%3D"{{- .Value -}}"%2C
                   {{- end -}}
               {{- end -}}
               alertname%3D"{{ .CommonLabels.alertname }}"%7D
@@ -105,14 +105,12 @@ spec:
               {{- end }}
           {{- end }}
 
-
           {{/* First line of Slack alerts */}}
           {{ define "slack.title" -}}
               [{{ .Status | toUpper -}}
               {{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{- end -}}
               ] {{ template "__alert_severity_prefix_title" . }} {{ .CommonLabels.alertname }}
           {{- end }}
-
 
           {{/* Color of Slack attachment (appears as line next to alert )*/}}
           {{ define "slack.color" -}}
