@@ -93,7 +93,7 @@ spec:
 
           {{ define "__alert_severity_prefix_title" -}}
               {{ if ne .Status "firing" -}}
-              :lgtm:
+              :100:
               {{- else if eq .CommonLabels.severity "critical" -}}
               :fire:
               {{- else if eq .CommonLabels.severity "warning" -}}
