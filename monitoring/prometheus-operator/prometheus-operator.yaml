@@ -51,7 +51,8 @@ spec:
           - match:
               alertname: Watchdog
             receiver: 'null'
-          - match_re: '^(info|warning|critical)$'
+          - match_re:
+              severity: 'info|warning|critical'
             continue: true
             receiver: 'slack-monitoring'
         receivers:
