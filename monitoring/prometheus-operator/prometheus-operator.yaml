@@ -250,7 +250,7 @@ spec:
       tolerations:
       - key: "arm"
         operator: "Exists"
-      - key: "armhf"
+      - key: "k3s-controlplane"
         operator: "Exists"
     prometheus:
       ingress:

@@ -19,6 +19,7 @@ spec:
     tolerations:
       - key: "arm"
         operator: "Exists"
+      - key: "k3s-controlplane"
+        operator: "Exists"
   valueFileSecrets:
   - name: "kured-helm-values"
-
