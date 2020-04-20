@@ -34,3 +34,6 @@ spec:
       requests:
         cpu: 100m
         memory: 128Mi
+    tolerations:
+    - key: "k3s-controlplane"
+      operator: "Exists"
