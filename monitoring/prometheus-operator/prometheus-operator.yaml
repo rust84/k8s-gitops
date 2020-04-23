@@ -157,7 +157,7 @@ spec:
         - ReadWriteOnce
       env:
         GF_EXPLORE_ENABLED: true
-        GF_DISABLE_SANITIZE_HTML: true
+        GF_PANELS_DISABLE_SANITIZE_HTML: true
         GF_RENDERING_SERVER_URL: http://grafana-image-renderer:8081/render
         GF_RENDERING_CALLBACK_URL: http://prometheus-operator-grafana/
         GF_LOG_FILTERS: rendering:debug
