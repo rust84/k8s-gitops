@@ -251,8 +251,6 @@ spec:
       tolerations:
       - key: "arm"
         operator: "Exists"
-      - key: "k3s-controlplane"
-        operator: "Exists"
     prometheus:
       ingress:
         enabled: true

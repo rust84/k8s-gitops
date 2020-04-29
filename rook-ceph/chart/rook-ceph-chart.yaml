@@ -13,14 +13,6 @@ spec:
     name: rook-ceph
     version: v1.2.7
   values:
-    agent:
-      tolerations:
-      - key: "k3s-controlplane"
-        operator: "Exists"
-    discover:
-      tolerations:
-      - key: "k3s-controlplane"
-        operator: "Exists"
     csi:
       kubeletDirPath: /var/lib/kubelet
       cephcsi:
@@ -42,12 +34,3 @@ spec:
       requests:
         cpu: 100m
         memory: 128Mi
-    tolerations:
-    - key: "k3s-controlplane"
-      operator: "Exists"
-    provisionerTolerations:
-    - key: "k3s-controlplane"
-      operator: "Exists"
-    pluginTolerations:
-    - key: "k3s-controlplane"
-      operator: "Exists"
