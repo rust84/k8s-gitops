@@ -48,12 +48,11 @@ spec:
           memory: 250Mi
       limits:
         memory: 512Mi
-  storage:
-    storageClassDeviceSets:
-      placement:
-        tolerations:
-        - key: "k3s-controlplane"
-          operator: "Exists"
+  placement:
+    all:
+      tolerations:
+      - key: "k3s-controlplane"
+        operator: "Exists"
     useAllNodes: false
     useAllDevices: false
     deviceFilter:
