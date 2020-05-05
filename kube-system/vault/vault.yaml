@@ -10,7 +10,7 @@ spec:
     enabled: false
   chart:
     git: https://github.com/hashicorp/vault-helm
-    ref: v0.4.0
+    ref: v0.5.0
     path: .
   values:
     server:
@@ -27,6 +27,10 @@ spec:
         enabled: "false"
       ha:
         enabled: "true"
+        replicas: 3
+        raft:
+          enabled: true
+          setNodeId: true
         config: |
           ui = true
           listener "tcp" {
@@ -34,9 +38,8 @@ spec:
             address = "[::]:8200"
             cluster_address = "[::]:8201"
           }
-          storage "consul" {
-            path = "vault"
-            address = "HOST_IP:8500"
+          storage "raft" {
+            path = "/vault/data"
           }
           seal "awskms" {
             region = "eu-west-1"
@@ -44,5 +47,6 @@ spec:
           }
     ui:
       enabled: true
+      serviceType: "ClusterIP"
   valueFileSecrets:
   - name: "vault-helm-values"
