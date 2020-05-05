@@ -25,6 +25,8 @@ spec:
           memory: 256Mi
       standalone:
         enabled: "false"
+      dataStorage:
+        storageClass: rook-ceph
       ha:
         enabled: "true"
         replicas: 3
