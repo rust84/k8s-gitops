@@ -77,6 +77,13 @@ initVault() {
         sed -i'' "s~VAULT_RECOVERY_TOKEN=\".*\"~VAULT_RECOVERY_TOKEN=\"$VAULT_RECOVERY_TOKEN\"~" "$REPO_ROOT"/setup/.env
     fi
     echo "SAVE THESE VALUES!"
+
+    REPLIACS_LIST=($REPLIACS)
+    for replica in "${REPLIACS_LIST[@]:1}"; do
+      echo "joining pod vault-${replica} to raft cluster"
+      kubectl -n kube-system exec "vault-${replica}" -- vault operator raft join http://vault-0.vault-internal:8200 || exit 1
+    done
+
     FIRST_RUN=0
   fi
 
@@ -174,7 +181,6 @@ loadSecretsToVault() {
   kvault "default/minio/minio-helm-values.txt"
   kvault "default/node-red/node-red-helm-values.txt"
   kvault "default/nzbget/nzbget-helm-values.txt"
-  kvault "default/pihole/pihole-helm-values.txt"
   kvault "default/plex/plex-helm-values.txt"
   kvault "default/rabbitmq/rabbitmq-helm-values.txt"
   kvault "default/radarr/radarr-helm-values.txt"

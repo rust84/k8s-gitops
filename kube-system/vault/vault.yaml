@@ -33,20 +33,20 @@ spec:
         raft:
           enabled: true
           setNodeId: true
-        config: |
-          ui = true
-          listener "tcp" {
-            tls_disable = 1
-            address = "[::]:8200"
-            cluster_address = "[::]:8201"
-          }
-          storage "raft" {
-            path = "/vault/data"
-          }
-          seal "awskms" {
-            region = "eu-west-1"
-            kms_key_id = "a81860c8-fe5b-4095-aa46-53cf10b375ff"
-          }
+          config: |
+            ui = true
+            listener "tcp" {
+              tls_disable = 1
+              address = "[::]:8200"
+              cluster_address = "[::]:8201"
+            }
+            storage "raft" {
+              path = "/vault/data"
+            }
+            seal "awskms" {
+              region = "eu-west-1"
+              kms_key_id = "a81860c8-fe5b-4095-aa46-53cf10b375ff"
+            }
     ui:
       enabled: true
       serviceType: "ClusterIP"
