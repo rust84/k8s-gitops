@@ -15,12 +15,12 @@ spec:
   chart:
     repository: https://kubernetes-charts.storage.googleapis.com/
     name: nginx-ingress
-    version: 1.31.0
+    version: 1.36.2
   values:
     controller:
-      # image:
-      #   repository: quay.io/kubernetes-ingress-controller/nginx-ingress-controller
-      #   tag: "0.25.1"
+      image:
+        repository: quay.io/kubernetes-ingress-controller/nginx-ingress-controller
+        tag: "0.32.0"
       replicaCount: 1
       service:
         loadBalancerIP: 10.1.0.150
@@ -32,9 +32,9 @@ spec:
           namespace: kube-system
         prometheusRule:
           enabled: false
-      # tolerations:
-      # - key: "arm"
-      #   operator: "Exists"
+      tolerations:
+      - key: "arm"
+        operator: "Exists"
       extraArgs:
         default-ssl-certificate: "kube-system/acme-crt-secret"
       resources:
