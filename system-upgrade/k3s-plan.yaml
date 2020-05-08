@@ -34,7 +34,7 @@ metadata:
     k3s-upgrade: agent
 spec:
   concurrency: 1
-  channel: https://github.com/rancher/k3os/releases/latest
+  channel: https://github.com/rancher/k3s/releases/latest
   nodeSelector:
     matchExpressions:
       - {key: k3s-upgrade, operator: Exists}
@@ -43,7 +43,7 @@ spec:
       - {key: k3os.io/mode, operator: DoesNotExist}
       - {key: node-role.kubernetes.io/master, operator: NotIn, values: ["true"]}
   tolerations:
-  - {key: arm, effect: NoSchedule, operator: Equal, value: "true"}
+  - {key: arm, effect: NoExecute, operator: Equal, value: "true"}
   serviceAccountName: system-upgrade
   prepare:
     # Since v0.5.0-m1 SUC will use the resolved version of the plan for the tag on the prepare container.
