@@ -48,6 +48,7 @@ spec:
           memory: 250Mi
       limits:
         memory: 512Mi
+  storage:
     useAllNodes: false
     useAllDevices: false
     deviceFilter:
