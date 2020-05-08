@@ -34,9 +34,9 @@ spec:
         enabled: true
         annotations:
           kubernetes.io/ingress.class: "nginx"
-    # tolerations:
-    # - key: "arm"
-    #   operator: "Exists"
+    tolerations:
+    - key: "arm"
+      operator: "Exists"
     probes:
       liveness:
         initialDelaySeconds: 60
