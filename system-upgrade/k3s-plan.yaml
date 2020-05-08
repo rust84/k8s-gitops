@@ -43,7 +43,7 @@ spec:
       - {key: k3os.io/mode, operator: DoesNotExist}
       - {key: node-role.kubernetes.io/master, operator: NotIn, values: ["true"]}
   tolerations:
-  - {key: arm, effect: NoSchedule, operator: Equal, value: true}
+  - {key: arm, effect: NoSchedule, operator: Equal, value: "true"}
   serviceAccountName: system-upgrade
   prepare:
     # Since v0.5.0-m1 SUC will use the resolved version of the plan for the tag on the prepare container.
