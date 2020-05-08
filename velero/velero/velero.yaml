@@ -33,7 +33,7 @@ spec:
       limits:
         memory: 1000Mi
     tolerations:
-      - key: "arm"
+    - key: "arm"
       operator: "Exists"
     metrics:
       enabled: true
