@@ -14,7 +14,7 @@ spec:
   chart:
     repository: https://billimek.com/billimek-charts/
     name: sonarr
-    version: 3.0.2
+    version: 3.2.0
   values:
     image:
       repository: linuxserver/sonarr
@@ -45,5 +45,8 @@ spec:
         cpu: 25m
       limits:
         memory: 500Mi
+    tolerations:
+    - key: "arm"
+      operator: "Exists"
   valueFileSecrets:
   - name: "sonarr-helm-values"
