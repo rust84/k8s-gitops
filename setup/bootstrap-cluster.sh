@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # nodes
-K3S_MASTER="k3s-0"
-K3S_WORKERS_AMD64="k3s-1 k3s-2 k3s-3"
-K3S_WORKERS_RPI="pi4-a pi4-b pi4-c"
+K3S_MASTER=""
+K3S_WORKERS_AMD64=""
+K3S_WORKERS_RPI=""
 K3S_VERSION="v1.17.5+k3s1"
 
 REPO_ROOT=$(git rev-parse --show-toplevel)
@@ -95,7 +95,7 @@ installFlux
 "$REPO_ROOT"/setup/bootstrap-objects.sh
 
 # bootstrap vault
-"$REPO_ROOT"/setup/bootstrap-vault.sh
+#"$REPO_ROOT"/setup/bootstrap-vault.sh
 
 message "all done!"
 kubectl get nodes -o=wide

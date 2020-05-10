@@ -1,52 +1,52 @@
----
-apiVersion: helm.fluxcd.io/v1
-kind: HelmRelease
-metadata:
-  name: radarr
-  namespace: default
-  annotations:
-    fluxcd.io/automated: "false"
-    fluxcd.io/tag.chart-image: semver:3.0
-spec:
-  releaseName: radarr
-  rollback:
-    enable: true
-  chart:
-    repository: https://billimek.com/billimek-charts/
-    name: radarr
-    version: 3.0.2
-  values:
-    image:
-      repository: linuxserver/radarr
-      tag: 3.0.0.2821-ls4
-    ingress:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: "nginx"
-    timezone: "Europe/London"
-    podAnnotations:
-      backup.velero.io/backup-volumes: config
-    persistence:
-      config:
-        enabled: true
-        storageClass: "rook-ceph-block"
-      downloads:
-        enabled: false
-      movies:
-        enabled: false
-      extraExistingClaimMounts:
-        - name: media
-          existingClaim: nfs-media-pvc
-          mountPath: /media
-          readOnly: false
-    resources:
-      requests:
-        memory: 350Mi
-        cpu: 25m
-      limits:
-        memory: 500Mi
-    tolerations:
-    - key: "arm"
-      operator: "Exists"
-  valueFileSecrets:
-  - name: "radarr-helm-values"
+# ---
+# apiVersion: helm.fluxcd.io/v1
+# kind: HelmRelease
+# metadata:
+#   name: radarr
+#   namespace: default
+#   annotations:
+#     fluxcd.io/automated: "false"
+#     fluxcd.io/tag.chart-image: semver:3.0
+# spec:
+#   releaseName: radarr
+#   rollback:
+#     enable: true
+#   chart:
+#     repository: https://billimek.com/billimek-charts/
+#     name: radarr
+#     version: 3.0.2
+#   values:
+#     image:
+#       repository: linuxserver/radarr
+#       tag: 3.0.0.2821-ls4
+#     ingress:
+#       enabled: true
+#       annotations:
+#         kubernetes.io/ingress.class: "nginx"
+#     timezone: "Europe/London"
+#     podAnnotations:
+#       backup.velero.io/backup-volumes: config
+#     persistence:
+#       config:
+#         enabled: true
+#         storageClass: "rook-ceph-block"
+#       downloads:
+#         enabled: false
+#       movies:
+#         enabled: false
+#       extraExistingClaimMounts:
+#         - name: media
+#           existingClaim: nfs-media-pvc
+#           mountPath: /media
+#           readOnly: false
+#     resources:
+#       requests:
+#         memory: 350Mi
+#         cpu: 25m
+#       limits:
+#         memory: 500Mi
+#     tolerations:
+#     - key: "arm"
+#       operator: "Exists"
+#   valueFileSecrets:
+#   - name: "radarr-helm-values"

@@ -1,286 +1,286 @@
----
-apiVersion: helm.fluxcd.io/v1
-kind: HelmRelease
-metadata:
-  name: prometheus-operator
-  namespace: monitoring
-  annotations:
-    fluxcd.io/ignore: false
-    fluxcd.io/automated: "true"
-    fluxcd.io/tag.grafana: semver:~6
-spec:
-  releaseName: prometheus-operator
-  chart:
-    repository: https://kubernetes-charts.storage.googleapis.com/
-    name: prometheus-operator
-    version: 8.12.13
-  values:
-    server:
-      resources:
-        requests:
-          memory: 1000Mi
-          cpu: 25m
-        limits:
-          memory: 2000Mi
-    prometheusOperator:
-      createCustomResource: true
-    alertmanager:
-      alertmanagerSpec:
-        storage:
-          volumeClaimTemplate:
-            spec:
-              storageClassName: rook-ceph-block
-              resources:
-                requests:
-                  storage: 10Gi
-        # tolerations:
-        # - key: "arm"
-        #   operator: "Exists"
-      ingress:
-        enabled: true
-        annotations:
-          kubernetes.io/ingress.class: "nginx"
-      config:
-        templates: ["*.tmpl"]
-        route:
-          group_by: ['job']
-          group_wait: 30s
-          group_interval: 5m
-          repeat_interval: 12h
-          receiver: 'null'
-          routes:
-          - match:
-              alertname: Watchdog
-            receiver: 'null'
-          - match_re:
-              severity: 'info|warning|critical'
-            continue: true
-            receiver: 'slack-monitoring'
-        receivers:
-        - name: 'null'
-        - name: 'slack-monitoring'
-          slack_configs:
-          - channel: '#alerts'
-            send_resolved: true
-            title: '{{ template "slack.title" . }}'
-            icon_emoji: ':prometheus:'
-            color: '{{ template "slack.color" . }}'
-            text: '{{ template "slack.text" . }}'
-            actions:
-            - type: button
-              text: 'Runbook :green_book:'
-              url: '{{ (index .Alerts 0).Annotations.runbook_url }}'
-            - type: button
-              text: 'Query :mag:'
-              url: '{{ (index .Alerts 0).GeneratorURL }}'
-            - type: button
-              text: 'Silence :no_bell:'
-              url: '{{ template "__alert_silence_link" . }}'
-      templateFiles:
-        slack-templates.tmpl: |-
-          # This builds the silence URL.  We exclude the alertname in the range
-          # to avoid the issue of having trailing comma separator (%2C) at the end
-          # of the generated URL
-          {{ define "__alert_silence_link" -}}
-              {{ .ExternalURL }}/#/silences/new?filter=%7B
-              {{- range .CommonLabels.SortedPairs -}}
-                  {{- if ne .Name "alertname" -}}
-                      {{- .Name }}%3D"{{- .Value -}}"%2C%20
-                  {{- end -}}
-              {{- end -}}
-              alertname%3D"{{ .CommonLabels.alertname }}"%7D
-          {{- end }}
-
-          {{ define "__alert_severity_prefix_title" -}}
-              {{ if ne .Status "firing" -}}
-              :100:
-              {{- else if eq .CommonLabels.severity "critical" -}}
-              :fire:
-              {{- else if eq .CommonLabels.severity "warning" -}}
-              :warning:
-              {{- else if eq .CommonLabels.severity "info" -}}
-              :information_source:
-              {{- else -}}
-              :question:
-              {{- end }}
-          {{- end }}
-
-          {{/* First line of Slack alerts */}}
-          {{ define "slack.title" -}}
-              [{{ .Status | toUpper -}}
-              {{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{- end -}}
-              ] {{ template "__alert_severity_prefix_title" . }} {{ .CommonLabels.alertname }}
-          {{- end }}
-
-          {{/* Color of Slack attachment (appears as line next to alert )*/}}
-          {{ define "slack.color" -}}
-              {{ if eq .Status "firing" -}}
-                  {{ if eq .CommonLabels.severity "warning" -}}
-                      warning
-                  {{- else if eq .CommonLabels.severity "critical" -}}
-                      danger
-                  {{- else -}}
-                      #439FE0
-                  {{- end -}}
-              {{ else -}}
-              good
-              {{- end }}
-          {{- end }}
-
-          {{/* The text to display in the alert */}}
-          {{ define "slack.text" -}}
-              {{ range .Alerts }}
-                  {{- if .Annotations.message }}
-                      {{ .Annotations.message }}
-                  {{- end }}
-                  {{- if .Annotations.description }}
-                      {{ .Annotations.description }}
-                  {{- end }}
-              {{- end }}
-          {{- end }}
-    grafana:
-      # image:
-      #   repository: grafana/grafana
-      #   tag: 6.7.3
-      # tolerations:
-      # - key: "arm"
-      #   operator: "Exists"
-      deploymentStrategy:
-        type: Recreate
-      podAnnotations:
-        backup.velero.io/backup-volumes: storage
-      persistence:
-        enabled: true
-        storageClassName: "rook-ceph-block"
-        size: 10Gi
-        accessModes:
-        - ReadWriteOnce
-      env:
-        GF_EXPLORE_ENABLED: true
-        GF_PANELS_DISABLE_SANITIZE_HTML: true
-        GF_RENDERING_SERVER_URL: http://grafana-image-renderer:8081/render
-        GF_RENDERING_CALLBACK_URL: http://prometheus-operator-grafana/
-        GF_LOG_FILTERS: rendering:debug
-      ingress:
-        enabled: true
-        annotations:
-          kubernetes.io/ingress.class: "nginx"
-      plugins:
-      - natel-discrete-panel
-      - grafana-piechart-panel
-      dashboardProviders:
-        dashboardproviders.yaml:
-          apiVersion: 1
-          providers:
-          - name: 'default'
-            orgId: 1
-            folder: ''
-            type: file
-            disableDeletion: false
-            editable: true
-            options:
-              path: /var/lib/grafana/dashboards/default
-      dashboards:
-        default:
-          nginx-dashboard:
-            url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
-            datasource: Prometheus
-          ceph-cluster:
-            url: https://grafana.com/api/dashboards/2842/revisions/11/download
-            datasource: Prometheus
-          ceph-osd:
-            url: https://grafana.com/api/dashboards/5336/revisions/3/download
-            datasource: Prometheus
-          ceph-pools:
-            url: https://grafana.com/api/dashboards/5342/revisions/3/download
-            datasource: Prometheus
-          home-assistant:
-            url: https://raw.githubusercontent.com/rust84/k3s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/home_assistant.json
-            datasource: home_assistant
-          netdata:
-            url: https://raw.githubusercontent.com/rust84/k3s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/netdata.json
-            datasource: Prometheus
-          velero:
-            url: https://grafana.com/api/dashboards/11055/revisions/2/download
-            datasource: Prometheus
-          flux:
-            url: https://grafana.com/api/dashboards/10475/revisions/1/download
-            datasource: Prometheus
-          blocky:
-            url: https://raw.githubusercontent.com/0xERR0R/blocky/master/docs/blocky-grafana.json
-            datasource: Prometheus
-      additionalDataSources:
-      - name: loki
-        type: loki
-        access: proxy
-        url: http://loki.logs.svc.cluster.local:3100
-      - name: home_assistant
-        type: influxdb
-        access: proxy
-        url: http://influxdb:8086
-        database: home_assistant
-      - name: speedtests
-        type: influxdb
-        access: proxy
-        url: http://influxdb:8086
-        database: speedtests
-      - name: uptimerobot
-        type: influxdb
-        access: proxy
-        url: http://influxdb:8086
-        database: uptimerobot
-      grafana.ini:
-        paths:
-          data: /var/lib/grafana/data
-          logs: /var/log/grafana
-          plugins: /var/lib/grafana/plugins
-          provisioning: /etc/grafana/provisioning
-        analytics:
-          check_for_updates: true
-        log:
-          mode: console
-        grafana_net:
-          url: https://grafana.net
-    kubeEtcd:
-      enabled: false
-    kubeControllerManager:
-      enabled: false
-    kubeScheduler:
-      enabled: false
-    prometheus-node-exporter:
-      tolerations:
-      - key: "arm"
-        operator: "Exists"
-    prometheus:
-      ingress:
-        enabled: true
-        annotations:
-          kubernetes.io/ingress.class: "nginx"
-      prometheusSpec:
-#        image:
-#          repository: quay.io/prometheus/prometheus
-#          tag: v2.9.1
-        ruleSelector: {}
-        ruleNamespaceSelector: {}
-        ruleSelectorNilUsesHelmValues: false
-        serviceMonitorSelector: {}
-        serviceMonitorNamespaceSelector: {}
-        serviceMonitorSelectorNilUsesHelmValues: false
-        podMonitorSelector: {}
-        podMonitorNamespaceSelector: {}
-        podMonitorSelectorNilUsesHelmValues: false
-        retention: 30d
-        enableAdminAPI: true
-        storageSpec:
-          volumeClaimTemplate:
-            spec:
-              storageClassName: rook-ceph-block
-              resources:
-                requests:
-                  storage: 100Gi
-        # tolerations:
-        # - key: "arm"
-        #   operator: "Exists"
-        additionalScrapeConfigs: {}
-  valueFileSecrets:
-  - name: "prometheus-operator-helm-values"
+# ---
+# apiVersion: helm.fluxcd.io/v1
+# kind: HelmRelease
+# metadata:
+#   name: prometheus-operator
+#   namespace: monitoring
+#   annotations:
+#     fluxcd.io/ignore: false
+#     fluxcd.io/automated: "true"
+#     fluxcd.io/tag.grafana: semver:~6
+# spec:
+#   releaseName: prometheus-operator
+#   chart:
+#     repository: https://kubernetes-charts.storage.googleapis.com/
+#     name: prometheus-operator
+#     version: 8.12.13
+#   values:
+#     server:
+#       resources:
+#         requests:
+#           memory: 1000Mi
+#           cpu: 25m
+#         limits:
+#           memory: 2000Mi
+#     prometheusOperator:
+#       createCustomResource: true
+#     alertmanager:
+#       alertmanagerSpec:
+#         storage:
+#           volumeClaimTemplate:
+#             spec:
+#               storageClassName: rook-ceph-block
+#               resources:
+#                 requests:
+#                   storage: 10Gi
+#         # tolerations:
+#         # - key: "arm"
+#         #   operator: "Exists"
+#       ingress:
+#         enabled: true
+#         annotations:
+#           kubernetes.io/ingress.class: "nginx"
+#       config:
+#         templates: ["*.tmpl"]
+#         route:
+#           group_by: ['job']
+#           group_wait: 30s
+#           group_interval: 5m
+#           repeat_interval: 12h
+#           receiver: 'null'
+#           routes:
+#           - match:
+#               alertname: Watchdog
+#             receiver: 'null'
+#           - match_re:
+#               severity: 'info|warning|critical'
+#             continue: true
+#             receiver: 'slack-monitoring'
+#         receivers:
+#         - name: 'null'
+#         - name: 'slack-monitoring'
+#           slack_configs:
+#           - channel: '#alerts'
+#             send_resolved: true
+#             title: '{{ template "slack.title" . }}'
+#             icon_emoji: ':prometheus:'
+#             color: '{{ template "slack.color" . }}'
+#             text: '{{ template "slack.text" . }}'
+#             actions:
+#             - type: button
+#               text: 'Runbook :green_book:'
+#               url: '{{ (index .Alerts 0).Annotations.runbook_url }}'
+#             - type: button
+#               text: 'Query :mag:'
+#               url: '{{ (index .Alerts 0).GeneratorURL }}'
+#             - type: button
+#               text: 'Silence :no_bell:'
+#               url: '{{ template "__alert_silence_link" . }}'
+#       templateFiles:
+#         slack-templates.tmpl: |-
+#           # This builds the silence URL.  We exclude the alertname in the range
+#           # to avoid the issue of having trailing comma separator (%2C) at the end
+#           # of the generated URL
+#           {{ define "__alert_silence_link" -}}
+#               {{ .ExternalURL }}/#/silences/new?filter=%7B
+#               {{- range .CommonLabels.SortedPairs -}}
+#                   {{- if ne .Name "alertname" -}}
+#                       {{- .Name }}%3D"{{- .Value -}}"%2C%20
+#                   {{- end -}}
+#               {{- end -}}
+#               alertname%3D"{{ .CommonLabels.alertname }}"%7D
+#           {{- end }}
+#
+#           {{ define "__alert_severity_prefix_title" -}}
+#               {{ if ne .Status "firing" -}}
+#               :100:
+#               {{- else if eq .CommonLabels.severity "critical" -}}
+#               :fire:
+#               {{- else if eq .CommonLabels.severity "warning" -}}
+#               :warning:
+#               {{- else if eq .CommonLabels.severity "info" -}}
+#               :information_source:
+#               {{- else -}}
+#               :question:
+#               {{- end }}
+#           {{- end }}
+#
+#           {{/* First line of Slack alerts */}}
+#           {{ define "slack.title" -}}
+#               [{{ .Status | toUpper -}}
+#               {{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{- end -}}
+#               ] {{ template "__alert_severity_prefix_title" . }} {{ .CommonLabels.alertname }}
+#           {{- end }}
+#
+#           {{/* Color of Slack attachment (appears as line next to alert )*/}}
+#           {{ define "slack.color" -}}
+#               {{ if eq .Status "firing" -}}
+#                   {{ if eq .CommonLabels.severity "warning" -}}
+#                       warning
+#                   {{- else if eq .CommonLabels.severity "critical" -}}
+#                       danger
+#                   {{- else -}}
+#                       #439FE0
+#                   {{- end -}}
+#               {{ else -}}
+#               good
+#               {{- end }}
+#           {{- end }}
+#
+#           {{/* The text to display in the alert */}}
+#           {{ define "slack.text" -}}
+#               {{ range .Alerts }}
+#                   {{- if .Annotations.message }}
+#                       {{ .Annotations.message }}
+#                   {{- end }}
+#                   {{- if .Annotations.description }}
+#                       {{ .Annotations.description }}
+#                   {{- end }}
+#               {{- end }}
+#           {{- end }}
+#     grafana:
+#       # image:
+#       #   repository: grafana/grafana
+#       #   tag: 6.7.3
+#       # tolerations:
+#       # - key: "arm"
+#       #   operator: "Exists"
+#       deploymentStrategy:
+#         type: Recreate
+#       podAnnotations:
+#         backup.velero.io/backup-volumes: storage
+#       persistence:
+#         enabled: true
+#         storageClassName: "rook-ceph-block"
+#         size: 10Gi
+#         accessModes:
+#         - ReadWriteOnce
+#       env:
+#         GF_EXPLORE_ENABLED: true
+#         GF_PANELS_DISABLE_SANITIZE_HTML: true
+#         GF_RENDERING_SERVER_URL: http://grafana-image-renderer:8081/render
+#         GF_RENDERING_CALLBACK_URL: http://prometheus-operator-grafana/
+#         GF_LOG_FILTERS: rendering:debug
+#       ingress:
+#         enabled: true
+#         annotations:
+#           kubernetes.io/ingress.class: "nginx"
+#       plugins:
+#       - natel-discrete-panel
+#       - grafana-piechart-panel
+#       dashboardProviders:
+#         dashboardproviders.yaml:
+#           apiVersion: 1
+#           providers:
+#           - name: 'default'
+#             orgId: 1
+#             folder: ''
+#             type: file
+#             disableDeletion: false
+#             editable: true
+#             options:
+#               path: /var/lib/grafana/dashboards/default
+#       dashboards:
+#         default:
+#           nginx-dashboard:
+#             url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
+#             datasource: Prometheus
+#           ceph-cluster:
+#             url: https://grafana.com/api/dashboards/2842/revisions/11/download
+#             datasource: Prometheus
+#           ceph-osd:
+#             url: https://grafana.com/api/dashboards/5336/revisions/3/download
+#             datasource: Prometheus
+#           ceph-pools:
+#             url: https://grafana.com/api/dashboards/5342/revisions/3/download
+#             datasource: Prometheus
+#           home-assistant:
+#             url: https://raw.githubusercontent.com/rust84/k3s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/home_assistant.json
+#             datasource: home_assistant
+#           netdata:
+#             url: https://raw.githubusercontent.com/rust84/k3s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/netdata.json
+#             datasource: Prometheus
+#           velero:
+#             url: https://grafana.com/api/dashboards/11055/revisions/2/download
+#             datasource: Prometheus
+#           flux:
+#             url: https://grafana.com/api/dashboards/10475/revisions/1/download
+#             datasource: Prometheus
+#           blocky:
+#             url: https://raw.githubusercontent.com/0xERR0R/blocky/master/docs/blocky-grafana.json
+#             datasource: Prometheus
+#       additionalDataSources:
+#       - name: loki
+#         type: loki
+#         access: proxy
+#         url: http://loki.logs.svc.cluster.local:3100
+#       - name: home_assistant
+#         type: influxdb
+#         access: proxy
+#         url: http://influxdb:8086
+#         database: home_assistant
+#       - name: speedtests
+#         type: influxdb
+#         access: proxy
+#         url: http://influxdb:8086
+#         database: speedtests
+#       - name: uptimerobot
+#         type: influxdb
+#         access: proxy
+#         url: http://influxdb:8086
+#         database: uptimerobot
+#       grafana.ini:
+#         paths:
+#           data: /var/lib/grafana/data
+#           logs: /var/log/grafana
+#           plugins: /var/lib/grafana/plugins
+#           provisioning: /etc/grafana/provisioning
+#         analytics:
+#           check_for_updates: true
+#         log:
+#           mode: console
+#         grafana_net:
+#           url: https://grafana.net
+#     kubeEtcd:
+#       enabled: false
+#     kubeControllerManager:
+#       enabled: false
+#     kubeScheduler:
+#       enabled: false
+#     prometheus-node-exporter:
+#       tolerations:
+#       - key: "arm"
+#         operator: "Exists"
+#     prometheus:
+#       ingress:
+#         enabled: true
+#         annotations:
+#           kubernetes.io/ingress.class: "nginx"
+#       prometheusSpec:
+# #        image:
+# #          repository: quay.io/prometheus/prometheus
+# #          tag: v2.9.1
+#         ruleSelector: {}
+#         ruleNamespaceSelector: {}
+#         ruleSelectorNilUsesHelmValues: false
+#         serviceMonitorSelector: {}
+#         serviceMonitorNamespaceSelector: {}
+#         serviceMonitorSelectorNilUsesHelmValues: false
+#         podMonitorSelector: {}
+#         podMonitorNamespaceSelector: {}
+#         podMonitorSelectorNilUsesHelmValues: false
+#         retention: 30d
+#         enableAdminAPI: true
+#         storageSpec:
+#           volumeClaimTemplate:
+#             spec:
+#               storageClassName: rook-ceph-block
+#               resources:
+#                 requests:
+#                   storage: 100Gi
+#         # tolerations:
+#         # - key: "arm"
+#         #   operator: "Exists"
+#         additionalScrapeConfigs: {}
+#   valueFileSecrets:
+#   - name: "prometheus-operator-helm-values"
