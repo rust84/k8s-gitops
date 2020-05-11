@@ -50,14 +50,14 @@ spec:
       requests:
         cpu: 25m
         memory: 1500Mi
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-          - matchExpressions:
-            - key: homelab.gpu/type
-              operator: In
-              values:
-              - "intel"
+    # affinity:
+    #   nodeAffinity:
+    #     requiredDuringSchedulingIgnoredDuringExecution:
+    #       nodeSelectorTerms:
+    #       - matchExpressions:
+    #         - key: homelab.gpu/type
+    #           operator: In
+    #           values:
+    #           - "intel"
   valueFileSecrets:
   - name: "plex-helm-values"
