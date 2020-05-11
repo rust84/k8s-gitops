@@ -45,7 +45,7 @@ spec:
         accessMode: ReadWriteOnce
     resources:
       limits:
-        gpu.intel.com/i915: 1
+        #gpu.intel.com/i915: 1
         memory: 4900Mi
       requests:
         cpu: 25m
