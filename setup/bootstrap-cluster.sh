@@ -67,6 +67,7 @@ installFlux() {
   message "installing flux"
   # install flux
   helm repo add fluxcd https://charts.fluxcd.io
+  kubectl apply -f https://raw.githubusercontent.com/coreos/prometheus-operator/release-0.38/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
   helm upgrade --install flux --values "$REPO_ROOT"/flux/flux/flux-values.yaml --namespace flux fluxcd/flux
   helm upgrade --install helm-operator --values "$REPO_ROOT"/flux/helm-operator/flux-helm-operator-values.yaml --namespace flux fluxcd/helm-operator
 
@@ -85,9 +86,9 @@ installFlux() {
   "$REPO_ROOT"/setup/add-repo-key.sh "$FLUX_KEY"
 }
 
-k3sMasterNode
-ks3amd64WorkerNodes
-ks3armWorkerNodes
+# k3sMasterNode
+# ks3amd64WorkerNodes
+# ks3armWorkerNodes
 
 export KUBECONFIG="$REPO_ROOT/setup/kubeconfig"
 installHelm

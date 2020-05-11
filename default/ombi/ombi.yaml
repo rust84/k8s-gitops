@@ -1,49 +1,49 @@
-# ---
-# apiVersion: helm.fluxcd.io/v1
-# kind: HelmRelease
-# metadata:
-#   name: ombi
-#   namespace: default
-#   labels:
-#     traffic-type: external
-#   annotations:
-#     fluxcd.io/automated: "true"
-#     fluxcd.io/tag.chart-image: 'regexp:^([0-9]+\.[0-9]+-ls.*)$'
-# spec:
-#   releaseName: ombi
-#   chart:
-#     repository: https://billimek.com/billimek-charts/
-#     name: ombi
-#     version: 2.0.2
-#   values:
-#     image:
-#       repository: linuxserver/ombi
-#       tag: 3.0.4958-ls72
-#     strategyType: Recreate
-#     timezone: Europe/London
-#     puid: 1000
-#     pgid: 1000
-#     service:
-#       type: LoadBalancer
-#       loadBalancerIP: 10.1.0.115
-#     ingress:
-#       enabled: true
-#       annotations:
-#         kubernetes.io/ingress.class: "external"
-#
-#     podAnnotations:
-#       backup.velero.io/backup-volumes: config
-#     persistence:
-#       config:
-#         enabled: true
-#         accessMode: ReadWriteOnce
-#         size: 1Gi
-#         storageClass: rook-ceph-block
-#     resources:
-#       limits:
-#         memory: 256Mi
-#       requests:
-#         cpu: 25m
-#         memory: 256Mi
-#   valueFileSecrets:
-#   - name: "ombi-helm-values"
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: ombi
+  namespace: default
+  labels:
+    traffic-type: external
+  annotations:
+    fluxcd.io/automated: "true"
+    fluxcd.io/tag.chart-image: 'regexp:^([0-9]+\.[0-9]+-ls.*)$'
+spec:
+  releaseName: ombi
+  chart:
+    repository: https://billimek.com/billimek-charts/
+    name: ombi
+    version: 2.0.2
+  values:
+    image:
+      repository: linuxserver/ombi
+      tag: 3.0.4958-ls72
+    strategyType: Recreate
+    timezone: Europe/London
+    puid: 1000
+    pgid: 1000
+    service:
+      type: LoadBalancer
+      loadBalancerIP: 10.1.0.115
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: "external"
+
+    podAnnotations:
+      backup.velero.io/backup-volumes: config
+    persistence:
+      config:
+        enabled: true
+        accessMode: ReadWriteOnce
+        size: 1Gi
+        storageClass: rook-ceph-block
+    resources:
+      limits:
+        memory: 256Mi
+      requests:
+        cpu: 25m
+        memory: 256Mi
+  valueFileSecrets:
+  - name: "ombi-helm-values"
