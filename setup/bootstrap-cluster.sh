@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # nodes
-K3S_MASTER=""
-K3S_WORKERS_AMD64=""
-K3S_WORKERS_RPI=""
+K3S_MASTER="k3os-a"
+K3S_WORKERS_AMD64="k3os-b k3os-c"
+K3S_WORKERS_RPI="pi4-a pi4-b pi4-c"
 K3S_VERSION="v1.17.5+k3s1"
 
 REPO_ROOT=$(git rev-parse --show-toplevel)
@@ -25,22 +25,22 @@ message() {
 
 k3sMasterNode() {
   message "installing k3s master to $K3S_MASTER"
-  ssh -o "StrictHostKeyChecking=no" ubuntu@"$K3S_MASTER" "curl -sLS https://get.k3s.io | INSTALL_K3S_EXEC='server --tls-san $K3S_MASTER --no-deploy servicelb --no-deploy traefik' INSTALL_K3S_VERSION='$K3S_VERSION' sh -"
-  ssh -o "StrictHostKeyChecking=no" ubuntu@"$K3S_MASTER" "sudo cat /etc/rancher/k3s/k3s.yaml | sed 's/server: https:\/\/127.0.0.1:6443/server: https:\/\/$K3S_MASTER:6443/'" > "$REPO_ROOT/setup/kubeconfig"
-  NODE_TOKEN=$(ssh -o "StrictHostKeyChecking=no" ubuntu@"$K3S_MASTER" "sudo cat /var/lib/rancher/k3s/server/node-token")
+  ssh -o "StrictHostKeyChecking=no" rancher@"$K3S_MASTER" "curl -sLS https://get.k3s.io | INSTALL_K3S_EXEC='server --tls-san $K3S_MASTER --no-deploy servicelb --no-deploy traefik' INSTALL_K3S_VERSION='$K3S_VERSION' sh -"
+  ssh -o "StrictHostKeyChecking=no" rancher@"$K3S_MASTER" "sudo cat /etc/rancher/k3s/k3s.yaml | sed 's/server: https:\/\/127.0.0.1:6443/server: https:\/\/$K3S_MASTER:6443/'" > "$REPO_ROOT/setup/kubeconfig"
+  NODE_TOKEN=$(ssh -o "StrictHostKeyChecking=no" rancher@"$K3S_MASTER" "sudo cat /var/lib/rancher/k3s/server/node-token")
 }
 
 ks3amd64WorkerNodes() {
-  NODE_TOKEN=$(ssh -o "StrictHostKeyChecking=no" ubuntu@"$K3S_MASTER" "sudo cat /var/lib/rancher/k3s/server/node-token")
+  NODE_TOKEN=$(ssh -o "StrictHostKeyChecking=no" rancher@"$K3S_MASTER" "sudo cat /var/lib/rancher/k3s/server/node-token")
   for node in $K3S_WORKERS_AMD64; do
     message "joining amd64 $node to $K3S_MASTER"
     EXTRA_ARGS=""
-    ssh -o "StrictHostKeyChecking=no" ubuntu@"$node" "curl -sfL https://get.k3s.io | K3S_URL=https://k3s-0:6443 K3S_TOKEN=$NODE_TOKEN INSTALL_K3S_VERSION='$K3S_VERSION' sh -s - $EXTRA_ARGS"
+    ssh -o "StrictHostKeyChecking=no" rancher@"$node" "curl -sfL https://get.k3s.io | K3S_URL=https://k3s-0:6443 K3S_TOKEN=$NODE_TOKEN INSTALL_K3S_VERSION='$K3S_VERSION' sh -s - $EXTRA_ARGS"
   done
 }
 
 ks3armWorkerNodes() {
-  NODE_TOKEN=$(ssh -o "StrictHostKeyChecking=no" ubuntu@"$K3S_MASTER" "sudo cat /var/lib/rancher/k3s/server/node-token")
+  NODE_TOKEN=$(ssh -o "StrictHostKeyChecking=no" rancher@"$K3S_MASTER" "sudo cat /var/lib/rancher/k3s/server/node-token")
   for node in $K3S_WORKERS_RPI; do
     message "joining pi4 $node to $K3S_MASTER"
     EXTRA_ARGS=""
@@ -86,9 +86,9 @@ installFlux() {
   "$REPO_ROOT"/setup/add-repo-key.sh "$FLUX_KEY"
 }
 
-# k3sMasterNode
-# ks3amd64WorkerNodes
-# ks3armWorkerNodes
+k3sMasterNode
+ks3amd64WorkerNodes
+ks3armWorkerNodes
 
 export KUBECONFIG="$REPO_ROOT/setup/kubeconfig"
 installHelm
@@ -96,7 +96,7 @@ installFlux
 "$REPO_ROOT"/setup/bootstrap-objects.sh
 
 # bootstrap vault
-#"$REPO_ROOT"/setup/bootstrap-vault.sh
+"$REPO_ROOT"/setup/bootstrap-vault.sh
 
 message "all done!"
 kubectl get nodes -o=wide
