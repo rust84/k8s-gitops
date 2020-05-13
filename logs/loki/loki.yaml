@@ -47,14 +47,14 @@ spec:
         relabel_configs:
         - source_labels: ['__syslog_message_hostname']
           target_label: 'host'
-      - job_name: eventrouter
-        eventrouter:
-        pipeline_stages:
-        - match:
-          selector: '{app="eventrouter"}'
-          stages:
-          - json:
-              expressions:
-                namespace: event.metadata.namespace
-          - labels:
-            namespace: ""
+      # - job_name: eventrouter
+      #   eventrouter:
+      #   pipeline_stages:
+      #   - match:
+      #     selector: '{app="eventrouter"}'
+      #     stages:
+      #     - json:
+      #         expressions:
+      #           namespace: event.metadata.namespace
+      #     - labels:
+      #       namespace: ""
