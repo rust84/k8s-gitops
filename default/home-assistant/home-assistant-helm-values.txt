@@ -13,3 +13,11 @@ configurator:
       - hass-config.k.$DOMAIN
   hassApiPassword: $HASS_API_PASSWORD
   hassApiUrl: https://hass.k.$DOMAIN/api/
+vscode:
+  ingress:
+    hosts:
+    - hass-vscode.k.$DOMAIN
+    tls:
+    - hosts:
+      - hass-vscode.k.$DOMAIN
+  password: $HASS_API_PASSWORD
