@@ -20,6 +20,8 @@ spec:
     image:
       repository: infracloudio/botkube
       tag: v0.10.0
+    serviceMonitor:
+      enabled: true
     config:
       settings:
         allowkubectl: true
