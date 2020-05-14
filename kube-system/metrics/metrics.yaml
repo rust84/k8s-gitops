@@ -10,6 +10,7 @@ metadata:
     fluxcd.io/tag.chart-image: semver:~v0.
 spec:
   releaseName: metrics-server
+  helmVersion: v3
   rollback:
     enable: true
   chart:

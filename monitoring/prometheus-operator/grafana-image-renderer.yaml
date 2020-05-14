@@ -10,6 +10,7 @@ metadata:
     fluxcd.io/tag.chart-image: semver:~1
 spec:
   releaseName: grafana-image-renderer
+  helmVersion: v3
   chart:
     repository: https://rust84.github.io/helmcharts/
     name: grafana-image-renderer

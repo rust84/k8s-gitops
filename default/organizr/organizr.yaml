@@ -11,6 +11,7 @@ metadata:
     flux.weave.works/tag.chart-image: 'glob:latest'
 spec:
   releaseName: organizr
+  helmVersion: v3
   chart:
     repository: https://rust84.github.io/helmcharts/
     name: organizr
