@@ -20,7 +20,7 @@ spec:
   values:
     image:
       repository: "chronograf"
-      tag: "1.7.14"
+      tag: "1.7.17"
     persistence:
       enabled: true
       storageClass: "rook-ceph-block"
