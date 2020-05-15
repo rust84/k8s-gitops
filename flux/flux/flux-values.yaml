@@ -11,6 +11,8 @@ memcached:
     operator: "Exists"
 additionalArgs:
 - --connect=ws://fluxcloud
+- --git-timeout=5m
+- --sync-timeout=5m
 prometheus:
   enabled: true
   serviceMonitor:

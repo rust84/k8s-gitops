@@ -2,7 +2,7 @@
 
 # nodes
 K3S_MASTER="k3os-a"
-K3S_WORKERS_AMD64="k3os-b k3os-c"
+K3S_WORKERS_AMD64=""
 K3S_WORKERS_RPI="pi4-a pi4-b pi4-c"
 K3S_VERSION="v1.17.5+k3s1"
 
@@ -71,9 +71,9 @@ installFlux() {
   "$REPO_ROOT"/setup/add-repo-key.sh "$FLUX_KEY"
 }
 
-k3sMasterNode
-ks3amd64WorkerNodes
-ks3armWorkerNodes
+#k3sMasterNode
+#ks3amd64WorkerNodes
+#ks3armWorkerNodes
 
 export KUBECONFIG="$REPO_ROOT/setup/kubeconfig"
 installFlux
