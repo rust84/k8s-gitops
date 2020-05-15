@@ -32,12 +32,12 @@ spec:
 
   # See https://kubernetes.io/docs/tasks/administer-cluster/safely-drain-node/#use-kubectl-drain-to-remove-a-node-from-service
 
-  # drain:
-  #   deleteLocalData: true
-  #   ignoreDaemonSets: true
-  #   force: true
-  cordon: true
-  
+  drain:
+    deleteLocalData: true
+    ignoreDaemonSets: true
+    force: true
+  #cordon: true
+
   upgrade:
     # The tag portion of the image will be overridden with the value from `.status.latestVersion` a.k.a. the resolved version.
     # SEE https://github.com/rancher/system-upgrade-controller/blob/v0.1.0/pkg/apis/upgrade.cattle.io/v1/types.go#L47
