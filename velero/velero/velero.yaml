@@ -19,22 +19,22 @@ spec:
     image:
       repository: velero/velero
       tag: v1.3.2
-    # initContainers:
-    # - name: velero-plugin-for-aws
-    #   image: velero/velero-plugin-for-aws:v1.0.1
-    #   imagePullPolicy: IfNotPresent
-    #   volumeMounts:
-    #   - mountPath: /target
-    #     name: plugins
+    initContainers:
+    - name: velero-plugin-for-aws
+      image: velero/velero-plugin-for-aws:v1.0.1
+      imagePullPolicy: IfNotPresent
+      volumeMounts:
+      - mountPath: /target
+        name: plugins
     resources:
       requests:
         memory: 300Mi
         cpu: 25m
       limits:
         memory: 1000Mi
-    tolerations:
-    - key: "arm"
-      operator: "Exists"
+    # tolerations:
+    # - key: "arm"
+    #   operator: "Exists"
     metrics:
       enabled: true
       serviceMonitor:
@@ -50,6 +50,9 @@ spec:
           cpu: 15m
         limits:
           memory: 500Mi
+      tolerations:
+      - key: "arm"
+        operator: "Exists"
     schedules:
       daily-backup:
         schedule: "0 6 * * *"
