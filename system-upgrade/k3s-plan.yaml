@@ -29,7 +29,7 @@ apiVersion: upgrade.cattle.io/v1
 kind: Plan
 metadata:
   name: k3s-agent
-  namespace: system-upgrade
+  namespace: k3os-system
   labels:
     k3s-upgrade: agent
 spec:
