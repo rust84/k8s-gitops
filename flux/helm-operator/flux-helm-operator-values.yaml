@@ -4,6 +4,8 @@ git:
     secretName: flux-git-deploy
 chartsSyncInterval: "5m"
 statusUpdateInterval: "5m"
+helm:
+  versions: "v3"
 prometheus:
   enabled: true
   serviceMonitor:
