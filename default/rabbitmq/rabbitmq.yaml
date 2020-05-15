@@ -57,15 +57,11 @@ spec:
       periodSeconds: 10
       timeoutSeconds: 5
       failureThreshold: 6
-      tcpSocket:
-        port: 15672
     readinessProbe:
       initialDelaySeconds: 20
       periodSeconds: 5
       timeoutSeconds: 3
       failureThreshold: 6
-      tcpSocket:
-        port: 15672
     definitions:
       permissions: |-
         {
