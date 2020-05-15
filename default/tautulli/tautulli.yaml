@@ -27,7 +27,7 @@ spec:
         kubernetes.io/ingress.class: "nginx"
     strategyType: Recreate
     podAnnotations:
-      backup.velero.io/backup-volumes: tautulli-config
+      backup.velero.io/backup-volumes: config
     persistence:
       config:
         enabled: true
