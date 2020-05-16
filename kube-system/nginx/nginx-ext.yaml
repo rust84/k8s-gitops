@@ -81,8 +81,12 @@ spec:
       image:
         repository: onedr0p/custom-error-pages
         tag: v1.0.1
-      requests:
-        memory: 250Mi
-        cpu: 25m
-      limits:
-        memory: 350Mi
+      tolerations:
+      - key: "arm"
+        operator: "Exists"
+      resources:
+        requests:
+          memory: 250Mi
+          cpu: 25m
+        limits:
+          memory: 350Mi
