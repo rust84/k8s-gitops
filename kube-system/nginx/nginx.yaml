@@ -26,13 +26,38 @@ spec:
       service:
         loadBalancerIP: 10.1.0.150
         externalTrafficPolicy: Local
+      config:
+        custom-http-errors: "404,403,500,503"
       metrics:
         enabled: true
         serviceMonitor:
           enabled: true
           namespace: kube-system
         prometheusRule:
-          enabled: false
+          enabled: true
+          namespace: kube-system
+          rules:
+            - alert: TooMany500s
+              expr: 100 * ( sum( nginx_ingress_controller_requests{status=~"5.+"} ) / sum(nginx_ingress_controller_requests) ) > 5
+              for: 1m
+              labels:
+                severity: critical
+              annotations:
+                description: Too many 5XXs
+                summary: More than 5% of the all requests did return 5XX, this requires your attention
+            - alert: TooMany400s
+              expr: 100 * ( sum( nginx_ingress_controller_requests{status=~"4.+"} ) / sum(nginx_ingress_controller_requests) ) > 5
+              for: 1m
+              labels:
+                severity: critical
+              annotations:
+                description: Too many 4XXs
+                summary: More than 5% of the all requests did return 4XX, this requires your attention
+    defaultBackend:
+      enabled: true
+      image:
+        repository: onedr0p/custom-error-pages
+        tag: v1.0.1
       tolerations:
       - key: "arm"
         operator: "Exists"
