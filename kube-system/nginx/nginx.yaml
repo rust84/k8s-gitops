@@ -53,6 +53,17 @@ spec:
               annotations:
                 description: Too many 4XXs
                 summary: More than 5% of the all requests did return 4XX, this requires your attention
+      tolerations:
+      - key: "arm"
+        operator: "Exists"
+      extraArgs:
+        default-ssl-certificate: "kube-system/acme-crt-secret"
+      resources:
+        requests:
+          memory: 500Mi
+          cpu: 25m
+        limits:
+          memory: 600Mi
     defaultBackend:
       enabled: true
       image:
@@ -65,7 +76,7 @@ spec:
         default-ssl-certificate: "kube-system/acme-crt-secret"
       resources:
         requests:
-          memory: 500Mi
+          memory: 250Mi
           cpu: 25m
         limits:
-          memory: 600Mi
+          memory: 350Mi

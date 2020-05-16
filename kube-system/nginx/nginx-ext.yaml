@@ -81,14 +81,8 @@ spec:
       image:
         repository: onedr0p/custom-error-pages
         tag: v1.0.1
-      tolerations:
-      - key: "arm"
-        operator: "Exists"
-      extraArgs:
-        default-ssl-certificate: "kube-system/acme-crt-secret"
-      resources:
-        requests:
-          memory: 500Mi
-          cpu: 25m
-        limits:
-          memory: 600Mi
+      requests:
+        memory: 250Mi
+        cpu: 25m
+      limits:
+        memory: 350Mi
