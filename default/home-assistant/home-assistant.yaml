@@ -44,7 +44,7 @@ spec:
       enabled: true
       image:
         repository: codercom/code-server
-        tag: 3.3.0
+        tag: 3.2.0
       ingress:
         enabled: true
         annotations:
