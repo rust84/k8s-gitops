@@ -39,6 +39,9 @@ spec:
               tls_disable = 1
               address = "[::]:8200"
               cluster_address = "[::]:8201"
+              telemetry {
+                unauthenticated_metrics_access = "true"
+              }
             }
             storage "raft" {
               path = "/vault/data"
@@ -46,11 +49,6 @@ spec:
             seal "awskms" {
               region = "eu-west-1"
               kms_key_id = "a81860c8-fe5b-4095-aa46-53cf10b375ff"
-            }
-            listener "tcp" {
-              telemetry {
-                unauthenticated_metrics_access = "true"
-              }
             }
             telemetry {
               prometheus_retention_time = "30s",
