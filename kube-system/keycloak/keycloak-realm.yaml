@@ -1,0 +1,10 @@
+apiVersion: ricoberger.de/v1alpha1
+kind: VaultSecret
+metadata:
+  name: keycloak-realm
+  namespace: kube-system
+spec:
+  keys:
+    - realm.json
+  path: secrets/kube-system/keycloak/keycloak-realm
+  type: Opaque
