@@ -34,13 +34,9 @@ spec:
       operator: "Exists"
     probes:
       liveness:
-        initialDelaySeconds: 60
-        failureThreshold: 5
-        timeoutSeconds: 10
+        enabled: false
       readiness:
-        initialDelaySeconds: 120
-        failureThreshold: 5
-        timeoutSeconds: 10
+        enabled: false
     podAnnotations:
       backup.velero.io/backup-volumes: config
     vscode:
