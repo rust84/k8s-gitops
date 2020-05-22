@@ -14,6 +14,9 @@ spec:
     path: .
   values:
     server:
+      image:
+        repository: "vault"
+        tag: "1.4.2"
       tolerations: |
         - key: "arm"
           operator: "Exists"
