@@ -1,0 +1,17 @@
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: consul
+  namespace: vault
+spec:
+  releaseName: consul
+  chart:
+    git: https://github.com/hashicorp/consul-helm
+    ref: v0.15.0
+    path: .
+  values:
+    global:
+      enabled: true
+      image: "consul:1.6.1"
+      annotations:
+        backup.velero.io/backup-volumes: data-vault
