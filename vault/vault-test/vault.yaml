@@ -15,7 +15,7 @@ spec:
   values:
     global:
       enabled: true
-      image: "vault:1.4.0"
+      image: "vault:1.4.2"
     server:
       tolerations: |
         - key: "arm"
