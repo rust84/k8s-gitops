@@ -5,13 +5,25 @@ metadata:
   namespace: vault
 spec:
   releaseName: consul
+  rollback:
+    enabled: true
   chart:
     git: https://github.com/hashicorp/consul-helm
-    ref: v0.15.0
+    ref: v0.17.0
     path: .
   values:
-    global:
-      enabled: true
-      image: "consul:1.6.1"
-      annotations:
-        backup.velero.io/backup-volumes: data-vault
+    server:
+      tolerations: |
+        - key: "arm"
+          operator: "Exists"
+      storageClass: nfs-client
+      storage: 10Gi
+    client:
+      tolerations: |
+        - key: "arm"
+          operator: "Exists"
+    ui:
+      enabled: "true"
+      service:
+        enabled: true
+        type: ClusterIP
