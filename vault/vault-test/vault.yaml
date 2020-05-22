@@ -13,12 +13,12 @@ spec:
     ref: v0.5.0
     path: .
   values:
-    global:
-      enabled: true
-      image: "vault:1.4.2"
     injector:
       enabled: false
     server:
+      image:
+        repository: "vault"
+        tag: "1.4.2"
       authDelegator:
         enabled: false
       tolerations: |
