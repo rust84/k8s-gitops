@@ -16,6 +16,10 @@ spec:
     global:
       enabled: true
       image: "vault:1.4.2"
+    injector:
+      enabled: false
+    authDelegator:
+      enabled: false
     server:
       tolerations: |
         - key: "arm"
