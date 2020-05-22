@@ -3,7 +3,11 @@ kind: HelmRelease
 metadata:
   name: vault
   namespace: vault
-spec:
+  annotations:
+    fluxcd.io/ignore: false
+    fluxcd.io/automated: "true"
+    fluxcd.io/tag.server: semver:~v1.4
+ spec:
   releaseName: vault
   helmVersion: v3
   rollback:
