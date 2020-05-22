@@ -18,9 +18,9 @@ spec:
       image: "vault:1.4.2"
     injector:
       enabled: false
-    authDelegator:
-      enabled: false
     server:
+      authDelegator:
+        enabled: false
       tolerations: |
         - key: "arm"
           operator: "Exists"
