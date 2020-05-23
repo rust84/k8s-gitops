@@ -13,6 +13,8 @@ spec:
     ref: v0.5.0
     path: .
   values:
+    injector:
+      enabled: false
     server:
       image:
         repository: "vault"
