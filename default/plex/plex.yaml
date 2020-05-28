@@ -46,19 +46,19 @@ spec:
         accessMode: ReadWriteOnce
     resources:
       limits:
-        #gpu.intel.com/i915: 1
+        gpu.intel.com/i915: 1
         memory: 4900Mi
       requests:
         cpu: 25m
         memory: 1500Mi
-    # affinity:
-    #   nodeAffinity:
-    #     requiredDuringSchedulingIgnoredDuringExecution:
-    #       nodeSelectorTerms:
-    #       - matchExpressions:
-    #         - key: homelab.gpu/type
-    #           operator: In
-    #           values:
-    #           - "intel"
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: homelab.gpu/type
+              operator: In
+              values:
+              - "intel"
   valueFileSecrets:
   - name: "plex-helm-values"
