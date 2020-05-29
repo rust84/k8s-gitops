@@ -40,5 +40,8 @@ spec:
       requests:
         cpu: 25m
         memory: 300Mi
+    tolerations:
+    - key: "arm"
+      operator: "Exists"
   valueFileSecrets:
   - name: "tautulli-helm-values"
