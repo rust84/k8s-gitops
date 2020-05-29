@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: linuxserver/ombi
-      tag: 3.0.4958-ls72
+      tag: 3.0.5164-ls15
     strategyType: Recreate
     timezone: Europe/London
     puid: 1000
