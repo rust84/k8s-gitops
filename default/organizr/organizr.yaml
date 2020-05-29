@@ -18,7 +18,7 @@ spec:
     version: 0.1.4
   values:
     image:
-      repository: organizrtools/organizr-v2
+      repository: organizr/organizr
       tag: latest
     ingress:
       enabled: true
@@ -38,5 +38,8 @@ spec:
       requests:
         cpu: 25m
         memory: 262144k
+    tolerations:
+    - key: "arm"
+      operator: "Exists"
   valueFileSecrets:
   - name: "organizr-helm-values"
