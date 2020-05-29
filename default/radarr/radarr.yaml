@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: linuxserver/radarr
-      tag: 3.0.0.2821-ls4
+      tag: 3.0.0.3002-ls7
     ingress:
       enabled: true
       annotations:
@@ -36,10 +36,10 @@ spec:
       movies:
         enabled: false
       extraExistingClaimMounts:
-        - name: media
-          existingClaim: nfs-media-pvc
-          mountPath: /media
-          readOnly: false
+      - name: media
+        existingClaim: nfs-media-pvc
+        mountPath: /media
+        readOnly: false
     resources:
       requests:
         memory: 350Mi
