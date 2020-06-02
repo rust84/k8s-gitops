@@ -18,4 +18,3 @@ See [setup/README.md](setup/README.md) for more details.
 * [monitoring](monitoring/)
 * [rook-ceph](rook-ceph/)
 * [velero](velero/)
-
