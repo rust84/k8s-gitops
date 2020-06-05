@@ -18,7 +18,7 @@
 #       - {key: k3s.io/hostname, operator: Exists}
 #       - {key: k3os.io/mode, operator: DoesNotExist}
 #       - {key: node-role.kubernetes.io/master, operator: In, values: ["true"]}
-#   serviceAccountName: system-upgrade
+#   serviceAccountName: k3os-upgrade
 #   cordon: true
 #  # drain:
 #  #   force: true
@@ -44,7 +44,7 @@ spec:
       - {key: node-role.kubernetes.io/master, operator: NotIn, values: ["true"]}
   tolerations:
   - {key: arm, effect: NoExecute, operator: Equal, value: "true"}
-  serviceAccountName: system-upgrade
+  serviceAccountName: k3os-upgrade
   prepare:
     # Since v0.5.0-m1 SUC will use the resolved version of the plan for the tag on the prepare container.
     # image: rancher/k3s-upgrade:v1.17.4-k3s1
