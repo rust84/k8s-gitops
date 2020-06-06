@@ -15,7 +15,7 @@ spec:
   chart:
     repository: https://billimek.com/billimek-charts/
     name: ombi
-    version: 2.0.2
+    version: 2.2.0
   values:
     image:
       repository: linuxserver/ombi
@@ -31,7 +31,6 @@ spec:
       enabled: true
       annotations:
         kubernetes.io/ingress.class: "external"
-
     podAnnotations:
       backup.velero.io/backup-volumes: config
     persistence:
