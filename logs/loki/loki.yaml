@@ -31,9 +31,9 @@ spec:
       - key: "arm"
         operator: "Exists"
     promtail:
-      image:
-        repository: grafana/promtail
-        tag: 1.4.1
+      # image:
+      #   repository: grafana/promtail
+      #   tag: 1.4.1
       serviceMonitor:
         enabled: true
       tolerations:
