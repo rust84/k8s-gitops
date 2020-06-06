@@ -15,12 +15,12 @@ spec:
   chart:
     repository: https://grafana.github.io/loki/charts
     name: loki-stack
-    version: 0.34.2
+    version: 0.37.3
   values:
     loki:
-      image:
-        repository: grafana/loki
-        tag: 1.4.1
+      # image:
+      #   repository: grafana/loki
+      #   tag: 1.4.1
       persistence:
         enabled: true
         size: 50Gi
