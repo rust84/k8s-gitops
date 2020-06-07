@@ -25,6 +25,9 @@ spec:
           memory: 2000Mi
     prometheusOperator:
       createCustomResource: true
+      configmapReloadImage:
+        repository: jimmidyson/configmap-reload
+        tag: v0.3.0
     alertmanager:
       alertmanagerSpec:
         storage:
