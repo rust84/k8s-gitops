@@ -34,9 +34,9 @@ spec:
               resources:
                 requests:
                   storage: 10Gi
-        # tolerations:
-        # - key: "arm"
-        #   operator: "Exists"
+        tolerations:
+        - key: "arm"
+          operator: "Exists"
       ingress:
         enabled: true
         annotations:
@@ -282,6 +282,10 @@ spec:
         # tolerations:
         # - key: "arm"
         #   operator: "Exists"
-        additionalScrapeConfigs: {}
+        additionalScrapeConfigs:
+        - job_name: 'upsc-exporter'
+          static_configs:
+          - targets:
+            - pi-upsmon:9102
   valueFileSecrets:
   - name: "prometheus-operator-helm-values"
