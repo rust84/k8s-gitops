@@ -1,23 +1,23 @@
-name: CI
+name: build
 
 on: [push, pull_request]
 
 jobs:
-  hrval:
+  validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
-      # - name: Validate Helm v2 Releases in root dir
-      #   uses: stefanprodan/hrval-action@v3.3.0
-      #   with:
-      #     helmRelease: ./
-      #     helmVersion: v2
-      #     kubernetesVersion: 1.17.0
-      #     ignoreValues: true
-      - name: Validate Helm v3 in root dir
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+
+      - name: Lint Yaml
+        uses: ibiqlik/action-yamllint@v1
+
+      - name: Validate Helm Releases
         uses: stefanprodan/hrval-action@v3.3.0
         with:
           helmRelease: ./
           helmVersion: v3
-          kubernetesVersion: 1.17.0
-          ignoreValues: true
+          kubernetesVersion: 1.17.6
+          ignoreValues: false
