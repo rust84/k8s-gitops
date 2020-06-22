@@ -11,8 +11,8 @@ jobs:
         with:
           submodules: true
 
-      - name: Lint Yaml
-        uses: ibiqlik/action-yamllint@v1
+      # - name: Lint Yaml
+      #   uses: ibiqlik/action-yamllint@v1
 
       - name: Validate Helm Releases
         uses: stefanprodan/hrval-action@v3.3.0
