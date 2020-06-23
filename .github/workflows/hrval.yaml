@@ -11,13 +11,10 @@ jobs:
         with:
           submodules: true
 
-      # - name: Lint Yaml
-      #   uses: ibiqlik/action-yamllint@v1
-
       - name: Validate Helm Releases
         uses: stefanprodan/hrval-action@v3.3.0
         with:
-          helmRelease: ./
+          helmRelease: ./default
           helmVersion: v3
           kubernetesVersion: 1.17.6
-          ignoreValues: false
+          ignoreValues: true
