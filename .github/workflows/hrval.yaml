@@ -16,5 +16,5 @@ jobs:
         with:
           helmRelease: ./default
           helmVersion: v3
-          kubernetesVersion: 1.17.6
+          kubernetesVersion: 1.17.0
           ignoreValues: true
