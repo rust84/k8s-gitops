@@ -167,6 +167,7 @@ loadSecretsToVault() {
   ####################
   # helm chart values
   ####################
+  kvault "default/bitwarden/bitwarden-helm-values.txt"
   kvault "default/blocky/blocky-helm-values.txt"
   kvault "kube-system/kured/kured-helm-values.txt"
   kvault "kube-system/vault/vault-helm-values.txt"

@@ -1,0 +1,36 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: bitwarden
+  namespace: default
+  annotations:
+    fluxcd.io/automated: "true"
+    fluxcd.io/tag.chart-image: semver:~0
+spec:
+  releaseName: bitwarden
+  rollback:
+    enable: true
+  chart:
+    git: https://github.com/cdwv/bitwarden-k8s
+    ref: master
+    path: .
+    version: 0.1.4
+  values:
+    image:
+      repository: bitwardenrs/server
+      tag: 1.15.1
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: "external"
+        kubernetes.io/tls-acme: "true"
+    persistence:
+      enabled: true
+      storageClass: "rook-ceph-block"
+      accessMode: ReadWriteOnce
+      size: 5Gi
+    podAnnotations:
+      backup.velero.io/backup-volumes: data
+  valueFileSecrets:
+    - name: "bitwarden-helm-values"
