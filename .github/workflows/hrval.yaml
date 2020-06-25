@@ -11,10 +11,17 @@ jobs:
         with:
           submodules: true
 
-      - name: Validate Helm Releases
+      - name: Validate Default Helm Releases
         uses: stefanprodan/hrval-action@master
         with:
           helmRelease: ./default
+          helmVersion: v3
+          kubernetesVersion: 1.18.0
+          ignoreValues: true
+      - name: Validate Monitoring Helm Releases
+        uses: stefanprodan/hrval-action@master
+        with:
+          helmRelease: ./monitoring
           helmVersion: v3
           kubernetesVersion: 1.18.0
           ignoreValues: true
