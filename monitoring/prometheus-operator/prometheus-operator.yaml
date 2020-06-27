@@ -288,10 +288,10 @@ spec:
         # tolerations:
         # - key: "arm"
         #   operator: "Exists"
-        additionalScrapeConfigs:
-        - job_name: 'upsc-exporter'
-          static_configs:
-          - targets:
-            - pi-upsmon:9102
+        # additionalScrapeConfigs:
+        # - job_name: 'upsc-exporter'
+        #   static_configs:
+        #   - targets:
+        #     - pi-upsmon:9102
   valueFileSecrets:
   - name: "prometheus-operator-helm-values"
