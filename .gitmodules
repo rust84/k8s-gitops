@@ -1,0 +1,3 @@
+[submodule "k8s-security-policies"]
+	path = k8s-security-policies
+	url = https://github.com/raspbernetes/k8s-security-policies
