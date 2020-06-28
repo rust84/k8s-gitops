@@ -1,0 +1,3 @@
+[submodule "security-policies"]
+	path = security-policies
+	url = git@github.com:rust84/k8s-security-policies.git
