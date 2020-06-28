@@ -57,7 +57,7 @@ jobs:
           kubernetesVersion: 1.18.0
           ignoreValues: true
           action: conftest
-          policyDir: k8s-security-policies
+          policyDir: security-policies
 
       - name: Post Results
         uses: unsplash/comment-on-pr@master
@@ -75,3 +75,4 @@ jobs:
             ${{ steps.conftest-stdout.outputs.result }}
             ```
           check_for_duplicate_msg: true
+
