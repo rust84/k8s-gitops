@@ -35,33 +35,8 @@ jobs:
           with:
             submodules: true
 
-        - name: Execute Conftest Tests - Table Output
-          id: conftest-table
-          run: |
-            result=$(docker run --rm --workdir /github/workspace \
-              -v $(pwd):/github/workspace \
-              instrumenta/conftest:v0.18.2 \
-              test -o table -p k8s-security-policies/policies/ --all-namespaces --combine anthos/ --no-color || exit 0)
-            result="${result//'%'/'%25'}"
-            result="${result//$'\n'/'%0A'}"
-            result="${result//$'\r'/'%0D'}"
-            echo $result
-            echo "::set-output name=result::$result"
-        - name: Execute Conftest Tests - Stdout Output
-          id: conftest-stdout
-          run: |
-            result=$(docker run --rm --workdir /github/workspace \
-              -v $(pwd):/github/workspace \
-              instrumenta/conftest:v0.18.2 \
-              test -o stdout -p k8s-security-policies/policies/ --all-namespaces anthos/ --no-color || exit 0)
-            result="${result//'%'/'%25'}"
-            result="${result//$'\n'/'%0A'}"
-            result="${result//$'\r'/'%0D'}"
-            echo $result
-            echo ::set-output name=result::$result
-
-        - name: Validate Default Helm Releases
-          uses: docker://epidema/hrval:latest
+        - name: Execute Conftest Tests
+          uses: docker://docker.io/epidema/hrval:latest
           with:
             helmRelease: ./default
             helmVersion: v3
