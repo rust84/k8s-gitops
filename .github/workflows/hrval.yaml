@@ -54,7 +54,6 @@ jobs:
         with:
           helmRelease: /
           helmVersion: v3
-          kubernetesVersion: 1.18.0
           ignoreValues: true
           action: conftest
           policyDir: security-policies
