@@ -38,7 +38,7 @@ jobs:
         - name: Execute Conftest Tests
           uses: edshelton/hrval-action@master
           with:
-            helmRelease: ./default
+            helmRelease: default/
             helmVersion: v3
             kubernetesVersion: 1.18.0
             ignoreValues: true
