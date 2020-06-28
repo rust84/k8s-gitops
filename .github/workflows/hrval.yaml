@@ -36,7 +36,7 @@ jobs:
             submodules: true
 
         - name: Execute Conftest Tests
-          uses: docker://docker.io/epidema/hrval:latest
+          uses: edshelton/hrval-action@master
           with:
             helmRelease: ./default
             helmVersion: v3
