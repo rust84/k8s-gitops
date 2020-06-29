@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: linuxserver/nzbhydra2
-      tag: v2.24.0-ls10
+      tag: v2.24.1-ls11
     strategyType: Recreate
     timezone: "Europe/London"
     puid: 1000
