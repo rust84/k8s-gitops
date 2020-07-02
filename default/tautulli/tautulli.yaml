@@ -17,7 +17,7 @@ spec:
   values:
     image:
       repository: linuxserver/tautulli
-      tag: v2.2.4-ls7
+      tag: v2.5.2-ls7
     puid: 1000
     pgid: 1000
     timezone: Europe/London
