@@ -3,8 +3,8 @@ helmOperator:
 git:
   url: "git@github.com:rust84/k8s-gitops"
 registry:
-  rps: 1
-  burst: 1
+  rps: 50
+  burst: 50
 memcached:
   tolerations:
   - key: "arm"
