@@ -10,7 +10,7 @@ metadata:
     k3s-upgrade: server
 spec:
   concurrency: 1
-  version: v1.17.6+k3s1
+  version: v1.17.7+k3s1
   nodeSelector:
     matchExpressions:
       - {key: k3s-upgrade, operator: Exists}
@@ -34,7 +34,7 @@ metadata:
     k3s-upgrade: agent
 spec:
   concurrency: 1
-  version: v1.17.6+k3s1
+  version: v1.17.7+k3s1
   nodeSelector:
     matchExpressions:
       - {key: k3s-upgrade, operator: Exists}
