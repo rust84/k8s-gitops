@@ -54,7 +54,7 @@ jobs:
         with:
           helmRelease: /
           helmVersion: v3
-          ignoreValues: true
+          ignoreValues: false
           action: conftest
           policyDir: security-policies
 
