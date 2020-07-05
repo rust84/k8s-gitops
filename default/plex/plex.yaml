@@ -42,8 +42,9 @@ spec:
         enabled: true
         claimName: nfs-media-pvc
       config:
-        storageClass: "rook-ceph-block"
-        accessMode: ReadWriteOnce
+        claimName: "plex-kube-plex-config"
+        # storageClass: "rook-ceph-block"
+        # accessMode: ReadWriteOnce
     resources:
       limits:
         # gpu.intel.com/i915: 1
