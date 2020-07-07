@@ -12,20 +12,22 @@ jobs:
           submodules: true
 
       - name: Validate Default Helm Releases
-        uses: stefanprodan/hrval-action@master
+        uses: rust84/hrval-action@master
         with:
           helmRelease: ./default
           helmVersion: v3
           kubernetesVersion: 1.18.0
           ignoreValues: true
+          action: kubeval
 
       - name: Validate Monitoring Helm Releases
-        uses: stefanprodan/hrval-action@master
+        uses: rust84/hrval-action@master
         with:
           helmRelease: ./monitoring
           helmVersion: v3
           kubernetesVersion: 1.18.0
           ignoreValues: true
+          action: kubeval
 
   compliance:
     runs-on: ubuntu-latest
