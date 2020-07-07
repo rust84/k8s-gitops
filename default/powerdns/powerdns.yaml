@@ -12,7 +12,7 @@ spec:
   rollback:
     enable: false
   chart:
-    git: https://github.com/carpenike/powerdns-helm
+    git: https://github.com/rust84/powerdns-helm
     ref: master
     path: .
   values:
