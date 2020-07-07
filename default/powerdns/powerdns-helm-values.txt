@@ -1,0 +1,5 @@
+ingress:
+  hosts: [pdns.k.$DOMAIN]
+  tls:
+  - hosts:
+    - pdns.k.$DOMAIN
