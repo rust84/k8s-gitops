@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: ngoduykhanh/powerdns-admin
-      tag: 0.2.2
+      tag: 0.2.1
     ingress:
       enabled: true
       annotations:
