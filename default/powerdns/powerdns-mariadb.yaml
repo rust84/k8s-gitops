@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: bitnami/mariadb
-      tag: 10.2.32-debian-10-r56
+      tag: 10.3.23-debian-10-r44
     ingress:
       enabled: true
       annotations:
@@ -51,11 +51,11 @@ spec:
       enabled: true
       serviceMonitor:
         enabled: true
-    resources:
-      requests:
-        memory: 350Mi
-        cpu: 25m
-      limits:
-        memory: 1000Mi
+    # resources:
+    #   requests:
+    #     memory: 350Mi
+    #     cpu: 25m
+    #   limits:
+    #     memory: 1000Mi
   valueFileSecrets:
   - name: "powerdns-mariadb-helm-values"
