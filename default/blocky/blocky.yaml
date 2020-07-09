@@ -17,11 +17,11 @@ spec:
   chart:
     repository: https://billimek.com/billimek-charts/
     name: blocky
-    version: 3.0.0
+    version: 3.2.0
   values:
     image:
       repository: spx01/blocky
-      tag: v0.8
+      tag: v0.9.1
     replicas: 2
     timeZone: "Europe/London"
 
@@ -36,7 +36,7 @@ spec:
         - https://cloudflare-dns.com/dns-query
       conditional:
         mapping:
-          local: udp:192.168.1.86
+          local: udp:10.0.1.165
       blocking:
         blackLists:
           ads:
@@ -56,7 +56,7 @@ spec:
           - ads
             # - special
       clientLookup:
-        upstream: udp:192.168.1.86
+        upstream: udp:10.0.1.165
       prometheus:
         enable: true
         path: /metrics
