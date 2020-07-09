@@ -1,0 +1,10 @@
+apiVersion: ricoberger.de/v1alpha1
+kind: VaultSecret
+metadata:
+  name: powerdns-admin-helm-values
+  namespace: kube-system
+spec:
+  keys:
+    - values.yaml
+  path: secrets/kube-system/external-dns/external-dns-helm-values
+  type: Opaque

@@ -1,3 +1,7 @@
+pdns:
+  api:
+    enabled: yes
+    key: $POWERDNS_API_KEY
 ingress:
   hosts: [pdns.k.$DOMAIN]
   tls:

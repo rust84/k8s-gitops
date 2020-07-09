@@ -1,0 +1,6 @@
+pdns:
+  apiUrl: http://powerdns-pdns-tcp
+  apiPort: 8081
+  apiKey: $POWERDNS_API_KEY
+domainFilters:
+  - $DOMAIN
