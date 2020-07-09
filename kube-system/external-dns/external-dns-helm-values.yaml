@@ -1,7 +1,7 @@
 apiVersion: ricoberger.de/v1alpha1
 kind: VaultSecret
 metadata:
-  name: powerdns-admin-helm-values
+  name: external-dns-helm-values
   namespace: kube-system
 spec:
   keys:
