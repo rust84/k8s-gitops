@@ -19,6 +19,8 @@ spec:
       repository: bitnami/external-dns
       tag: 0.7.2
     provider: pdns
+    pdns:
+      apiPort: 443
     createSecret: true
     crd:
       create: true

@@ -7,3 +7,5 @@ ingress:
   tls:
   - hosts:
     - pdns.k.$DOMAIN
+mariadb:
+  mariadbPassword: $POWERDNS_MARIADB_USER_PASSWORD
