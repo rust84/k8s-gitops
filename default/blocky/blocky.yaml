@@ -34,9 +34,6 @@ spec:
         - tcp-tls:dd8d64.dns1.nextdns.io:853
         - tcp-tls:dd8d64.dns2.nextdns.io:853
         - https://cloudflare-dns.com/dns-query
-      conditional:
-        mapping:
-          local: udp:10.0.1.165
       blocking:
         blackLists:
           ads:
