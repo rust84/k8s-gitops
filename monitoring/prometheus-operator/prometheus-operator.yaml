@@ -14,8 +14,10 @@ spec:
   chart:
     repository: https://kubernetes-charts.storage.googleapis.com/
     name: prometheus-operator
-    version: 8.15.14
+    version: 8.16.1
   values:
+    defaultRules:
+      kubeApiserverAvailability: false
     server:
       resources:
         requests:
