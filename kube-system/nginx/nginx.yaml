@@ -20,8 +20,8 @@ spec:
   values:
     controller:
       image:
-        repository: quay.io/kubernetes-ingress-controller/nginx-ingress-controller
-        tag: "0.32.0"
+        repository: us.gcr.io/k8s-artifacts-prod/ingress-nginx/controller
+        tag: "0.34.0"
       replicaCount: 1
       service:
         loadBalancerIP: 10.1.0.150
