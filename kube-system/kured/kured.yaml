@@ -12,11 +12,11 @@ spec:
   chart:
     repository: https://kubernetes-charts.storage.googleapis.com/
     name: kured
-    version: 1.4.3
+    version: 1.6.0
   values:
     image:
-      repository: billimek/kured
-      tag: 1.2.0
+      repository: raspbernetes/kured
+      tag: 1.4.4
     tolerations:
       - key: "arm"
         operator: "Exists"
