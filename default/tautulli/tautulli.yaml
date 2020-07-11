@@ -13,7 +13,7 @@ spec:
   chart:
     repository: https://billimek.com/billimek-charts/
     name: tautulli
-    version: 2.0.1
+    version: 2.2.0
   values:
     image:
       repository: linuxserver/tautulli
