@@ -16,9 +16,9 @@ spec:
     injector:
       enabled: false
     server:
-      image:
-        repository: "vault"
-        tag: "1.4.2"
+      # image:
+      #   repository: "vault"
+      #   tag: "1.4.2"
       tolerations: |
         - key: "arm"
           operator: "Exists"
