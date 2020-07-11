@@ -46,6 +46,7 @@ spec:
     matchLabels:
       app.kubernetes.io/name: vault
       app.kubernetes.io/instance: vault
+      vault-active: "true"
   endpoints:
   - port: http
     interval: 10s
