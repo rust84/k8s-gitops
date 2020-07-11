@@ -12,13 +12,13 @@ spec:
   releaseName: hass-postgresql
   helmVersion: v3
   chart:
-    repository: https://kubernetes-charts.storage.googleapis.com/
+    repository: https://charts.bitnami.com/bitnami
     name: postgresql
-    version: 8.4.0
+    version: 8.10.14
   values:
     image:
       repository: postgres
-      tag: 12.1
+      tag: 12.2
     postgresqlDataDir: "/data/pgdata"
     postgresqlUsername: "homeassistant"
     postgresqlDatabase: "homeassistant"
