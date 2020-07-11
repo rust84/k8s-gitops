@@ -17,8 +17,9 @@ spec:
     version: 8.16.1
   values:
     defaultRules:
-      kubeApiserverAvailability: false
-      kubeApiserver: false
+      rules:
+        kubeApiserverAvailability: false
+        kubeApiserver: false
     server:
       resources:
         requests:
