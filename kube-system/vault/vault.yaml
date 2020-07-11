@@ -9,9 +9,9 @@ spec:
   rollback:
     enabled: false
   chart:
-    git: https://github.com/hashicorp/vault-helm
-    ref: v0.6.0
-    path: .
+    repository: https://helm.releases.hashicorp.com
+    name: vault
+    version: 0.6.0
   values:
     injector:
       enabled: false
