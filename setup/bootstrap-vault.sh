@@ -78,14 +78,16 @@ initVault() {
     fi
     echo "SAVE THESE VALUES!"
 
-    FIRST_RUN=0
-  fi
-
   REPLIACS_LIST=($REPLIACS)
+    echo "sleeping 10 seconds to allow first vault to be ready"
+    sleep 10
   for replica in "${REPLIACS_LIST[@]:1}"; do
     echo "joining pod vault-${replica} to raft cluster"
     kubectl -n kube-system exec "vault-${replica}" -- vault operator raft join http://vault-0.vault-internal:8200 || exit 1
   done
+
+    FIRST_RUN=0
+  fi
 
   if [ "$sealed_status" == "true" ]; then
     echo "unsealing vault"
@@ -167,9 +169,6 @@ loadSecretsToVault() {
   ####################
   # helm chart values
   ####################
-  kvault "default/bitwarden/bitwarden-helm-values.txt"
-  kvault "default/blocky/blocky-helm-values.txt"
-  kvault "kube-system/external-dns/external-dns-helm-values.txt"
   kvault "kube-system/kured/kured-helm-values.txt"
   kvault "kube-system/vault/vault-helm-values.txt"
   kvault "kube-system/keycloak/keycloak-helm-values.txt"
@@ -191,13 +190,6 @@ loadSecretsToVault() {
   kvault "default/sonarr/sonarr-helm-values.txt"
   kvault "default/unifi/unifi-helm-values.txt"
   kvault "velero/velero/velero-helm-values.txt"
-  kvault "default/nzbhydra/nzbhydra-helm-values.txt"
-  kvault "default/ombi/ombi-helm-values.txt"
-  kvault "default/organizr/organizr-helm-values.txt"
-  kvault "default/tautulli/tautulli-helm-values.txt"
-  kvault "default/powerdns/powerdns-mariadb-helm-values.txt"
-  kvault "default/powerdns/powerdns-admin-helm-values.txt"
-  kvault "default/powerdns/powerdns-helm-values.txt"
 }
 
 FIRST_RUN=1

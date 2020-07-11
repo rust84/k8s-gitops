@@ -39,6 +39,7 @@ spec:
           enabled: true
           setNodeId: true
           config: |
+            service_registration "kubernetes" {}
             ui = true
             listener "tcp" {
               tls_disable = 1
@@ -47,7 +48,7 @@ spec:
               telemetry {
                 unauthenticated_metrics_access = "true"
               }
-            }
+            }     
             storage "raft" {
               path = "/vault/data"
             }
