@@ -169,6 +169,9 @@ loadSecretsToVault() {
   ####################
   # helm chart values
   ####################
+  kvault "default/bitwarden/bitwarden-helm-values.txt"
+  kvault "default/blocky/blocky-helm-values.txt"
+  kvault "kube-system/external-dns/external-dns-helm-values.txt"
   kvault "kube-system/kured/kured-helm-values.txt"
   kvault "kube-system/vault/vault-helm-values.txt"
   kvault "kube-system/keycloak/keycloak-helm-values.txt"
@@ -190,6 +193,13 @@ loadSecretsToVault() {
   kvault "default/sonarr/sonarr-helm-values.txt"
   kvault "default/unifi/unifi-helm-values.txt"
   kvault "velero/velero/velero-helm-values.txt"
+  kvault "default/nzbhydra/nzbhydra-helm-values.txt"
+  kvault "default/ombi/ombi-helm-values.txt"
+  kvault "default/organizr/organizr-helm-values.txt"
+  kvault "default/tautulli/tautulli-helm-values.txt"
+  kvault "default/powerdns/powerdns-mariadb-helm-values.txt"
+  kvault "default/powerdns/powerdns-admin-helm-values.txt"
+  kvault "default/powerdns/powerdns-helm-values.txt"
 }
 
 FIRST_RUN=1
