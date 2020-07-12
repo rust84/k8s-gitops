@@ -37,7 +37,7 @@ spec:
       annotations:
         metallb.universe.tf/address-pool: network-services
         metallb.universe.tf/allow-shared-ip: plex-svc
-    serviceTCP:
+    serviceUDP:
       type: LoadBalancer
       loadBalancerIP: 10.1.0.154
       annotations:
