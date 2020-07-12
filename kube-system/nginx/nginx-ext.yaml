@@ -20,9 +20,9 @@ spec:
   values:
     controller:
       ingressClass: external
-      image:
-        repository: us.gcr.io/k8s-artifacts-prod/ingress-nginx/controller
-        tag: 0.34.0
+      # image:
+      #   repository: us.gcr.io/k8s-artifacts-prod/ingress-nginx/controller
+      #   tag: 0.34.0
       replicaCount: 1
       service:
         loadBalancerIP: 10.1.0.151
