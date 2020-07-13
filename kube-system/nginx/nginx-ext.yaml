@@ -50,21 +50,21 @@ spec:
           namespace: kube-system
           rules:
             - alert: TooMany500s
-              expr: 100 * ( sum( nginx_ingress_controller_requests{status=~"5.+"} ) / sum(nginx_ingress_controller_requests) ) > 5
+              expr: sum(rate(nginx_ingress_controller_requests{status!~"5.*"}[2m])) / sum(rate(nginx_ingress_controller_requests[2m])) < 0.85
               for: 1m
               labels:
                 severity: critical
               annotations:
                 description: Too many 5XXs - External
-                summary: More than 5% of the all requests did return 5XX, this requires your attention
+                summary: More than 15% of the all requests did return 5XX, this requires your attention
             - alert: TooMany400s
-              expr: 100 * ( sum( nginx_ingress_controller_requests{status=~"4.+"} ) / sum(nginx_ingress_controller_requests) ) > 5
+              expr: sum(rate(nginx_ingress_controller_requests{status!~"4.*"}[2m])) / sum(rate(nginx_ingress_controller_requests[2m])) < 0.85
               for: 1m
               labels:
                 severity: critical
               annotations:
                 description: Too many 4XXs - External
-                summary: More than 5% of the all requests did return 4XX, this requires your attention
+                summary: More than 15% of the all requests did return 4XX, this requires your attention
       tolerations:
       - key: "arm"
         operator: "Exists"
