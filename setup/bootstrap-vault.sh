@@ -200,6 +200,7 @@ loadSecretsToVault() {
   kvault "default/powerdns/powerdns-mariadb-helm-values.txt"
   kvault "default/powerdns/powerdns-admin-helm-values.txt"
   kvault "default/powerdns/powerdns-helm-values.txt"
+  kvault "logs/loki/loki-helm-values.txt"
 }
 
 FIRST_RUN=1
