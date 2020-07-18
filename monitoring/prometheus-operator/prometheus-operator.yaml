@@ -217,7 +217,16 @@ spec:
           blocky:
             url: https://raw.githubusercontent.com/0xERR0R/blocky/master/docs/blocky-grafana.json
             datasource: Prometheus
+      sidecar:
+        datasources:
+          enabled: true
+          defaultDatasourceEnabled: false
       additionalDataSources:
+      - name: Prometheus
+        type: prometheus
+        access: proxy
+        url: http://thanos-query-http:10902/
+        isDefault: true
       - name: loki
         type: loki
         access: proxy
