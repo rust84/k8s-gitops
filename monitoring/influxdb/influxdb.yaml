@@ -24,7 +24,7 @@ spec:
     persistence:
       enabled: true
       size: 50Gi
-      storageClass: nfs-client
+      storageClass: rook-ceph-block
     resources:
       requests:
         memory: 2000Mi
