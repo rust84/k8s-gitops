@@ -180,6 +180,7 @@ loadSecretsToVault() {
   kvault "monitoring/chronograf/chronograf-helm-values.txt"
   kvault "monitoring/prometheus-operator/prometheus-operator-helm-values.txt"
   kvault "monitoring/uptimerobot/uptimerobot-helm-values.txt"
+  kvault "monitoring/thanos/thanos-helm-values.txt"
   kvault "default/goldilocks/goldilocks-helm-values.txt"
   kvault "default/home-assistant/home-assistant-helm-values.txt"
   kvault "default/home-assistant/postgresql-helm-values.txt"
