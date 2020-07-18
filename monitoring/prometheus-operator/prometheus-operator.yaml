@@ -301,5 +301,11 @@ spec:
         #   static_configs:
         #   - targets:
         #     - pi-upsmon:9102
+        thanos:
+          image: quay.io/thanos/thanos:v0.13.0
+          version: v0.13.0
+          objectStorageConfig:
+            name: thanos
+            key: object-store.yaml
   valueFileSecrets:
   - name: "prometheus-operator-helm-values"
