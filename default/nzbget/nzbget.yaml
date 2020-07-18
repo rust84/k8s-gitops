@@ -36,7 +36,7 @@ spec:
         claimName: nfs-media-pvc
       config:
         enabled: true
-        storageClass: "nfs-client"
+        storageClass: rook-ceph-block
         size: 30Gi
     podAnnotations:
       backup.velero.io/backup-volumes: config
