@@ -7,7 +7,7 @@ metadata:
   annotations:
     fluxcd.io/ignore: "false"
     fluxcd.io/automated: "true"
-    fluxcd.io/tag.grafana: semver:~6
+    fluxcd.io/tag.grafana: semver:~7
 spec:
   releaseName: prometheus-operator
   helmVersion: v3
@@ -29,6 +29,9 @@ spec:
           memory: 2000Mi
     prometheusOperator:
       createCustomResource: true
+      prometheusConfigReloaderImage:
+        repository: quay.io/coreos/prometheus-config-reloader
+        tag: v0.39.0
       configmapReloadImage:
         repository: jimmidyson/configmap-reload
         tag: v0.3.0
@@ -147,12 +150,12 @@ spec:
               {{- end }}
           {{- end }}
     grafana:
-      # image:
-      #   repository: grafana/grafana
-      #   tag: 6.7.3
-      # tolerations:
-      # - key: "arm"
-      #   operator: "Exists"
+      image:
+        repository: grafana/grafana
+        tag: 7.0.4
+      tolerations:
+      - key: "arm"
+        operator: "Exists"
       deploymentStrategy:
         type: Recreate
       podAnnotations:
@@ -281,9 +284,12 @@ spec:
         annotations:
           kubernetes.io/ingress.class: "nginx"
       prometheusSpec:
-#        image:
-#          repository: quay.io/prometheus/prometheus
-#          tag: v2.9.1
+        # image:
+        #   repository: quay.io/prometheus/prometheus
+        #   tag: v2.9.1
+        replicas: 1
+        externalLabels: 
+          prometheus_replica: "true"
         ruleSelector: {}
         ruleNamespaceSelector: {}
         ruleSelectorNilUsesHelmValues: false
@@ -305,16 +311,17 @@ spec:
         # tolerations:
         # - key: "arm"
         #   operator: "Exists"
-        # additionalScrapeConfigs:
-        # - job_name: 'upsc-exporter'
-        #   static_configs:
-        #   - targets:
-        #     - pi-upsmon:9102
+
         thanos:
           image: quay.io/thanos/thanos:v0.13.0
           version: v0.13.0
           objectStorageConfig:
             name: thanos
             key: object-store.yaml
+        # additionalScrapeConfigs:
+        # - job_name: 'upsc-exporter'
+        #   static_configs:
+        #   - targets:
+        #     - pi-upsmon:9102
   valueFileSecrets:
   - name: "prometheus-operator-helm-values"
