@@ -152,7 +152,7 @@ spec:
     grafana:
       image:
         repository: grafana/grafana
-        tag: 7.0.4
+        tag: 7.1.0
       tolerations:
       - key: "arm"
         operator: "Exists"
@@ -288,7 +288,7 @@ spec:
         #   repository: quay.io/prometheus/prometheus
         #   tag: v2.9.1
         replicas: 1
-        externalLabels: 
+        externalLabels:
           prometheus_replica: "true"
         ruleSelector: {}
         ruleNamespaceSelector: {}
