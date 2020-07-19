@@ -6,5 +6,5 @@ metadata:
 spec:
   keys:
     - values.yaml
-  path: secrets/monitoring/uptimerobot/uptimerobot-helm-values
+  path: secrets/monitoring/uptimerobot-prometheus/uptimerobot-helm-values
   type: Opaque
