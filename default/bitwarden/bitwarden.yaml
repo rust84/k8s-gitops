@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: bitwardenrs/server
-      tag: 1.15.1
+      tag: 1.16.1
     ingress:
       enabled: true
       annotations:
@@ -32,5 +32,8 @@ spec:
       size: 5Gi
     podAnnotations:
       backup.velero.io/backup-volumes: data
+    tolerations:
+    - key: "arm"
+      operator: "Exists"
   valueFileSecrets:
     - name: "bitwarden-helm-values"
