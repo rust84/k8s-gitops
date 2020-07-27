@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: linuxserver/radarr
-      tag: 3.0.0.3277-ls16
+      tag: 3.0.0.3279-ls17
     ingress:
       enabled: true
       annotations:
