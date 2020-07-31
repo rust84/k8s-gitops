@@ -3,7 +3,7 @@ apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
   name: sonatype-nexus
-  namespace: nexus
+  namespace: default
   annotations:
     fluxcd.io/automated: "true"
     fluxcd.io/tag.nexus: semver:~3
