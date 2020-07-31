@@ -34,10 +34,11 @@ spec:
       enabled: false
       persistence:
         enabled: true
+        storageClass: rook-ceph-block
         storageSize: 8Gi
     persistence:
       enabled: true
-      accessMode: ReadWriteOnce
+      storageClass: rook-ceph-block
       storageSize: 10Gi
   valueFileSecrets:
   - name: "nexus-helm-values"
