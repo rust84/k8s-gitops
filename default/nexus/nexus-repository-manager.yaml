@@ -20,7 +20,10 @@ spec:
         kubernetes.io/ingress.class: nginx
     nexus:
       imageName: quay.io/travelaudience/docker-nexus
-      imageTag: 3.25.1
+      imageTag: 3.23.0
+      service:
+        type: LoadBalancer
+        loadBalancerIP: 10.1.0.152
     nexusProxy:
       enabled: false
       resources:
