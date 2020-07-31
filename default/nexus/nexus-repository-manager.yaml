@@ -1,0 +1,43 @@
+---
+apiVersion: helm.fluxcd.io/v1
+kind: HelmRelease
+metadata:
+  name: sonatype-nexus
+  namespace: nexus
+  annotations:
+    fluxcd.io/automated: "true"
+    fluxcd.io/tag.nexus: semver:~3
+spec:
+  releaseName: sonatype-nexus
+  chart:
+    repository: https://oteemo.github.io/charts
+    name: sonatype-nexus
+    version: 2.4.1
+  values:
+    ingress:
+      enabled: true
+      annotations:
+        kubernetes.io/ingress.class: nginx
+    nexus:
+      imageName: quay.io/travelaudience/docker-nexus
+      imageTag: 3.25.1
+    nexusProxy:
+      enabled: false
+      resources:
+        requests:
+          cpu: 100m
+          memory: 256Mi
+        limits:
+          cpu: 200m
+          memory: 512Mi
+    nexusBackup:
+      enabled: false
+      persistence:
+        enabled: true
+        storageSize: 8Gi
+    persistence:
+      enabled: true
+      accessMode: ReadWriteOnce
+      storageSize: 10Gi
+  valueFileSecrets:
+  - name: "nexus-helm-values"

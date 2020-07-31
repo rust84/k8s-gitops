@@ -1,0 +1,10 @@
+apiVersion: ricoberger.de/v1alpha1
+kind: VaultSecret
+metadata:
+  name: nexus-helm-values
+  namespace: default
+spec:
+  keys:
+    - values.yaml
+  path: secrets/default/nexus/nexus-helm-values
+  type: Opaque

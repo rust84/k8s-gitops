@@ -1,0 +1,4 @@
+nexusProxy:
+  env:
+    nexusDockerHost: docker.$DOMAIN
+    nexusHttpHost: nexus.$DOMAIN
