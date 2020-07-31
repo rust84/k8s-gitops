@@ -24,15 +24,15 @@ spec:
       service:
         type: LoadBalancer
         loadBalancerIP: 10.1.0.152
-        # ports:
-        # - name: nexus-service
-        #   targetPort: 80
-        #   port: 80
-        # - name: docker
-        #   targetPort: 5003
-        #   port: 5003
+        ports:
+        - name: nexus-service
+          targetPort: 80
+          port: 80
+        - name: docker
+          targetPort: 5003
+          port: 5003
     nexusProxy:
-      enabled: true
+      enabled: false
       resources:
         requests:
           cpu: 100m
