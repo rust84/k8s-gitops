@@ -22,15 +22,7 @@ spec:
       imageName: quay.io/travelaudience/docker-nexus
       imageTag: 3.23.0
       service:
-        type: LoadBalancer
-        loadBalancerIP: 10.1.0.152
-        ports:
-        - name: nexus-service
-          targetPort: 80
-          port: 80
-        - name: docker
-          targetPort: 5003
-          port: 5003
+        type: ClusterIP
     nexusProxy:
       enabled: false
       resources:
@@ -40,6 +32,15 @@ spec:
         limits:
           cpu: 200m
           memory: 512Mi
+    service:
+      type: LoadBalancer
+      name: docker-svc
+      enabled: true
+      ports:
+      - name: nexus-docker
+        targetPort: 5003
+        port: 5003
+      loadBalancerIP: 10.1.0.152
     nexusBackup:
       enabled: false
       persistence:
