@@ -21,8 +21,6 @@ spec:
     nexus:
       imageName: quay.io/travelaudience/docker-nexus
       imageTag: 3.23.0
-      service:
-        type: ClusterIP
     nexusProxy:
       enabled: false
       resources:
