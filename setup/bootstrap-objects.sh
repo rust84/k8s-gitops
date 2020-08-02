@@ -32,14 +32,6 @@ installManualObjects(){
   rm values.yaml
 
   ###################
-  # nginx-external
-  ###################
-  for i in "$REPO_ROOT"/kube-system/nginx/nginx-external/*.txt
-  do
-    kapply "$i"
-  done
-
-  ###################
   # rook
   ###################
   ROOK_NAMESPACE_READY=1
