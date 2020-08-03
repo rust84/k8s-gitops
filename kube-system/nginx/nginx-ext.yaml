@@ -46,7 +46,7 @@ spec:
           enabled: true
           namespace: kube-system
         prometheusRule:
-          enabled: true
+          enabled: false
           namespace: kube-system
           rules:
             - alert: TooMany500s
