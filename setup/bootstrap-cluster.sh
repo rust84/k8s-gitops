@@ -16,6 +16,7 @@ need "curl"
 need "ssh"
 need "kubectl"
 need "helm"
+need "fluxctl"
 
 message() {
   echo -e "\n######################################################################"
@@ -53,10 +54,28 @@ installFlux() {
   # install flux
   kubectl create ns flux
   helm repo add fluxcd https://charts.fluxcd.io
-  kubectl apply -f https://raw.githubusercontent.com/coreos/prometheus-operator/release-0.38/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
+
   kubectl apply -f https://raw.githubusercontent.com/fluxcd/helm-operator/master/deploy/crds.yaml
-  helm upgrade --install flux --values "$REPO_ROOT"/flux/flux/flux-values.yaml --namespace flux fluxcd/flux
-  helm upgrade --install helm-operator --values "$REPO_ROOT"/flux/helm-operator/flux-helm-operator-values.yaml --namespace flux fluxcd/helm-operator
+  kubectl apply -f https://raw.githubusercontent.com/coreos/prometheus-operator/release-0.38/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
+
+  fluxctl install --git-user=rust84 \
+  --git-email=rust84@users.noreply.github.com \
+  --git-url=git@github.com:rust84/k8s-gitops \
+  --namespace flux | kubectl apply -f -
+
+  helm upgrade -i helm-operator fluxcd/helm-operator \
+  --version 1.1.0 \
+  --namespace flux \
+  --set 'createCRD=false' \
+  --set 'git.ssh.secretName=flux-git-deploy' \
+  --set 'helm.versions=v3' \
+  --set 'chartsSyncInterval=5m' \
+  --set 'statusUpdateInterval=5m' \
+  --set 'prometheus.enabled=true' \
+  --set 'prometheus.serviceMonitor.create=false' \
+  --set 'prometheus.serviceMonitor.interval=30s' \
+  --set 'prometheus.serviceMonitor.scrapeTimeout=10s' \
+  --set 'prometheus.serviceMonitor.namespace=flux'
 
   FLUX_READY=1
   while [ $FLUX_READY != 0 ]; do
@@ -67,7 +86,7 @@ installFlux() {
   done
 
   # grab output the key
-  FLUX_KEY=$(kubectl -n flux logs deployment/flux | grep identity.pub | cut -d '"' -f2)
+  FLUX_KEY=$(fluxctl --k8s-fwd-ns flux identity)
 
   message "adding the key to github automatically"
   "$REPO_ROOT"/setup/add-repo-key.sh "$FLUX_KEY"
@@ -77,12 +96,12 @@ k3sMasterNode
 ks3amd64WorkerNodes
 ks3armWorkerNodes
 
-# export KUBECONFIG="$REPO_ROOT/setup/kubeconfig"
-# installFlux
-# "$REPO_ROOT"/setup/bootstrap-objects.sh
+export KUBECONFIG="$REPO_ROOT/setup/kubeconfig"
+installFlux
+"$REPO_ROOT"/setup/bootstrap-objects.sh
 
-# # bootstrap vault
-# "$REPO_ROOT"/setup/bootstrap-vault.sh
+# bootstrap vault
+"$REPO_ROOT"/setup/bootstrap-vault.sh
 
 message "all done!"
 kubectl get nodes -o=wide
