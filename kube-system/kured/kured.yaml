@@ -1,3 +1,4 @@
+---
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
@@ -16,9 +17,9 @@ spec:
   values:
     image:
       repository: raspbernetes/kured
-      tag: 1.4.4
+      tag: 1.4.5
     tolerations:
-      - key: "arm"
-        operator: "Exists"
+    - key: "arm"
+      operator: "Exists"
   valueFileSecrets:
   - name: "kured-helm-values"
