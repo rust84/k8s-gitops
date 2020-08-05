@@ -16,7 +16,7 @@ spec:
   chart:
     repository: https://kubernetes.github.io/ingress-nginx
     name: ingress-nginx
-    version: 2.11.1
+    version: 2.11.2
   values:
     controller:
       # image:
@@ -26,6 +26,8 @@ spec:
       service:
         loadBalancerIP: 10.1.0.150
         externalTrafficPolicy: Local
+      admissionWebhooks:
+        enabled: false
       config:
         ssl-protocols: "TLSv1.3 TLSv1.2"
         custom-http-errors: "404,403,500,503"
@@ -83,3 +85,4 @@ spec:
           cpu: 25m
         limits:
           memory: 350Mi
+
