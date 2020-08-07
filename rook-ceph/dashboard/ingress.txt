@@ -20,4 +20,4 @@ spec:
       - path: /
         backend:
           serviceName: rook-ceph-mgr-dashboard
-          servicePort: dashboard
+          servicePort: http-dashboard
