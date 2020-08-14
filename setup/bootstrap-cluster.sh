@@ -64,7 +64,7 @@ installFlux() {
   --namespace flux | kubectl apply -f -
 
   helm upgrade -i helm-operator fluxcd/helm-operator \
-  --version 1.1.0 \
+  --version 1.2.0 \
   --namespace flux \
   --set 'createCRD=false' \
   --set 'git.ssh.secretName=flux-git-deploy' \
@@ -72,10 +72,11 @@ installFlux() {
   --set 'chartsSyncInterval=5m' \
   --set 'statusUpdateInterval=5m' \
   --set 'prometheus.enabled=true' \
-  --set 'prometheus.serviceMonitor.create=false' \
+  --set 'prometheus.serviceMonitor.create=true' \
   --set 'prometheus.serviceMonitor.interval=30s' \
   --set 'prometheus.serviceMonitor.scrapeTimeout=10s' \
-  --set 'prometheus.serviceMonitor.namespace=flux'
+  --set 'prometheus.serviceMonitor.namespace=flux' \
+  --set 'dashboards.enabled=true'
 
   FLUX_READY=1
   while [ $FLUX_READY != 0 ]; do
