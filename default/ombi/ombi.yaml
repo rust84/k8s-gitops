@@ -35,6 +35,9 @@ spec:
         kubernetes.io/ingress.class: "external"
     podAnnotations:
       backup.velero.io/backup-volumes: config
+    tolerations:
+    - key: "arm"
+      operator: "Exists"
     persistence:
       config:
         enabled: true
