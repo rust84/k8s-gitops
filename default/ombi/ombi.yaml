@@ -8,10 +8,12 @@ metadata:
     traffic-type: external
   annotations:
     fluxcd.io/automated: "true"
-    fluxcd.io/tag.chart-image: 'regexp:^(3.[0-9]+\.[0-9]+-ls.*)$'
+    fluxcd.io/tag.chart-image: 'regexp:^(v4\.0\.[0-9]+-ls[0-9]+)$'
 spec:
   releaseName: ombi
   helmVersion: v3
+  rollback:
+    enable: false
   chart:
     repository: https://billimek.com/billimek-charts/
     name: ombi
@@ -19,7 +21,7 @@ spec:
   values:
     image:
       repository: linuxserver/ombi
-      tag: 3.0.5164-ls25
+      tag: v4.0.450-ls9
     strategyType: Recreate
     timezone: Europe/London
     puid: 1000
