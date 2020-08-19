@@ -1,38 +1,39 @@
-# These plans are adapted from work by Dax McDonald (https://github.com/daxmc99) and Hussein Galal (https://github.com/galal-hussein)
-# in support of Rancher v2 managed k3s upgrades. See Also: https://rancher.com/docs/k3s/latest/en/upgrades/automated/
----
+# Server plan
 apiVersion: upgrade.cattle.io/v1
 kind: Plan
 metadata:
   name: k3s-server
-  namespace: k3os-system
-  labels:
-    k3s-upgrade: server
+  namespace: system-upgrade
 spec:
   concurrency: 1
-  version: v1.18.6+k3s1
+  cordon: true
   nodeSelector:
     matchExpressions:
-      - {key: k3s-upgrade, operator: Exists}
-      - {key: k3s-upgrade, operator: NotIn, values: ["disabled", "false"]}
-      - {key: k3s.io/hostname, operator: Exists}
-      - {key: k3os.io/mode, operator: DoesNotExist}
-      - {key: node-role.kubernetes.io/master, operator: In, values: ["true"]}
-  serviceAccountName: k3os-upgrade
-  cordon: true
+    - key: node-role.kubernetes.io/master
+      operator: In
+      values:
+      - "true"
+    - {key: k3os.io/mode, operator: DoesNotExist}
+    - key: kubernetes.io/arch
+      operator: In
+      values:
+      - "amd64"
+  serviceAccountName: system-upgrade
   upgrade:
     image: rancher/k3s-upgrade
+  channel: https://update.k3s.io/v1-release/channels/stable
 ---
+# Agent plan
 apiVersion: upgrade.cattle.io/v1
 kind: Plan
 metadata:
   name: k3s-agent
-  namespace: k3os-system
+  namespace: system-upgrade
   labels:
     k3s-upgrade: agent
 spec:
   concurrency: 1
-  version: v1.18.6+k3s1
+  channel: https://update.k3s.io/v1-release/channels/stable
   nodeSelector:
     matchExpressions:
       - {key: k3s-upgrade, operator: Exists}
@@ -40,9 +41,17 @@ spec:
       - {key: k3s.io/hostname, operator: Exists}
       - {key: k3os.io/mode, operator: DoesNotExist}
       - {key: node-role.kubernetes.io/master, operator: NotIn, values: ["true"]}
+  serviceAccountName: system-upgrade
+
+  # Specify which node taints should be tolerated by pods applying the upgrade.
+  # Anything specified here is appended to the default of:
+  # - {key: node.kubernetes.io/unschedulable, effect: NoSchedule, operator: Exists}
   tolerations:
-  - {key: arm, operator: Exists}
-  serviceAccountName: k3os-upgrade
+    - {key: kubernetes.io/arch, effect: NoSchedule, operator: Equal, value: amd64}
+    - {key: kubernetes.io/arch, effect: NoSchedule, operator: Equal, value: arm64}
+    - {key: kubernetes.io/arch, effect: NoSchedule, operator: Equal, value: arm}
+    - {key: arm, operator: Exists}
+
   prepare:
     # Since v0.5.0-m1 SUC will use the resolved version of the plan for the tag on the prepare container.
     # image: rancher/k3s-upgrade:v1.17.4-k3s1
