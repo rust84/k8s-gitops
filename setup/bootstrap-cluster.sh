@@ -68,7 +68,6 @@ installFlux() {
   --namespace flux \
   --set 'createCRD=false' \
   --set 'git.ssh.secretName=flux-git-deploy' \
-  --set 'helm.versions=v3' \
   --set 'chartsSyncInterval=5m' \
   --set 'statusUpdateInterval=5m' \
   --set 'prometheus.enabled=true' \
