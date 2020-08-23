@@ -176,6 +176,8 @@ loadSecretsToVault() {
   kvault "kube-system/vault/vault-helm-values.txt"
   kvault "kube-system/keycloak/keycloak-helm-values.txt"
   kvault "kube-system/keycloak/keycloak-realm.txt"
+  kvault "kube-system/dex/dex-helm-values.txt"
+  kvault "kube-system/dex/dex-k8s-authenticator-helm-values.txt"
   kvault "monitoring/botkube/botkube-helm-values.txt"
   kvault "monitoring/chronograf/chronograf-helm-values.txt"
   kvault "monitoring/prometheus-operator/prometheus-operator-helm-values.txt"
@@ -202,7 +204,6 @@ loadSecretsToVault() {
   kvault "default/powerdns/powerdns-admin-helm-values.txt"
   kvault "default/powerdns/powerdns-helm-values.txt"
   kvault "logs/loki/loki-helm-values.txt"
-  kvault "default/nexus/nexus-helm-values.txt"
 }
 
 FIRST_RUN=1

@@ -4,7 +4,7 @@
 K3S_MASTER="k3s-a"
 K3S_WORKERS_AMD64="k3s-b k3s-c k3s-d"
 K3S_WORKERS_RPI="pi4-a pi4-b pi4-c"
-K3S_VERSION="v1.18.6+k3s1"
+K3S_VERSION="v1.18.8+k3s1"
 
 REPO_ROOT=$(git rev-parse --show-toplevel)
 
@@ -26,7 +26,7 @@ message() {
 
 k3sMasterNode() {
   message "installing k3s master to $K3S_MASTER"
-  ssh -o "StrictHostKeyChecking=no" ubuntu@"$K3S_MASTER" "curl -sLS https://get.k3s.io | INSTALL_K3S_EXEC='server --tls-san $K3S_MASTER --no-deploy servicelb --no-deploy traefik --flannel-backend host-gw' INSTALL_K3S_VERSION='$K3S_VERSION' sh -"
+  ssh -o "StrictHostKeyChecking=no" ubuntu@"$K3S_MASTER" "curl -sLS https://get.k3s.io | INSTALL_K3S_EXEC='server --tls-san $K3S_MASTER --no-deploy servicelb --no-deploy traefik --flannel-backend host-gw --kube-apiserver-arg oidc-client-id=dex-k8s-authenticator --kube-apiserver-arg oidc-groups-claim=groups --kube-apiserver-arg oidc-issuer-url=https://dex.microserver.space --kube-apiserver-arg oidc-username-claim=email' INSTALL_K3S_VERSION='$K3S_VERSION' sh -"
   ssh -o "StrictHostKeyChecking=no" ubuntu@"$K3S_MASTER" "sudo cat /etc/rancher/k3s/k3s.yaml | sed 's/server: https:\/\/127.0.0.1:6443/server: https:\/\/$K3S_MASTER:6443/'" > "$REPO_ROOT/setup/kubeconfig"
   NODE_TOKEN=$(ssh -o "StrictHostKeyChecking=no" ubuntu@"$K3S_MASTER" "sudo cat /var/lib/rancher/k3s/server/node-token")
 }
