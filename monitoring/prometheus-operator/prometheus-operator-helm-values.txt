@@ -15,10 +15,10 @@ prometheus:
       - prom-server.k.$DOMAIN
 grafana:
   ingress:
-    hosts: [grafana.k.$DOMAIN]
+    hosts: [grafana.$DOMAIN]
     tls:
     - hosts:
-      - grafana.k.$DOMAIN
+      - grafana.$DOMAIN
   adminPassword: "$GRAFANA_PASSWORD"
   grafana.ini:
     server:
