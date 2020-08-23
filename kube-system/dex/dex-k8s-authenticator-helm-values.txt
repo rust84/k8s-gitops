@@ -1,3 +1,9 @@
+ingress:
+  hosts:
+    - login.$DOMAIN
+  tls:
+    - hosts:
+      - login.$DOMAIN
 dexK8sAuthenticator:
   clusters:
   - name: k8s
