@@ -178,7 +178,7 @@ spec:
       ingress:
         enabled: true
         annotations:
-          kubernetes.io/ingress.class: "nginx"
+          kubernetes.io/ingress.class: "external"
       plugins:
       - natel-discrete-panel
       - grafana-piechart-panel
