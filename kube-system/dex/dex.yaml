@@ -15,9 +15,8 @@ spec:
     name: dex
     version: 2.13.0
   values:
-    image:
-      repository: quay.io/dexidp/dex
-      tag: v2.24.0
+    image: quay.io/dexidp/dex
+    imageTag: "v2.24.0"
     ingress:
       enabled: true
       annotations:

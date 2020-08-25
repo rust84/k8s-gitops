@@ -4,8 +4,8 @@ ingress:
   tls:
     - hosts:
       - dex.$DOMAIN
-config: |-
-  issuer: https://dex.$DOMAIN
+config:
+  issuer: "https://dex.$DOMAIN"
 
   storage:
     type: kubernetes
