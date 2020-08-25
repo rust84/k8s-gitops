@@ -15,12 +15,15 @@ spec:
     name: dex
     version: 2.13.0
   values:
-    image: quay.io/dexidp/dex
-    imageTag: "v2.24.0"
+    image: raspbernetes/dex
+    imageTag: v2.24.0
     ingress:
       enabled: true
       annotations:
         kubernetes.io/ingress.class: "external"
+    tolerations:
+      - key: "arm"
+        operator: "Exists"
     # resources:
     #   requests:
     #     memory: 350Mi
