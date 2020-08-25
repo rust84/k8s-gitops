@@ -11,7 +11,7 @@ metadata:
 spec:
   releaseName: dex
   chart:
-    git: https://kubernetes-charts.storage.googleapis.com/
+    repository: https://kubernetes-charts.storage.googleapis.com/
     name: dex
     version: 2.13.0
   values:
