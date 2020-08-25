@@ -50,7 +50,7 @@ spec:
       ingress:
         enabled: true
         annotations:
-          kubernetes.io/ingress.class: "nginx"
+          kubernetes.io/ingress.class: "external"
       config:
         templates: ["*.tmpl"]
         route:
@@ -282,7 +282,7 @@ spec:
       ingress:
         enabled: true
         annotations:
-          kubernetes.io/ingress.class: "nginx"
+          kubernetes.io/ingress.class: "external"
       prometheusSpec:
         # image:
         #   repository: quay.io/prometheus/prometheus
