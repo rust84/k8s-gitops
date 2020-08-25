@@ -4,6 +4,9 @@ alertmanager:
     tls:
     - hosts:
       - prom-alert.k.$DOMAIN
+    annotations:
+      nginx.ingress.kubernetes.io/auth-url: "https://auth.$DOMAIN/oauth2/auth"
+      nginx.ingress.kubernetes.io/auth-signin: https://auth.$DOMAIN/oauth2/start
   config:
     global:
       slack_api_url: "$SLACK_WEBOOK_URL_ALERT"
@@ -13,6 +16,9 @@ prometheus:
     tls:
     - hosts:
       - prom-server.k.$DOMAIN
+    annotations:
+      nginx.ingress.kubernetes.io/auth-url: "https://auth.$DOMAIN/oauth2/auth"
+      nginx.ingress.kubernetes.io/auth-signin: https://auth.$DOMAIN/oauth2/start
 grafana:
   ingress:
     hosts: [grafana.$DOMAIN]
