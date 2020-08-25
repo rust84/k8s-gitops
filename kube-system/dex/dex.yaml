@@ -11,14 +11,13 @@ metadata:
 spec:
   releaseName: dex
   chart:
-    git: https://github.com/mintel/dex-k8s-authenticator
-    ref: master
-    path: charts/dex
-    version: 1.2.0
+    git: https://kubernetes-charts.storage.googleapis.com/
+    name: dex
+    version: 2.13.0
   values:
     image:
-      repository: quay.io/coreos/dex
-      tag: v2.10.0
+      repository: quay.io/dexidp/dex
+      tag: v2.24.0
     ingress:
       enabled: true
       annotations:
