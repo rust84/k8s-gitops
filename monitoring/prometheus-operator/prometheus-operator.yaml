@@ -220,6 +220,9 @@ spec:
           uptimerobot:
             url: https://raw.githubusercontent.com/lekpamartin/uptimerobot_exporter/master/dashboards/grafana.json
             datasource: Prometheus
+          version-checker:
+            url: https://grafana.com/api/dashboards/12833/revisions/1/download
+            datasource: Prometheus
       sidecar:
         datasources:
           enabled: true
