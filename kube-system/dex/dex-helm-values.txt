@@ -79,4 +79,4 @@ config:
     name: 'oauth2-proxy'
     secret: $DEX_OAUTH2_PROXY_CLIENT_SECRET
     redirectURIs:
-    - 'https://auth.microserver.space/oauth2/callback'
+    - 'https://auth.$DOMAIN/oauth2/callback'
