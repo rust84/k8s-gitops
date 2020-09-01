@@ -14,7 +14,7 @@ spec:
   chart:
     repository: https://kubernetes-charts.storage.googleapis.com/
     name: prometheus-operator
-    version: 9.1.0
+    version: 9.3.1
   values:
     defaultRules:
       rules:
@@ -31,10 +31,10 @@ spec:
       createCustomResource: true
       prometheusConfigReloaderImage:
         repository: quay.io/coreos/prometheus-config-reloader
-        tag: v0.39.0
+        tag: v0.41.1
       configmapReloadImage:
         repository: jimmidyson/configmap-reload
-        tag: v0.3.0
+        tag: v0.4.0
     alertmanager:
       alertmanagerSpec:
         storage:
