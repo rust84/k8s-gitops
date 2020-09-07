@@ -10,7 +10,7 @@ spec:
   chart:
     repository: https://helm.releases.hashicorp.com
     name: vault
-    version: 0.6.0
+    version: 0.7.0
   values:
     injector:
       enabled: false
