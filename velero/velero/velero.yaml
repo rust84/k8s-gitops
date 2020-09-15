@@ -14,11 +14,8 @@ spec:
   chart:
     repository: https://vmware-tanzu.github.io/helm-charts
     name: velero
-    version: 2.12.0
+    version: 2.12.13
   values:
-    image:
-      repository: velero/velero
-      tag: v1.5.0
     initContainers:
     - name: velero-plugin-for-aws
       image: velero/velero-plugin-for-aws:v1.0.1
