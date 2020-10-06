@@ -21,7 +21,7 @@ spec:
     fullnameOverride: plex-kube-plex
     image:
       repository: plexinc/pms-docker
-      tag: 1.20.1.3252-a78fef9a9
+      tag: 1.20.2.3402-0fec14d92
     hostNetwork: true
     podAnnotations:
       backup.velero.io/backup-volumes: config
