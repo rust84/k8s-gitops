@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "6.5.2"
+      "version": "7.1.5"
     },
     {
       "type": "panel",
@@ -32,7 +32,7 @@
       "type": "panel",
       "id": "natel-discrete-panel",
       "name": "Discrete",
-      "version": "0.0.9"
+      "version": "0.1.0"
     }
   ],
   "annotations": {
@@ -62,6 +62,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_HOME_ASSISTANT}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -85,10 +92,8 @@
       "lines": true,
       "linewidth": 1,
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "percentage": false,
+      "pluginVersion": "7.1.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -113,7 +118,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "alias": "Upstairs Landing Temperature",
+          "alias": "Front bedroom temperature",
           "groupBy": [
             {
               "params": [
@@ -162,7 +167,7 @@
           ]
         },
         {
-          "alias": "Upstairs Office Temperature",
+          "alias": "Upstairs office temperature",
           "groupBy": [
             {
               "params": [
@@ -453,6 +458,12 @@
       "display": "timeline",
       "expandFromQueryS": 0,
       "extendLastValue": true,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 6,
         "w": 24,
@@ -465,7 +476,6 @@
       "legendSortBy": "-ms",
       "lineColor": "rgba(0,0,0,0.1)",
       "metricNameColor": "rgb(255, 255, 255)",
-      "options": {},
       "rangeMaps": [
         {
           "from": "null",
@@ -685,6 +695,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": "${DS_HOME_ASSISTANT}",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "links": []
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -708,11 +725,9 @@
       "linewidth": 1,
       "links": [],
       "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
       "paceLength": 10,
       "percentage": false,
+      "pluginVersion": "7.1.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -830,7 +845,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 21,
+  "schemaVersion": 26,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -868,5 +883,5 @@
   "timezone": "",
   "title": "Home Assistant",
   "uid": "000000024",
-  "version": 10
+  "version": 1
 }
