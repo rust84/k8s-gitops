@@ -152,7 +152,7 @@ spec:
     grafana:
       image:
         repository: grafana/grafana
-        tag: 7.2.1
+        tag: 7.2.2
       # tolerations:
       # - key: "arm"
       #   operator: "Exists"
