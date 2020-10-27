@@ -9,7 +9,7 @@ metadata:
     fluxcd.io/automated: "false"
     fluxcd.io/tag.chart-image: semver:~12
 spec:
-  releaseName: hass-postgresql
+  releaseName: sonar-postgresql
   helmVersion: v3
   chart:
     repository: https://charts.bitnami.com/bitnami
