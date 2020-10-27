@@ -52,11 +52,11 @@ spec:
     # jvmOpts: "-Djava.net.preferIPv4Stack=true"
     jvmOpts: ""
     resources:
-    limits:
-     memory: 1Gi
-    requests:
-     cpu: 100m
-     memory: 128Mi
+      limits:
+        memory: 2500Mi
+      requests:
+        cpu: 200m
+        memory: 1500Mi
     persistence:
       enabled: true
       storageClass: rook-ceph-block
