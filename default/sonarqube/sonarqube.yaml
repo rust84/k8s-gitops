@@ -59,7 +59,7 @@ spec:
      memory: 128Mi
     persistence:
       enabled: true
-      storageClass: rook-ceph
+      storageClass: rook-ceph-block
       accessMode: ReadWriteOnce
       size: 10Gi
     # A custom sonar.properties file can be provided via dictionary.
