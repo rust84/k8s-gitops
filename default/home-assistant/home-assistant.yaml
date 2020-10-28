@@ -29,6 +29,9 @@ spec:
       enabled: true
       annotations:
         kubernetes.io/ingress.class: "external"
+    service:
+      type: LoadBalancer
+      loadBalancerIP: 10.1.0.155
     tolerations:
     - key: "arm"
       operator: "Exists"
