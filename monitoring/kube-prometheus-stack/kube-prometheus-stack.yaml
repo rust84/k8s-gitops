@@ -2,24 +2,24 @@
 apiVersion: helm.fluxcd.io/v1
 kind: HelmRelease
 metadata:
-  name: prometheus-operator
+  name: kube-prometheus-stack
   namespace: monitoring
   annotations:
     fluxcd.io/ignore: "false"
     fluxcd.io/automated: "true"
     fluxcd.io/tag.grafana: semver:~7
 spec:
-  releaseName: prometheus-operator
+  releaseName: kube-prometheus-stack
   helmVersion: v3
   chart:
     repository: https://prometheus-community.github.io/helm-charts
     name: kube-prometheus-stack
     version: 9.4.10
   values:
-    defaultRules:
-      rules:
-        kubeApiserverAvailability: false
-        kubeApiserver: false
+    # defaultRules:
+    #   rules:
+    #     kubeApiserverAvailability: false
+    #     kubeApiserver: false
     server:
       resources:
         requests:
@@ -29,9 +29,9 @@ spec:
           memory: 2000Mi
     prometheusOperator:
       createCustomResource: true
-      prometheusConfigReloaderImage:
-        repository: quay.io/coreos/prometheus-config-reloader
-        tag: v0.41.1
+      # prometheusConfigReloaderImage:
+      #   repository: quay.io/coreos/prometheus-config-reloader
+      #   tag: v0.41.1
       configmapReloadImage:
         repository: jimmidyson/configmap-reload
         tag: v0.4.0
@@ -47,6 +47,9 @@ spec:
         tolerations:
         - key: "arm"
           operator: "Exists"
+        podMetadata:
+          annotations:
+            backup.velero.io/backup-volumes: alertmanager-kube-prometheus-stack-alertmanager-db
       ingress:
         enabled: true
         annotations:
@@ -166,14 +169,9 @@ spec:
         size: 10Gi
         accessModes:
         - ReadWriteOnce
-      # extraContainers: |
-      #   - name: renderer
-      #     image: grafana/grafana-image-renderer:latest
       env:
         GF_EXPLORE_ENABLED: true
         GF_PANELS_DISABLE_SANITIZE_HTML: true
-        # GF_RENDERING_SERVER_URL: http://localhost:8081/render
-        # GF_RENDERING_CALLBACK_URL: http://localhost:3000/
         GF_LOG_FILTERS: rendering:debug
       ingress:
         enabled: true
@@ -209,13 +207,13 @@ spec:
             url: https://grafana.com/api/dashboards/5342/revisions/3/download
             datasource: Prometheus
           home-assistant:
-            url: https://raw.githubusercontent.com/rust84/k8s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/home_assistant.json
+            url: https://raw.githubusercontent.com/rust84/k8s-gitops/master/monitoring/kube-prometheus-stack/grafana-dashboards/home_assistant.json
             datasource: home_assistant
           velero:
             url: https://grafana.com/api/dashboards/11055/revisions/2/download
             datasource: Prometheus
           blocky:
-            url: https://raw.githubusercontent.com/rust84/k8s-gitops/master/monitoring/prometheus-operator/grafana-dashboards/blocky.json
+            url: https://raw.githubusercontent.com/rust84/k8s-gitops/master/monitoring/kube-prometheus-stack/grafana-dashboards/blocky.json
             datasource: Prometheus
           uptimerobot:
             url: https://raw.githubusercontent.com/lekpamartin/uptimerobot_exporter/master/dashboards/grafana.json
@@ -313,7 +311,9 @@ spec:
         # tolerations:
         # - key: "arm"
         #   operator: "Exists"
-
+        podMetadata:
+          annotations:
+            backup.velero.io/backup-volumes: prometheus-kube-prometheus-stack-prometheus-db
         thanos:
           image: quay.io/thanos/thanos:v0.13.0
           version: v0.13.0
@@ -326,4 +326,4 @@ spec:
         #   - targets:
         #     - pi-upsmon:9102
   valueFileSecrets:
-  - name: "prometheus-operator-helm-values"
+  - name: "kube-prometheus-stack-helm-values"
