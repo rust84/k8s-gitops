@@ -265,9 +265,13 @@ spec:
     kubeEtcd:
       enabled: false
     kubeControllerManager:
-      enabled: false
+      enabled: true
+      endpoints:
+      - 10.20.0.100
     kubeScheduler:
-      enabled: false
+      enabled: true
+      endpoints:
+      - 10.20.0.100
     kubelet:
       serviceMonitor:
         metricRelabelings:
