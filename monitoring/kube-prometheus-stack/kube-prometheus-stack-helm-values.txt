@@ -10,6 +10,31 @@ alertmanager:
   config:
     global:
       slack_api_url: "$SLACK_WEBOOK_URL_ALERT"
+    receivers:
+    - name: 'null'
+    - name: 'slack-monitoring'
+      slack_configs:
+      - channel: '#alerts'
+        send_resolved: true
+        title: '{{ template "slack.title" . }}'
+        icon_emoji: ':prometheus:'
+        color: '{{ template "slack.color" . }}'
+        text: '{{ template "slack.text" . }}'
+        actions:
+        - type: button
+          text: 'Runbook :green_book:'
+          url: '{{ (index .Alerts 0).Annotations.runbook_url }}'
+        - type: button
+          text: 'Query :mag:'
+          url: '{{ (index .Alerts 0).GeneratorURL }}'
+        - type: button
+          text: 'Silence :no_bell:'
+          url: '{{ template "__alert_silence_link" . }}'
+    - name: 'pagerduty'
+      pagerduty_configs:
+        - routing_key: $PD_TOKEN
+          description: |-
+            {{ template "pagerduty.custom.description" . }}
 prometheus:
   ingress:
     hosts: [prom-server.k.$DOMAIN]
