@@ -32,8 +32,8 @@ spec:
         namespaces:
           include:
           - all
-          ignore:                   # List of namespaces to be ignored (omitempty), used only with include: all
-          - 
+          #ignore:                   # List of namespaces to be ignored (omitempty), used only with include: all
+          #- 
                                     # example : include [all], ignore [x,y,z]
         events:                     # List of lifecycle events you want to receive, e.g create, update, delete, error OR all
         - create
@@ -42,8 +42,8 @@ spec:
         namespaces:
           include:
           - all
-          ignore:
-          - 
+          #ignore:
+          #- 
         events:
         - create
         - delete
@@ -52,8 +52,8 @@ spec:
         namespaces:
           include:
           - all
-          ignore:
-          - 
+          #ignore:
+          #- 
         events:
         - create
         - update
@@ -63,8 +63,8 @@ spec:
         namespaces:
           include:
           - all
-          ignore:
-          - 
+          #ignore:
+          #- 
         events:
         - create
         - update
@@ -74,8 +74,8 @@ spec:
         namespaces:
           include:
           - all
-          ignore:
-          - 
+          #ignore:
+          #- 
         events:
         - create
         - delete
@@ -84,8 +84,8 @@ spec:
         namespaces:
           include:
           - all
-          ignore:
-          - 
+          #ignore:
+          #- 
         events:
         - create
         - delete
@@ -94,8 +94,8 @@ spec:
         namespaces:
           include:
           - all
-          ignore:
-          - 
+          #ignore:
+          #- 
         events:
         - create
         - delete
@@ -104,8 +104,8 @@ spec:
         namespaces:
           include:
           - all
-          ignore:
-          - 
+          #ignore:
+          #- 
         events:
         - create
         - delete
@@ -114,8 +114,8 @@ spec:
         namespaces:
           include:
           - all
-          ignore:
-          - 
+          #ignore:
+          #- 
         events:
         - create
         - delete
@@ -124,8 +124,8 @@ spec:
         namespaces:
           include:
           - all
-          ignore:
-          - 
+          #ignore:
+          #- 
         events:
         - create
         - delete
@@ -134,8 +134,8 @@ spec:
         namespaces:
           include:
           - all
-          ignore:
-          - 
+          #ignore:
+          #- 
         events:
         - delete
         - error
@@ -143,8 +143,8 @@ spec:
         namespaces:
           include:
           - all
-          ignore:
-          - 
+          #ignore:
+          #- 
         events:
         - create
         - delete
@@ -153,8 +153,8 @@ spec:
         namespaces:
           include:
           - all
-          ignore:
-          - 
+          #ignore:
+          #- 
         events:
         - create
         - update
@@ -164,8 +164,8 @@ spec:
         namespaces:
           include:
           - all
-          ignore:
-          - 
+          #ignore:
+          #- 
         events:
         - create
         - delete
@@ -174,8 +174,8 @@ spec:
         namespaces:
           include:
           - all
-          ignore:
-          - 
+          #ignore:
+          #- 
         events:
         - create
         - delete
@@ -184,8 +184,8 @@ spec:
         namespaces:
           include:
           - all
-          ignore:
-          - 
+          #ignore:
+          #- 
         events:
         - create
         - delete
@@ -194,8 +194,8 @@ spec:
         namespaces:
           include:
           - all
-          ignore:
-          - 
+          #ignore:
+          #- 
         events:
         - create
         - delete
