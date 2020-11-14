@@ -1,21 +1,34 @@
 ---
-apiVersion: helm.fluxcd.io/v1
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: hydra
+  name: nzbget
   namespace: default
-  annotations:
-    fluxcd.io/automated: "true"
-    fluxcd.io/tag.chart-image: 'regexp:^(v2.[0-9]+\.[0-9]+-ls.*)$'
 spec:
-  releaseName: hydra
-  rollback:
-    enable: false
-  helmVersion: v3
+  interval: 5m
   chart:
-    repository: https://billimek.com/billimek-charts/
-    name: nzbhydra2
-    version: 2.3.0
+    spec:
+      chart: nzbget
+      version: 2.3.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 10m
+  test:
+    enable: false # Enable helm test
+  install:
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  rollback:
+    timeout: 10m
+    recreate: true
+    cleanupOnFail: true
   values:
     image:
       repository: linuxserver/nzbhydra2
@@ -42,5 +55,6 @@ spec:
       requests:
         cpu: 25m
         memory: 350Mi
-  valueFileSecrets:
-  - name: "nzbhydra-helm-values"
+  valuesFrom:
+  - kind: Secret
+    name: "nzbhydra-helm-values"
