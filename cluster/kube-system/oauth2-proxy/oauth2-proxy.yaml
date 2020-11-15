@@ -1,19 +1,34 @@
 ---
-apiVersion: helm.fluxcd.io/v1
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: oauth2-proxy
   namespace: kube-system
-  annotations:
-    fluxcd.io/automated: "true"
-    fluxcd.io/tag.chart-image: semver:~v5
 spec:
-  releaseName: oauth2-proxy
-  helmVersion: v3
+  interval: 5m
   chart:
-    repository: https://kubernetes-charts.storage.googleapis.com/
-    name: oauth2-proxy
-    version: 3.2.2
+    spec:
+      chart: oauth2-proxy
+      version: 3.2.2
+      sourceRef:
+        kind: HelmRepository
+        name: kubernetes-stable-charts
+        namespace: flux-system
+      interval: 10m
+  test:
+    enable: false # Enable helm test
+  install:
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  rollback:
+    timeout: 10m
+    recreate: true
+    cleanupOnFail: true
   values:
     image:
       repository: 'quay.io/pusher/oauth2_proxy'
@@ -24,5 +39,6 @@ spec:
       path: /oauth2
       annotations:
         kubernetes.io/ingress.class: "external"
-  valueFileSecrets:
-  - name: "oauth2-proxy-helm-values"
+  valuesFrom:
+  - kind: Secret
+    name: "oauth2-proxy-helm-values"
