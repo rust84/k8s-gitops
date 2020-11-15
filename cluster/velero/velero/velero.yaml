@@ -1,20 +1,34 @@
 ---
-apiVersion: helm.fluxcd.io/v1
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: velero
   namespace: velero
-  annotations:
-    fluxcd.io/ignore: "false"
-    fluxcd.io/automated: "false"
-    fluxcd.io/tag.chart-image: semver:~v1
 spec:
-  releaseName: velero
-  helmVersion: v3
+  interval: 5m
   chart:
-    repository: https://vmware-tanzu.github.io/helm-charts
-    name: velero
-    version: 2.12.13
+    spec:
+      chart: velero
+      version: ~2.13.6
+      sourceRef:
+        kind: HelmRepository
+        name: vmware-tanzu-charts
+        namespace: flux-system
+      interval: 10m
+  test:
+    enable: false # Enable helm test
+  install:
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  rollback:
+    timeout: 10m
+    recreate: true
+    cleanupOnFail: true
   values:
     initContainers:
     - name: velero-plugin-for-aws
@@ -55,5 +69,6 @@ spec:
         schedule: "0 6 * * *"
         template:
           ttl: "120h"
-  valueFileSecrets:
-  - name: "velero-helm-values"
+  valuesFrom:
+  - kind: Secret
+    name: "velero-helm-values"
