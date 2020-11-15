@@ -27,4 +27,4 @@ spec:
   sourceRef:
     kind: GitRepository
     name: k8s-gitops
-  prune: false
+  prune: true
