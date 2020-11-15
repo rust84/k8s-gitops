@@ -1,16 +1,34 @@
-apiVersion: helm.fluxcd.io/v1
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: vault
   namespace: kube-system
 spec:
-  releaseName: vault
-  rollback:
-    enabled: false
+  interval: 5m
   chart:
-    repository: https://helm.releases.hashicorp.com
-    name: vault
-    version: 0.7.0
+    spec:
+      chart: vault
+      version: 0.7.0
+      sourceRef:
+        kind: HelmRepository
+        name: hashicorp-charts
+        namespace: flux-system
+      interval: 10m
+  test:
+    enable: false # Enable helm test
+  install:
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  rollback:
+    timeout: 10m
+    recreate: true
+    cleanupOnFail: true    
   values:
     injector:
       enabled: false
@@ -61,5 +79,6 @@ spec:
     ui:
       enabled: true
       serviceType: "ClusterIP"
-  valueFileSecrets:
-  - name: "vault-helm-values"
+  valuesFrom:
+  - kind: Secret
+    name: "vault-helm-values"
