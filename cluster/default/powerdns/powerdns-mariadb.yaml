@@ -1,20 +1,34 @@
 ---
-apiVersion: helm.fluxcd.io/v1
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: powerdns-mariadb
   namespace: default
-  annotations:
-    fluxcd.io/ignore: "false"
-    fluxcd.io/automated: "false"
 spec:
-  releaseName: powerdns-mariadb
-  rollback:
-    enable: false
+  interval: 5m
   chart:
-    repository: https://charts.bitnami.com/bitnami
-    name: mariadb
-    version: 7.6.1
+    spec:
+      chart: powerdns-mariadb
+      version: 7.6.1
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami-charts
+        namespace: flux-system
+      interval: 10m
+  test:
+    enable: false # Enable helm test
+  install:
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  rollback:
+    timeout: 10m
+    recreate: true
+    cleanupOnFail: true
   values:
     image:
       repository: bitnami/mariadb
@@ -57,5 +71,6 @@ spec:
     #     cpu: 25m
     #   limits:
     #     memory: 1000Mi
-  valueFileSecrets:
-  - name: "powerdns-mariadb-helm-values"
+  valuesFrom:
+  - kind: Secret
+    name: "powerdns-mariadb-helm-values"

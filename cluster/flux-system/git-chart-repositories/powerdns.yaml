@@ -1,0 +1,11 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: GitRepository
+metadata:
+  name: powerdns
+  namespace: flux-system
+spec:
+  interval: 24h
+  url: https://github.com/rust84/powerdns-helm
+  ref:
+    branch: master

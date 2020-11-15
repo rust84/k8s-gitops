@@ -1,20 +1,34 @@
 ---
-apiVersion: helm.fluxcd.io/v1
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: bitwarden
   namespace: default
-  annotations:
-    fluxcd.io/automated: "true"
-    fluxcd.io/tag.chart-image: semver:~0
 spec:
-  releaseName: bitwarden
-  rollback:
-    enable: true
+  interval: 5m
   chart:
-    repository: https://cdwv.github.io/bitwarden-k8s/
-    name: bitwarden-k8s
-    version: 0.1.5
+    spec:
+      chart: bitwarden-k8s
+      version: 0.1.5
+      sourceRef:
+        kind: HelmRepository
+        name: codeweave-charts
+        namespace: flux-system
+      interval: 10m
+  test:
+    enable: false # Enable helm test
+  install:
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  rollback:
+    timeout: 10m
+    recreate: true
+    cleanupOnFail: true
   values:
     image:
       repository: bitwardenrs/server
@@ -34,5 +48,6 @@ spec:
     tolerations:
     - key: "arm"
       operator: "Exists"
-  valueFileSecrets:
-    - name: "bitwarden-helm-values"
+  valuesFrom:
+  - kind: Secret
+    name: "bitwarden-helm-values"
