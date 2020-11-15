@@ -40,5 +40,5 @@ spec:
       enabled: true
   valuesFrom:
   - kind: Secret
-    name: uptimerobot-helm-values"
+    name: "uptimerobot-helm-values"
   
