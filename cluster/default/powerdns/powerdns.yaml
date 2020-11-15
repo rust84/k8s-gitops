@@ -54,4 +54,4 @@ spec:
         memory: 1000Mi
   valuesFrom:
   - kind: Secret
-    name: "-helm-values"
+    name: "powerdns-helm-values"
