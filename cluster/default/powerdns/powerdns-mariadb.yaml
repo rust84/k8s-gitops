@@ -32,7 +32,7 @@ spec:
   values:
     image:
       repository: bitnami/mariadb
-      tag: 10.3.23-debian-10-r44
+      tag: 10.5.8
     ingress:
       enabled: true
       annotations:
