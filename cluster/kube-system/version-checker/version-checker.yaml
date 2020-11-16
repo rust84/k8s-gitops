@@ -1,24 +1,37 @@
 ---
-apiVersion: helm.fluxcd.io/v1
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: version-checker
   namespace: kube-system
-  annotations:
-    fluxcd.io/ignore: "false"
-    fluxcd.io/automated: "false"
 spec:
-  releaseName: version-checker
+  interval: 5m
   chart:
-    git: https://github.com/jetstack/version-checker
-    ref: master
-    path: deploy/charts/version-checker
-    version: 0.2.0
+    spec:
+      chart: ./deploy/charts/version-checker
+      version: 0.2.1
+      sourceRef:
+        kind: GitRepository
+        name: version-checker
+        namespace: flux-system
+      interval: 10m
+  test:
+    enable: false # Enable helm test
+  install:
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  rollback:
+    timeout: 10m
+    recreate: true
+    cleanupOnFail: true
   values:
-    image:
-      repository: quay.io/jetstack/version-checker
-      tag: v0.2.0
     serviceMonitor:
       enabled: true
-  valueFileSecrets:
-    - name: "version-checker-helm-values"
+  valuesFrom:
+  - kind: Secret
+    name: "version-checker-helm-values"
