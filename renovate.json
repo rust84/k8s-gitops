@@ -1,4 +1,7 @@
 {
+  "enabled": true,
+  "gitAuthor": "Renovate Bot <renovate@whitesourcesoftware.com>",
+  "commitBody": "Signed-off-by: Russell Hall <23284108+rust84@users.noreply.github.com>",
   "helm-values": {
     "fileMatch": ["cluster/.+\\.yaml$"]
   },
@@ -6,7 +9,9 @@
     {
       "datasources": ["docker"],
       "packageNames": ["plexinc/pms-docker"],
-      "versioning": "loose"
+      "versioning": "loose",
+      "excludePackagePatterns": ["^(.*)-arm(v?[0-9]+?)?$"]
     }
-  ]
+  ],
+  "schedule": ["before 8am"]
 }
