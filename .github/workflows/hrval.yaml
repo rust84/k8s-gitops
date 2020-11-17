@@ -54,7 +54,7 @@ jobs:
         id: conftest-stdout
         uses: rust84/hrval-action@master
         with:
-          helmRelease: /cluster
+          helmRelease: /
           helmVersion: v3
           ignoreValues: false
           action: conftest
