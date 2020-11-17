@@ -20,8 +20,8 @@ jobs:
           pattern: '*.sh'
           exclude: './.git/*'
 
-      - name: Lint Yaml
-        uses: ibiqlik/action-yamllint@v1
+      # - name: Lint Yaml
+      #   uses: ibiqlik/action-yamllint@v1
 
       - name: Kubeval
         uses: instrumenta/kubeval-action@master
