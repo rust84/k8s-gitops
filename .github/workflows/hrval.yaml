@@ -14,7 +14,7 @@ jobs:
       - name: Validate Default Helm Releases
         uses: rust84/hrval-action@master
         with:
-          helmRelease: ./default
+          helmRelease: ./cluster/default
           helmVersion: v3
           kubernetesVersion: 1.18.0
           ignoreValues: true
@@ -23,7 +23,7 @@ jobs:
       - name: Validate Monitoring Helm Releases
         uses: rust84/hrval-action@master
         with:
-          helmRelease: ./monitoring
+          helmRelease: ./cluster/monitoring
           helmVersion: v3
           kubernetesVersion: 1.18.0
           ignoreValues: true
@@ -41,7 +41,7 @@ jobs:
         id: opa
         run: |
           result=$(docker run --rm --workdir /github/workspace \
-            -v $(pwd):/github/workspace \
+            -v $(pwd)/cluster:/github/workspace \
             openpolicyagent/opa:0.17.2 \
             test security-policies/policies/ -v || exit 0 )
           result="${result//'%'/'%25'}"
@@ -54,7 +54,7 @@ jobs:
         id: conftest-stdout
         uses: rust84/hrval-action@master
         with:
-          helmRelease: /
+          helmRelease: /cluster
           helmVersion: v3
           ignoreValues: false
           action: conftest
