@@ -29,6 +29,9 @@ spec:
     timeout: 10m
     recreate: true
     cleanupOnFail: true
+  dependsOn:
+    - name: etcd
+      namespace: kube-system
   values:
     image:
       repository: bitnami/external-dns
