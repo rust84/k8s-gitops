@@ -36,7 +36,7 @@ spec:
   values:
     rbac:
       create: true
-    replicaCount: 1
+    replicaCount: 2
     isClusterService: false
     serviceType: LoadBalancer
     service:
