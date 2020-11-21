@@ -30,7 +30,7 @@ spec:
     recreate: true
   values:
     statefulset:
-      replicaCount: 2
+      replicaCount: 1
     auth:
       rbac:
         enabled: false
