@@ -207,6 +207,9 @@ spec:
           ceph-pools:
             url: https://grafana.com/api/dashboards/5342/revisions/3/download
             datasource: Prometheus
+          vernemq:
+            url: https://raw.githubusercontent.com/vernemq/vernemq/master/metrics_scripts/grafana/VerneMQ%20Node%20Metrics.json
+            datasource: Prometheus
           home-assistant:
             url: https://raw.githubusercontent.com/rust84/k8s-gitops/master/monitoring/kube-prometheus-stack/grafana-dashboards/home_assistant.json
             datasource: home_assistant
