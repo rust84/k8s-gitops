@@ -32,7 +32,7 @@ spec:
   values:
     image:
       repository: spx01/blocky
-      tag: v0.10
+      tag: v0.11
     replicas: 2
     timeZone: "Europe/London"
 
