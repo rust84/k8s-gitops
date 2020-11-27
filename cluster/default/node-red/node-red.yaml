@@ -32,7 +32,7 @@ spec:
   values:
     image:
       repository: nodered/node-red
-      tag: 1.2.3-12-minimal
+      tag: 1.2.6-12-minimal
     persistence:
       enabled: true
       storageClass: rook-ceph-block
