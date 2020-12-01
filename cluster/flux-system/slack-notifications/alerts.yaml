@@ -12,7 +12,7 @@ spec:
   - kind: Kustomization
     name: k8s-gitops
   providerRef:
-    name: slack
+    name: discord
   suspend: false
 ---
 apiVersion: notification.toolkit.fluxcd.io/v1beta1
@@ -22,7 +22,7 @@ metadata:
   namespace: flux-system
 spec:
   providerRef:
-    name: slack
+    name: discord
   eventSeverity: error
   eventSources:
     - kind: HelmRelease
