@@ -35,7 +35,7 @@ spec:
       tag: 5.14.23
     persistence:
       enabled: true
-      size: 20Gi
+      size: 30Gi
       storageClass: rook-ceph-block
     timezone: "Europe/London"
     runAsRoot: false
