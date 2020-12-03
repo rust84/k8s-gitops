@@ -59,6 +59,6 @@
       "versioning": "loose",
       "excludePackagePatterns": ["^(.*)-arm(v?[0-9]+?)?$"]
     }
-  ],
+  ]//,
   //"schedule": ["before 8am"]
 }
