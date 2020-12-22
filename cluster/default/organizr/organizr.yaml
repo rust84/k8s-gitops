@@ -8,6 +8,7 @@ spec:
   interval: 5m
   chart:
     spec:
+      # renovate: registryUrl=https://rust84.github.io/helmcharts/
       chart: organizr
       version: 0.1.4
       sourceRef:

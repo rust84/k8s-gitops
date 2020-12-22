@@ -8,6 +8,7 @@ spec:
   interval: 5m
   chart:
     spec:
+      # renovate: registryUrl=https://cdwv.github.io/bitwarden-k8s/
       chart: bitwarden-k8s
       version: 0.1.5
       sourceRef:
