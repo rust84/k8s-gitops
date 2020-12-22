@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://charts.helm.sh/stable
       chart: minio
-      version: 5.0.31
+      version: 5.0.33
       sourceRef:
         kind: HelmRepository
         name: kubernetes-stable-charts
