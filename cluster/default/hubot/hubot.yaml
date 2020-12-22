@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://charts.helm.sh/stable
       chart: hubot
-      version: 1.0.1
+      version: 1.0.4
       sourceRef:
         kind: HelmRepository
         name: kubernetes-stable-charts
