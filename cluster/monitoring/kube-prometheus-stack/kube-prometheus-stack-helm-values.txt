@@ -9,7 +9,7 @@ alertmanager:
       nginx.ingress.kubernetes.io/auth-signin: https://auth.$DOMAIN/oauth2/start
   config:
     global:
-      slack_api_url: "$SLACK_WEBOOK_URL_ALERT"
+      slack_api_url: "$DISCORD_WEBOOK_URL_ALERT"
     receivers:
     - name: 'null'
     - name: 'slack-monitoring'
