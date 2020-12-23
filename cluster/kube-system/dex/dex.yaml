@@ -30,8 +30,9 @@ spec:
     recreate: true
     cleanupOnFail: true
   values:
-    repository: raspbernetes/dex
-    tag: v2.25.0
+    image:
+      repository: raspbernetes/dex
+      tag: v2.25.0
     ingress:
       enabled: true
       annotations:
