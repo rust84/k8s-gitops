@@ -4,7 +4,7 @@ ingress:
   tls:
     - hosts:
       - dex.$DOMAIN
-config:
+config: |-
   issuer: "https://dex.$DOMAIN"
 
   storage:
