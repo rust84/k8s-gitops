@@ -46,10 +46,18 @@ spec:
           -  10.1.0.0-10.1.0.254
           avoid-buggy-ips: true
     controller:
+      image:
+        registry: docker.io
+        repository: metallb/controller
+        tag: v0.9.5
       tolerations:
       - key: "arm"
         operator: "Exists"
     speaker:
+      image:
+        registry: docker.io
+        repository: metallb/speaker
+        tag: v0.9.5
       tolerations:
       - key: "arm"
         operator: "Exists"
