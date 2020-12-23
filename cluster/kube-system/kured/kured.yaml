@@ -10,10 +10,10 @@ spec:
     spec:
       # renovate: registryUrl=https://charts.helm.sh/stable
       chart: kured
-      version: 1.6.0
+      version: 2.2.1
       sourceRef:
         kind: HelmRepository
-        name: kubernetes-stable-charts
+        name: weaveworks-kured-charts
         namespace: flux-system
       interval: 10m
   test:
@@ -34,9 +34,15 @@ spec:
     image:
       repository: raspbernetes/kured
       tag: 1.5.1
+    configuration:
+      startTime: "0:00"
+      endTime: "4:00"
+      timeZone: "Europe/London"
     tolerations:
     - key: "arm"
       operator: "Exists"
+    metrics:
+      create: true
   valuesFrom:
   - kind: Secret
     name: "kured-helm-values"
