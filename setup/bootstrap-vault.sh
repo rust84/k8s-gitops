@@ -189,7 +189,6 @@ loadSecretsToVault() {
   kvault "cluster/default/node-red/node-red-helm-values.txt"
   kvault "cluster/default/nzbget/nzbget-helm-values.txt"
   kvault "cluster/default/plex/plex-helm-values.txt"
-  kvault "cluster/default/rabbitmq/rabbitmq-helm-values.txt"
   kvault "cluster/default/radarr/radarr-helm-values.txt"
   kvault "cluster/default/sonarr/sonarr-helm-values.txt"
   kvault "cluster/default/unifi/unifi-helm-values.txt"
@@ -198,9 +197,6 @@ loadSecretsToVault() {
   kvault "cluster/default/ombi/ombi-helm-values.txt"
   kvault "cluster/default/organizr/organizr-helm-values.txt"
   kvault "cluster/default/tautulli/tautulli-helm-values.txt"
-  kvault "cluster/default/powerdns/powerdns-mariadb-helm-values.txt"
-  kvault "cluster/default/powerdns/powerdns-admin-helm-values.txt"
-  kvault "cluster/default/powerdns/powerdns-helm-values.txt"
   kvault "cluster/logs/loki/loki-helm-values.txt"
 }
 
