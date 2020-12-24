@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: ombi
-      version: 2.2.0
+      version: 6.2.1
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -32,15 +32,13 @@ spec:
     cleanupOnFail: true
   values:
     image:
-      repository: linuxserver/ombi
-      tag: v4.0.710-ls19
-    strategyType: Recreate
-    timezone: Europe/London
-    puid: 1000
-    pgid: 1000
-    service:
-      type: LoadBalancer
-      loadBalancerIP: 10.1.0.115
+      repository: k8sathome/ombi
+      tag: v4.0.779
+      pullPolicy: Always
+    env:
+      TZ: Europe/London
+    strategy:
+      type: Recreate
     ingress:
       enabled: true
       annotations:
