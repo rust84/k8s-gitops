@@ -37,8 +37,6 @@ spec:
       pullPolicy: Always
     env:
       TZ: Europe/London
-      PUID: 1000
-      PGID: 1000
     strategy:
       type: Recreate
     ingress:
@@ -56,6 +54,10 @@ spec:
         accessMode: ReadWriteOnce
         size: 1Gi
         storageClass: rook-ceph-block
+    podSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
     resources:
       limits:
         memory: 256Mi

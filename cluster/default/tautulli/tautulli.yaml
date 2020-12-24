@@ -51,6 +51,10 @@ spec:
         storageClass: rook-ceph-block
         accessMode: ReadWriteOnce
         size: 1Gi
+    podSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
     resources:
       limits:
         memory: 450Mi
