@@ -37,6 +37,8 @@ spec:
       pullPolicy: Always
     env:
       TZ: Europe/London
+      PUID: 1000
+      PGID: 1000
     strategy:
       type: Recreate
     ingress:
