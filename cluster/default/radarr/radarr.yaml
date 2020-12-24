@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: radarr
-      version: 4.1.1
+      version: 8.2.1
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -32,8 +32,8 @@ spec:
     cleanupOnFail: true
   values:
     image:
-      repository: linuxserver/radarr
-      tag: 3.0.0.4075-ls29
+      repository: k8sathome/radarr
+      tag: v3.0.1.4259
     ingress:
       enabled: true
       annotations:
@@ -49,6 +49,10 @@ spec:
       media:
         enabled: true
         existingClaim: nfs-media-pvc
+    podSecurityContext:
+      runAsUser: 1001
+      runAsGroup: 1001
+      fsGroup: 1001
     resources:
       requests:
         memory: 350Mi
