@@ -37,9 +37,11 @@ spec:
     env:
       TZ: "Europe/London"
     persistence:
-      enabled: true
-      size: 10Gi
-      storageClass: "rook-ceph-block"
+      config:
+        enabled: true
+        storageClass: "rook-ceph-block"
+        accessMode: ReadWriteOnce
+        size: 10Gi
     ingress:
       enabled: true
       annotations:
