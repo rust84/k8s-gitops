@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: tautulli
-      version: 2.2.0
+      version: 6.1.1
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -32,16 +32,17 @@ spec:
     cleanupOnFail: true
   values:
     image:
-      repository: linuxserver/tautulli
-      tag: v2.6.1-ls15
-    puid: 1000
-    pgid: 1000
-    timezone: Europe/London
+      repository: k8sathome/tautulli
+      tag: v2.6.4
+      pullPolicy: Always
+    env:
+      TZ: "Europe/London"
     ingress:
       enabled: true
       annotations:
         kubernetes.io/ingress.class: "nginx"
-    strategyType: Recreate
+    strategy: 
+      type: Recreate
     podAnnotations:
       backup.velero.io/backup-volumes: config
     persistence:
