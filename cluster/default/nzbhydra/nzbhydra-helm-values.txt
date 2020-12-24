@@ -1,5 +1,9 @@
 ingress:
-  hosts: [hydra.k.$DOMAIN]
+  hosts:
+  - host: hydra.$DOMAIN
+    paths:
+    - path: /
+      pathType: Prefix
   tls:
   - hosts:
-    - hydra.k.$DOMAIN
+    - "hydra.$DOMAIN"

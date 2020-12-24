@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: nzbhydra2
-      version: 2.3.0
+      version: 5.1.1
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -32,12 +32,13 @@ spec:
     cleanupOnFail: true
   values:
     image:
-      repository: linuxserver/nzbhydra2
-      tag: v2.29.1-ls17
-    strategyType: Recreate
-    timezone: "Europe/London"
-    puid: 1000
-    pgid: 1000
+      repository: k8sathome/nzbhydra2
+      tag: v3.8.0
+      pullPolicy: Always
+    strategy: 
+      type: Recreate
+    env:
+      TZ: Europe/London
     ingress:
       enabled: true
       annotations:
@@ -50,6 +51,10 @@ spec:
         accessMode: ReadWriteOnce
         size: 1Gi
         storageClass: rook-ceph-block
+    podSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
     resources:
       limits:
         memory: 500Mi
