@@ -1,5 +1,9 @@
 ingress:
-  hosts: [nzbget.k.$DOMAIN]
+  hosts:
+  - host: nzbget.$DOMAIN
+    paths:
+    - path: /
+      pathType: Prefix
   tls:
   - hosts:
-    - nzbget.k.$DOMAIN
+    - "nzbget.$DOMAIN"
