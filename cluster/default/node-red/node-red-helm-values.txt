@@ -1,8 +1,12 @@
 ingress:
-  hosts: [node-red.k.$DOMAIN]
+  hosts:
+  - host: node-red.$DOMAIN
+    paths:
+    - path: /
+      pathType: Prefix
   tls:
   - hosts:
-    - node-red.k.$DOMAIN
+    - "node-red.$DOMAIN"
   annotations:
     nginx.ingress.kubernetes.io/auth-url: "https://auth.$DOMAIN/oauth2/auth"
     nginx.ingress.kubernetes.io/auth-signin: https://auth.$DOMAIN/oauth2/start

@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: node-red
-      version: 2.0.1
+      version: 5.2.1
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -34,27 +34,33 @@ spec:
     image:
       repository: nodered/node-red
       tag: 1.2.6-12-minimal
-    persistence:
-      enabled: true
-      storageClass: rook-ceph-block
-    tolerations:
-    - key: "arm"
-      operator: "Exists"
-    flows: "flows.json"
+    env:
+      TZ: "Europe/London"
+      FLOWS: "flows.json"
+      NODE_RED_ENABLE_PROJECTS: "true"
+      NODE_RED_ENABLE_SAFE_MODE: "false"
     ingress:
       enabled: true
       annotations:
         kubernetes.io/ingress.class: "nginx"
+    persistence:
+      data:
+        enabled: true
+        mountPath: /data
+        storageClass: rook-ceph-block
+        accessMode: ReadWriteOnce
+        size: "5Gi"
     podAnnotations:
       backup.velero.io/backup-volumes: data
-    timezone: "Europe/London"
-    enableProjects: true
     resources:
       requests:
-        memory: 350Mi
+        memory: 250Mi
         cpu: 25m
       limits:
         memory: 500Mi
+    tolerations:
+    - key: "arm"
+      operator: "Exists"
   valuesFrom:
   - kind: Secret
     name: "node-red-helm-values"

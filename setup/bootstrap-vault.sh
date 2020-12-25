@@ -184,7 +184,6 @@ loadSecretsToVault() {
   kvault "monitoring/thanos/thanos-helm-values.txt"
   kvault "default/goldilocks/goldilocks-helm-values.txt"
   kvault "default/home-assistant/home-assistant-helm-values.txt"
-  kvault "default/home-assistant/postgresql-helm-values.txt"
   kvault "default/minio/minio-helm-values.txt"
   kvault "default/node-red/node-red-helm-values.txt"
   kvault "default/nzbget/nzbget-helm-values.txt"
