@@ -34,9 +34,6 @@ spec:
     - name: etcd
       namespace: kube-system
   values:
-    image:
-      repository: bitnami/external-dns
-      tag: 0.7.5
     provider: coredns
     coredns:
       etcdEndpoints: http://etcd:2379
