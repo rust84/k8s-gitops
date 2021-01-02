@@ -33,7 +33,7 @@ spec:
   values:
     image:
       repository: k8sathome/ombi
-      tag: v4.0.779
+      tag: v4.0.792
       pullPolicy: Always
     env:
       TZ: Europe/London
