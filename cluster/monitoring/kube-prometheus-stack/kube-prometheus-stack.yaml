@@ -342,7 +342,7 @@ spec:
               storageClassName: rook-ceph-block
               resources:
                 requests:
-                  storage: 100Gi
+                  storage: 10Gi
         # tolerations:
         # - key: "arm"
         #   operator: "Exists"
