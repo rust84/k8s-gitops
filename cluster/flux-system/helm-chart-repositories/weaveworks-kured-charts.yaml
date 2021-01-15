@@ -5,6 +5,6 @@ metadata:
   name: weaveworks-kured-charts
   namespace: flux-system
 spec:
-  interval: 24h
+  interval: 10m
   url: https://weaveworks.github.io/kured
   timeout: 3m
