@@ -8,12 +8,12 @@ spec:
   interval: 5m
   chart:
     spec:
-      # renovate: registryUrl=https://rust84.github.io/helmcharts/
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: organizr
-      version: 0.1.4
+      version: 3.3.31
       sourceRef:
         kind: HelmRepository
-        name: rust84-charts
+        name: k8s-at-home-charts
         namespace: flux-system
       interval: 10m
   test:
@@ -34,6 +34,8 @@ spec:
     image:
       repository: organizr/organizr
       tag: latest
+    env:
+      TZ: "Europe/London"
     ingress:
       enabled: true
       annotations:
@@ -43,18 +45,22 @@ spec:
     persistence:
       config:
         enabled: true
-        accessMode: ReadWriteOnce
+        storageClass: "rook-ceph-block"
         size: 1Gi
-        storageClass: rook-ceph-block
+    podSecurityContext:
+      runAsUser: 911
+      runAsGroup: 911
+      fsGroup: 911
     resources:
-      limits:
-        memory: 262144k
       requests:
+        memory: 250Mi
         cpu: 25m
-        memory: 262144k
+      limits:
+        memory: 350Mi
     tolerations:
     - key: "arm"
       operator: "Exists"
   valuesFrom:
   - kind: Secret
     name: "organizr-helm-values"
+    

@@ -1,6 +1,9 @@
 ingress:
-  path: /
-  hosts: [o.k.$DOMAIN]
+  hosts:
+  - host: o.k.$DOMAIN
+    paths:
+    - path: /
+      pathType: Prefix
   tls:
   - hosts:
-    - o.k.$DOMAIN
+    - "o.k.$DOMAIN"
