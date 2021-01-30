@@ -47,10 +47,10 @@ spec:
         enabled: true
         storageClass: "rook-ceph-block"
         size: 1Gi
-    podSecurityContext:
-      runAsUser: 911
-      runAsGroup: 911
-      fsGroup: 911
+    # podSecurityContext:
+    #   runAsUser: 911
+    #   runAsGroup: 911
+    #   fsGroup: 911
     resources:
       requests:
         memory: 250Mi
