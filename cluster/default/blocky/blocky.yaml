@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: blocky
-      version: 4.1.1
+      version: 5.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -38,7 +38,7 @@ spec:
     timeZone: "Europe/London"
 
     # blocky configuration
-    config:
+    config: |
       upstream:
         externalResolvers:
         - https://dns1.nextdns.io/dd8d64
