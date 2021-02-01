@@ -33,7 +33,7 @@ spec:
   values:
     image:
       repository: k8sathome/nzbhydra2
-      tag: v3.11.1
+      tag: v3.11.3
       pullPolicy: Always
     strategy: 
       type: Recreate
