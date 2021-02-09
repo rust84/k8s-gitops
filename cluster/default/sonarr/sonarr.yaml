@@ -33,7 +33,7 @@ spec:
   values:
     image:
       repository: k8sathome/sonarr
-      tag: v3.0.4.1113
+      tag: v3.0.4.1119
     env:
       TZ: "Europe/London"
     ingress:
