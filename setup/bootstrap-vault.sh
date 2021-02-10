@@ -193,7 +193,7 @@ loadSecretsToVault() {
   kvault "default/unifi/unifi-helm-values.txt"
   kvault "velero/velero/velero-helm-values.txt"
   kvault "default/nzbhydra/nzbhydra-helm-values.txt"
-  kvault "default/ombi/ombi-helm-values.txt"
+  kvault "default/overseer/overseer-helm-values.txt"
   kvault "default/organizr/organizr-helm-values.txt"
   kvault "default/tautulli/tautulli-helm-values.txt"
   kvault "logs/loki/loki-helm-values.txt"

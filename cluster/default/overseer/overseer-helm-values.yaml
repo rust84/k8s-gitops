@@ -1,0 +1,10 @@
+apiVersion: ricoberger.de/v1alpha1
+kind: VaultSecret
+metadata:
+  name: overseer-helm-values
+  namespace: default
+spec:
+  keys:
+    - values.yaml
+  path: secrets/default/overseer/overseer-helm-values
+  type: Opaque
