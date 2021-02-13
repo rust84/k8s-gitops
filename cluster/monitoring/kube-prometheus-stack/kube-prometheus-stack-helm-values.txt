@@ -44,28 +44,3 @@ prometheus:
     annotations:
       nginx.ingress.kubernetes.io/auth-url: "https://auth.$DOMAIN/oauth2/auth"
       nginx.ingress.kubernetes.io/auth-signin: https://auth.$DOMAIN/oauth2/start
-grafana:
-  ingress:
-    hosts: [grafana.$DOMAIN]
-    tls:
-    - hosts:
-      - grafana.$DOMAIN
-  adminPassword: "$GRAFANA_PASSWORD"
-  grafana.ini:
-    server:
-      root_url: https://grafana.${DOMAIN}
-    auth.basic:
-      disable_login_form: true
-    auth.generic_oauth:
-      enabled: true
-      allow_sign_up: true
-      name: Dex
-      client_id: grafana
-      client_secret: $DEX_GRAFANA_AUTHENTICATOR_CLIENT_SECRET
-      scopes: openid profile email groups
-      auth_url: https://dex.${DOMAIN}/auth
-      token_url: https://dex.${DOMAIN}/token
-      api_url: https://dex.${DOMAIN}/userinfo
-    auth.generic_oauth.group_mapping:
-      role_attribute_path: "contains(groups[*], 'russhome:cluster-admin') && 'Admin' || 'Viewer'"
-      org_id: 1
