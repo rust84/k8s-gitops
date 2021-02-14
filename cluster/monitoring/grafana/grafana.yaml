@@ -128,9 +128,13 @@ spec:
           url: https://raw.githubusercontent.com/fluxcd/toolkit/main/manifests/monitoring/grafana/dashboards/control-plane.json
           datasource: Prometheus
     sidecar:
+      dashboards:
+        enabled: true
+        searchNamespace: ALL
       datasources:
         enabled: true
         defaultDatasourceEnabled: false
+        searchNamespace: ALL
     datasources:
       datasources.yaml:
         apiVersion: 1
