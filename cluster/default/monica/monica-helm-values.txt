@@ -1,0 +1,22 @@
+ingress:
+  enabled: true
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/auth-url: "https://auth.$DOMAIN/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: https://auth.$DOMAIN/oauth2/start
+  hosts:
+  - host: monica.$DOMAIN
+    paths:
+    - path: /
+      pathType: Prefix
+  tls:
+  - hosts:
+    - monica.$DOMAIN
+env:
+  APP_URL: https://monica.$DOMAIN
+  APP_KEY: $MONICA_APP_KEY
+  DB_PASSWORD: $MONICA_DB_PASSWORD
+mariadb:
+  auth:
+    password: $MONICA_DB_PASSWORD
+    rootPassword: $MONICA_DB_ROOTPASSWORD
