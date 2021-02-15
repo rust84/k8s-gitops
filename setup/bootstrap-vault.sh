@@ -197,6 +197,7 @@ loadSecretsToVault() {
   kvault "default/overseerr/overseerr-helm-values.txt"
   kvault "default/organizr/organizr-helm-values.txt"
   kvault "default/tautulli/tautulli-helm-values.txt"
+  kvault "default/monica/monica-helm-values.txt"
   kvault "logs/loki/loki-helm-values.txt"
 }
 
