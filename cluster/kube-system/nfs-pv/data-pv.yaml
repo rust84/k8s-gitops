@@ -10,7 +10,7 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: 192.168.1.56
+    server: 10.20.0.51
     path: "/volume1/data"
 ---
 apiVersion: v1
