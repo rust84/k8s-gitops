@@ -2,14 +2,14 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: nfs-client-provisioner
+  name: nfs-external-provisioner
   namespace: kube-system
 spec:
   interval: 5m
   chart:
     spec:
       # renovate: registryUrl=https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
-      chart: nfs-client-provisioner
+      chart: nfs-subdir-external-provisioner
       version: 4.0.0
       sourceRef:
         kind: HelmRepository
