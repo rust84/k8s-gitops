@@ -31,8 +31,8 @@ spec:
     cleanupOnFail: true
   values:
     image:
-      repository: raspbernetes/dex
-      tag: v2.25.0
+      repository: dexidp/dex
+      tag: v2.27.0
     ingress:
       enabled: true
       annotations:
