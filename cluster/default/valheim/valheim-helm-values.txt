@@ -1,0 +1,4 @@
+valheimServer:
+  serverName: $VALHEIM_SERVER_NAME
+  worldName: $VALHEIM_WORLD_NAME
+  serverPass: $VALHEIM_SERVER_PASS

@@ -1,0 +1,55 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: valheim-server
+  namespace: kube-system
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: valheim
+      version: 1.0.1
+      sourceRef:
+        kind: GitRepository
+        name: valheim-charts
+        namespace: flux-system
+      interval: 10m
+  test:
+    enable: false # Enable helm test
+  install:
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  rollback:
+    timeout: 10m
+    recreate: true
+    cleanupOnFail: true
+  values:
+    image: lloesche/valheim-server
+    imageTag: latest
+    replicaCount: 1
+    resources:
+      requests:
+        memory: 512Mi
+        cpu: 500m
+    valheimServer:
+      serverPort: 2456
+      serverPublic: 0
+      updateInterval: 10800 # every 3 hours
+      backupsInterval: 43200 # every 12 hours
+      backupsDirectory: /config/backups
+      backupsMaxAge: 3 # 3 days
+      serviceType: LoadBalancer
+    persistence:
+      config:
+        enabled: true
+        size: 2Gi
+      claimName: rook-ceph-block
+  valuesFrom:
+  - kind: Secret
+    name: "valheim-helm-values"
