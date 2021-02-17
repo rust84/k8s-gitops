@@ -49,7 +49,7 @@ spec:
       config:
         enabled: true
         size: 2Gi
-      claimName: rook-ceph-block
+        storageClassName: rook-ceph-block
   valuesFrom:
   - kind: Secret
     name: "valheim-helm-values"
