@@ -39,7 +39,7 @@ spec:
         cpu: 500m
     valheimServer:
       serverPort: 2456
-      serverPublic: 0
+      serverPublic: 1
       updateInterval: 10800 # every 3 hours
       backupsInterval: 43200 # every 12 hours
       backupsDirectory: /config/backups
