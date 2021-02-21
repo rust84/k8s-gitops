@@ -36,12 +36,6 @@ spec:
       tag: latest
     strategy:
       type: Recreate
-    env:
-      SERVER_PORT: 2456
-      SERVER_PUBLIC: 1
-      UPDATE_INTERVAL: 10800 # every 3 hours
-      BACKUPS_INTERVAL: 43200 # every 12 hours
-      BACKUPS_MAX_AGE: 3
     podAnnotations:
       backup.velero.io/backup-volumes: config
     service:
