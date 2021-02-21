@@ -68,3 +68,34 @@ spec:
         enabled: true
         storageClass: rook-ceph-block
         size: 2Gi
+    probes:
+      liveness:
+        custom: true
+        enabled: true
+        spec:
+          failureThreshold: 3
+          tcpSocket:
+            port: 2456
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+      readiness:
+        custom: true
+        enabled: true
+        spec:
+          failureThreshold: 3
+          tcpSocket:
+            port: 2456
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+      startup:
+        custom: true
+        enabled: true
+        spec:
+          failureThreshold: 30
+          tcpSocket:
+            port: 2456
+          initialDelaySeconds: 0
+          periodSeconds: 5
+          timeoutSeconds: 1
