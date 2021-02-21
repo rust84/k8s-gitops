@@ -8,11 +8,11 @@ spec:
   interval: 5m
   chart:
     spec:
-      chart: .
-      version: 1.0.1
+      chart: valheim
+      version: 2.0.0
       sourceRef:
-        kind: GitRepository
-        name: valheim-charts
+        kind: HelmRepository
+        name: rust84-charts
         namespace: flux-system
       interval: 10m
   test:
@@ -30,26 +30,45 @@ spec:
     recreate: true
     cleanupOnFail: true
   values:
-    image: lloesche/valheim-server
-    imageTag: latest
-    replicaCount: 1
-    resources:
-      requests:
-        memory: 512Mi
-        cpu: 500m
-    valheimServer:
-      serverPort: 2456
-      serverPublic: 1
-      updateInterval: 10800 # every 3 hours
-      backupsInterval: 43200 # every 12 hours
-      backupsDirectory: /config/backups
-      backupsMaxAge: 3 # 3 days
-      serviceType: LoadBalancer
+    image:
+      repository: lloesche/valheim-server
+      pullPolicy: IfNotPresent
+      tag: latest
+    strategy:
+      type: Recreate
+    env:
+      SERVER_PORT: 2456
+      SERVER_PUBLIC: 1
+      UPDATE_INTERVAL: 10800 # every 3 hours
+      BACKUPS_INTERVAL: 43200 # every 12 hours
+      BACKUPS_MAX_AGE: 3
+    podAnnotations:
+      backup.velero.io/backup-volumes: config
+    service:
+      type: LoadBalancer
+      externalTrafficPolicy: Local
+      loadBalancerIP: 10.1.0.168
+      port: 
+        port: 2456
+        protocol: UDP
+      additionalPorts:
+      - name: valheim-2
+        port: 2457
+        protocol: UDP
+        targetPort: 2457
+      - name: valheim-3
+        port: 2458
+        protocol: UDP
+        targetPort: 2458
     persistence:
       config:
         enabled: true
+        storageClass: rook-ceph-block
         size: 2Gi
-        storageClassName: rook-ceph-block
-  valuesFrom:
-  - kind: Secret
-    name: "valheim-helm-values"
+    probes:
+      liveness:
+        enabled: false
+      readiness:
+        enabled: false
+      startup:
+        enabled: false
