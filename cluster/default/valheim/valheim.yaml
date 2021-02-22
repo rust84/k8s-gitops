@@ -66,6 +66,12 @@ spec:
         enabled: false
       startup:
         enabled: false
+    resources:
+      requests:
+        memory: 2Gi
+        cpu: 250m
+      limits:
+        memory: 6Gi
   valuesFrom:
   - kind: Secret
     name: "valheim-helm-values"
