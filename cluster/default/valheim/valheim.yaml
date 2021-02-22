@@ -9,10 +9,10 @@ spec:
   chart:
     spec:
       chart: valheim
-      version: 2.0.1
+      version: 1.0.0
       sourceRef:
         kind: HelmRepository
-        name: rust84-charts
+        name: k8s-at-home-charts
         namespace: flux-system
       interval: 10m
   test:
