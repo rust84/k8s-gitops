@@ -53,7 +53,7 @@ spec:
       #   tag: v0.41.1
       configmapReloadImage:
         repository: jimmidyson/configmap-reload
-        tag: v0.4.0
+        tag: v0.5.0
     alertmanager:
       alertmanagerSpec:
         storage:
