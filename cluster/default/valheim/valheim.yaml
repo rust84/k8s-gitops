@@ -33,7 +33,7 @@ spec:
   values:
     image:
       repository: lloesche/valheim-server
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
       tag: latest
     strategy:
       type: Recreate
