@@ -7,3 +7,4 @@ env:
   UPDATE_INTERVAL: 10800 # every 3 hours
   BACKUPS_INTERVAL: 43200 # every 12 hours
   BACKUPS_MAX_AGE: 3
+  STATUS_HTTP: true
