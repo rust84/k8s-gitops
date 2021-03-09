@@ -68,35 +68,22 @@ spec:
         enabled: true
         custom: true
         spec:
-          failureThreshold: 5
+          failureThreshold: 3
           exec:
             command:
             - test "$(jq '.error' /opt/valheim/htdocs/status.json)" = null
-          initialDelaySeconds: 30
           periodSeconds: 10
-          timeoutSeconds: 10
       readiness:
-        enabled: true
-        custom: true
-        spec:
-          failureThreshold: 5
-          httpGet:
-            path: /status.json
-            port: http
-          initialDelaySeconds: 30
-          periodSeconds: 10
-          timeoutSeconds: 10
+        enabled: false
       startup:
         enabled: true
         custom: true
         spec:
-          failureThreshold: 5
+          failureThreshold: 30
           httpGet:
             path: /status.json
             port: http
-          initialDelaySeconds: 30
           periodSeconds: 10
-          timeoutSeconds: 10
     resources:
       requests:
         memory: 2Gi
