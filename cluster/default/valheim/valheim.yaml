@@ -44,9 +44,12 @@ spec:
       externalTrafficPolicy: Local
       loadBalancerIP: 10.1.0.168
       port: 
+        port: 80
+      additionalPorts:
+      - name: valheim-1
         port: 2456
         protocol: UDP
-      additionalPorts:
+        targetPort: 2456
       - name: valheim-2
         port: 2457
         protocol: UDP
