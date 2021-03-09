@@ -62,11 +62,47 @@ spec:
         size: 2Gi
     probes:
       liveness:
-        enabled: false
+        enabled: true
+        custom: true
+        spec:
+          failureThreshold: 5
+          httpGet:
+            path: /status.json
+            port: http
+            httpHeaders:
+              - name: Accept
+                value: application/json
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 10
       readiness:
-        enabled: false
+        enabled: true
+        custom: true
+        spec:
+          failureThreshold: 5
+          httpGet:
+            path: /status.json
+            port: http
+            httpHeaders:
+              - name: Accept
+                value: application/json
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 10
       startup:
-        enabled: false
+        enabled: true
+        custom: true
+        spec:
+          failureThreshold: 5
+          httpGet:
+            path: /status.json
+            port: http
+            httpHeaders:
+              - name: Accept
+                value: application/json
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 10
     resources:
       requests:
         memory: 2Gi
