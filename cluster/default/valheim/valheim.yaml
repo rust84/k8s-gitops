@@ -66,12 +66,9 @@ spec:
         custom: true
         spec:
           failureThreshold: 5
-          httpGet:
-            path: /status.json
-            port: http
-            httpHeaders:
-              - name: Accept
-                value: application/json
+          exec:
+            command:
+            - test "$(jq '.error' /opt/valheim/htdocs/status.json)" = null
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 10
@@ -83,9 +80,6 @@ spec:
           httpGet:
             path: /status.json
             port: http
-            httpHeaders:
-              - name: Accept
-                value: application/json
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 10
@@ -97,9 +91,6 @@ spec:
           httpGet:
             path: /status.json
             port: http
-            httpHeaders:
-              - name: Accept
-                value: application/json
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 10
