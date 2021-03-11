@@ -33,7 +33,7 @@ spec:
   values:
     image:
       repository: gcr.io/k8s-staging-sig-storage/nfs-subdir-external-provisioner
-      tag: v4.0.0
+      tag: v4.0.1
     nfs:
       server: "10.20.0.51"
       path: "/volume1/data/k8s-nfs"
