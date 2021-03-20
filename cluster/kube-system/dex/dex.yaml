@@ -32,7 +32,7 @@ spec:
   values:
     image:
       repository: dexidp/dex
-      tag: v2.27.0
+      tag: v2.28.1
     ingress:
       enabled: true
       annotations:
