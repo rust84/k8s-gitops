@@ -41,49 +41,32 @@ spec:
       backup.velero.io/backup-volumes: config
     service:
       type: LoadBalancer
-      externalTrafficPolicy: Local
+      externalTrafficPolicy: Cluster
       loadBalancerIP: 10.1.0.168
-      port: 
-        port: 80
-      additionalPorts:
-      - name: valheim-1
-        port: 2456
-        protocol: UDP
-        targetPort: 2456
-      - name: valheim-2
-        port: 2457
-        protocol: UDP
-        targetPort: 2457
-      - name: valheim-3
-        port: 2458
-        protocol: UDP
-        targetPort: 2458
+      annotations:
+        metallb.universe.tf/allow-shared-ip: valheim
+      additionalServices:
+        - enabled: true
+          nameSuffix: supervisor
+          type: LoadBalancer
+          loadBalancerIP: 10.1.0.168
+          port:
+            port: 9001
+            name: supervisor
+            protocol: TCP
+            # targetPort: supervisor
+          annotations:
+            metallb.universe.tf/allow-shared-ip: valheim
+          additionalPorts:
+          - name: status
+            port: 80
+            protocol: TCP
+            targetPort: 80
     persistence:
       config:
         enabled: true
         storageClass: rook-ceph-block
         size: 2Gi
-    probes:
-      liveness:
-        enabled: true
-        custom: true
-        spec:
-          failureThreshold: 3
-          exec:
-            command:
-            - test "$(jq '.error' /opt/valheim/htdocs/status.json)" = null
-          periodSeconds: 10
-      readiness:
-        enabled: false
-      startup:
-        enabled: true
-        custom: true
-        spec:
-          failureThreshold: 30
-          httpGet:
-            path: /status.json
-            port: http
-          periodSeconds: 10
     resources:
       requests:
         memory: 2Gi
