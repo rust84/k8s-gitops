@@ -127,6 +127,14 @@ spec:
         toolkit-control-plane:
           url: https://raw.githubusercontent.com/fluxcd/toolkit/main/manifests/monitoring/grafana/dashboards/control-plane.json
           datasource: Prometheus
+        sonarr-exportarr:
+          gnetId: 1562
+          revision: 2
+          datasource: Prometheus
+        radarr-exportarr:
+          gnetId: 12896
+          revision: 1
+          datasource: Prometheus
     sidecar:
       dashboards:
         enabled: true
