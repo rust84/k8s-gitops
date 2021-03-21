@@ -128,7 +128,7 @@ spec:
           url: https://raw.githubusercontent.com/fluxcd/toolkit/main/manifests/monitoring/grafana/dashboards/control-plane.json
           datasource: Prometheus
         sonarr-exportarr:
-          gnetId: 1562
+          gnetId: 12530
           revision: 2
           datasource: Prometheus
         radarr-exportarr:
