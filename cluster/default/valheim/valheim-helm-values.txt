@@ -9,4 +9,10 @@ env:
   BACKUPS_MAX_AGE: 3
   STATUS_HTTP: true
   SUPERVISOR_HTTP: true
+  SUPERVISOR_HTTP_PASS: $VALHEIM_SUPERVISOR_HTTP_PASS
   TZ: Europe/London
+  VALHEIM_PLUS: true
+  VPCFG_Server_enabled: true
+  VPCFG_Server_dataRate: 600
+  VPCFG_Server_enforceMod: false
+  VPCFG_FireSource_enabled: true

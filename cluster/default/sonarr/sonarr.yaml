@@ -60,6 +60,11 @@ spec:
         cpu: 25m
       limits:
         memory: 500Mi
+    prometheus:
+      podMonitor:
+        enabled: true
+        interval: 3m
+        scrapeTimeout: 1m30s
     tolerations:
     - key: "arm"
       operator: "Exists"
