@@ -31,7 +31,7 @@ spec:
     cleanupOnFail: true
   values:
     image:
-      repository: dexidp/dex
+      repository: ghcr.io/dexidp/dex
       tag: v2.28.1
     ingress:
       enabled: true
