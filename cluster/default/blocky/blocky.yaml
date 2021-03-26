@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: blocky
-      version: 5.0.2
+      version: 6.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -35,8 +35,8 @@ spec:
       repository: spx01/blocky
       tag: v0.13
     replicas: 2
-    timeZone: "Europe/London"
-
+    env:
+      TZ: "Europe/London"
     # blocky configuration
     config: |
       conditional:
@@ -77,47 +77,44 @@ spec:
         path: /metrics
       httpPort: 4000
       logLevel: info
-
-    # Probes configuration
-    probes:
-      liveness:
-        failureThreshold: 5
-        periodSeconds: 10
-      readiness:
-        failureThreshold: 5
-        periodSeconds: 10
-      startup:
-        initialDelaySeconds: 5
-        failureThreshold: 30
-        periodSeconds: 10
-
-    serviceTCP:
-      enabled: true
-      type: LoadBalancer
-      externalTrafficPolicy: Local
-      loadBalancerIP: 10.1.0.160
-        # a fixed LoadBalancer IP
-      annotations:
-        metallb.universe.tf/address-pool: network-services
-        metallb.universe.tf/allow-shared-ip: blocky-svc
-
-    serviceUDP:
-      enabled: true
-      type: LoadBalancer
-      externalTrafficPolicy: Local
-      loadBalancerIP: 10.1.0.160
-        # a fixed LoadBalancer IP
-      annotations:
-        metallb.universe.tf/address-pool: network-services
-        metallb.universe.tf/allow-shared-ip: blocky-svc
-
-    serviceMonitor:
-      enabled: true
-
+    service:
+      port:
+        port: 4000
+      additionalServices:
+      - enabled: true
+        nameSuffix: dns-tcp
+        type: LoadBalancer
+        externalIPs:
+        - 10.1.0.160
+        port:
+          port: 53
+          name: dns-tcp
+          protocol: TCP
+          targetPort: 53
+        annotations:
+          metallb.universe.tf/address-pool: network-services
+          metallb.universe.tf/allow-shared-ip: blocky-svc
+        externalTrafficPolicy: Local
+      - enabled: true
+        nameSuffix: dns-udp
+        type: LoadBalancer
+        externalIPs:
+        - 10.1.0.160
+        port:
+          port: 53
+          name: dns-udp
+          protocol: UDP
+          targetPort: 53
+        annotations:
+          metallb.universe.tf/address-pool: network-services
+          metallb.universe.tf/allow-shared-ip: blocky-svc
+        externalTrafficPolicy: Local
+    prometheus:
+      serviceMonitor:
+        enabled: true
     tolerations:
     - key: "arm"
       operator: "Exists"
-
     affinity:
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
@@ -128,7 +125,6 @@ spec:
               values:
               - blocky
           topologyKey: "kubernetes.io/hostname"
-
     resources:
       requests:
         memory: 275Mi
