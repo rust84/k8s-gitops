@@ -1,20 +1,19 @@
-# GitOps workflow for kubernetes cluster
+## Gitops + Kubernetes
 
-![](https://i.imgur.com/9tvyWMp.png)
+<p align="center"><img src="https://i.imgur.com/p1RzXjQ.png"><br></p>
 
-Leverage [Flux](https://github.com/fluxcd/flux) to automate cluster state using code residing in this repo.
+[![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60&style=flat-square)](https://discord.gg/Yv2gzFy)    [![k3s](https://img.shields.io/badge/k3s-v1.19.8-orange?style=flat-square)](https://k3s.io/)    [![GitHub stars](https://img.shields.io/github/stars/rust84/k8s-gitops?color=green&style=flat-square)](https://github.com/rust84/k8s-gitops/stargazers)    [![GitHub last commit](https://img.shields.io/github/last-commit/rust84/k8s-gitops?color=purple&style=flat-square)](https://github.com/rust84/k8s-gitops/commits/master)
 
-## Setup
+## Overview
 
-See [setup/README.md](setup/README.md) for more details.
+Leveraging [Flux](https://toolkit.fluxcd.io/) and [Renovate](https://github.com/renovatebot/renovate) to automate my home clusters state using GitOps principles.
 
-## Workloads (by namespace)
+This repo is constantly evolving and the documentation is currently a WIP.
 
-* [cert-manager](cert-manager/)
-* [default](default/)
-* [flux](flux/)
-* [kube-system](kube-system/)
-* [logs](logs/)
-* [monitoring](monitoring/)
-* [rook-ceph](rook-ceph/)
-* [velero](velero/)
+## Thanks
+
+The original inspiration for this repo came from [Jeff Billimek](https://github.com/billimek) and the awesome k8s-at-home community.
+
+You can find us on Discord and a number of members have shared their repos here.
+
+https://github.com/k8s-at-home/awesome-home-kubernetes
