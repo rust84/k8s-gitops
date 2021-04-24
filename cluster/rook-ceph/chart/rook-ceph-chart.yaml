@@ -31,6 +31,8 @@ spec:
     recreate: true
     cleanupOnFail: true
   values:
+    crds:
+      enabled: false
     csi:
       kubeletDirPath: /var/lib/kubelet
       # cephcsi:
