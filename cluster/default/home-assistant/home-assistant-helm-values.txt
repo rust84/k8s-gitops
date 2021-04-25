@@ -21,7 +21,7 @@ addons:
       annotations:
         nginx.ingress.kubernetes.io/auth-url: "https://auth.$DOMAIN/oauth2/auth"
         nginx.ingress.kubernetes.io/auth-signin: https://auth.$DOMAIN/oauth2/start
-git:
-  deployKeyBase64: "${HASS_DEPLOY_KEY_B64}"
+    git:
+      deployKeyBase64: "${HASS_DEPLOY_KEY_B64}"
 postgresql:
   postgresqlPassword: "${HASS_DB_PASSWORD}"
