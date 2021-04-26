@@ -1,6 +1,6 @@
 ingress:
   hosts:
-  - host: "plex.$DOMAIN"
+  - host: plex.$DOMAIN
     paths:
     - path: /
       pathType: Prefix

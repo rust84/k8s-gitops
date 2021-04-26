@@ -56,6 +56,14 @@ spec:
       enabled: true
       annotations:
         kubernetes.io/ingress.class: "nginx"
+      hosts:
+      - host: plex.microserver.space
+        paths:
+        - path: /
+          pathType: Prefix
+      tls:
+      - hosts:
+        - "plex.microserver.space"
     persistence:
       config:
         enabled: true
@@ -65,7 +73,7 @@ spec:
       transcode:
         enabled: true
         emptyDir:
-        enabled: true
+          enabled: true
           medium: "Memory"
       tmp:
         enabled: true
@@ -108,7 +116,4 @@ spec:
           readOnly: true
         securityContext:
           runAsUser: 0
-  valuesFrom:
-  - kind: Secret
-    name: "plex-helm-values"
-    optional: false
+
