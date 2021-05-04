@@ -2,7 +2,7 @@
 
 <p align="center"><img src="https://i.imgur.com/p1RzXjQ.png"><br></p>
 
-[![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60&style=flat-square)](https://discord.gg/Yv2gzFy)    [![k3s](https://img.shields.io/badge/k3s-v1.20.4-orange?style=flat-square)](https://k3s.io/)    [![GitHub stars](https://img.shields.io/github/stars/rust84/k8s-gitops?color=green&style=flat-square)](https://github.com/rust84/k8s-gitops/stargazers)    [![GitHub last commit](https://img.shields.io/github/last-commit/rust84/k8s-gitops?color=purple&style=flat-square)](https://github.com/rust84/k8s-gitops/commits/master)
+[![Discord](https://img.shields.io/badge/discord-chat-7289DA.svg?maxAge=60&style=flat-square)](https://discord.gg/Yv2gzFy)    [![k3s](https://img.shields.io/badge/k3s-v1.20.6-orange?style=flat-square)](https://k3s.io/)    [![GitHub stars](https://img.shields.io/github/stars/rust84/k8s-gitops?color=green&style=flat-square)](https://github.com/rust84/k8s-gitops/stargazers)    [![GitHub last commit](https://img.shields.io/github/last-commit/rust84/k8s-gitops?color=purple&style=flat-square)](https://github.com/rust84/k8s-gitops/commits/master)
 
 ## Overview
 
