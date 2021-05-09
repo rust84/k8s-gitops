@@ -43,7 +43,7 @@ spec:
         mapping:
           # CoreDNS IP
           microserver.space: udp:10.1.0.166
-          our.house: udp:192.168.1.86
+          our.house: udp:10.20.0.65
           local: udp:192.168.1.1
       upstream:
         externalResolvers:
@@ -71,7 +71,7 @@ spec:
           - ads
             # - special
       clientLookup:
-        upstream: udp:192.168.1.86
+        upstream: udp:10.20.0.65
       prometheus:
         enable: true
         path: /metrics

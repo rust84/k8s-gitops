@@ -1,7 +1,0 @@
-config: |
-  conditional:
-    mapping:
-      # CoreDNS IP
-      microserver.space: udp:10.1.0.166
-      our.house: udp:192.168.1.86
-      local: udp:192.168.1.1
