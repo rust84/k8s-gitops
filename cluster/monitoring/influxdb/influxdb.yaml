@@ -33,7 +33,7 @@ spec:
   values:
     image:
       repository: "influxdb"
-      tag: "2.0.6"
+      tag: "1.8.5"
     persistence:
       enabled: true
       size: 50Gi
