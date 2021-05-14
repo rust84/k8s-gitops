@@ -106,6 +106,8 @@ spec:
       tolerations:
       - key: "arm"
         operator: "Exists"
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
   valuesFrom:
   - kind: Secret
     name: "loki-helm-values"

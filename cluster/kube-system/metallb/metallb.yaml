@@ -62,6 +62,8 @@ spec:
       tolerations:
       - key: "arm"
         operator: "Exists"
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
     prometheus:
       enabled: true
       serviceMonitor:

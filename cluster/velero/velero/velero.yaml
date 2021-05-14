@@ -65,6 +65,8 @@ spec:
       tolerations:
       - key: "arm"
         operator: "Exists"
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
     schedules:
       daily-backup:
         schedule: "0 6 * * *"
