@@ -97,6 +97,8 @@ spec:
                 input_args:
                   - '-avoid_negative_ts'
                   - make_zero
+                  - '-fflags'
+                  - nobuffer
                   - '-flags'
                   - low_delay
                   - '-strict'
@@ -107,7 +109,7 @@ spec:
                   - '1'
           height: 1920
           width: 1080
-          fps: 5
+          fps: 10
           clips:
             enabled: true
             objects:
