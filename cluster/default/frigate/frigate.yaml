@@ -15,7 +15,21 @@ spec:
         kind: HelmRepository
         name: blakeshome-charts
         namespace: flux-system
-      interval: 5m
+      interval: 10m
+  test:
+    enable: false # Enable helm test
+  install:
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  rollback:
+    timeout: 10m
+    recreate: true
+    cleanupOnFail: true
   values:
     image:
       repository: blakeblackshear/frigate
@@ -32,8 +46,16 @@ spec:
       mqtt:
         host: vernemq.default.svc
         topic_prefix: frigate
+
       database:
         path: /data/frigate.db
+
+      detectors:
+        cpu1:
+          type: cpu
+        cpu2:
+          type: cpu
+
       ffmpeg:
         hwaccel_args:
           - -hwaccel
@@ -42,6 +64,7 @@ spec:
           - /dev/dri/renderD128
           - -hwaccel_output_format
           - yuv420p
+
       objects:
         track:
           - person
@@ -60,6 +83,7 @@ spec:
             min_area: 1000
             max_area: 10000
             threshold: 0.7
+
       cameras:
         driveway:
           ffmpeg:
