@@ -199,6 +199,7 @@ loadSecretsToVault() {
   kvault "default/monica/monica-helm-values.txt"
   kvault "default/valheim/valheim-helm-values.txt"
   kvault "logs/loki/loki-helm-values.txt"
+  kvault "default/frigate/frigate-helm-values.txt"
 }
 
 FIRST_RUN=1
