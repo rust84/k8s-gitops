@@ -97,8 +97,6 @@ spec:
                 input_args:
                   - '-avoid_negative_ts'
                   - make_zero
-                  - '-fflags'
-                  - nobuffer
                   - '-flags'
                   - low_delay
                   - '-strict'
