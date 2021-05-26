@@ -50,7 +50,7 @@ spec:
       dataStorage:
         storageClass: rook-ceph-block
       ha:
-        enabled: "true"
+        enabled: true
         replicas: 3
         raft:
           enabled: true
