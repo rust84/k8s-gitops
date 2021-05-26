@@ -213,8 +213,8 @@ spec:
           annotations:
             backup.velero.io/backup-volumes: prometheus-kube-prometheus-stack-prometheus-db
         thanos:
-          image: quay.io/thanos/thanos:v0.17.0
-          version: v0.17.0
+          image: quay.io/thanos/thanos
+          version: v0.20.2
           objectStorageConfig:
             name: thanos
             key: object-store.yaml
