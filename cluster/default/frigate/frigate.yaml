@@ -85,8 +85,23 @@ spec:
                   - rtmp
                   - clips
                   - record
-          height: 1920
-          width: 1080
+                input_args:
+                  - '-avoid_negative_ts'
+                  - make_zero
+                  - '-fflags'
+                  - nobuffer
+                  - '-flags'
+                  - low_delay
+                  - '-strict'
+                  - experimental
+                  - '-fflags'
+                  - +genpts+discardcorrupt
+                  - '-use_wallclock_as_timestamps'
+                  - '1'
+                  - '-rtsp_transport'
+                  - tcp
+          height: 1080
+          width: 1920
           fps: 10
           clips:
             enabled: true
