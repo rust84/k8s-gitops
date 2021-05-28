@@ -56,15 +56,6 @@ spec:
         cpu2:
           type: cpu
 
-      ffmpeg:
-        hwaccel_args:
-          - -hwaccel
-          - vaapi
-          - -hwaccel_device
-          - /dev/dri/renderD128
-          - -hwaccel_output_format
-          - yuv420p
-
       objects:
         track:
           - person
@@ -126,9 +117,10 @@ spec:
       requests:
         memory: 1000Mi
         cpu: 750m
+        #gpu.intel.com/i915: 1
       limits:
         memory: 2500Mi
-        gpu.intel.com/i915: 1
+        #gpu.intel.com/i915: 1
     probes:
       startup:
         enabled: true
