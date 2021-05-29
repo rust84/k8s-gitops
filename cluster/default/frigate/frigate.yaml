@@ -50,6 +50,10 @@ spec:
       database:
         path: /data/frigate.db
 
+      detectors:
+        cpu1:
+          type: cpu
+
       objects:
         track:
           - person
