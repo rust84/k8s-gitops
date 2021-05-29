@@ -50,12 +50,6 @@ spec:
       database:
         path: /data/frigate.db
 
-      detectors:
-        cpu1:
-          type: cpu
-        cpu2:
-          type: cpu
-
       objects:
         track:
           - person
@@ -103,6 +97,13 @@ spec:
           height: 1080
           width: 1920
           fps: 10
+          objects:
+            filters:
+              person:
+                min_area: 1500
+                max_area: 100000
+                threshold: 0.75
+                min_score: 0.60
           clips:
             enabled: true
             objects:
@@ -110,11 +111,15 @@ spec:
               - person
               - dog
               - cat
+            retain:
+              default: 14
           snapshots:
             enabled: true
             timestamp: False
             bounding_box: true
             crop: False
+            retain:
+              default: 14
           record:
             enabled: false
             retain_days: 5
