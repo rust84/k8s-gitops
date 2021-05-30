@@ -108,6 +108,16 @@ spec:
                 max_area: 100000
                 threshold: 0.75
                 min_score: 0.60
+              dog:
+                min_area: 1000
+                max_area: 100000
+                threshold: 0.75
+                min_score: 0.60
+              cat:
+                min_area: 1000
+                max_area: 100000
+                threshold: 0.75
+                min_score: 0.60
           clips:
             enabled: true
             objects:
