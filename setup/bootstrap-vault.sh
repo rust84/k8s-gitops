@@ -151,7 +151,8 @@ EOF
   vault write auth/kubernetes/config \
     token_reviewer_jwt="$SA_JWT_TOKEN" \
     kubernetes_host="$K8S_HOST" \
-    kubernetes_ca_cert="$SA_CA_CRT"
+    kubernetes_ca_cert="$SA_CA_CRT" \
+    disable_iss_validation=true #See issue here https://github.com/external-secrets/kubernetes-external-secrets/issues/721
 
   # Create a role named, 'vault-secrets-operator' to map Kubernetes Service Account to Vault policies and default token TTL
   vault write auth/kubernetes/role/vault-secrets-operator \
