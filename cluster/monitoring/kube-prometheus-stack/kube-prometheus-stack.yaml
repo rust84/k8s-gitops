@@ -218,11 +218,8 @@ spec:
           objectStorageConfig:
             name: thanos
             key: object-store.yaml
-        # additionalScrapeConfigs:
-        # - job_name: 'upsc-exporter'
-        #   static_configs:
-        #   - targets:
-        #     - pi-upsmon:9102
+    thanosService: 
+      enabled: true
   valuesFrom:
   - kind: Secret
     name: "kube-prometheus-stack-helm-values"
