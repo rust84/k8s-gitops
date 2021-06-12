@@ -10,10 +10,10 @@ spec:
     spec:
       # renovate: registryUrl=https://kubernetes-charts.banzaicloud.com
       chart: thanos
-      version: 0.4.3
+      version: 3.17.8
       sourceRef:
         kind: HelmRepository
-        name: banzaicloud-charts
+        name: bitnami-charts
         namespace: flux-system
       interval: 10m
   test:
@@ -31,39 +31,33 @@ spec:
     recreate: true
     cleanupOnFail: true
   values:
-    image:
-      repository: quay.io/thanos/thanos
-      tag: v0.20.2
     query:
+      enabled: true
       replicaCount: 2
-      replicaLabels: 
+      replicaLabels:
         - replica
-      http:
-        ingress:
-          enabled: true
-          annotations:
-            kubernetes.io/ingress.class: "nginx"
-    compact:
-      retentionResolution1h: 5y
-    objstore:
-      type: S3
-      config:
-        bucket: "thanos"
-        endpoint: "minio.default.svc:9000"
-        region: ""
-        insecure: true
-        signature_version2: false
-        put_user_metadata: {}
-        http_config:
-          idle_conn_timeout: 0s
-          response_header_timeout: 0s
-          insecure_skip_verify: false
-        trace:
-          enable: false
-        part_size: 0
-    sidecar:
-      selector:
-        app.kubernetes.io/name: prometheus
+      dnsDiscovery:
+        sidecarsService: kube-prometheus-stack-thanos-discovery
+        sidecarsNamespace: monitoring
+    queryFrontend:
+      enabled: false
+    bucketweb:
+      enabled: true
+    compactor:
+      enabled: true
+      persistence:
+        enabled: false
+    storegateway:
+      enabled: true
+      persistence:
+        enabled: true
+        size: 20Gi
+    ruler:
+      enabled: false
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
   valuesFrom:
   - kind: Secret
     name: "thanos-helm-values"
