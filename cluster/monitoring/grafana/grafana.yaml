@@ -70,32 +70,48 @@ spec:
             path: /var/lib/grafana/dashboards/default
     dashboards:
       default:
+        blocky:
+          url: https://raw.githubusercontent.com/0xERR0R/blocky/v0.13/docs/blocky-grafana.json
+          datasource: Prometheus
+        ceph-cluster:
+          gnetId: 2842
+          revision: 14
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/5336
+        ceph-osd:
+          gnetId: 5336
+          revision: 5
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/5342
+        ceph-pools:
+          gnetId: 5342
+          revision: 5
+          datasource: Prometheus
+        flux-cluster:
+          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/cluster.json
+          datasource: Prometheus
+        flux-control-plane:
+          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/control-plane.json
+          datasource: Prometheus
+        frigate:
+          url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/frigate.json
+          datasource: Prometheus
+        minio-overview:
+          url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/minio_overview.json
+          datasource: Prometheus
         nginx-dashboard:
           url: https://raw.githubusercontent.com/kubernetes/ingress-nginx/master/deploy/grafana/dashboards/nginx.json
           datasource: Prometheus
-        ceph-cluster:
-          url: https://grafana.com/api/dashboards/2842/revisions/11/download
+        node-exporter-full:
+          gnetId: 1860
+          revision: 23
           datasource: Prometheus
-        ceph-osd:
-          url: https://grafana.com/api/dashboards/5336/revisions/3/download
+        prometheus-exporter-summary:
+          url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/prometheus_exporter_summary.json
           datasource: Prometheus
-        ceph-pools:
-          url: https://grafana.com/api/dashboards/5342/revisions/3/download
-          datasource: Prometheus
-        vernemq:
-          url: https://raw.githubusercontent.com/vernemq/vernemq/master/metrics_scripts/grafana/VerneMQ%20Node%20Metrics.json
-          datasource: Prometheus
-        velero:
-          url: https://grafana.com/api/dashboards/11055/revisions/2/download
-          datasource: Prometheus
-        blocky:
-          url: https://raw.githubusercontent.com/0xERR0R/blocky/master/docs/blocky-grafana.json
-          datasource: Prometheus
-        uptimerobot:
-          url: https://raw.githubusercontent.com/lekpamartin/uptimerobot_exporter/master/dashboards/grafana.json
-          datasource: Prometheus
-        version-checker:
-          url: https://grafana.com/api/dashboards/12833/revisions/1/download
+        radarr-exportarr:
+          gnetId: 12896
+          revision: 1
           datasource: Prometheus
         thanos-overview:
           url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/overview.json
@@ -121,19 +137,40 @@ spec:
         thanos-replicate:
           url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/bucket-replicate.json
           datasource: Prometheus
-        toolkit-cluster:
-          url: https://raw.githubusercontent.com/fluxcd/toolkit/main/manifests/monitoring/grafana/dashboards/cluster.json
+        unifi-client-insights:
+          gnetId: 11315
+          revision: 8
           datasource: Prometheus
-        toolkit-control-plane:
-          url: https://raw.githubusercontent.com/fluxcd/toolkit/main/manifests/monitoring/grafana/dashboards/control-plane.json
-          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/11311
         sonarr-exportarr:
           gnetId: 12530
           revision: 2
           datasource: Prometheus
-        radarr-exportarr:
-          gnetId: 12896
-          revision: 1
+        unifi-network-sites:
+          gnetId: 11311
+          revision: 4
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/11314
+        unifi-uap-insights:
+          gnetId: 11314
+          revision: 9
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/11312
+        unifi-usw-insights:
+          gnetId: 11312
+          revision: 8
+          datasource: Prometheus
+        uptimerobot:
+          url: https://raw.githubusercontent.com/lekpamartin/uptimerobot_exporter/master/dashboards/grafana.json
+          datasource: Prometheus
+        velero:
+          url: https://grafana.com/api/dashboards/11055/revisions/2/download
+          datasource: Prometheus
+        vernemq:
+          url: https://raw.githubusercontent.com/vernemq/vernemq/master/metrics_scripts/grafana/VerneMQ%20Node%20Metrics.json
+          datasource: Prometheus
+        version-checker:
+          url: https://grafana.com/api/dashboards/12833/revisions/1/download
           datasource: Prometheus
     sidecar:
       dashboards:

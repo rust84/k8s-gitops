@@ -1,7 +1,7 @@
 query:
   ingress:
     enabled: true
-    hostname: thanos.eviljungle.com
+    hostname: thanos.$DOMAIN
     annotations:
       kubernetes.io/ingress.class: nginx
       nginx.ingress.kubernetes.io/auth-url: "https://auth.$DOMAIN/oauth2/auth"
