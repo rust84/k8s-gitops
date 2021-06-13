@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: home-assistant
-      version: 8.3.0
+      version: 9.0.2
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -43,18 +43,20 @@ spec:
         accessMode: ReadWriteOnce
         size: 10Gi
     ingress:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: "external"
+      main:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: "external"
     prometheus:
       serviceMonitor:
         enabled: false
     hostNetwork: true
     dnsPolicy: ClusterFirstWithHostNet
     service:
-      type: LoadBalancer
-      loadBalancerIP: 10.1.0.155
-      externalTrafficPolicy: Local
+      main:
+        type: LoadBalancer
+        loadBalancerIP: 10.1.0.155
+        externalTrafficPolicy: Local
     probes:
       liveness:
         enabled: false
