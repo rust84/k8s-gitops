@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: plex
-      version: 4.4.0
+      version: 5.0.1
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -43,48 +43,45 @@ spec:
       - 109
       - 100
     service:
-      enabled: true
-      type: LoadBalancer
-      loadBalancerIP: 10.1.0.154
-      externalTrafficPolicy: Local
-      annotations:
-        metallb.universe.tf/allow-shared-ip: plex-svc
-      port:
-        port: 32400
+      main:
+        enabled: true
+        type: LoadBalancer
+        loadBalancerIP: 10.1.0.154
+        externalTrafficPolicy: Local
+        annotations:
+          metallb.universe.tf/allow-shared-ip: plex-svc
+        port:
+          port: 32400
     ingress:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: "nginx"
-      hosts:
-      - host: plex.microserver.space
-        paths:
-        - path: /
-          pathType: Prefix
-      tls:
-      - hosts:
-        - "plex.microserver.space"
+      main:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: "nginx"
+        hosts:
+        - host: plex.microserver.space
+          paths:
+          - path: /
+            pathType: Prefix
+        tls:
+        - hosts:
+          - "plex.microserver.space"
     persistence:
       config:
         enabled: true
         existingClaim: plex-kube-plex-config
       transcode:
         enabled: true
-        emptyDir:
-          enabled: true
-          medium: "Memory"
+        type: emptyDir
+        medium: Memory
       tmp:
         enabled: true
-        emptyDir:
-          enabled: true
-          medium: "Memory"
-    additionalVolumes:
-    - name: nfs-media-pvc
-      persistentVolumeClaim:
-        claimName: nfs-media-pvc
-    additionalVolumeMounts:
-    - name: nfs-media-pvc
-      mountPath: /data
-      readOnly: false
+        type: emptyDir
+        medium: Memory
+      nfs-media-pvc:
+        enabled: true
+        existingClaim: nfs-media-pvc
+        mountPath: /data
+        readOnly: false
     podAnnotations:
       backup.velero.io/backup-volumes: config
     resources:
