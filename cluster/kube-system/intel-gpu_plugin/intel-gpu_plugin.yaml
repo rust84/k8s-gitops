@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: intel-gpu-plugin
-      version: 1.2.3
+      version: 3.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -29,19 +29,21 @@ spec:
   rollback:
     timeout: 10m
     recreate: true
+    cleanupOnFail: true
   values:
     image:
       repository: intel/intel-gpu-plugin
       tag: 0.20.0
       pullPolicy: IfNotPresent
-    securityContext:
-      readOnlyRootFilesystem: true
+    args:
+    - -shared-dev-num
+    - "2"
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
           - matchExpressions:
-            - key: homelab.gpu/type
+            - key: feature.node.kubernetes.io/custom-intel-gpu
               operator: In
               values:
-              - "intel"
+              - "true"
