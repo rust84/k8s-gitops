@@ -55,12 +55,6 @@ spec:
             - "vendor"
             - "device"
           custom:
-          - name: "zwave"
-            matchOn:
-            - usbId:
-                class: ["02"]
-                vendor: ["0658"]
-                device: ["0200"]
           - name: "intel-gpu"
             matchOn:
             - pciId:
@@ -70,18 +64,6 @@ spec:
             matchOn:
             - usbId:
                 vendor: ["1a6e", "18d1"]
-          - name: "flight-aware"
-            matchOn:
-            - usbId:
-                class: ["ff"]
-                vendor: ["0bda"]
-                device: ["2832"]
-          - name: "zigbee"
-            matchOn:
-            - usbId:
-                class: ["ff"]
-                vendor: ["1a86"]
-                device: ["7523"]
       tolerations:
       - effect: "NoExecute"
         operator: "Exists"
