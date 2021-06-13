@@ -32,20 +32,20 @@ spec:
     cleanupOnFail: true
   values:
     configInline:
-        peers:
-        - peer-address: 192.168.1.1
-          peer-asn: 64512
-          my-asn: 64512
-        address-pools:
-        - name: default
-          protocol: layer2
-          addresses:
-          - 10.20.0.110-10.20.0.250
-        - name: bgp
-          protocol: bgp
-          addresses:
-          -  10.1.0.0-10.1.0.254
-          avoid-buggy-ips: true
+      peers:
+      - peer-address: 192.168.1.1
+        peer-asn: 64512
+        my-asn: 64512
+      address-pools:
+      - name: default
+        protocol: layer2
+        addresses:
+        - 10.20.0.110-10.20.0.250
+      - name: bgp
+        protocol: bgp
+        addresses:
+        -  10.1.0.0-10.1.0.254
+        avoid-buggy-ips: true
     controller:
       image:
         repository: quay.io/metallb/controller
