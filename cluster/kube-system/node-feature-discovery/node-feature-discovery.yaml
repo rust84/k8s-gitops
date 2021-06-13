@@ -16,6 +16,9 @@ spec:
         name: node-feature-discovery-charts
         namespace: flux-system
   values:
+    image:
+      repository: raspbernetes/node-feature-discovery
+      tag: "v0.8.1"
     master:
       tolerations:
       - key: "node-role.kubernetes.io/master"
@@ -79,8 +82,6 @@ spec:
                 class: ["ff"]
                 vendor: ["1a86"]
                 device: ["7523"]
-      annotations:
-        configmap.reloader.stakater.com/reload: "nfd-worker-conf"
       tolerations:
       - effect: "NoExecute"
         operator: "Exists"
