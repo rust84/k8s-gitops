@@ -48,7 +48,6 @@ spec:
       loadBalancerIP: 10.1.0.154
       externalTrafficPolicy: Local
       annotations:
-        metallb.universe.tf/address-pool: network-services
         metallb.universe.tf/allow-shared-ip: plex-svc
       port:
         port: 32400
