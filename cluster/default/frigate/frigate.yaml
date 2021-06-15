@@ -40,7 +40,7 @@ spec:
         repository: busybox
         tag: 1.33.1
     coral:
-      enabled: false
+      enabled: true
     timezone: "Europe/London"
     config: |
       mqtt:
@@ -49,10 +49,6 @@ spec:
 
       database:
         path: /data/frigate.db
-
-      detectors:
-        cpu1:
-          type: cpu
 
       objects:
         track:
@@ -141,17 +137,16 @@ spec:
       enabled: true
       annotations:
         kubernetes.io/ingress.class: "nginx"
-    # affinity:
-    #   nodeAffinity:
-    #     requiredDuringSchedulingIgnoredDuringExecution:
-    #       nodeSelectorTerms:
-    #         - matchExpressions:
-    #             - {key: "feature.node.kubernetes.io/custom-coral-tpu", operator: In, values: ["true"]}
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+            - matchExpressions:
+                - {key: "feature.node.kubernetes.io/custom-coral-tpu", operator: In, values: ["true"]}
     resources:
       requests:
         memory: 1000Mi
         cpu: 750m
-        #gpu.intel.com/i915: 1
       limits:
         memory: 2500Mi
         #gpu.intel.com/i915: 1
