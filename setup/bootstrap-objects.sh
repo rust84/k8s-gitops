@@ -28,7 +28,7 @@ installManualObjects(){
   ##########
   # secrets
   ##########
-  envsubst < "$REPO_ROOT"/kube-system/vault/vault-helm-values.txt | tee values.yaml | kubectl -n kube-system create secret generic vault-helm-values  --from-file=values.yaml
+  envsubst < "$REPO_ROOT"/cluster/kube-system/vault/vault-helm-values.txt | tee values.yaml | kubectl -n kube-system create secret generic vault-helm-values  --from-file=values.yaml
   rm values.yaml
 
   ###################
@@ -42,7 +42,7 @@ installManualObjects(){
     ROOK_NAMESPACE_READY="$?"
     sleep 5
   done
-  kapply "$REPO_ROOT"/rook-ceph/dashboard/ingress.txt
+  kapply "$REPO_ROOT"/cluster/rook-ceph/dashboard/ingress.txt
 
   #########################
   # cert-manager bootstrap
@@ -54,7 +54,7 @@ installManualObjects(){
     CERT_MANAGER_READY="$?"
     sleep 5
   done
-  kapply "$REPO_ROOT"/cert-manager/cloudflare/cert-manager-letsencrypt.txt
+  kapply "$REPO_ROOT"/cluster/cert-manager/cloudflare/cert-manager-letsencrypt.txt
 
 }
 
