@@ -216,7 +216,7 @@ spec:
           image: quay.io/thanos/thanos:v0.20.2
           version: v0.20.2
           objectStorageConfig:
-            name: thanos
+            name: thanos-objstore-secret
             key: object-store.yaml
       thanosService: 
         enabled: true
