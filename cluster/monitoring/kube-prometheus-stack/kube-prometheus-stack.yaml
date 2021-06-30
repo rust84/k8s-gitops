@@ -217,7 +217,7 @@ spec:
           version: v0.20.2
           objectStorageConfig:
             name: thanos-objstore-secret
-            key: object-store.yaml
+            key: objstore.yml
       thanosService: 
         enabled: true
   valuesFrom:
