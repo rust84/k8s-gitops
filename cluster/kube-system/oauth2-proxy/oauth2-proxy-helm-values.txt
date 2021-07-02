@@ -1,8 +1,9 @@
 ingress:
-  hosts: [auth.$DOMAIN]
-  tls:
-  - hosts:
-    - auth.$DOMAIN
+  main:
+    hosts: [auth.$DOMAIN]
+    tls:
+    - hosts:
+      - auth.$DOMAIN
 config:
   clientID: oauth2-proxy
   clientSecret: "${DEX_OAUTH2_PROXY_CLIENT_SECRET}"
