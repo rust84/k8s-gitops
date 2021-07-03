@@ -8,12 +8,12 @@ spec:
   interval: 5m
   chart:
     spec:
-      # renovate: registryUrl=https://oauth2-proxy.github.io/manifests
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: oauth2-proxy
-      version: 4.0.4
+      version: 5.0.5
       sourceRef:
         kind: HelmRepository
-        name: oauth2-proxy-charts
+        name: k8s-at-home-charts
         namespace: flux-system
       interval: 10m
   test:
@@ -36,11 +36,10 @@ spec:
       tag: v6.1.1
     replicaCount: 2
     ingress:
-      main:
-        enabled: true
-        path: /oauth2
-        annotations:
-          kubernetes.io/ingress.class: "external"
+      enabled: true
+      path: /oauth2
+      annotations:
+        kubernetes.io/ingress.class: "external"
   valuesFrom:
   - kind: Secret
     name: "oauth2-proxy-helm-values"
