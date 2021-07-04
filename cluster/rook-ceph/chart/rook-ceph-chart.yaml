@@ -35,6 +35,7 @@ spec:
       enabled: false
     csi:
       kubeletDirPath: /var/lib/kubelet
+      enableCSIHostNetwork: true
       pluginTolerations:
         - key: "arm"
           operator: "Exists"
