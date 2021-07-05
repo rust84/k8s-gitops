@@ -33,13 +33,22 @@ spec:
   values:
     image:
       repository: jacobalberty/unifi
-      tag: "6.2"
+      tag: "6.0"
     persistence:
       enabled: true
       size: 30Gi
       storageClass: rook-ceph-block
     timezone: "Europe/London"
     runAsRoot: false
+    logging:
+      promtail:
+        enabled: true
+        image:
+          repository: grafana/promtail
+          tag: 2.2.1
+          pullPolicy: IfNotPresent
+        loki:
+          url: http://loki.logs.svc.cluster.local:3100/loki/api/v1/push
     ingress:
       enabled: true
       annotations:
