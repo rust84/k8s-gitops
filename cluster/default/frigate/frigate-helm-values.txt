@@ -7,4 +7,5 @@ ingress:
   tls:
   - hosts:
     - frigate.$DOMAIN
-rtspPassword: "$RTSP_PASSWORD"
+env:
+  FRIGATE_RTSP_PASSWORD: "$RTSP_PASSWORD"
