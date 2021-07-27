@@ -33,7 +33,7 @@ spec:
   values:
     image:
       repository: spx01/blocky
-      tag: v0.14
+      tag: v0.15
     replicas: 2
     env:
       TZ: "Europe/London"
