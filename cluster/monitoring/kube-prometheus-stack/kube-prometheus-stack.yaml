@@ -183,6 +183,18 @@ spec:
         annotations:
           kubernetes.io/ingress.class: "external"
       prometheusSpec:
+        additionalScrapeConfigs:
+          - job_name: "emqx"
+            metrics_path: '/api/v4/emqx_prometheus?type=prometheus'
+            basic_auth:
+              username: admin
+              password: public
+            params:
+              format: [prometheus]
+            honor_labels: true
+            static_configs:
+              - targets:
+                  - emqx.default.svc:8081
         # image:
         #   repository: quay.io/prometheus/prometheus
         #   tag: v2.9.1
@@ -218,18 +230,6 @@ spec:
           objectStorageConfig:
             name: thanos-objstore-secret
             key: objstore.yml
-        additionalScrapeConfigs:
-        - job_name: 'emqx'
-          metrics_path: '/api/v4/emqx_prometheus?type=prometheus'
-          basic_auth:
-            username: admin
-            password: public
-          params:
-            format: [prometheus]
-          honor_labels: true
-          static_configs:
-          - targets:
-            - emqx:8081
       thanosService: 
         enabled: true
   valuesFrom:
