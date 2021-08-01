@@ -183,6 +183,7 @@ loadSecretsToVault() {
   kvault "monitoring/grafana/grafana-helm-values.txt"
   kvault "monitoring/uptimerobot-prometheus/uptimerobot-helm-values.txt"
   kvault "monitoring/thanos/thanos-helm-values.txt"
+  kvault "default/emqx/emqx-helm-values.txt"
   kvault "default/goldilocks/goldilocks-helm-values.txt"
   kvault "default/home-assistant/home-assistant-helm-values.txt"
   kvault "default/minio/minio-helm-values.txt"
