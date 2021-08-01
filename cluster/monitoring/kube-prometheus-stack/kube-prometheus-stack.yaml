@@ -185,12 +185,12 @@ spec:
       prometheusSpec:
         additionalScrapeConfigs:
           - job_name: "emqx"
-            metrics_path: '/api/v4/emqx_prometheus?type=prometheus'
+            metrics_path: '/api/v4/emqx_prometheus'
             basic_auth:
               username: admin
               password: public
             params:
-              format: [prometheus]
+              type: [prometheus]
             honor_labels: true
             static_configs:
               - targets:
