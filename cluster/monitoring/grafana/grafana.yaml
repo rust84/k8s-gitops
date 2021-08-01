@@ -87,6 +87,15 @@ spec:
           gnetId: 5342
           revision: 5
           datasource: Prometheus
+        emq:
+          url: https://raw.githubusercontent.com/emqx/emqx-prometheus/master/grafana_template/EMQ.json
+          datasource: Prometheus
+        emq-dashboard:
+          url: https://raw.githubusercontent.com/emqx/emqx-prometheus/master/grafana_template/EMQ_Dashboard.json
+          datasource: Prometheus
+        emq-vm:
+          url: https://raw.githubusercontent.com/emqx/emqx-prometheus/master/grafana_template/ErlangVM.json
+          datasource: Prometheus
         flux-cluster:
           url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/cluster.json
           datasource: Prometheus
@@ -165,12 +174,6 @@ spec:
           datasource: Prometheus
         velero:
           url: https://grafana.com/api/dashboards/11055/revisions/2/download
-          datasource: Prometheus
-        vernemq:
-          url: https://raw.githubusercontent.com/vernemq/vernemq/master/metrics_scripts/grafana/VerneMQ%20Node%20Metrics.json
-          datasource: Prometheus
-        version-checker:
-          url: https://grafana.com/api/dashboards/12833/revisions/1/download
           datasource: Prometheus
     sidecar:
       dashboards:
