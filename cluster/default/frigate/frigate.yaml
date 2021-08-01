@@ -45,9 +45,10 @@ spec:
       TZ: "Europe/London"
     config: |
       mqtt:
-        host: vernemq.default.svc
+        host: emqx-headless.default.svc
         topic_prefix: frigate
-
+        user: mqtt
+        password: '{FRIGATE_MQTT_PASSWORD}'
       database:
         path: /data/frigate.db
 
