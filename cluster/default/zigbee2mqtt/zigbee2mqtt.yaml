@@ -33,6 +33,8 @@ spec:
           nodeSelectorTerms:
           - matchExpressions:
             - {key: "feature.node.kubernetes.io/custom-zigbee", operator: In, values: ["true"]}
+    securityContext:
+      privileged: true
     persistence:
       data:
         enabled: true
