@@ -43,7 +43,7 @@ spec:
         size: 1Gi
       usb:
         enabled: true
-        type: CharDevice
+        type: hostPath
         hostPath: /dev/serial/by-id/usb-Silicon_Labs_slae.sh_cc2652rb_stick_-_slaesh_s_iot_stuff_00_12_4B_00_23_93_26_FF-if00-port0
     config:
       homeassistant: true
@@ -59,7 +59,23 @@ spec:
       advanced:
         log_output:
           - console
-        network_key: GENERATE
+        network_key:
+          - 43
+          - 244
+          - 5
+          - 239
+          - 154
+          - 132
+          - 166
+          - 197
+          - 26
+          - 253
+          - 154
+          - 166
+          - 21
+          - 206
+          - 78
+          - 82
         pan_id: 6752
       frontend:
         port: 8080
