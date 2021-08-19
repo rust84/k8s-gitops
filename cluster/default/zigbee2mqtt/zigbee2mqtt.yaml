@@ -43,7 +43,7 @@ spec:
         size: 1Gi
       usb:
         enabled: true
-        type: hostPath
+        type: CharDevice
         hostPath: /dev/serial/by-id/usb-Silicon_Labs_slae.sh_cc2652rb_stick_-_slaesh_s_iot_stuff_00_12_4B_00_23_93_26_FF-if00-port0
     config:
       homeassistant: true

@@ -8,5 +8,6 @@ ingress:
     tls:
     - hosts:
       - "zigbee2mqtt.$DOMAIN"
-mqtt:
-  password: "${EMQX_MQTT_USER_PASSWORD}"
+config:
+  mqtt:
+    password: "${EMQX_MQTT_USER_PASSWORD}"
