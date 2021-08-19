@@ -1,0 +1,82 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: zigbee2mqtt
+  namespace: home
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: zigbee2mqtt
+      version: 9.0.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: ghcr.io/koenkk/zigbee2mqtt
+      tag: 1.21.0
+    env:
+      TZ: Europe/London
+      ZIGBEE2MQTT_DATA: /data
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "nginx"
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - {key: "feature.node.kubernetes.io/custom-zigbee", operator: In, values: ["true"]}
+    persistence:
+      data:
+        enabled: true
+        mountPath: /data
+      usb:
+        enabled: false
+        type: hostPath
+        hostPath: /dev/serial/by-id/usb-Silicon_Labs_slae.sh_cc2652rb_stick_-_slaesh_s_iot_stuff_00_12_4B_00_21_CB_EE_BB-if00-port0
+    config:
+      homeassistant: true
+      device_options:
+        retain: true
+      permit_join: false
+      mqtt:
+        user: mqtt
+        base_topic: zigbee2mqtt
+        server: "mqtt://emqx.default.svc"
+      serial:
+        port: /dev/serial/by-id/usb-Silicon_Labs_slae.sh_cc2652rb_stick_-_slaesh_s_iot_stuff_00_12_4B_00_23_93_26_FF-if00-port0
+      advanced:
+        log_output:
+          - console
+        network_key:
+          - bf
+          - 68
+          - f1
+          - eb
+          - 84
+          - 5b
+          - 08
+          - 24
+          - 13
+          - f2
+          - 27
+          - 3e
+          - 19
+          - fb
+          - b7
+          - 95
+        pan_id: 6752
+      frontend:
+        port: 8080
+      experimental:
+        new_api: true
+  valuesFrom:
+  - kind: Secret
+    name: "zigbee2mqtt-helm-values"
