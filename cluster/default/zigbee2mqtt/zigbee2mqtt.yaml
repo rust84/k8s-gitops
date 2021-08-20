@@ -35,6 +35,8 @@ spec:
             - {key: "feature.node.kubernetes.io/custom-zigbee", operator: In, values: ["true"]}
     securityContext:
       privileged: true
+    podAnnotations:
+      backup.velero.io/backup-volumes: data
     persistence:
       data:
         enabled: true
