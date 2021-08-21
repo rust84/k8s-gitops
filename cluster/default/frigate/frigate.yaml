@@ -114,8 +114,8 @@ spec:
               cat:
                 min_area: 1000
                 max_area: 100000
-                threshold: 0.75
-                min_score: 0.60
+                threshold: 0.6
+                min_score: 0.5
           clips:
             enabled: true
             objects:
