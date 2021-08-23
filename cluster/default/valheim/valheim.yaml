@@ -46,6 +46,9 @@ spec:
         loadBalancerIP: 10.1.0.168
         annotations:
           metallb.universe.tf/allow-shared-ip: valheim
+        ports:
+          valheim-2:
+            enabled: true
       supervisor:
         enabled: true
         type: LoadBalancer
@@ -56,8 +59,6 @@ spec:
             port: 9001
             protocol: TCP
             targetPort: 9001
-          valheim-2:
-            enabled: true
         annotations:
           metallb.universe.tf/allow-shared-ip: valheim
       status:
