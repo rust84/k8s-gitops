@@ -56,6 +56,8 @@ spec:
             port: 9001
             protocol: TCP
             targetPort: 9001
+          valheim-2:
+            enabled: true
         annotations:
           metallb.universe.tf/allow-shared-ip: valheim
       status:
