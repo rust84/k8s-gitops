@@ -111,4 +111,10 @@ spec:
           readOnly: true
         securityContext:
           runAsUser: 0
-
+    affinity:
+      nodeAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          nodeSelectorTerms:
+          - matchExpressions:
+            - key: node-role.kubernetes.io/plex
+              operator: Exists
