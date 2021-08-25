@@ -179,7 +179,7 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: external
+        ingressClassName: ingress-ext
       prometheusSpec:
         # image:
         #   repository: quay.io/prometheus/prometheus
