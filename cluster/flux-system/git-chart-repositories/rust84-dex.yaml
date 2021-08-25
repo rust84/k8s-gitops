@@ -2,7 +2,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1beta1
 kind: GitRepository
 metadata:
-  name: mintel-charts
+  name: rust84-dex
   namespace: flux-system
 spec:
   interval: 24h
