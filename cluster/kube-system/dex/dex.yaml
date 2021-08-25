@@ -12,7 +12,7 @@ spec:
       version: 1.4.0
       sourceRef:
         kind: GitRepository
-        name: mintel-charts
+        name: rust84-dex
         namespace: flux-system
       interval: 10m
   test:
@@ -35,8 +35,7 @@ spec:
       tag: v2.30.0
     ingress:
       enabled: true
-      annotations:
-        kubernetes.io/ingress.class: "external"
+      ingressClassName:  ingress-ext
     tolerations:
       - key: "arm"
         operator: "Exists"
