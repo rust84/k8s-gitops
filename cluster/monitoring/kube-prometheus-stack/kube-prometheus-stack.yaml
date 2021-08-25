@@ -72,8 +72,7 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
-        annotations:
-          kubernetes.io/ingress.class: "external"
+        ingressClassName: ingress-ext
       config:
         templates: ["*.tmpl"]
         route:
@@ -180,8 +179,7 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
-        annotations:
-          kubernetes.io/ingress.class: "external"
+        ingressClassName: external
       prometheusSpec:
         # image:
         #   repository: quay.io/prometheus/prometheus

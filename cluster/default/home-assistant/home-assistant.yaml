@@ -45,8 +45,7 @@ spec:
     ingress:
       main:
         enabled: true
-        annotations:
-          kubernetes.io/ingress.class: "external"
+        ingressClassName: ingress-ext
     prometheus:
       serviceMonitor:
         enabled: false

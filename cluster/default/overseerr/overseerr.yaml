@@ -41,8 +41,7 @@ spec:
     ingress:
       main:
         enabled: true
-        annotations:
-          kubernetes.io/ingress.class: "external"
+        ingressClassName: ingress-ext
     persistence:
       config:
         enabled: true

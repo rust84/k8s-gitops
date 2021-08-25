@@ -51,8 +51,7 @@ spec:
       GF_LOG_FILTERS: rendering:debug
     ingress:
       enabled: true
-      annotations:
-        kubernetes.io/ingress.class: "external"
+      ingressClassName: ingress-ext
     plugins:
     - natel-discrete-panel
     - grafana-piechart-panel

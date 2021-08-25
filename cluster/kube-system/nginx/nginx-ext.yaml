@@ -32,7 +32,7 @@ spec:
     cleanupOnFail: true
   values:
     controller:
-      ingressClass: external
+      ingressClass: ingress-ext
       # image:
       #   repository: us.gcr.io/k8s-artifacts-prod/ingress-nginx/controller
       #   tag: 0.34.0
@@ -41,10 +41,10 @@ spec:
         loadBalancerIP: 10.1.0.151
         externalTrafficPolicy: Local
       ingressClassResource:
-        name: external
+        name: ingress-ext
         enabled: true
         default: false
-        controllerValue: "k8s.io/external"
+        controllerValue: "k8s.io/ingress-ext"
       admissionWebhooks:
         enabled: false
       config:
