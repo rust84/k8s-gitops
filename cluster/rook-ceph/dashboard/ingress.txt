@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: rook-ceph-mgr-dashboard
@@ -18,6 +18,9 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: rook-ceph-mgr-dashboard
-          servicePort: http-dashboard
+          service:
+            name: rook-ceph-mgr-dashboard
+            port:
+              number: 7000
