@@ -36,6 +36,8 @@ spec:
       service:
         loadBalancerIP: 10.1.0.150
         externalTrafficPolicy: Local
+      ingressClassResource:
+        default: true
       admissionWebhooks:
         enabled: false
       config:

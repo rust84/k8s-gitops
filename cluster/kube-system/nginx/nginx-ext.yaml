@@ -40,6 +40,11 @@ spec:
       service:
         loadBalancerIP: 10.1.0.151
         externalTrafficPolicy: Local
+      ingressClassResource:
+        name: external
+        enabled: true
+        default: false
+        controllerValue: "k8s.io/external"
       admissionWebhooks:
         enabled: false
       config:
