@@ -47,6 +47,8 @@ spec:
         storageClass: rook-ceph-block
         accessMode: ReadWriteOnce
         size: 10Gi
+    podAnnotations:
+      backup.velero.io/backup-volumes: config
     postgresql:
       enabled: true
       postgresqlUsername: "vaultwarden"
@@ -57,6 +59,8 @@ spec:
         accessModes:
         - ReadWriteOnce
         size: 10Gi
+      podAnnotations:
+        backup.velero.io/backup-volumes: data
   valuesFrom:
   - kind: Secret
     name: "vaultwarden-helm-values"
