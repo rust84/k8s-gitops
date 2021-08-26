@@ -31,6 +31,9 @@ spec:
     recreate: true
     cleanupOnFail: true
   values:
+    publishService:
+      enabled: true
+      pathOverride: "kube-system/nginx-ingress-ext-ingress-nginx-controller"
     controller:
       ingressClass: ingress-ext
       # image:
