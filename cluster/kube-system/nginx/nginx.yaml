@@ -32,6 +32,7 @@ spec:
     cleanupOnFail: true
   values:
     controller:
+      watchIngressWithoutClass: true
       replicaCount: 1
       service:
         loadBalancerIP: 10.1.0.150
