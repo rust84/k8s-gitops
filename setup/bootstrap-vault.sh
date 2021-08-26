@@ -203,6 +203,7 @@ loadSecretsToVault() {
   kvault "default/frigate/frigate-helm-values.txt"
   kvault "default/zigbee2mqtt/zigbee2mqtt-helm-values.txt"
   kvault "default/esphome/esphome-helm-values.txt"
+  kvault "default/vaultwarden/vaultwarden-helm-values.txt"
 }
 
 FIRST_RUN=1
