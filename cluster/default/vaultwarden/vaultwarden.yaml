@@ -59,8 +59,9 @@ spec:
         accessModes:
         - ReadWriteOnce
         size: 10Gi
-      podAnnotations:
-        backup.velero.io/backup-volumes: data
+      primary:
+        podAnnotations:
+          backup.velero.io/backup-volumes: data
   valuesFrom:
   - kind: Secret
     name: "vaultwarden-helm-values"
