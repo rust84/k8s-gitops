@@ -41,6 +41,8 @@ spec:
       main:
         enabled: true
         ingressClassName: "ingress-ext"
+        annotations:
+          kubernetes.io/ingress.class: ingress-ext
     persistence:
       config:
         enabled: true
