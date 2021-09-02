@@ -32,10 +32,10 @@ spec:
     cleanupOnFail: true
   values:
     controller:
-      ingressClass: ingress-ext
-      # image:
-      #   repository: us.gcr.io/k8s-artifacts-prod/ingress-nginx/controller
-      #   tag: 0.34.0
+      publishService:
+        enabled: true
+        pathOverride: kube-system/nginx-ingress-ext-ingress-nginx-controller
+        update-status-on-shutdown: "false"
       replicaCount: 1
       service:
         loadBalancerIP: 10.1.0.151
@@ -86,8 +86,8 @@ spec:
                 description: Too many 4XXs - External
                 summary: More than 15% of the all requests did return 4XX, this requires your attention
       tolerations:
-      - key: "arm"
-        operator: "Exists"
+        - key: "arm"
+          operator: "Exists"
       extraArgs:
         default-ssl-certificate: "cert-manager/acme-crt-secret"
       resources:
@@ -102,8 +102,8 @@ spec:
         repository: onedr0p/custom-error-pages
         tag: v1.0.2
       tolerations:
-      - key: "arm"
-        operator: "Exists"
+        - key: "arm"
+          operator: "Exists"
       resources:
         requests:
           memory: 250Mi
