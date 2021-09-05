@@ -104,16 +104,16 @@ spec:
               person:
                 min_area: 1500
                 max_area: 100000
-                threshold: 0.75
-                min_score: 0.60
+                threshold: 0.7
+                min_score: 0.5
               dog:
-                min_area: 1000
-                max_area: 100000
-                threshold: 0.75
-                min_score: 0.65
+                min_area: 1500
+                max_area: 10000
+                threshold: 0.7
+                min_score: 0.6
               cat:
-                min_area: 1000
-                max_area: 100000
+                min_area: 500
+                max_area: 10000
                 threshold: 0.6
                 min_score: 0.5
           clips:
@@ -144,7 +144,11 @@ spec:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
             - matchExpressions:
-                - {key: "feature.node.kubernetes.io/custom-coral-tpu", operator: In, values: ["true"]}
+                - {
+                    key: "feature.node.kubernetes.io/custom-coral-tpu",
+                    operator: In,
+                    values: ["true"],
+                  }
     resources:
       requests:
         memory: 1000Mi
@@ -174,6 +178,6 @@ spec:
       - mountPath: /tmp/cache
         name: cache
   valuesFrom:
-  - kind: Secret
-    name: "frigate-helm-values"
-    optional: false
+    - kind: Secret
+      name: "frigate-helm-values"
+      optional: false
