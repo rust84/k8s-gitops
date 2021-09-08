@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: sonarr
-      version: 13.0.0
+      version: 14.0.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -66,32 +66,28 @@ spec:
         enabled: true
         interval: 3m
         scrapeTimeout: 1m30s
-    additionalContainers:
-    - name: exportarr
-      image: ghcr.io/onedr0p/exportarr:v0.6.0
-      imagePullPolicy: IfNotPresent
-      args: ["exportarr", "sonarr"]
+    exporter:
+      enabled: true
+      image:
+        repository: ghcr.io/onedr0p/exportarr
+        tag: v0.6.1
       env:
-      - name: PORT
-        value: "32123"
-      - name: URL
-        value: "http://localhost"
-      - name: CONFIG
-        value: "/config/config.xml"
-      - name: ENABLE_UNKNOWN_QUEUE_ITEMS
-        value: "true"
-      - name: ENABLE_ADDITIONAL_METRICS
-        value: "true"
+        port: 32123
+        additionalMetrics: true
+        unknownQueueItems: false
+      podMonitor:
+        interval: 3m
+        scrapeTimeout: 1m
       ports:
-      - name: exportarr
-        containerPort: 32123
+        - name: exportarr
+          containerPort: 32123
       volumeMounts:
-      - name: config
-        mountPath: /config
-        readOnly: true
+        - name: config
+          mountPath: /config
+          readOnly: true
     tolerations:
-    - key: "arm"
-      operator: "Exists"
+      - key: "arm"
+        operator: "Exists"
   valuesFrom:
-  - kind: Secret
-    name: "sonarr-helm-values"
+    - kind: Secret
+      name: "sonarr-helm-values"
