@@ -78,10 +78,6 @@ spec:
       podMonitor:
         interval: 3m
         scrapeTimeout: 1m
-    persistence:
-      config:
-        enabled: true
-        existingClaim: radarr-config-v1
       media:
         enabled: true
         type: custom
@@ -91,8 +87,8 @@ spec:
             path: /tycho/Media
         mountPath: /media
     tolerations:
-    - key: "arm"
-      operator: "Exists"
+      - key: "arm"
+        operator: "Exists"
   valuesFrom:
-  - kind: Secret
-    name: "radarr-helm-values"
+    - kind: Secret
+      name: "radarr-helm-values"
