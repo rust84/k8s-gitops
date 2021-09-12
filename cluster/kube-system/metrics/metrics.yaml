@@ -8,12 +8,12 @@ spec:
   interval: 5m
   chart:
     spec:
-      # renovate: registryUrl=https://charts.bitnami.com/bitnami
+      # renovate: registryUrl=https://kubernetes-sigs.github.io/metrics-server
       chart: metrics-server
-      version: 5.9.3
+      version: 3.5.0
       sourceRef:
         kind: HelmRepository
-        name: bitnami-charts
+        name: metrics-server-charts
         namespace: flux-system
       interval: 10m
   test:
@@ -27,8 +27,8 @@ spec:
       remediateLastFailure: true # remediate the last failure, when no retries remain
     cleanupOnFail: true
   values:
-    apiService:
-      create: true
-    extraArgs:
-      kubelet-insecure-tls: true
-      kubelet-preferred-address-types: InternalIP,ExternalIP,Hostname
+    args:
+      - --kubelet-insecure-tls
+      - --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname
+      - --kubelet-use-node-status-port
+      - --metric-resolution=15s
