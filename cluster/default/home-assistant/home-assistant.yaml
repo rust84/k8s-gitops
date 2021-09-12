@@ -65,6 +65,7 @@ spec:
         enabled: true
     podAnnotations:
       backup.velero.io/backup-volumes: config
+      secret.reloader.stakater.com/reload: "home-assistant"
     addons:
       codeserver:
         enabled: true
@@ -82,14 +83,14 @@ spec:
           annotations:
             kubernetes.io/ingress.class: "nginx"
         volumeMounts:
-        - name: config
-          mountPath: /config
-        - name: deploykey
-          mountPath: /root/.ssh/id_rsa
-          subPath: id_rsa
+          - name: config
+            mountPath: /config
+          - name: deploykey
+            mountPath: /root/.ssh/id_rsa
+            subPath: id_rsa
     tolerations:
-    - key: "arm"
-      operator: "Exists"
+      - key: "arm"
+        operator: "Exists"
     resources:
       limits:
         memory: 2500Mi
@@ -104,5 +105,5 @@ spec:
         enabled: true
         storageClass: "rook-ceph-block"
   valuesFrom:
-  - kind: Secret
-    name: "home-assistant-helm-values"
+    - kind: Secret
+      name: "home-assistant-helm-values"

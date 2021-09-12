@@ -39,9 +39,9 @@ spec:
       TZ: "Europe/London"
     podSecurityContext:
       supplementalGroups:
-      - 44
-      - 109
-      - 100
+        - 44
+        - 109
+        - 100
     service:
       main:
         type: LoadBalancer
@@ -57,15 +57,15 @@ spec:
         annotations:
           kubernetes.io/ingress.class: "nginx"
         hosts:
-        - host: "plex.microserver.space"
-          paths:
-          - path: /
-            pathType: Prefix
-            service:
-              name: plex-kube-plex
+          - host: "plex.microserver.space"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  name: plex-kube-plex
         tls:
-        - hosts:
-          - "plex.microserver.space"
+          - hosts:
+              - "plex.microserver.space"
     persistence:
       config:
         enabled: true
@@ -85,6 +85,7 @@ spec:
         readOnly: false
     podAnnotations:
       backup.velero.io/backup-volumes: config
+      configmap.reloader.stakater.com/reload: "plex-promtail"
     resources:
       requests:
         gpu.intel.com/i915: 1
@@ -101,20 +102,20 @@ spec:
           tag: 2.3.0
         loki: http://loki.logs.svc.cluster.local:3100/loki/api/v1/push
         logs:
-        - name: promtail/plex
-          path: "/config/Library/Application Support/Plex Media Server/Logs/*.log"
-        - name: promtail/plex/plugins
-          path: "/config/Library/Application Support/Plex Media Server/Logs/PMS Plugin Logs/*.log"
+          - name: promtail/plex
+            path: "/config/Library/Application Support/Plex Media Server/Logs/*.log"
+          - name: promtail/plex/plugins
+            path: "/config/Library/Application Support/Plex Media Server/Logs/PMS Plugin Logs/*.log"
         volumeMounts:
-        - name: config
-          mountPath: /config
-          readOnly: true
+          - name: config
+            mountPath: /config
+            readOnly: true
         securityContext:
           runAsUser: 0
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
-          - matchExpressions:
-            - key: node-role.kubernetes.io/plex
-              operator: Exists
+            - matchExpressions:
+                - key: node-role.kubernetes.io/plex
+                  operator: Exists

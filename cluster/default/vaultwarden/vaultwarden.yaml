@@ -49,6 +49,7 @@ spec:
         size: 10Gi
     podAnnotations:
       backup.velero.io/backup-volumes: config
+      secret.reloader.stakater.com/reload: "vaultwarden"
     postgresql:
       enabled: true
       postgresqlUsername: "vaultwarden"
@@ -57,11 +58,11 @@ spec:
         enabled: true
         storageClass: rook-ceph-block
         accessModes:
-        - ReadWriteOnce
+          - ReadWriteOnce
         size: 10Gi
       primary:
         podAnnotations:
           backup.velero.io/backup-volumes: data
   valuesFrom:
-  - kind: Secret
-    name: "vaultwarden-helm-values"
+    - kind: Secret
+      name: "vaultwarden-helm-values"

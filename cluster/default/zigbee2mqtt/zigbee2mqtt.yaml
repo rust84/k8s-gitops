@@ -31,12 +31,17 @@ spec:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
           nodeSelectorTerms:
-          - matchExpressions:
-            - {key: "feature.node.kubernetes.io/custom-zigbee", operator: In, values: ["true"]}
+            - matchExpressions:
+                - {
+                    key: "feature.node.kubernetes.io/custom-zigbee",
+                    operator: In,
+                    values: ["true"],
+                  }
     securityContext:
       privileged: true
     podAnnotations:
       backup.velero.io/backup-volumes: data
+      configmap.reloader.stakater.com/reload: "zigbee2mqtt-settings"
     persistence:
       data:
         enabled: true
@@ -84,5 +89,5 @@ spec:
       experimental:
         new_api: true
   valuesFrom:
-  - kind: Secret
-    name: "zigbee2mqtt-helm-values"
+    - kind: Secret
+      name: "zigbee2mqtt-helm-values"
