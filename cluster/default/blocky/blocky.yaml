@@ -109,9 +109,8 @@ spec:
         externalTrafficPolicy: Local
         annotations:
           metallb.universe.tf/allow-shared-ip: blocky
-    prometheus:
-      serviceMonitor:
-        enabled: true
+    metrics:
+      enabled: true
     podAnnotations:
       configmap.reloader.stakater.com/reload: "blocky-config"
     tolerations:
