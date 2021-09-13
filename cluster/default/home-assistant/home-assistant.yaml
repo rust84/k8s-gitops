@@ -46,9 +46,8 @@ spec:
       main:
         enabled: true
         ingressClassName: ingress-ext
-    prometheus:
-      serviceMonitor:
-        enabled: false
+    metrics:
+      enabled: false
     hostNetwork: true
     dnsPolicy: ClusterFirstWithHostNet
     service:
