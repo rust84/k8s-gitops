@@ -32,13 +32,16 @@ spec:
     cleanupOnFail: true
   values:
     controller:
-      watchIngressWithoutClass: true
+      #watchIngressWithoutClass: true
       replicaCount: 1
       service:
         loadBalancerIP: 10.1.0.150
         externalTrafficPolicy: Local
       ingressClassResource:
+        name: ingress-int
+        enabled: true
         default: true
+        controllerValue: "k8s.io/ingress-int"
       admissionWebhooks:
         enabled: false
       config:
@@ -74,8 +77,8 @@ spec:
                 description: Too many 4XXs
                 summary: More than 15% of the all requests did return 4XX, this requires your attention
       tolerations:
-      - key: "arm"
-        operator: "Exists"
+        - key: "arm"
+          operator: "Exists"
       extraArgs:
         default-ssl-certificate: "cert-manager/acme-crt-secret"
       resources:
@@ -90,12 +93,11 @@ spec:
         repository: onedr0p/custom-error-pages
         tag: v1.0.2
       tolerations:
-      - key: "arm"
-        operator: "Exists"
+        - key: "arm"
+          operator: "Exists"
       resources:
         requests:
           memory: 250Mi
           cpu: 25m
         limits:
           memory: 350Mi
-

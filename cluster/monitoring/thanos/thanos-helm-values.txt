@@ -3,7 +3,7 @@ query:
     enabled: true
     hostname: thanos.$DOMAIN
     annotations:
-      kubernetes.io/ingress.class: nginx
+      kubernetes.io/ingress.class: ingress-int
       nginx.ingress.kubernetes.io/auth-url: "https://auth.$DOMAIN/oauth2/auth"
       nginx.ingress.kubernetes.io/auth-signin: https://auth.$DOMAIN/oauth2/start
     tls: true

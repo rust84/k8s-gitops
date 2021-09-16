@@ -46,10 +46,10 @@ spec:
     ingress:
       enabled: true
       annotations:
-        kubernetes.io/ingress.class: nginx
+        kubernetes.io/ingress.class: ingress-int
     tolerations:
-    - key: "arm"
-      operator: "Exists"
+      - key: "arm"
+        operator: "Exists"
     resources:
       requests:
         memory: 350Mi
@@ -66,5 +66,5 @@ spec:
       # Number of parallel instances
       replicas: 3
   valuesFrom:
-  - kind: Secret
-    name: "minio-helm-values"
+    - kind: Secret
+      name: "minio-helm-values"
