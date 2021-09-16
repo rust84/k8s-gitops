@@ -43,7 +43,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: "nginx"
+        ingressClassName: "ingress-int"
     persistence:
       config:
         enabled: true
@@ -51,5 +51,5 @@ spec:
         accessMode: ReadWriteOnce
         size: 1Gi
   valuesFrom:
-  - kind: Secret
-    name: "esphome-helm-values"
+    - kind: Secret
+      name: "esphome-helm-values"
