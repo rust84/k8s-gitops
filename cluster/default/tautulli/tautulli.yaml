@@ -41,8 +41,8 @@ spec:
       main:
         enabled: true
         annotations:
-          kubernetes.io/ingress.class: "nginx"
-    strategy: 
+          ingressClassName: "ingress-int"
+    strategy:
       type: Recreate
     podAnnotations:
       backup.velero.io/backup-volumes: config
@@ -63,8 +63,8 @@ spec:
         cpu: 25m
         memory: 300Mi
     tolerations:
-    - key: "arm"
-      operator: "Exists"
+      - key: "arm"
+        operator: "Exists"
   valuesFrom:
-  - kind: Secret
-    name: "tautulli-helm-values"
+    - kind: Secret
+      name: "tautulli-helm-values"

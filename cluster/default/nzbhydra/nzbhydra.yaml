@@ -35,7 +35,7 @@ spec:
       repository: ghcr.io/k8s-at-home/nzbhydra2
       tag: v3.15.2
       pullPolicy: Always
-    strategy: 
+    strategy:
       type: Recreate
     env:
       TZ: Europe/London
@@ -43,7 +43,7 @@ spec:
       main:
         enabled: true
         annotations:
-          kubernetes.io/ingress.class: "nginx"
+          ingressClassName: "ingress-int"
     podAnnotations:
       backup.velero.io/backup-volumes: config
     persistence:
@@ -63,5 +63,5 @@ spec:
         cpu: 25m
         memory: 350Mi
   valuesFrom:
-  - kind: Secret
-    name: "nzbhydra-helm-values"
+    - kind: Secret
+      name: "nzbhydra-helm-values"

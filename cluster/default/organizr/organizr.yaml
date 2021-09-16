@@ -40,7 +40,7 @@ spec:
       main:
         enabled: true
         annotations:
-          kubernetes.io/ingress.class: "nginx"
+          ingressClassName: "ingress-int"
     podAnnotations:
       backup.velero.io/backup-volumes: config
     persistence:
@@ -59,8 +59,8 @@ spec:
       limits:
         memory: 350Mi
     tolerations:
-    - key: "arm"
-      operator: "Exists"
+      - key: "arm"
+        operator: "Exists"
   valuesFrom:
-  - kind: Secret
-    name: "organizr-helm-values"
+    - kind: Secret
+      name: "organizr-helm-values"
