@@ -41,7 +41,7 @@ spec:
       main:
         enabled: true
         annotations:
-          ingressClassName: "ingress-int"
+          ingressClassName: ingress-int
     strategy:
       type: Recreate
     podAnnotations:

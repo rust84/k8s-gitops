@@ -27,7 +27,7 @@
 #     ingress:
 #       enabled: true
 #       annotations:
-#         ingressClassName: "ingress-int"
+#         ingressClassName: ingress-int
 #     tolerations:
 #     - key: "arm"
 #       operator: "Exists"

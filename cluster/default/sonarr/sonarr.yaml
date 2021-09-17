@@ -40,7 +40,7 @@ spec:
       main:
         enabled: true
         annotations:
-          ingressClassName: "ingress-int"
+          ingressClassName: ingress-int
     podAnnotations:
       backup.velero.io/backup-volumes: config
     persistence:

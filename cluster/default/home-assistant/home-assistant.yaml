@@ -80,7 +80,7 @@ spec:
         ingress:
           enabled: true
           annotations:
-            ingressClassName: "ingress-int"
+            ingressClassName: ingress-int
         volumeMounts:
           - name: config
             mountPath: /config

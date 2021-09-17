@@ -4,12 +4,12 @@ metadata:
   name: rook-ceph-mgr-dashboard
   namespace: rook-ceph
   annotations:
-    ingressClassName: "ingress-int"
 #    kubernetes.io/tls-acme: "true"
 #    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
 #    nginx.ingress.kubernetes.io/server-snippet: |
 #      proxy_ssl_verify off;
 spec:
+  ingressClassName: ingress-int
   tls:
    - hosts:
      - rook.k.$DOMAIN

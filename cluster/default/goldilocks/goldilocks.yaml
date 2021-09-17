@@ -21,6 +21,6 @@
 #       ingress:
 #         enabled: true
 #         annotations:
-#           ingressClassName: "ingress-int"
+#           ingressClassName: ingress-int
 #   valueFileSecrets:
 #   - name: "goldilocks-helm-values"

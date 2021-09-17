@@ -40,7 +40,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: "ingress-ext"
+        ingressClassName: ingress-ext
     persistence:
       config:
         enabled: true
