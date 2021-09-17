@@ -1,8 +1,8 @@
 ingress:
   main:
     enabled: true
+    ingressClassName: ingress-int
     annotations:
-      ingressClassName: ingress-int
       nginx.ingress.kubernetes.io/auth-url: "https://auth.$DOMAIN/oauth2/auth"
       nginx.ingress.kubernetes.io/auth-signin: https://auth.$DOMAIN/oauth2/start
     hosts:

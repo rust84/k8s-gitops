@@ -137,8 +137,7 @@ spec:
             retain_days: 5
     ingress:
       enabled: true
-      annotations:
-        ingressClassName: ingress-int
+      ingressClassName: ingress-int
     podAnnotations:
       configmap.reloader.stakater.com/reload: "frigate"
     affinity:

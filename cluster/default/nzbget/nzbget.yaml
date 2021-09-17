@@ -43,8 +43,7 @@ spec:
     ingress:
       main:
         enabled: true
-        annotations:
-          ingressClassName: ingress-int
+        ingressClassName: ingress-int
     persistence:
       config:
         enabled: true

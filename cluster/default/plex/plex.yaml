@@ -54,8 +54,7 @@ spec:
     ingress:
       main:
         enabled: true
-        annotations:
-          ingressClassName: ingress-int
+        ingressClassName: ingress-int
         hosts:
           - host: "plex.microserver.space"
             paths:
