@@ -5,7 +5,8 @@ server:
     AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
   ingress:
     enabled: true
-    ingressClassName: ingress-int
+    annotations: |
+      kubernetes.io/ingress.class: ingress-int
     hosts:
       - host: vault.k.$DOMAIN
         paths: ["/"]
