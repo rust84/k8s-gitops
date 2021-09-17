@@ -32,7 +32,6 @@ spec:
     cleanupOnFail: true
   values:
     controller:
-      #watchIngressWithoutClass: true
       replicaCount: 1
       service:
         loadBalancerIP: 10.1.0.150
@@ -81,6 +80,7 @@ spec:
           operator: "Exists"
       extraArgs:
         default-ssl-certificate: "cert-manager/acme-crt-secret"
+        ingress-class: "ingress-int"
       resources:
         requests:
           memory: 500Mi
