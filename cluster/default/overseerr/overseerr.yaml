@@ -34,7 +34,7 @@ spec:
     controllerType: deployment
     image:
       repository: sctx/overseerr
-      tag: 1.25.0
+      tag: 1.26.0
     env:
       TZ: "Europe/London"
       LOG_LEVEL: "info"
