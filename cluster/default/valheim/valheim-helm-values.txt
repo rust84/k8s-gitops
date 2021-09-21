@@ -1,27 +1,3 @@
 env:
-  SERVER_NAME: $VALHEIM_SERVER_NAME
-  SERVER_PORT: 2456
-  WORLD_NAME: $VALHEIM_WORLD_NAME
-  SERVER_PASS: $VALHEIM_SERVER_PASS
-  SERVER_PUBLIC: true
-  UPDATE_INTERVAL: 10800 # every 3 hours
-  BACKUPS_INTERVAL: 43200 # every 12 hours
-  BACKUPS_MAX_AGE: 3
-  STATUS_HTTP: true
-  SUPERVISOR_HTTP: true
   SUPERVISOR_HTTP_PASS: $VALHEIM_SUPERVISOR_HTTP_PASS
-  TZ: Europe/London
-  VALHEIM_PLUS: false
-  VPCFG_Server_enabled: true
-  VPCFG_Server_dataRate: 600
-  VPCFG_Server_enforceMod: false
-  VPCFG_FireSource_enabled: true
-  VPCFG_FireSource_fires: true
-  VPCFG_Hud_enabled: true
-  VPCFG_Hud_showRequiredItems: true
-  VPCFG_Hud_experienceGainedNotifications: true
-  VPCFG_Hud_displayStaminaValue: true
-  VPCFG_Map_enabled: true
-  VPCFG_Map_shareMapProgression: true
-  VPCFG_Player_enabled: true
-  VPCFG_Player_deathPenaltyMultiplier: -90
+  SERVER_PASS: $VALHEIM_SERVER_PASS

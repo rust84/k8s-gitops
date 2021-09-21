@@ -37,6 +37,17 @@ spec:
       tag: latest
     strategy:
       type: Recreate
+    env:
+      TZ: Europe/London
+      WORLD_NAME: beardhalla
+      SERVER_NAME: Actual Vikings
+      SERVER_PUBLIC: true
+      UPDATE_INTERVAL: 10800 # every 3 hours
+      BACKUPS_INTERVAL: 43200 # every 12 hours
+      BACKUPS_MAX_AGE: 3
+      STATUS_HTTP: true
+      SUPERVISOR_HTTP: true
+      VALHEIM_PLUS: false
     podAnnotations:
       backup.velero.io/backup-volumes: config
     service:
@@ -70,10 +81,10 @@ spec:
             protocol: TCP
             targetPort: 80
         additionalPorts:
-        - name: status
-          port: 80
-          protocol: TCP
-          targetPort: 80
+          - name: status
+            port: 80
+            protocol: TCP
+            targetPort: 80
     persistence:
       config:
         enabled: true
@@ -86,5 +97,5 @@ spec:
       limits:
         memory: 6Gi
   valuesFrom:
-  - kind: Secret
-    name: "valheim-helm-values"
+    - kind: Secret
+      name: "valheim-helm-values"
