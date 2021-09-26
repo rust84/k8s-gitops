@@ -44,6 +44,8 @@ spec:
         size: 10Gi
     ingress:
       main:
+        annotations:
+          kubernetes.io/ingress.class: ingress-ext
         enabled: true
         ingressClassName: ingress-ext
     metrics:

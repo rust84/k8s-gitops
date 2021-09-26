@@ -90,6 +90,7 @@ spec:
           operator: "Exists"
       extraArgs:
         default-ssl-certificate: "cert-manager/acme-crt-secret"
+        ingress-class: "ingress-ext"
       resources:
         requests:
           memory: 500Mi
