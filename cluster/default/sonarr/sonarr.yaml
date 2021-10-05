@@ -66,7 +66,7 @@ spec:
         interval: 3m
         scrapeTimeout: 1m30s
     metrics:
-      enabled: true
+      enabled: false
       serviceMonitor:
         interval: 3m
         scrapeTimeout: 1m
