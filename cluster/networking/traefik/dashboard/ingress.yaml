@@ -5,7 +5,6 @@ metadata:
   name: traefik-dashboard
   namespace: networking
   annotations:
-    cert-manager.io/cluster-issuer: "letsencrypt-prod"
     hajimari.io/appName: "traefik"
     hajimari.io/enable: "true"
     hajimari.io/icon: "web"
@@ -15,7 +14,7 @@ spec:
   tls:
     - hosts:
         - "traefik.microserver.space"
-      secretName: "traefik-dashboard-tls"
+      secretName: "microserver-space-tls"
   rules:
     - host: "traefik.microserver.space"
       http:
