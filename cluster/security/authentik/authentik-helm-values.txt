@@ -1,0 +1,29 @@
+ingress:
+  annotations:
+    external-dns.alpha.kubernetes.io/target: "ipv4.$DOMAIN"
+  hosts:
+    - host: id.$DOMAIN
+      paths:
+        - path: /
+  tls:
+    - secretName: tls.authentik
+      hosts:
+        - id.$DOMAIN
+authentik:
+  email:
+    username: $SECRET_EMAIL_USERNAME
+    password: $SECRET_EMAIL_PASSWORD
+    from: $AUTHENTIK_MAIL_FROM_ADDRESS
+  key: $AUTHENTIK_SECRET_KEY
+
+  postgresql:
+    password: $AUTHENTIK_POSTGRES_PASSWORD
+  redis:
+    password: $AUTHENTIK_REDIS_PASSWORD
+
+postgresql:
+  postgresqlPassword: $AUTHENTIK_POSTGRES_PASSWORD
+
+redis:
+  auth:
+    password: $AUTHENTIK_REDIS_PASSWORD
