@@ -53,8 +53,9 @@ spec:
       enabled: true
       persistence:
         enabled: true
-        existingClaim: authentik-postgresql
-
+        storageClass: rook-ceph
+        accessModes:
+          - ReadWriteOnce
       postgresqlUsername: authentik
       postgresqlDatabase: authentik
 
