@@ -39,7 +39,11 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: ingress-int
+        ingressClassName: traefik
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "television-box"
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
     podAnnotations:
       backup.velero.io/backup-volumes: config
     persistence:
