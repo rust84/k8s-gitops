@@ -6,4 +6,4 @@ metadata:
   namespace: networking
 spec:
   defaultCertificate:
-    secretName: "traefik-tls"
+    secretName: "traefik-dashboard-tls"
