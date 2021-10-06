@@ -4,14 +4,15 @@ metadata:
   name: rook-ceph-mgr-dashboard
   namespace: rook-ceph
   annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
     traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
 spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - rook.k.$DOMAIN
+        - rook.$DOMAIN
   rules:
-    - host: rook.k.$DOMAIN
+    - host: rook.$DOMAIN
       http:
         paths:
           - path: /
