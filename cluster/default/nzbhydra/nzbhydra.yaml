@@ -33,7 +33,7 @@ spec:
   values:
     image:
       repository: ghcr.io/k8s-at-home/nzbhydra2
-      tag: v3.17.0
+      tag: v3.17.3
       pullPolicy: Always
     strategy:
       type: Recreate
