@@ -14,7 +14,7 @@ authentik:
     username: $SECRET_EMAIL_USERNAME
     password: $SECRET_EMAIL_PASSWORD
     from: $AUTHENTIK_MAIL_FROM_ADDRESS
-  key: $AUTHENTIK_SECRET_KEY
+  secret_key: $AUTHENTIK_SECRET_KEY
 
   postgresql:
     password: $AUTHENTIK_POSTGRES_PASSWORD

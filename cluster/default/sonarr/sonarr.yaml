@@ -44,6 +44,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "television-box"
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
     podAnnotations:
       backup.velero.io/backup-volumes: config
     persistence:

@@ -80,3 +80,9 @@ config: |-
     secret: $DEX_OAUTH2_PROXY_CLIENT_SECRET
     redirectURIs:
     - 'https://auth.$DOMAIN/oauth2/callback'
+
+  - id: authentik
+    name: authentik
+    secret: $DEX_AUTHENTIK_CLIENT_SECRET
+    redirectURIs:
+      - https://id.$DOMAIN/source/oauth/callback/dex/
