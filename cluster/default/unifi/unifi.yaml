@@ -53,10 +53,11 @@ spec:
           url: http://loki.logs.svc.cluster.local:3100/loki/api/v1/push
     ingress:
       main:
-        enabled: true
-        ingressClassName: ingress-int
         annotations:
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
+        enabled: true
+        ingressClassName: traefik
     service:
       main:
         type: LoadBalancer

@@ -41,6 +41,9 @@ spec:
       NODE_RED_ENABLE_SAFE_MODE: "false"
     ingress:
       main:
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
         enabled: true
         ingressClassName: traefik
     persistence:

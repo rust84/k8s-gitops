@@ -1,13 +1,10 @@
 ingress:
   main:
     hosts:
-    - host: node-red.$DOMAIN
-      paths:
-      - path: /
-        pathType: Prefix
+      - host: node-red.$DOMAIN
+        paths:
+          - path: /
+            pathType: Prefix
     tls:
-    - hosts:
-      - "node-red.$DOMAIN"
-    annotations:
-      traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-      traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
+      - hosts:
+          - "node-red.$DOMAIN"

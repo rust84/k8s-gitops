@@ -40,8 +40,10 @@ spec:
       LOG_LEVEL: "info"
     ingress:
       main:
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         enabled: true
-        ingressClassName: ingress-ext
+        ingressClassName: traefik
     persistence:
       config:
         enabled: true
@@ -58,5 +60,5 @@ spec:
       limits:
         memory: 1500Mi
   valuesFrom:
-  - kind: Secret
-    name: "overseerr-helm-values"
+    - kind: Secret
+      name: "overseerr-helm-values"

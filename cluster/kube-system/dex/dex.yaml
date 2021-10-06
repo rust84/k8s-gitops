@@ -35,7 +35,9 @@ spec:
       tag: v2.30.0
     ingress:
       enabled: true
-      ingressClassName:  ingress-ext
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
     tolerations:
       - key: "arm"
         operator: "Exists"
@@ -43,7 +45,7 @@ spec:
       - name: KUBERNETES_POD_NAMESPACE # 1.21 https://github.com/dexidp/dex/issues/2082
         valueFrom:
           fieldRef:
-            fieldPath: metadata.namespace 
+            fieldPath: metadata.namespace
     # resources:
     #   requests:
     #     memory: 350Mi
@@ -51,6 +53,5 @@ spec:
     #   limits:
     #     memory: 500Mi
   valuesFrom:
-  - kind: Secret
-    name: "dex-helm-values"
-      
+    - kind: Secret
+      name: "dex-helm-values"

@@ -44,29 +44,29 @@ spec:
       storageClassName: "rook-ceph-block"
       size: 10Gi
       accessModes:
-      - ReadWriteOnce
+        - ReadWriteOnce
     env:
       GF_EXPLORE_ENABLED: true
       GF_PANELS_DISABLE_SANITIZE_HTML: true
       GF_LOG_FILTERS: rendering:debug
     ingress:
       enabled: true
-      ingressClassName: ingress-ext
+      ingressClassName: traefik
     plugins:
-    - natel-discrete-panel
-    - grafana-piechart-panel
+      - natel-discrete-panel
+      - grafana-piechart-panel
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
         providers:
-        - name: 'default'
-          orgId: 1
-          folder: ''
-          type: file
-          disableDeletion: false
-          editable: true
-          options:
-            path: /var/lib/grafana/dashboards/default
+          - name: "default"
+            orgId: 1
+            folder: ""
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/default
     dashboards:
       default:
         blocky:
@@ -186,25 +186,25 @@ spec:
       datasources.yaml:
         apiVersion: 1
         datasources:
-        - name: Prometheus
-          type: prometheus
-          access: proxy
-          url: http://thanos-query:9090/
-          isDefault: true
-        - name: loki
-          type: loki
-          access: proxy
-          url: http://loki.logs.svc.cluster.local:3100
-        - name: home_assistant
-          type: influxdb
-          access: proxy
-          url: http://influxdb:8086
-          database: home_assistant
-        - name: speedtests
-          type: influxdb
-          access: proxy
-          url: http://influxdb:8086
-          database: speedtests
+          - name: Prometheus
+            type: prometheus
+            access: proxy
+            url: http://thanos-query:9090/
+            isDefault: true
+          - name: loki
+            type: loki
+            access: proxy
+            url: http://loki.logs.svc.cluster.local:3100
+          - name: home_assistant
+            type: influxdb
+            access: proxy
+            url: http://influxdb:8086
+            database: home_assistant
+          - name: speedtests
+            type: influxdb
+            access: proxy
+            url: http://influxdb:8086
+            database: speedtests
     grafana.ini:
       paths:
         data: /var/lib/grafana/data
@@ -218,5 +218,5 @@ spec:
       grafana_net:
         url: https://grafana.net
   valuesFrom:
-  - kind: Secret
-    name: "grafana-helm-values"
+    - kind: Secret
+      name: "grafana-helm-values"

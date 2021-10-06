@@ -37,7 +37,9 @@ spec:
       tag: latest
     ingress:
       enabled: true
-      ingressClassName:  ingress-ext
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
     # resources:
     #   requests:
     #     memory: 350Mi
@@ -45,6 +47,5 @@ spec:
     #   limits:
     #     memory: 500Mi
   valuesFrom:
-  - kind: Secret
-    name: "dex-k8s-authenticator-helm-values"
-          
+    - kind: Secret
+      name: "dex-k8s-authenticator-helm-values"

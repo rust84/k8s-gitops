@@ -54,7 +54,9 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: ingress-int
+        ingressClassName: traefik
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
           - host: "plex.microserver.space"
             paths:

@@ -39,8 +39,11 @@ spec:
       tag: 1.22.2-alpine
     ingress:
       main:
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
         enabled: true
-        ingressClassName: ingress-ext
+        ingressClassName: traefik
     persistence:
       config:
         enabled: true

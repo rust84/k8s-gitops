@@ -4,23 +4,20 @@ metadata:
   name: rook-ceph-mgr-dashboard
   namespace: rook-ceph
   annotations:
-#    kubernetes.io/tls-acme: "true"
-#    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-#    nginx.ingress.kubernetes.io/server-snippet: |
-#      proxy_ssl_verify off;
+    traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
 spec:
-  ingressClassName: ingress-int
+  ingressClassName: traefik
   tls:
-   - hosts:
-     - rook.k.$DOMAIN
+    - hosts:
+        - rook.k.$DOMAIN
   rules:
-  - host: rook.k.$DOMAIN
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: rook-ceph-mgr-dashboard
-            port:
-              number: 7000
+    - host: rook.k.$DOMAIN
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: rook-ceph-mgr-dashboard
+                port:
+                  number: 7000

@@ -45,9 +45,9 @@ spec:
     ingress:
       main:
         annotations:
-          kubernetes.io/ingress.class: ingress-ext
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         enabled: true
-        ingressClassName: ingress-ext
+        ingressClassName: traefik
     metrics:
       enabled: false
     hostNetwork: true
@@ -81,7 +81,10 @@ spec:
           - "none"
         ingress:
           enabled: true
-          ingressClassName: ingress-int
+          ingressClassName: traefik
+          annotations:
+            traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+            traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
         volumeMounts:
           - name: config
             mountPath: /config

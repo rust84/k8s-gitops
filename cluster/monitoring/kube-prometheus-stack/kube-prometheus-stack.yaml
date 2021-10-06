@@ -64,32 +64,34 @@ spec:
                 requests:
                   storage: 10Gi
         tolerations:
-        - key: "arm"
-          operator: "Exists"
+          - key: "arm"
+            operator: "Exists"
         podMetadata:
           annotations:
             backup.velero.io/backup-volumes: alertmanager-kube-prometheus-stack-alertmanager-db
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: ingress-ext
+        ingressClassName: "traefik"
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
       config:
         templates: ["*.tmpl"]
         route:
-          group_by: ['job']
+          group_by: ["job"]
           group_wait: 30s
           group_interval: 5m
           repeat_interval: 12h
-          receiver: 'null'
+          receiver: "null"
           routes:
-          - match:
-              alertname: Watchdog
-            receiver: 'null'
-          - receiver: 'pagerduty'
-            match:
-              severity: critical
-            continue: true
-          - receiver: 'slack-monitoring'
+            - match:
+                alertname: Watchdog
+              receiver: "null"
+            - receiver: "pagerduty"
+              match:
+                severity: critical
+              continue: true
+            - receiver: "slack-monitoring"
       templateFiles:
         pagerduty-custom.tmpl: |-
           {{- define "pagerduty.custom.description" -}}[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if ne .CommonAnnotations.summary ""}}{{ .CommonAnnotations.summary }} {{ else if ne .CommonAnnotations.message ""}}{{ .CommonAnnotations.message }} {{ else if ne .CommonAnnotations.description ""}}{{ .CommonAnnotations.description }} {{ else }}{{ .CommonLabels.alertname }}{{ end }}{{- end -}}
@@ -165,21 +167,23 @@ spec:
     kubelet:
       serviceMonitor:
         metricRelabelings:
-        - action: replace
-          sourceLabels:
-          - node
-          targetLabel: instance
+          - action: replace
+            sourceLabels:
+              - node
+            targetLabel: instance
     prometheus-node-exporter:
       tolerations:
-      - key: "arm"
-        operator: "Exists"
-      - key: "node-role.kubernetes.io/master"
-        operator: "Exists"
+        - key: "arm"
+          operator: "Exists"
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
     prometheus:
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: ingress-ext
+        ingressClassName: "traefik"
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
       prometheusSpec:
         # image:
         #   repository: quay.io/prometheus/prometheus
@@ -216,8 +220,8 @@ spec:
           objectStorageConfig:
             name: thanos-objstore-secret
             key: objstore.yml
-      thanosService: 
+      thanosService:
         enabled: true
   valuesFrom:
-  - kind: Secret
-    name: "kube-prometheus-stack-helm-values"
+    - kind: Secret
+      name: "kube-prometheus-stack-helm-values"
