@@ -45,6 +45,11 @@ spec:
     ingress:
       main:
         annotations:
+          traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
+        enabled: true
+        ingressClassName: traefik
+      api:
+        annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         enabled: true
         ingressClassName: traefik
