@@ -35,7 +35,7 @@ spec:
     authentik:
       email:
         host: email-smtp.eu-west-1.amazonaws.com
-        port: 25
+        port: 465
         use_ssl: true
       log_level: debug
 
