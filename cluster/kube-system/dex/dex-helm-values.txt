@@ -75,12 +75,6 @@ config: |-
     redirectURIs:
     - 'https://grafana.$DOMAIN/login/generic_oauth'
     
-  - id: oauth2-proxy
-    name: 'oauth2-proxy'
-    secret: $DEX_OAUTH2_PROXY_CLIENT_SECRET
-    redirectURIs:
-    - 'https://auth.$DOMAIN/oauth2/callback'
-
   - id: authentik
     name: authentik
     secret: $DEX_AUTHENTIK_CLIENT_SECRET
