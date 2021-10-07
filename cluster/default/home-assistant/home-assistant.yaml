@@ -45,11 +45,6 @@ spec:
     ingress:
       main:
         annotations:
-          traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
-        enabled: true
-        ingressClassName: traefik
-      api:
-        annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         enabled: true
         ingressClassName: traefik
@@ -89,7 +84,7 @@ spec:
           ingressClassName: traefik
           annotations:
             traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-            traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
+            traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
         volumeMounts:
           - name: config
             mountPath: /config
