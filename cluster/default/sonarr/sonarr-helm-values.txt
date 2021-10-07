@@ -1,10 +1,19 @@
 ingress:
   main:
     hosts:
-    - host: sonarr.$DOMAIN
-      paths:
-      - path: /
-        pathType: Prefix
+      - host: sonarr.$DOMAIN
+        paths:
+          - path: /
+            pathType: Prefix
     tls:
-    - hosts:
-      - "sonarr.$DOMAIN"
+      - hosts:
+          - "sonarr.$DOMAIN"
+  api:
+    hosts:
+      - host: "sonarr.$DOMAIN"
+        paths:
+          - path: /api
+            pathType: Prefix
+    tls:
+      - hosts:
+          - "sonarr.$DOMAIN"

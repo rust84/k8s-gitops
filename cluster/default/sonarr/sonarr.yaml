@@ -45,6 +45,11 @@ spec:
           hajimari.io/icon: "television-box"
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
+      api:
+        enabled: true
+        ingressClassName: "traefik"
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
     podAnnotations:
       backup.velero.io/backup-volumes: config
     persistence:
@@ -71,7 +76,7 @@ spec:
         interval: 3m
         scrapeTimeout: 1m30s
     metrics:
-      enabled: false
+      enabled: true
       serviceMonitor:
         interval: 3m
         scrapeTimeout: 1m
