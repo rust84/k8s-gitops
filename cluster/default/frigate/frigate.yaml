@@ -33,7 +33,7 @@ spec:
   values:
     image:
       repository: blakeblackshear/frigate
-      tag: 0.8.4-amd64
+      tag: 0.9.1-amd64
     #   pullPolicy: Always
     initContainer:
       image:
@@ -79,7 +79,6 @@ spec:
                 roles:
                   - detect
                   - rtmp
-                  - clips
                   - record
                 input_args:
                   - '-avoid_negative_ts'
@@ -96,9 +95,10 @@ spec:
                   - '1'
                   - '-rtsp_transport'
                   - tcp
-          height: 1080
-          width: 1920
-          fps: 10
+          detect:
+            width: 1920
+            height: 1080
+            fps: 10
           objects:
             filters:
               person:
@@ -116,15 +116,6 @@ spec:
                 max_area: 10000
                 threshold: 0.6
                 min_score: 0.5
-          clips:
-            enabled: true
-            objects:
-              - car
-              - person
-              - dog
-              - cat
-            retain:
-              default: 14
           snapshots:
             enabled: true
             timestamp: False
@@ -133,14 +124,17 @@ spec:
             retain:
               default: 14
           record:
-            enabled: false
-            retain_days: 5
+            enabled: true
+            retain_days: 0
+            events:
+              retain:
+                default: 14
     ingress:
       enabled: true
       annotations:
         kubernetes.io/ingress.class: traefik
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
+        traefik.ingress.kubernetes.io/router.middlewares: "networking-external-auth@kubernetescrd"
     podAnnotations:
       configmap.reloader.stakater.com/reload: "frigate"
     affinity:
