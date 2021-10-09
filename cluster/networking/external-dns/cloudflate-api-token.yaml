@@ -6,5 +6,5 @@ metadata:
 spec:
   keys:
     - cloudflare_api_token
-  path: secrets/networking/external-dns/cloudflare_api_token
+  path: secrets/networking/external-dns/cloudflare-api-token
   type: Opaque
