@@ -134,7 +134,7 @@ spec:
       annotations:
         kubernetes.io/ingress.class: traefik
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
+        traefik.ingress.kubernetes.io/router.middlewares: "network-external-auth@kubernetescrd"
     podAnnotations:
       configmap.reloader.stakater.com/reload: "frigate"
     affinity:
