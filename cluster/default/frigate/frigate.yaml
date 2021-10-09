@@ -95,9 +95,10 @@ spec:
                   - '1'
                   - '-rtsp_transport'
                   - tcp
-          height: 1080
-          width: 1920
-          fps: 10
+          detect:
+            width: 1920
+            height: 1080
+            fps: 10
           objects:
             filters:
               person:
