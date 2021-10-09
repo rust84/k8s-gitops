@@ -164,13 +164,13 @@ EOF
 
 loadSecretsToVault() {
   message "writing secrets to vault"
-  vault kv put secrets/flux/fluxcloud slack_url="$SLACK_WEBHOOK_URL"
   vault kv put secrets/cert-manager/cloudflare-api-key api-key="$CF_API_KEY"
+  vault kv put secrets/networking/external-dns/cloudflare-api-token cloudflare_api_token="$CF_API_KEY"
 
   ####################
   # helm chart values
   ####################
-  kvault "kube-system/external-dns/external-dns-helm-values.txt"
+  kvault "networking/external-dns/external-dns-helm-values.txt"
   kvault "kube-system/kured/kured-helm-values.txt"
   kvault "kube-system/vault/vault-helm-values.txt"
   kvault "kube-system/dex/dex-helm-values.txt"

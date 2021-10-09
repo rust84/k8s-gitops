@@ -1,5 +1,0 @@
-pdns:
-  apiUrl: https://pdns.k.$DOMAIN
-  apiKey: $POWERDNS_API_KEY
-domainFilters:
-  - $DOMAIN
