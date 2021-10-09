@@ -41,7 +41,6 @@ spec:
       main:
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
         enabled: true
         ingressClassName: traefik
     persistence:
