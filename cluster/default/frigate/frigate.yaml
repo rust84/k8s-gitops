@@ -135,6 +135,7 @@ spec:
         kubernetes.io/ingress.class: traefik
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         traefik.ingress.kubernetes.io/router.middlewares: "networking-external-auth@kubernetescrd"
+        external-dns/is-public: "true"
     podAnnotations:
       configmap.reloader.stakater.com/reload: "frigate"
     affinity:

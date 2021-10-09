@@ -165,7 +165,7 @@ EOF
 loadSecretsToVault() {
   message "writing secrets to vault"
   vault kv put secrets/cert-manager/cloudflare-api-key api-key="$CF_API_KEY"
-  vault kv put secrets/networking/external-dns/cloudflare-api-key cloudflare_api_token="$CF_API_KEY"
+  vault kv put secrets/networking/external-dns/cloudflare-api-key cloudflare_api_token="$EXTERNAL_DNS_CF_API_TOKEN"
 
   ####################
   # helm chart values
