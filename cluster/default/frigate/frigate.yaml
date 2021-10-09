@@ -79,7 +79,6 @@ spec:
                 roles:
                   - detect
                   - rtmp
-                  - clips
                   - record
                 input_args:
                   - '-avoid_negative_ts'
@@ -116,15 +115,6 @@ spec:
                 max_area: 10000
                 threshold: 0.6
                 min_score: 0.5
-          clips:
-            enabled: true
-            objects:
-              - car
-              - person
-              - dog
-              - cat
-            retain:
-              default: 14
           snapshots:
             enabled: true
             timestamp: False
@@ -133,8 +123,11 @@ spec:
             retain:
               default: 14
           record:
-            enabled: false
-            retain_days: 5
+            enabled: true
+            retain_days: 0
+            events:
+              retain:
+                default: 14
     ingress:
       enabled: true
       annotations:
