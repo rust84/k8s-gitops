@@ -13,7 +13,7 @@ dexK8sAuthenticator:
     description: "My home k8s cluster for local media purposes"
     client_secret: $DEX_K8S_AUTHENTICATOR_CLIENT_SECRET
     issuer: https://dex.$DOMAIN
-    k8s_master_uri: https://k8s.$DOMAIN:6443
+    k8s_master_uri: https://api.$DOMAIN:6443
     client_id: dex-k8s-authenticator
     redirect_uri: https://login.$DOMAIN/callback/
     k8s_ca_pem: |
