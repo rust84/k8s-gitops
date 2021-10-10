@@ -3,8 +3,7 @@ kind: ClusterRole
 metadata:
   name: cluster-read-all
 rules:
-  -
-    apiGroups:
+  - apiGroups:
       - ""
       - apps
       - autoscaling
@@ -60,27 +59,26 @@ apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
   name: dex-cluster-read
-  namespace: kube-system
+  namespace: security
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: cluster-read-all
 subjects:
-- apiGroup: rbac.authorization.k8s.io
-  kind: Group
-  name: russhome:cluster-read
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: russhome:cluster-read
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
   name: dex-cluster-admin
-  namespace: kube-system
+  namespace: security
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
   name: cluster-admin
 subjects:
-- apiGroup: rbac.authorization.k8s.io
-  kind: Group
-  name: russhome:cluster-admin
-
+  - apiGroup: rbac.authorization.k8s.io
+    kind: Group
+    name: russhome:cluster-admin

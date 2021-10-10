@@ -173,8 +173,6 @@ loadSecretsToVault() {
   kvault "networking/external-dns/external-dns-helm-values.txt"
   kvault "kube-system/kured/kured-helm-values.txt"
   kvault "kube-system/vault/vault-helm-values.txt"
-  kvault "kube-system/dex/dex-helm-values.txt"
-  kvault "kube-system/dex/dex-k8s-authenticator-helm-values.txt"
   kvault "monitoring/botkube/botkube-helm-values.txt"
   kvault "monitoring/chronograf/chronograf-helm-values.txt"
   kvault "monitoring/kube-prometheus-stack/kube-prometheus-stack-helm-values.txt"
@@ -203,6 +201,8 @@ loadSecretsToVault() {
   kvault "default/esphome/esphome-helm-values.txt"
   kvault "default/vaultwarden/vaultwarden-helm-values.txt"
   kvault "security/authentik/authentik-helm-values.txt"
+  kvault "security/dex/dex-helm-values.txt"
+  kvault "security/dex/dex-k8s-authenticator-helm-values.txt"
 }
 
 FIRST_RUN=1

@@ -2,9 +2,9 @@ apiVersion: ricoberger.de/v1alpha1
 kind: VaultSecret
 metadata:
   name: dex-helm-values
-  namespace: kube-system
+  namespace: security
 spec:
   keys:
     - values.yaml
-  path: secrets/kube-system/dex/dex-helm-values
+  path: secrets/security/dex/dex-helm-values
   type: Opaque

@@ -2,13 +2,13 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: dex
-  namespace: kube-system
+  name: dex-k8s-authenticator
+  namespace: security
 spec:
   interval: 5m
   chart:
     spec:
-      chart: ./charts/dex
+      chart: ./charts/dex-k8s-authenticator
       version: 1.4.0
       sourceRef:
         kind: GitRepository
@@ -30,18 +30,16 @@ spec:
     recreate: true
     cleanupOnFail: true
   values:
+    global:
+      deployEnv: prod
     image:
-      repository: ghcr.io/dexidp/dex
-      tag: v2.30.0
+      repository: mintel/dex-k8s-authenticator
+      tag: latest
     ingress:
       enabled: true
       ingressClassName: traefik
       annotations:
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         external-dns/is-public: "true"
-    tolerations:
-      - key: "arm"
-        operator: "Exists"
     # resources:
     #   requests:
     #     memory: 350Mi
@@ -50,4 +48,4 @@ spec:
     #     memory: 500Mi
   valuesFrom:
     - kind: Secret
-      name: "dex-helm-values"
+      name: "dex-k8s-authenticator-helm-values"
