@@ -43,6 +43,7 @@ spec:
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           traefik.ingress.kubernetes.io/router.middlewares: "networking-cloudflare-ips@kubernetescrd"
+          external-dns/is-public: "true"
         enabled: true
         ingressClassName: traefik
     persistence:

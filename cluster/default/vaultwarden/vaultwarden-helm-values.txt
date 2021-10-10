@@ -1,5 +1,7 @@
 ingress:
   main:
+    annotations:
+      external-dns.alpha.kubernetes.io/target: "ipv4.$DOMAIN"
     hosts:
     - host: warden.$DOMAIN
       paths:

@@ -38,6 +38,9 @@ spec:
     ingress:
       enabled: true
       ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.middlewares: "networking-cloudflare-ips@kubernetescrd"
+        external-dns/is-public: "true"
     # resources:
     #   requests:
     #     memory: 350Mi
