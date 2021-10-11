@@ -1,0 +1,19 @@
+---
+apiVersion: notification.toolkit.fluxcd.io/v1beta1
+kind: Receiver
+metadata:
+  name: github-webhook
+  namespace: flux-system
+spec:
+  type: github
+  events:
+    - "ping"
+    - "push"
+  secretRef:
+    name: github-webhook-token
+  resources:
+    - kind: GitRepository
+      name: flux-system
+    - kind: Kustomization
+      name: k8s-gitops
+      apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
