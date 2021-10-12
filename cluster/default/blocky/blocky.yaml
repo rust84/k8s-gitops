@@ -41,19 +41,12 @@ spec:
       TZ: "Europe/London"
     # blocky configuration
     config: |
+      upstream:
+        default:
+          - tcp+udp:10.20.0.1
       conditional:
         mapping:
-          # CoreDNS IP
-          microserver.space: udp:10.1.0.166
-          our.house: udp:10.20.0.65
-          local: udp:192.168.1.1
-      upstream:
-        externalResolvers:
-        - https://dns1.nextdns.io/dd8d64
-        - https://dns2.nextdns.io/dd8d64
-        - tcp-tls:dd8d64.dns1.nextdns.io:853
-        - tcp-tls:dd8d64.dns2.nextdns.io:853
-        - https://cloudflare-dns.com/dns-query
+          microserver.space: tcp+udp:10.20.0.1
       blocking:
         blackLists:
           ads:
@@ -72,7 +65,7 @@ spec:
           - ads
             # - special
       clientLookup:
-        upstream: udp:10.20.0.65
+        upstream: udp:10.20.0.1
       prometheus:
         enable: true
         path: /metrics
