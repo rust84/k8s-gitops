@@ -44,6 +44,8 @@ spec:
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "resistor-nodes"
         enabled: true
         ingressClassName: traefik
     persistence:

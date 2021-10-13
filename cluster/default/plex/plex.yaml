@@ -57,6 +57,8 @@ spec:
         ingressClassName: traefik
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "plex"
         hosts:
           - host: "plex.microserver.space"
             paths:

@@ -136,6 +136,8 @@ spec:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         traefik.ingress.kubernetes.io/router.middlewares: "networking-external-auth@kubernetescrd"
         external-dns/is-public: "true"
+        hajimari.io/enable: "true"
+        hajimari.io/icon: "cctv"
     podAnnotations:
       configmap.reloader.stakater.com/reload: "frigate"
     affinity:

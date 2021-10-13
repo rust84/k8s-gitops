@@ -43,6 +43,8 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           traefik.ingress.kubernetes.io/router.middlewares: "networking-cloudflare-ips@kubernetescrd"
           external-dns/is-public: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "shield-key"
         enabled: true
         ingressClassName: traefik
     persistence:
