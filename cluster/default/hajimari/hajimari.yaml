@@ -81,6 +81,7 @@ spec:
       data:
         enabled: true
         storageClass: "rook-ceph-block"
+        accessMode: ReadWriteOnce
         size: 1Gi
     podAnnotations:
       configmap.reloader.stakater.com/reload: "hajimari-settings"
