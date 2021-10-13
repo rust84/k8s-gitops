@@ -56,6 +56,8 @@ spec:
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "wifi"
         enabled: true
         ingressClassName: traefik
     service:
