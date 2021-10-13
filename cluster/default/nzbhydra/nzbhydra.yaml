@@ -46,6 +46,7 @@ spec:
           traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
           hajimari.io/enable: "true"
           hajimari.io/icon: "cloud-search"
+          hajimari.io/appName: "nzbhydra"
         enabled: true
         ingressClassName: traefik
     podAnnotations:
