@@ -1,7 +1,5 @@
 ingress:
   annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-    traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
     external-dns.alpha.kubernetes.io/target: "ipv4.$DOMAIN"
   hosts: [frigate.$DOMAIN]
   tls:

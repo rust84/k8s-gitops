@@ -29,7 +29,7 @@ spec:
   rollback:
     timeout: 10m
     recreate: true
-    cleanupOnFail: true    
+    cleanupOnFail: true
   values:
     injector:
       enabled: false
@@ -80,6 +80,14 @@ spec:
     ui:
       enabled: true
       serviceType: "ClusterIP"
+    ingress:
+      enabled: true
+      annotations: |
+        kubernetes.io/ingress.class: traefik
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
+        hajimari.io/enable: "true"
+        hajimari.io/icon: "bank"
   valuesFrom:
-  - kind: Secret
-    name: "vault-helm-values"
+    - kind: Secret
+      name: "vault-helm-values"
