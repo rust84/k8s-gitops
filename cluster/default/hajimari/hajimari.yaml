@@ -32,7 +32,7 @@ spec:
       name: "russell"
       customApps:
         - name: Synology
-          url: "https://synology.our.house/"
+          url: "https://synology.microserver.space/"
           icon: harddisk
       groups:
         - name: Communicate
