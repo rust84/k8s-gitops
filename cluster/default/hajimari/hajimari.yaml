@@ -27,6 +27,7 @@ spec:
       namespaceSelector:
         matchNames:
           - default
+          - kube-system
           - monitoring
           - networking
       name: "russell"

@@ -7,3 +7,6 @@ server:
     hosts:
       - host: vault.$DOMAIN
         paths: ["/"]
+    tls:
+      - hosts:
+          - "vault.$DOMAIN"
