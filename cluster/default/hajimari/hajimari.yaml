@@ -46,6 +46,10 @@ spec:
               url: "https://console.aws.amazon.com/console/home"
             - name: Cloudflare
               url: "https://dash.cloudflare.com"
+        - name: Dev
+          links:
+            - name: Github
+              url: "https://github.com/rust84/k8s-gitops"
         - name: Media
           links:
             - name: YouTube
