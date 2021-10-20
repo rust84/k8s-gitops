@@ -34,7 +34,7 @@ spec:
   values:
     image:
       repository: ghcr.io/esphome/esphome
-      tag: 2021.9.3
+      tag: 2021.10.0
     env:
       TZ: "Europe/London"
       ESPHOME_DASHBOARD_USE_PING: true
