@@ -5,4 +5,4 @@ metadata:
   name: rook-crds
   namespace: rook-ceph
 resources:
-  - https://raw.githubusercontent.com/rook/rook/v1.7.5/cluster/examples/kubernetes/ceph/crds.yaml
+  - https://raw.githubusercontent.com/rook/rook/v1.7.7/cluster/examples/kubernetes/ceph/crds.yaml
