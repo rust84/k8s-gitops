@@ -13,7 +13,7 @@ spec:
       version: 3.2.4
       sourceRef:
         kind: HelmRepository
-        name: fairwinds-charts
+        name: fairwind-charts
         namespace: flux-system
       interval: 10m
   values:
