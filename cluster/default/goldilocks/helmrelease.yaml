@@ -13,7 +13,7 @@ spec:
       version: 3.2.4
       sourceRef:
         kind: HelmRepository
-        name: fairwind-charts
+        name: fairwinds-charts
         namespace: flux-system
       interval: 10m
   values:
@@ -28,9 +28,7 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
           - host: "goldilocks.microserver.space"
-            paths:
-              - path: /
-                pathType: Prefix
+            paths: ["/"]
         tls:
           - hosts:
               - "goldilocks.microserver.space"
