@@ -17,7 +17,10 @@ spec:
         namespace: flux-system
       interval: 10m
   values:
-    installVPA: true
+    vpa:
+      enabled: true
+      updater:
+        enabled: true
     dashboard:
       ingress:
         enabled: true
