@@ -29,7 +29,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "cloud-search"
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
+          traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
         hosts:
           - host: "prowlarr.microserver.space"
             paths:
