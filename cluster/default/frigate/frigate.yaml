@@ -163,6 +163,7 @@ spec:
         enabled: true
         existingClaim: nfs-media-pvc
         mountPath: /media
+        readOnly: false
       usb:
         enabled: true
         type: hostPath
