@@ -10,10 +10,10 @@ spec:
     spec:
       # renovate: registryUrl=https://blakeblackshear.github.io/blakeshome-charts/
       chart: frigate
-      version: 6.0.1
+      version: 6.1.1
       sourceRef:
         kind: HelmRepository
-        name: blakeshome-charts
+        name: k8s-at-home-charts
         namespace: flux-system
       interval: 10m
   test:
@@ -34,15 +34,6 @@ spec:
     image:
       repository: blakeblackshear/frigate
       tag: 0.9.4-amd64
-    #   pullPolicy: Always
-    initContainer:
-      image:
-        repository: busybox
-        tag: 1.34.1
-    coral:
-      enabled: true
-    env:
-      TZ: "Europe/London"
     config: |
       mqtt:
         host: emqx-headless.default.svc
@@ -51,7 +42,10 @@ spec:
         password: '{FRIGATE_MQTT_PASSWORD}'
       database:
         path: /data/frigate.db
-
+      detectors:
+        coral:
+          type: edgetpu
+          device: usb
       objects:
         track:
           - person
@@ -130,14 +124,15 @@ spec:
               retain:
                 default: 14
     ingress:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: traefik
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        traefik.ingress.kubernetes.io/router.middlewares: "networking-external-auth@kubernetescrd"
-        external-dns/is-public: "true"
-        hajimari.io/enable: "true"
-        hajimari.io/icon: "cctv"
+      main:
+        enabled: true
+        annotations:
+          kubernetes.io/ingress.class: traefik
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: "networking-external-auth@kubernetescrd"
+          external-dns/is-public: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "cctv"
     podAnnotations:
       configmap.reloader.stakater.com/reload: "frigate"
     affinity:
@@ -157,27 +152,26 @@ spec:
       limits:
         memory: 2500Mi
         #gpu.intel.com/i915: 1
-    probes:
-      startup:
-        enabled: true
+
     persistence:
       data:
         enabled: true
         storageClass: rook-ceph-block
-    shmSize: 2Gi
-    extraVolumes:
-      - name: media
-        persistentVolumeClaim:
-          claimName: nfs-media-pvc
-      - name: cache
-        emptyDir:
-          medium: Memory
-    extraVolumeMounts:
-      - mountPath: /media
-        name: media
-        subPath: Frigate
-      - mountPath: /tmp/cache
-        name: cache
+        size: 2Gi
+      media:
+        enabled: true
+        existingClaim: nfs-media-pvc
+        mountPath: /media
+      usb:
+        enabled: true
+        type: hostPath
+        hostPath: /dev/bus/usb
+      cache:
+        enabled: true
+        type: emptyDir
+        medium: Memory
+        sizeLimit: 2Gi
+        mountPath: /dev/shm
   valuesFrom:
     - kind: Secret
       name: "frigate-helm-values"
