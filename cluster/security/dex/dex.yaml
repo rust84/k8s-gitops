@@ -5,49 +5,71 @@ metadata:
   name: dex
   namespace: security
 spec:
+  releaseName: dex
   interval: 5m
   chart:
     spec:
-      chart: ./charts/dex
-      version: 1.4.0
+      # renovate: registryUrl=https://charts.dexidp.io
+      chart: dex
+      version: 0.6.3
       sourceRef:
-        kind: GitRepository
-        name: rust84-dex
+        kind: HelmRepository
+        name: dex-charts
         namespace: flux-system
       interval: 10m
-  test:
-    enable: false # Enable helm test
-  install:
-    remediation: # perform remediation when helm install fails
-      retries: 3
-  upgrade:
-    remediation: # perform remediation when helm upgrade fails
-      retries: 3
-      remediateLastFailure: true # remediate the last failure, when no retries remain
-    cleanupOnFail: true
-  rollback:
-    timeout: 10m
-    recreate: true
-    cleanupOnFail: true
   values:
     image:
       repository: ghcr.io/dexidp/dex
       tag: v2.30.2
+    env:
+      KUBERNETES_POD_NAMESPACE: security
     ingress:
       enabled: true
-      ingressClassName: traefik
+      className: traefik
       annotations:
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         external-dns/is-public: "true"
+    config:
+      issuer: https://dex.microserver.space
+
+      storage:
+        type: kubernetes
+        config:
+          inCluster: true
+
+      web:
+        http: 0.0.0.0:5556
+
+      frontend:
+        theme: "tectonic"
+        issuer: "microserver"
+        issuerUrl: "https://microserver.space"
+        logoUrl: http://icons.iconarchive.com/icons/icons-land/metro-halloween/512/Cool-icon.png
+
+      expiry:
+        signingKeys: "6h"
+        idTokens: "24h"
+
+      logger:
+        level: debug
+        format: json
+
+      oauth2:
+        responseTypes: ["code", "token", "id_token"]
+        skipApprovalScreen: true
+        alwaysShowLoginScreen: false
+
+      enablePasswordDB: false
+
+    resources:
+      requests:
+        memory: 250Mi
+        cpu: 25m
+      limits:
+        memory: 250Mi
     tolerations:
       - key: "arm"
         operator: "Exists"
-    # resources:
-    #   requests:
-    #     memory: 350Mi
-    #     cpu: 25m
-    #   limits:
-    #     memory: 500Mi
   valuesFrom:
     - kind: Secret
       name: "dex-helm-values"
