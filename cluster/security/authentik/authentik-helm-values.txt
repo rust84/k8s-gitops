@@ -23,8 +23,8 @@ authentik:
       secret_key: "$MINIO_SECRET_KEY"
       bucket: "authentik"
       region: "us-east-1"
-      host: "http://minio.default.svc:9000"
-      insecure_skip_verify: true
+      host: "https://synology.$DOMAIN:9000"
+      insecure_skip_verify: false
   redis:
     password: $AUTHENTIK_REDIS_PASSWORD
 
