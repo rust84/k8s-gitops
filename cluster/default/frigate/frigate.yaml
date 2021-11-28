@@ -174,7 +174,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "cctv"
     podAnnotations:
-      configmap.reloader.stakater.com/reload: "frigate"
+      configmap.reloader.stakater.com/reload: "frigate-config"
     affinity:
       nodeAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
