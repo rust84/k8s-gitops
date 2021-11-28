@@ -134,6 +134,35 @@ spec:
             events:
               retain:
                 default: 14
+
+        office:
+          ffmpeg:
+            inputs:
+              - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.30.0.244:554/h264Preview_01_sub
+                roles:
+                  - detect
+              - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.30.0.244:554/h264Preview_01_main
+                roles:
+                  - rtmp
+                  - record
+          detect:
+            width: 640
+            height: 360
+            fps: 7
+          snapshots:
+            enabled: false
+            timestamp: False
+            bounding_box: true
+            crop: False
+            retain:
+              default: 14
+          record:
+            enabled: false
+            retain_days: 0
+            events:
+              retain:
+                default: 14
+
     ingress:
       main:
         enabled: true
