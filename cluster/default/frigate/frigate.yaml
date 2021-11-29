@@ -120,7 +120,7 @@ spec:
           detect:
             width: 640
             height: 360
-            fps: 4
+            fps: 7
           snapshots:
             enabled: true
             timestamp: False
