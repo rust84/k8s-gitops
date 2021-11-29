@@ -69,14 +69,14 @@ spec:
             threshold: 0.7
 
       # Global ffmpeg configuration
-      ffmpeg:
-        hwaccel_args:
-          - -hwaccel
-          - vaapi
-          - -hwaccel_device
-          - /dev/dri/renderD128
-          - -hwaccel_output_format
-          - yuv420p
+      # ffmpeg:
+      #   hwaccel_args:
+      #     - -hwaccel
+      #     - vaapi
+      #     - -hwaccel_device
+      #     - /dev/dri/renderD128
+      #     - -hwaccel_output_format
+      #     - yuv420p
 
       cameras:
         lounge:
@@ -204,7 +204,7 @@ spec:
         cpu: 750m
       limits:
         memory: 2500Mi
-        gpu.intel.com/i915: 1
+        #gpu.intel.com/i915: 1
     securityContext:
       privileged: true
     persistence:
