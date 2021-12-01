@@ -5,11 +5,11 @@ metadata:
   name: prometheus-crds
   namespace: monitoring
 resources:
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-20.0.1/charts/kube-prometheus-stack/crds/crd-alertmanagerconfigs.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-20.0.1/charts/kube-prometheus-stack/crds/crd-alertmanagers.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-20.0.1/charts/kube-prometheus-stack/crds/crd-podmonitors.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-20.0.1/charts/kube-prometheus-stack/crds/crd-probes.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-20.0.1/charts/kube-prometheus-stack/crds/crd-prometheuses.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-20.0.1/charts/kube-prometheus-stack/crds/crd-prometheusrules.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-20.0.1/charts/kube-prometheus-stack/crds/crd-servicemonitors.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-20.0.1/charts/kube-prometheus-stack/crds/crd-thanosrulers.yaml
+  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-21.0.0/charts/kube-prometheus-stack/crds/crd-alertmanagerconfigs.yaml
+  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-21.0.0/charts/kube-prometheus-stack/crds/crd-alertmanagers.yaml
+  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-21.0.0/charts/kube-prometheus-stack/crds/crd-podmonitors.yaml
+  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-21.0.0/charts/kube-prometheus-stack/crds/crd-probes.yaml
+  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-21.0.0/charts/kube-prometheus-stack/crds/crd-prometheuses.yaml
+  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-21.0.0/charts/kube-prometheus-stack/crds/crd-prometheusrules.yaml
+  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-21.0.0/charts/kube-prometheus-stack/crds/crd-servicemonitors.yaml
+  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-21.0.0/charts/kube-prometheus-stack/crds/crd-thanosrulers.yaml

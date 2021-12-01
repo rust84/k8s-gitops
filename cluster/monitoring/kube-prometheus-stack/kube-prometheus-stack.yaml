@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://prometheus-community.github.io/helm-charts
       chart: kube-prometheus-stack
-      version: 20.0.1
+      version: 21.0.0
       sourceRef:
         kind: HelmRepository
         name: prometheus-community-charts
@@ -35,10 +35,6 @@ spec:
       namespace: monitoring
   timeout: 20m
   values:
-    # defaultRules:
-    #   rules:
-    #     kubeApiserverAvailability: false
-    #     kubeApiserver: false
     server:
       resources:
         requests:
@@ -46,14 +42,18 @@ spec:
           cpu: 25m
         limits:
           memory: 2000Mi
+    prometheusConfigReloader:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 50Mi
+        limits:
+          cpu: 200m
+          memory: 50Mi
     prometheusOperator:
       createCustomResource: true
-      # prometheusConfigReloaderImage:
-      #   repository: quay.io/coreos/prometheus-config-reloader
-      #   tag: v0.41.1
-      configmapReloadImage:
-        repository: jimmidyson/configmap-reload
-        tag: v0.5.0
+      admissionWebhooks:
+        enabled: false
     alertmanager:
       alertmanagerSpec:
         storage:
@@ -185,9 +185,6 @@ spec:
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
       prometheusSpec:
-        # image:
-        #   repository: quay.io/prometheus/prometheus
-        #   tag: v2.9.1
         replicas: 2
         replicaExternalLabelName: "replica"
         ruleSelector: {}
@@ -208,9 +205,6 @@ spec:
               resources:
                 requests:
                   storage: 10Gi
-        # tolerations:
-        # - key: "arm"
-        #   operator: "Exists"
         podMetadata:
           annotations:
             backup.velero.io/backup-volumes: prometheus-kube-prometheus-stack-prometheus-db
