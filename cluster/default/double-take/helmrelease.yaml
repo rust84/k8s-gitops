@@ -45,9 +45,13 @@ spec:
         tls:
           - hosts:
               - "dt.microserver.space"
+    podAnnotations:
+      backup.velero.io/backup-volumes: config
+      configmap.reloader.stakater.com/reload: "double-take-config"
     persistence:
       config:
         enabled: true
         storageClass: rook-ceph-block
         accessMode: ReadWriteOnce
         size: 1Gi
+        mountPath: /.storage
