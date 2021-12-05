@@ -12,8 +12,10 @@ spec:
   ignore: |
     # exclude all
     /*
+    # include charts dir
+    !/charts
     # include deploy dir
-    !/cluster/
+    !/cluster
     /cluster/**/*.md
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
