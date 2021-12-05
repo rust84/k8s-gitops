@@ -163,12 +163,12 @@ spec:
             height: 360
             fps: 7
           snapshots:
-            enabled: true
+            enabled: false
             timestamp: False
             bounding_box: true
             crop: False
             retain:
-              default: 14
+              default: 1
           record:
             enabled: false
             retain_days: 0
