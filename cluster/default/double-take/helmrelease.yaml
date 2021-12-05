@@ -35,6 +35,8 @@ spec:
           traefik.ingress.kubernetes.io/router.middlewares: "networking-external-auth@kubernetescrd"
           external-dns.alpha.kubernetes.io/target: "ipv4.microserver.space"
           external-dns/is-public: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "face-recognition"
         hosts:
           - host: dt.microserver.space
             paths:
