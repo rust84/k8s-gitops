@@ -163,7 +163,7 @@ spec:
             height: 360
             fps: 7
           snapshots:
-            enabled: false
+            enabled: true
             timestamp: False
             bounding_box: true
             crop: False
@@ -175,6 +175,12 @@ spec:
             events:
               retain:
                 default: 14
+          mqtt:
+            timestamp: False
+            bounding_box: False
+            crop: True
+            quality: 100
+            height: 500
 
     ingress:
       main:
