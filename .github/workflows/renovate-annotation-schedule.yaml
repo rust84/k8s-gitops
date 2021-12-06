@@ -1,4 +1,4 @@
-name: renovate
+name: Schedule - Update Helm Release Renovate annotations
 
 on:
   workflow_dispatch:
@@ -22,7 +22,7 @@ jobs:
       - name: Renovate Helm Releases
         uses: k8s-at-home/renovate-helm-releases@v1
         with:
-          cluster-path: "./"
+          cluster-path: "./cluster"
 
       - name: Create pull request for HelmRelease annotations
         uses: peter-evans/create-pull-request@v3
