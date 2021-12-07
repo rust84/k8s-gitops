@@ -122,21 +122,6 @@ spec:
 
         driveway:
           ffmpeg:
-            input_args:
-              - -avoid_negative_ts
-              - make_zero
-              - -fflags
-              - nobuffer+genpts+discardcorrupt
-              - -flags
-              - low_delay
-              - -strict
-              - experimental
-              - -analyzeduration
-              - 1000M
-              - -probesize
-              - 1000M
-              - -rw_timeout
-              - "5000000"
             inputs:
               - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.30.0.243:554/h264Preview_01_sub
                 roles:
@@ -165,21 +150,6 @@ spec:
 
         office:
           ffmpeg:
-            input_args:
-              - -avoid_negative_ts
-              - make_zero
-              - -fflags
-              - nobuffer+genpts+discardcorrupt
-              - -flags
-              - low_delay
-              - -strict
-              - experimental
-              - -analyzeduration
-              - 1000M
-              - -probesize
-              - 1000M
-              - -rw_timeout
-              - "5000000"
             inputs:
               - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.30.0.244:554/h264Preview_01_sub
                 roles:
