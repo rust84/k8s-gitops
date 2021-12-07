@@ -119,6 +119,12 @@ spec:
             events:
               retain:
                 default: 14
+          mqtt:
+            timestamp: False
+            bounding_box: False
+            crop: True
+            quality: 100
+            height: 500
 
         driveway:
           ffmpeg:
