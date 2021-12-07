@@ -122,7 +122,6 @@ spec:
 
         driveway:
           ffmpeg:
-            hwaccel_args:
             input_args:
               - -avoid_negative_ts
               - make_zero
@@ -166,7 +165,6 @@ spec:
 
         office:
           ffmpeg:
-            hwaccel_args:
             input_args:
               - -avoid_negative_ts
               - make_zero
