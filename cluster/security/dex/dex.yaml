@@ -70,6 +70,8 @@ spec:
     tolerations:
       - key: "arm"
         operator: "Exists"
+    rbac:
+      create: false
   valuesFrom:
     - kind: Secret
       name: "dex-helm-values"
