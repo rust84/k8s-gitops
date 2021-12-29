@@ -164,6 +164,8 @@ spec:
       enabled: false
     kubeScheduler:
       enabled: false
+    kubeProxy:
+      enabled: false
     kubelet:
       serviceMonitor:
         metricRelabelings:
