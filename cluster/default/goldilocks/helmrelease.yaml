@@ -30,7 +30,8 @@ spec:
         hosts:
           - host: goldilocks.microserver.space
             paths:
-              - /
+              - path: /
+                type: ImplementationSpecific
         tls:
           - hosts:
               - goldilocks.microserver.space
