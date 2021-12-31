@@ -30,16 +30,6 @@ spec:
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - {
-                    key: "feature.node.kubernetes.io/custom-zigbee",
-                    operator: In,
-                    values: ["true"],
-                  }
     securityContext:
       privileged: true
     podAnnotations:
@@ -51,10 +41,6 @@ spec:
         storageClass: rook-ceph-block
         accessMode: ReadWriteOnce
         size: 1Gi
-      usb:
-        enabled: true
-        type: hostPath
-        hostPath: /dev/serial/by-id/usb-Silicon_Labs_slae.sh_cc2652rb_stick_-_slaesh_s_iot_stuff_00_12_4B_00_23_93_26_FF-if00-port0
     config:
       homeassistant: true
       device_options:
@@ -65,7 +51,7 @@ spec:
         base_topic: zigbee2mqtt
         server: "mqtt://emqx.default.svc:1883"
       serial:
-        port: /dev/serial/by-id/usb-Silicon_Labs_slae.sh_cc2652rb_stick_-_slaesh_s_iot_stuff_00_12_4B_00_23_93_26_FF-if00-port0
+        port: "tcp://10.20.0.85:6638"
       advanced:
         log_output:
           - console
