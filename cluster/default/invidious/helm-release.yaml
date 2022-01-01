@@ -35,7 +35,6 @@ spec:
         feed_threads: 1
         full_refresh: false
         https_only: false
-        port: 3000
     service:
       main:
         ports:
