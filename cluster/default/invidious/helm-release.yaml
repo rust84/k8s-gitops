@@ -9,64 +9,16 @@ spec:
   interval: 5m
   chart:
     spec:
-      chart: /charts/kah-common/
+      chart: /kubernetes
+      version: 1.2.0
       sourceRef:
         kind: GitRepository
-        name: k8s-gitops
+        name: invidious-charts-git
         namespace: flux-system
-      interval: 10m
+      interval: 5m
   values:
-    nameOverride: invidious
     image:
       repository: quay.io/invidious/invidious
       tag: latest
       pullPolicy: Always
-
-    env:
-      INVIDIOUS_CONFIG: |
-        channel_threads: 1
-        db:
-          dbname: invidious
-          host: invidious-postgresql
-          password: kemal
-          port: 5432
-          user: kemal
-        domain: iv.microserver.space
-        feed_threads: 1
-        full_refresh: false
-        https_only: false
-    service:
-      main:
-        ports:
-          http:
-            port: 3000
-
-    securityContext:
-      allowPrivilegeEscalation: false
-      runAsUser: 1000
-      runAsGroup: 1000
-      # fsGroup: 1000
-
-    postgresql:
-      enabled: true
-      postgresqlUsername: kemal
-      postgresqlPassword: kemal
-      postgresqlDatabase: invidious
-      initdbUser: kemal
-      initdbPass: kemal
-      initdbScriptsConfigMap: invidious-postgresql-init
-
-    probes:
-      readiness:
-        enabled: false
-        httpGet:
-          port: 3000
-          path: /
-      liveness:
-        enabled: false
-        httpGet:
-          port: 3000
-          path: /
-        initialDelaySeconds: 15
-      startup:
-        enabled: false
+    nameOverride: invidious
