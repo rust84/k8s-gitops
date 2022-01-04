@@ -22,3 +22,12 @@ spec:
       tag: latest
       pullPolicy: Always
     nameOverride: invidious
+
+    postgresql:
+      persistence:
+        enabled: true
+        storageClass: "rook-ceph-block"
+        size: 8Gi
+      primary:
+        podAnnotations:
+          backup.velero.io/backup-volumes: data
