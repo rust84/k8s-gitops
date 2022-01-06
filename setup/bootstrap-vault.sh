@@ -175,7 +175,6 @@ loadSecretsToVault() {
   kvault "kube-system/kured/kured-helm-values.txt"
   kvault "kube-system/vault/vault-helm-values.txt"
   kvault "monitoring/botkube/botkube-helm-values.txt"
-  kvault "monitoring/chronograf/chronograf-helm-values.txt"
   kvault "monitoring/kube-prometheus-stack/kube-prometheus-stack-helm-values.txt"
   kvault "monitoring/grafana/grafana-helm-values.txt"
   kvault "monitoring/thanos/thanos-helm-values.txt"
