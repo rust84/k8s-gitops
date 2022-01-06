@@ -29,22 +29,25 @@ spec:
   rollback:
     timeout: 10m
     recreate: true
-    cleanupOnFail: true   
+    cleanupOnFail: true
   values:
     image:
       repository: raspbernetes/kured
       tag: 1.9.0
     configuration:
-      startTime: "0:00"
-      endTime: "4:00"
+      startTime: "22:00"
+      endTime: "2:00"
       timeZone: "Europe/London"
+      messageTemplateDrain: "⏳ Draining node %s"
+      messageTemplateReboot: "♻️ Rebooted node %s"
+      rebootCommand: "/usr/bin/systemctl reboot"
     tolerations:
-    - key: "arm"
-      operator: "Exists"
-    - key: "node-role.kubernetes.io/master"
-      operator: "Exists"
+      - key: "arm"
+        operator: "Exists"
+      - key: "node-role.kubernetes.io/master"
+        operator: "Exists"
     metrics:
       create: true
   valuesFrom:
-  - kind: Secret
-    name: "kured-helm-values"
+    - kind: Secret
+      name: "kured-helm-values"
