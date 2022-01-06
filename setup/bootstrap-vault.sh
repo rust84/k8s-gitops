@@ -186,7 +186,6 @@ loadSecretsToVault() {
   kvault "default/sonarr/sonarr-helm-values.txt"
   kvault "default/unifi/unifi-helm-values.txt"
   kvault "velero/velero/velero-helm-values.txt"
-  kvault "default/nzbhydra/nzbhydra-helm-values.txt"
   kvault "default/overseerr/overseerr-helm-values.txt"
   kvault "default/tautulli/tautulli-helm-values.txt"
   kvault "default/monica/monica-helm-values.txt"

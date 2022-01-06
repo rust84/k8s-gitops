@@ -6,7 +6,7 @@ alertmanager:
       - prom-alert.$DOMAIN
   config:
     global:
-      slack_api_url: "$DISCORD_WEBOOK_URL"
+      slack_api_url: "$DISCORD_WEBHOOK_URL"
     receivers:
     - name: 'null'
     - name: 'slack-monitoring'
