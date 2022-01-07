@@ -1,2 +1,2 @@
 configuration:
-  notifyUrl: "$DISCORD_WEBHOOK_URL"
+  notifyUrl: "$DISCORD_KURED_WEBHOOK_URL"
