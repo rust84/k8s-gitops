@@ -46,7 +46,7 @@ spec:
           - hosts:
               - "dt.microserver.space"
     podAnnotations:
-      backup.velero.io/backup-volumes: "double-take-config"
+      backup.velero.io/backup-volumes: config
     persistence:
       config:
         enabled: true

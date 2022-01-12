@@ -50,6 +50,8 @@ spec:
         storageClass: rook-ceph-block
         accessMode: ReadWriteOnce
         size: 2Gi
+    podAnnotations:
+      backup.velero.io/backup-volumes: config
   valuesFrom:
     - kind: Secret
       name: "esphome-helm-values"

@@ -95,7 +95,7 @@ spec:
             port: 10001
             protocol: UDP
     podAnnotations:
-      backup.velero.io/backup-volumes: unifi-data
+      backup.velero.io/backup-volumes: data
     resources:
       requests:
         memory: 500Mi
