@@ -38,7 +38,7 @@ spec:
                     operator: In
                     values: [""]
     worker:
-      config: |-
+      config:
         core:
           sources:
             - custom
