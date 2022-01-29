@@ -51,7 +51,31 @@ spec:
       cronJob:
         activeDeadlineSeconds: null
         startingDeadlineSeconds: null
-      crontab: {}
+      crontab:
+        - name: backup-default
+          schedule: "00 02 * * *"
+          command:
+            - benji-backup-pvc
+            - --namespace
+            - default
+        - name: backup-security
+          schedule: "00 03 * * *"
+          command:
+            - benji-backup-pvc
+            - --namespace
+            - security
+        - name: enforce
+          schedule: "00 10 * * *"
+          command:
+            - benji-command
+            - enforce
+            - latest14,days14
+            - 'labels["benji-backup.me/instance"] == "benji-k8s"'
+        - name: cleanup
+          schedule: "00 11 * * *"
+          command:
+            - benji-command
+            - cleanup
       volumes:
         - name: backup-nas
           nfs:
