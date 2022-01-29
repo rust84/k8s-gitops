@@ -119,21 +119,21 @@ spec:
               kind: Deployment
               name: benji-maint
             patch:
-              - op: replace
-                path: /spec/template/spec/containers/0/volumeMounts
-                value:
-                  - name: benji-config
-                    mountPath: /benji/etc
-                  - name: backup-nas
-                    mountPath: /backup-nas
-                  - name: ceph-data
-                    mountPath: /etc/ceph
+              # - op: replace
+              #   path: /spec/template/spec/containers/0/volumeMounts
+              #   value:
+              #     - name: benji-config
+              #       mountPath: /benji/etc
+              #     - name: backup-nas
+              #       mountPath: /backup-nas
+              #     - name: ceph-data
+              #       mountPath: /etc/ceph
               - op: add
                 path: /spec/template/metadata/annotations
                 value:
                   configmap.reloader.stakater.com/reload: "ceph-config"
               - op: add
-                path: /spec/template/metadata/annotations/-1
+                path: /spec/template/metadata/annotations
                 value:
                   secret.reloader.stakater.com/reload: "rook-ceph-mon"
               - op: add
