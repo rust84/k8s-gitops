@@ -6,9 +6,11 @@ metadata:
   namespace: rook-ceph
 configMapGenerator:
   - name: secret-reflector
+    namespace: rook-ceph
     files:
       - secret-reflector.sh
   - name: configmap-reflector
+    namespace: rook-ceph
     files:
       - configmap-reflector.sh
 generatorOptions:
