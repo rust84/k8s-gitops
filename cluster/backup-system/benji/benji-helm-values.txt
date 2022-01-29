@@ -1,4 +1,5 @@
-configuration:
-  databaseEngine: postgresql://benji:$BENJI_POSTGRES_PASSWORD@benji-postgresql:5432/benji
+benji:
+  configuration:
+    databaseEngine: postgresql://benji:$BENJI_POSTGRES_PASSWORD@benji-postgresql:5432/benji
 postgresql:
   postgresqlPassword: $BENJI_POSTGRES_PASSWORD
