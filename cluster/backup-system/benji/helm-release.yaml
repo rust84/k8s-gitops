@@ -154,15 +154,15 @@ spec:
                           secretKeyRef:
                             name: rook-ceph-mon
                             key: ceph-secret
-          - target:
-              kind: DaemonSet
-              name: benji-fsfreeze
-            patch:
-              - op: replace
-                path: /spec/template/spec/containers/0/volumeMounts
-                value:
-                  - name: rbd-mounts
-                    mountPath: /var/lib/kubelet/plugins/kubernetes.io/csi/pv/
+          # - target:
+          #     kind: DaemonSet
+          #     name: benji-fsfreeze
+          #   patch:
+          #     - op: replace
+          #       path: /spec/template/spec/containers/0/volumeMounts
+          #       value:
+          #         - name: rbd-mounts
+          #           mountPath: /var/lib/kubelet/plugins/kubernetes.io/rbd/mounts/
           - target:
               kind: CronJob
               name: benji-backup-default
