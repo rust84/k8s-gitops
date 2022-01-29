@@ -4,6 +4,9 @@ kind: Kustomization
 metadata:
   name: reflector
   namespace: rook-ceph
+resources:
+  - cron-job.yaml
+  - rbac.yaml
 configMapGenerator:
   - name: secret-reflector
     namespace: rook-ceph
