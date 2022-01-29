@@ -69,7 +69,7 @@ spec:
           command:
             - benji-command
             - enforce
-            - latest14,days14
+            - latest5,days5
             - 'labels["benji-backup.me/instance"] == "benji-k8s"'
         - name: cleanup
           schedule: "00 11 * * *"
@@ -133,7 +133,7 @@ spec:
                 value:
                   configmap.reloader.stakater.com/reload: "ceph-config"
               - op: add
-                path: /spec/template/metadata/annotations
+                path: /spec/template/metadata/annotations/-1
                 value:
                   secret.reloader.stakater.com/reload: "rook-ceph-mon"
               - op: add
