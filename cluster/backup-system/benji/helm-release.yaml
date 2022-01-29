@@ -98,7 +98,7 @@ spec:
         - name: ceph-data
           mountPath: /etc/ceph
     fsfreeze:
-      enabled: false
+      enabled: true
     postgresql:
       enabled: true
       postgresqlUsername: benji
@@ -119,15 +119,6 @@ spec:
               kind: Deployment
               name: benji-maint
             patch:
-              # - op: replace
-              #   path: /spec/template/spec/containers/0/volumeMounts
-              #   value:
-              #     - name: benji-config
-              #       mountPath: /benji/etc
-              #     - name: backup-nas
-              #       mountPath: /backup-nas
-              #     - name: ceph-data
-              #       mountPath: /etc/ceph
               - op: add
                 path: /spec/template/metadata/annotations
                 value:
@@ -171,7 +162,7 @@ spec:
                 path: /spec/template/spec/containers/0/volumeMounts
                 value:
                   - name: rbd-mounts
-                    mountPath: /var/lib/kubelet/plugins/kubernetes.io/rbd/mounts/
+                    mountPath: /var/lib/kubelet/plugins/kubernetes.io/csi/pv/
           - target:
               kind: CronJob
               name: benji-backup-default
