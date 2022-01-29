@@ -177,7 +177,7 @@ spec:
               name: benji-backup-default
             patch:
               - op: add
-                path: /spec/template/spec/initContainers
+                path: /spec/template/spec/initContainers/-1
                 value:
                   - name: generate-ceph-files
                     image: rook/ceph:v1.8.1
@@ -208,7 +208,7 @@ spec:
               name: benji-backup-security
             patch:
               - op: add
-                path: /spec/template/spec/initContainers
+                path: /spec/template/spec/initContainers/-1
                 value:
                   - name: generate-ceph-files
                     image: rook/ceph:v1.8.1
