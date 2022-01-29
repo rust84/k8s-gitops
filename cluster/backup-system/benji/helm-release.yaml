@@ -35,7 +35,7 @@ spec:
               path: /backup-nas/k8s-backups
         ios:
           - module: rbdaio
-            name: ceph-blockpool
+            name: replicapool
             configuration:
               simultaneousReads: 3
               simultaneousWrites: 3
