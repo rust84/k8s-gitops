@@ -3,7 +3,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: velero
-  namespace: velero
+  namespace: backup-system
 spec:
   interval: 5m
   chart:
@@ -32,12 +32,12 @@ spec:
     cleanupOnFail: true
   values:
     initContainers:
-    - name: velero-plugin-for-aws
-      image: velero/velero-plugin-for-aws:v1.3.0
-      imagePullPolicy: IfNotPresent
-      volumeMounts:
-      - mountPath: /target
-        name: plugins
+      - name: velero-plugin-for-aws
+        image: velero/velero-plugin-for-aws:v1.3.0
+        imagePullPolicy: IfNotPresent
+        volumeMounts:
+          - mountPath: /target
+            name: plugins
     resources:
       requests:
         memory: 300Mi
@@ -63,15 +63,15 @@ spec:
         limits:
           memory: 500Mi
       tolerations:
-      - key: "arm"
-        operator: "Exists"
-      - key: "node-role.kubernetes.io/master"
-        operator: "Exists"
+        - key: "arm"
+          operator: "Exists"
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
     schedules:
       daily-backup:
         schedule: "0 6 * * *"
         template:
           ttl: "120h"
   valuesFrom:
-  - kind: Secret
-    name: "velero-helm-values"
+    - kind: Secret
+      name: "velero-helm-values"

@@ -2,7 +2,7 @@ apiVersion: ricoberger.de/v1alpha1
 kind: VaultSecret
 metadata:
   name: velero-helm-values
-  namespace: velero
+  namespace: backup-system
 spec:
   keys:
     - values.yaml

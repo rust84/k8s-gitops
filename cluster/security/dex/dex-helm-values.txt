@@ -43,3 +43,15 @@ config:
       secret: $DEX_AUTHENTIK_CLIENT_SECRET
       redirectURIs:
         - https://id.$DOMAIN/source/oauth/callback/dex/
+
+    - id: proxmox
+      name: proxmox
+      secret: $DEX_PROXMOX_CLIENT_SECRET
+      redirectURIs:
+        - https://pm.$DOMAIN:8006
+
+    - id: proxmox-backup
+      name: proxmox
+      secret: $DEX_PROXMOX_BACKUP_CLIENT_SECRET
+      redirectURIs:
+        - https://pbs.$DOMAIN:8007
