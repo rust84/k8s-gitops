@@ -100,7 +100,7 @@ spec:
     fsfreeze:
       enabled: true
     postgresql:
-      enabled: true
+      enabled: false
       postgresqlUsername: benji
       postgresqlDatabase: benji
       persistence:
