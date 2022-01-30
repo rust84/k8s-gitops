@@ -47,13 +47,13 @@ spec:
         operator: "Exists"
     mariadb:
       enabled: true
-      annotations:
-        benji-backup.me/fsfreeze: "yes"
       primary:
         podAnnotations:
           backup.velero.io/backup-volumes: data
         persistence:
           enabled: true
+          annotations:
+            benji-backup.me/fsfreeze: "yes"
           storageClass: "rook-ceph-block"
       auth:
         database: monica

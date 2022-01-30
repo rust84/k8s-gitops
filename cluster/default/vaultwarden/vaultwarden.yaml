@@ -58,12 +58,12 @@ spec:
       secret.reloader.stakater.com/reload: "vaultwarden"
     postgresql:
       enabled: true
-      annotations:
-        benji-backup.me/fsfreeze: "yes"
       postgresqlUsername: "vaultwarden"
       postgresqlDatabase: "vaultwarden"
       persistence:
         enabled: true
+        annotations:
+          benji-backup.me/fsfreeze: "yes"
         storageClass: rook-ceph-block
         accessModes:
           - ReadWriteOnce
