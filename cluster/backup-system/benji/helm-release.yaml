@@ -80,7 +80,7 @@ spec:
         - name: backup-nas
           nfs:
             server: "10.20.0.51"
-            path: /volume2/backups
+            path: /volume1/backups
         - name: mon-endpoint-volume
           configMap:
             name: rook-ceph-mon-endpoints

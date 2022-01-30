@@ -1,5 +1,5 @@
 benji:
   configuration:
-    databaseEngine: postgresql://benji:$BENJI_POSTGRES_PASSWORD@benji-postgresql:5432/benji
+    databaseEngine: postgresql://benji:$BENJI_POSTGRES_PASSWORD@10.20.0.51:5433/benji
 postgresql:
   postgresqlPassword: $BENJI_POSTGRES_PASSWORD
