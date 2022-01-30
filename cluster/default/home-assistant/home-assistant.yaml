@@ -110,6 +110,8 @@ spec:
       postgresqlDatabase: home-assistant
       persistence:
         enabled: true
+        annotations:
+          benji-backup.me/fsfreeze: "yes"
         storageClass: "rook-ceph-block"
       primary:
         podAnnotations:

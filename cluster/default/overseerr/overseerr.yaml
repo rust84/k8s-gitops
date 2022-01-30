@@ -51,6 +51,8 @@ spec:
     persistence:
       config:
         enabled: true
+        annotations:
+          benji-backup.me/fsfreeze: "yes"
         mountPath: /app/config
         storageClass: "rook-ceph-block"
         accessMode: ReadWriteOnce

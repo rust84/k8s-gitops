@@ -37,6 +37,8 @@ spec:
     persistence:
       data:
         enabled: true
+        annotations:
+          benji-backup.me/fsfreeze: "yes"
         size: 30Gi
         storageClass: rook-ceph-block
         accessMode: ReadWriteOnce
