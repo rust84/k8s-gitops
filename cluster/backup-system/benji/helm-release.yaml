@@ -163,7 +163,7 @@ spec:
                 value:
                   - name: rbd-mounts
                     hostPath:
-                      path: /var/lib/kubelet/plugins/kubernetes.io/csi/pv
+                      path: /var/lib/kubelet/plugins/kubernetes.io/csi/pv/
                       type: DirectoryOrCreate
                   - name: tz-config
                     hostPath:
