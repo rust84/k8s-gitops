@@ -55,6 +55,8 @@ spec:
     persistence:
       config:
         enabled: true
+        annotations:
+          benji-backup.me/fsfreeze: "yes"
         storageClass: "rook-ceph-block"
         size: 2Gi
       media:
