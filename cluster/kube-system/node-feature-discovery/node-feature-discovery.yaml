@@ -73,6 +73,12 @@ spec:
                     class: ["ff"]
                     vendor: ["10c4"]
                     device: ["ea60"]
+            - name: "rflink"
+              matchOn:
+                - usbId:
+                    class: ["ff"]
+                    vendor: ["1a86"]
+                    device: ["7523"]
       annotations:
         configmap.reloader.stakater.com/reload: "nfd-worker-conf"
       tolerations:
