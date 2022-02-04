@@ -36,6 +36,8 @@ spec:
       tag: 2021.12.10
     env:
       TZ: "Europe/London"
+    securityContext:
+      privileged: true
     persistence:
       config:
         enabled: true
