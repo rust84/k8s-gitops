@@ -44,11 +44,6 @@ spec:
         storageClass: "rook-ceph-block"
         accessMode: ReadWriteOnce
         size: 10Gi
-      usb:
-        enabled: true
-        type: hostPath
-        hostPath: /dev/serial/by-id/usb-1a86_USB_Serial-if00-port0
-        hostPathType: CharDevice
     ingress:
       main:
         annotations:
@@ -123,15 +118,6 @@ spec:
       primary:
         podAnnotations:
           backup.velero.io/backup-volumes: data
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: feature.node.kubernetes.io/custom-rflink
-                  operator: In
-                  values:
-                    - "true"
   valuesFrom:
     - kind: Secret
       name: "home-assistant-helm-values"
