@@ -34,7 +34,7 @@ spec:
     fullnameOverride: plex-kube-plex
     image:
       repository: plexinc/pms-docker
-      tag: 1.25.4.5487-648a8f9f9
+      tag: 1.25.5.5492-12f6b8c83
     env:
       TZ: "Europe/London"
     podSecurityContext:
