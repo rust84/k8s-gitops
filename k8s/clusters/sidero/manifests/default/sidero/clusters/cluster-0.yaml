@@ -1,3 +1,4 @@
+---
 apiVersion: cluster.x-k8s.io/v1alpha4
 kind: Cluster
 metadata:
@@ -11,9 +12,6 @@ spec:
     services:
       cidrBlocks:
         - ${CLUSTER_0_SVC_CIDR}
-  controlPlaneEndpoint:
-    host: cluster-0.${SECRET_DOMAIN}
-    port: 6443
   controlPlaneRef:
     apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
     kind: TalosControlPlane
@@ -30,7 +28,7 @@ metadata:
   namespace: default
 spec:
   controlPlaneEndpoint:
-    host: cluster-0.${SECRET_DOMAIN}
+    host: cluster-0.our.house
     port: 6443
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
@@ -44,7 +42,7 @@ spec:
       serverClassRef:
         apiVersion: metal.sidero.dev/v1alpha1
         kind: ServerClass
-        name: cluster-0-control-plane
+        name: cp-arm64
 ---
 apiVersion: controlplane.cluster.x-k8s.io/v1alpha3
 kind: TalosControlPlane
@@ -54,15 +52,6 @@ metadata:
 spec:
   controlPlaneConfig:
     controlplane:
-      configPatches:
-        - op: add
-          path: /machine/network
-          value:
-            interfaces:
-              - interface: eth0
-                dhcp: true
-                vip:
-                  ip: ${CLUSTER_0_API_IP}
       generateType: controlplane
       talosVersion: v0.14.0
     init:
@@ -81,7 +70,7 @@ spec:
     apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
     kind: MetalMachineTemplate
     name: cluster-0-cp
-  replicas: 3
+  replicas: 1
   version: v1.22.2
 ---
 apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
@@ -102,7 +91,7 @@ metadata:
   namespace: default
 spec:
   clusterName: cluster-0
-  replicas: 4
+  replicas: 1
   selector:
     matchLabels: null
   template:
@@ -130,4 +119,4 @@ spec:
       serverClassRef:
         apiVersion: metal.sidero.dev/v1alpha1
         kind: ServerClass
-        name: cluster-0-worker
+        name: workers

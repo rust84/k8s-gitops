@@ -2,18 +2,27 @@
 apiVersion: metal.sidero.dev/v1alpha1
 kind: Server
 metadata:
-  name: 00000000-0000-0000-0000-0cc47ac6b500
+  name: 33323137-3731-5a43-3134-353130315745
 spec:
   accepted: true
+  bmc:
+    endpoint: 10.20.0.90
+    pass: ${IPMI_PASSWORD}
+    user: russell
+  hostname: micro8.our.house
   configPatches:
     - op: replace
       path: /machine/install/disk
       value: /dev/sda
+    - op: add
+      path: /machine/network/hostname
+      value: micro8.our.house
   cpu:
-    manufacturer: Intel(R) Corporation
-    version: Intel(R) Core(TM) i3-7100 CPU @ 3.90GHz
-  hostname: node-1
-  pxeBootAlways: true
+    manufacturer: Intel
+    version: Intel(R) Xeon(R) CPU E3-1265L V2 @ 2.50GHz
   system:
-    manufacturer: Supermicro
-    productName: Super Server
+    manufacturer: CZ145101WE
+    productName: 712317-421
+    serialNumber: HP
+    skuNumber: ProLiant MicroServer Gen8
+    version: ProLiant

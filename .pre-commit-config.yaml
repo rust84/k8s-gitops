@@ -20,12 +20,8 @@ repos:
     rev: 0.2.0
     hooks:
       - id: fix-smartquotes
-  # - repo: https://git.iamthefij.com/iamthefij/ansible-pre-commit
-  #   rev: v0.1.3
-  #   hooks:
-  #     - id: encryption-check
-  #       files: ((^|/)encrypted-vault.y[a]{0,1}ml$|.vault$)
-  - repo: https://github.com/zricethezav/gitleaks
-    rev: v8.2.7
-    hooks:
-      - id: gitleaks
+# - repo: https://git.iamthefij.com/iamthefij/ansible-pre-commit
+#   rev: v0.1.3
+#   hooks:
+#     - id: encryption-check
+#       files: ((^|/)encrypted-vault.y[a]{0,1}ml$|.vault$)
