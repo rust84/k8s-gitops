@@ -1,4 +1,6 @@
 ---
 creation_rules:
-  - encrypted_regex: ^(data|stringData)$
-    pgp: 258AB07B2E6E5E6B
+  - path_regex: (global|clusters)/.*\.sops\.ya?ml
+    encrypted_regex: "((?i)(pass|secret($|[^N])|key|token|^data$|^stringData))"
+    age: >-
+      age1knsdzqjgfty7fghdvk8ayr4kmj9kre8nqcg5tvjpjfy6m7a5ap8srhjd6k

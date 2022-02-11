@@ -19,3 +19,6 @@ master.key
 *.snap
 setup/cluster/*cluster.yml
 *.rkestate
+
+# Sops
+.decrypted
