@@ -1,0 +1,10 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: rust84-charts
+  namespace: flux-system
+spec:
+  interval: 10m
+  url: https://rust84.github.io/helmcharts/
+  timeout: 3m

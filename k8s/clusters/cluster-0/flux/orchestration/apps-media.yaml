@@ -1,0 +1,154 @@
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-media-plex
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: rook-ceph-cluster
+  interval: 5m
+  path: "./k8s/clusters/cluster-0/manifests/apps/media/plex"
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-gitops
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-media-tautulli
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: rook-ceph-cluster
+    - name: apps-media-plex
+  interval: 5m
+  path: "./k8s/clusters/cluster-0/manifests/apps/media/tautulli"
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-gitops
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-media-prowlarr
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: rook-ceph-cluster
+  interval: 5m
+  path: "./k8s/clusters/cluster-0/manifests/apps/media/prowlarr"
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-gitops
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-media-nzbget
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: rook-ceph-cluster
+  interval: 5m
+  path: "./k8s/clusters/cluster-0/manifests/apps/media/nzbget"
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-gitops
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-media-sonarr
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: rook-ceph-cluster
+    - name: apps-media-prowlarr
+    - name: apps-media-sabnzbd
+  interval: 5m
+  path: "./k8s/clusters/cluster-0/manifests/apps/media/sonarr"
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-gitops
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-media-radarr
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: rook-ceph-cluster
+    - name: apps-media-prowlarr
+    - name: apps-media-sabnzbd
+  interval: 5m
+  path: "./k8s/clusters/cluster-0/manifests/apps/media/radarr"
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-gitops
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-media-overseerr
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: rook-ceph-cluster
+    - name: apps-media-sonarr
+    - name: apps-media-radarr
+  interval: 5m
+  path: "./k8s/clusters/cluster-0/manifests/apps/media/overseerr"
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-gitops
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
