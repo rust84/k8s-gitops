@@ -26,7 +26,7 @@ spec:
         pullPolicy: IfNotPresent
       configuration:
         configurationVersion: "1"
-        databaseEngine: postgresql://benji:secret@10.20.0.102:5432/benji
+        databaseEngine: postgresql://benji:${BENJI_POSTGRES_PASSWORD}@10.20.0.51:5433/benji
         defaultStorage: storage-1
         storages:
           - name: storage-1
@@ -36,7 +36,7 @@ spec:
               path: /backup-nas/k8s-backups
         ios:
           - module: rbdaio
-            name: ceph-blockpool
+            name: replicapool
             configuration:
               simultaneousReads: 3
               simultaneousWrites: 3
@@ -49,76 +49,39 @@ spec:
                 - RBD_FEATURE_OBJECT_MAP
                 - RBD_FEATURE_FAST_DIFF
                 - RBD_FEATURE_DEEP_FLATTEN
-      cronJob:
-        activeDeadlineSeconds: null
-        startingDeadlineSeconds: null
-      crontab:
-        {}
-        # - name: backup-security
-        #   schedule: "00 02 * * *"
-        #   command:
-        #     - benji-backup-pvc
-        #     - --namespace
-        #     - security
-        # - name: backup-media
-        #   schedule: "00 03 * * *"
-        #   command:
-        #     - benji-backup-pvc
-        #     - --namespace
-        #     - media
-        # - name: backup-collab
-        #   schedule: "00 04 * * *"
-        #   command:
-        #     - benji-backup-pvc
-        #     - --namespace
-        #     - collab
-        # - name: backup-home
-        #   schedule: "00 05 * * *"
-        #   command:
-        #     - benji-backup-pvc
-        #     - --namespace
-        #     - home
-        # - name: backup-mail
-        #   schedule: "00 06 * * *"
-        #   command:
-        #     - benji-backup-pvc
-        #     - --namespace
-        #     - mail
-        # - name: backup-comms
-        #   schedule: "00 07 * * *"
-        #   command:
-        #     - benji-backup-pvc
-        #     - --namespace
-        #     - comms
-        # - name: backup-network
-        #   schedule: "00 08 * * *"
-        #   command:
-        #     - benji-backup-pvc
-        #     - --namespace
-        #     - network
-        # - name: backup-tools
-        #   schedule: "00 09 * * *"
-        #   command:
-        #     - benji-backup-pvc
-        #     - --namespace
-        #     - tools
-        # - name: enforce
-        #   schedule: "00 10 * * *"
-        #   command:
-        #     - benji-command
-        #     - enforce
-        #     - latest14,days14
-        #     - 'labels["benji-backup.me/instance"] == "benji-k8s"'
-        # - name: cleanup
-        #   schedule: "00 11 * * *"
-        #   command:
-        #     - benji-command
-        #     - cleanup
+      cronJob: {}
+      #   activeDeadlineSeconds: null
+      #   startingDeadlineSeconds: null
+      # crontab:
+      #   - name: backup-default
+      #     schedule: "00 02 * * *"
+      #     command:
+      #       - benji-backup-pvc
+      #       - --namespace
+      #       - default
+      #   - name: backup-security
+      #     schedule: "00 03 * * *"
+      #     command:
+      #       - benji-backup-pvc
+      #       - --namespace
+      #       - security
+      #   - name: enforce
+      #     schedule: "00 10 * * *"
+      #     command:
+      #       - benji-command
+      #       - enforce
+      #       - latest5,days5
+      #       - 'labels["benji-backup.me/instance"] == "benji-k8s"'
+      #   - name: cleanup
+      #     schedule: "00 11 * * *"
+      #     command:
+      #       - benji-command
+      #       - cleanup
       volumes:
         - name: backup-nas
           nfs:
-            server: "nas-1.${SECRET_DOMAIN}"
-            path: /mnt/backup/share
+            server: "10.20.0.51"
+            path: /volume1/backups
         - name: mon-endpoint-volume
           configMap:
             name: rook-ceph-mon-endpoints
@@ -136,14 +99,15 @@ spec:
         - name: ceph-data
           mountPath: /etc/ceph
     fsfreeze:
-      enabled: false
+      enabled: true
     postgresql:
       enabled: false
       postgresqlUsername: benji
       postgresqlDatabase: benji
-      postgresqlPassword: secret
+      postgresqlPassword: ${BENJI_POSTGRES_PASSWORD}
       persistence:
-        existingClaim: benji-postgresql-pvc
+        enabled: true
+        storageClass: "rook-ceph-block"
     pushgateway:
       image:
         repository: quay.io/prometheus/pushgateway
@@ -157,15 +121,6 @@ spec:
               kind: Deployment
               name: benji-maint
             patch:
-              - op: replace
-                path: /spec/template/spec/containers/0/volumeMounts
-                value:
-                  - name: benji-config
-                    mountPath: /benji/etc
-                  - name: backup-nas
-                    mountPath: /backup-nas
-                  - name: ceph-data
-                    mountPath: /etc/ceph
               - op: add
                 path: /spec/template/metadata/annotations
                 value:
@@ -178,7 +133,7 @@ spec:
                 path: /spec/template/spec/initContainers
                 value:
                   - name: generate-ceph-files
-                    image: rook/ceph:v1.8.1
+                    image: rook/ceph:v1.8.3
                     imagePullPolicy: Always
                     command: ["/usr/bin/bash"]
                     args: ["-c", "bash /script/generate-ceph.sh"]
@@ -206,7 +161,75 @@ spec:
               name: benji-fsfreeze
             patch:
               - op: replace
-                path: /spec/template/spec/containers/0/volumeMounts
+                path: /spec/template/spec/volumes
                 value:
                   - name: rbd-mounts
-                    mountPath: /var/lib/kubelet/plugins/kubernetes.io/rbd/mounts/
+                    hostPath:
+                      path: /var/lib/kubelet/plugins/kubernetes.io/csi/pv/
+                      type: DirectoryOrCreate
+                  - name: tz-config
+                    hostPath:
+                      path: /usr/share/zoneinfo/Europe/London
+                      type: ""
+          - target:
+              kind: CronJob
+              name: benji-backup-default
+            patch:
+              - op: add
+                path: /spec/jobTemplate/spec/template/spec/initContainers
+                value:
+                  - name: generate-ceph-files
+                    image: rook/ceph:v1.8.3
+                    imagePullPolicy: Always
+                    command: ["/usr/bin/bash"]
+                    args: ["-c", "bash /script/generate-ceph.sh"]
+                    volumeMounts:
+                      - name: mon-endpoint-volume
+                        mountPath: /etc/rook
+                      - name: ceph-data
+                        mountPath: /etc/ceph
+                      - name: ceph-config
+                        mountPath: /script/generate-ceph.sh
+                        subPath: generate-ceph.sh
+                    env:
+                      - name: ROOK_CEPH_USERNAME
+                        valueFrom:
+                          secretKeyRef:
+                            name: rook-ceph-mon
+                            key: ceph-username
+                      - name: ROOK_CEPH_SECRET
+                        valueFrom:
+                          secretKeyRef:
+                            name: rook-ceph-mon
+                            key: ceph-secret
+          - target:
+              kind: CronJob
+              name: benji-backup-security
+            patch:
+              - op: add
+                path: /spec/jobTemplate/spec/template/spec/initContainers
+                value:
+                  - name: generate-ceph-files
+                    image: rook/ceph:v1.8.3
+                    imagePullPolicy: Always
+                    command: ["/usr/bin/bash"]
+                    args: ["-c", "bash /script/generate-ceph.sh"]
+                    volumeMounts:
+                      - name: mon-endpoint-volume
+                        mountPath: /etc/rook
+                      - name: ceph-data
+                        mountPath: /etc/ceph
+                      - name: ceph-config
+                        mountPath: /script/generate-ceph.sh
+                        subPath: generate-ceph.sh
+                    env:
+                      - name: ROOK_CEPH_USERNAME
+                        valueFrom:
+                          secretKeyRef:
+                            name: rook-ceph-mon
+                            key: ceph-username
+                      - name: ROOK_CEPH_SECRET
+                        valueFrom:
+                          secretKeyRef:
+                            name: rook-ceph-mon
+                            key: ceph-secret
