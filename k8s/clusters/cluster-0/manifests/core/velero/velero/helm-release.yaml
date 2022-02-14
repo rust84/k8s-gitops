@@ -22,7 +22,7 @@ spec:
 
     configuration:
       extraEnvVars:
-        TZ: "America/New_York"
+        TZ: "Europe/London"
       provider: aws
       backupStorageLocation:
         name: default

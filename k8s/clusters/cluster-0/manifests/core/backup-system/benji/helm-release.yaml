@@ -17,7 +17,7 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
-    timeZone: America/New_York
+    timeZone: Europe/London
     benji:
       image:
         registry: ghcr.io
@@ -52,7 +52,8 @@ spec:
       cronJob:
         activeDeadlineSeconds: null
         startingDeadlineSeconds: null
-      crontab: {}
+      crontab:
+        {}
         # - name: backup-security
         #   schedule: "00 02 * * *"
         #   command:
