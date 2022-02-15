@@ -19,58 +19,30 @@ spec:
   values:
     deploymentStrategy:
       type: Recreate
-
-    image:
-      repository: ghcr.io/k8s-at-home/grafana
-
+    podAnnotations:
+      backup.velero.io/backup-volumes: storage
+    persistence:
+      enabled: true
+      existingClaim: grafana-config-pvc
     env:
       GF_EXPLORE_ENABLED: true
       GF_PANELS_DISABLE_SANITIZE_HTML: true
       GF_LOG_FILTERS: rendering:debug
-      VAR_BLOCKY_URL: "http://blocky.network.svc.cluster.local:4000"
-
     adminPassword: "${SECRET_GRAFANA_PASSWORD}"
-
-    grafana.ini:
-      server:
-        root_url: "https://grafana.${SECRET_DOMAIN}"
-      paths:
-        data: /var/lib/grafana/data
-        logs: /var/log/grafana
-        plugins: /var/lib/grafana/plugins
-        provisioning: /etc/grafana/provisioning
-      analytics:
-        check_for_updates: false
-      log:
-        mode: console
-      grafana_net:
-        url: https://grafana.net
-      auth:
-        signout_redirect_url: https://id.${SECRET_DOMAIN}/application/o/grafana/end-session/
-        # Optionally enable auto-login
-        oauth_auto_login: true
-      auth.basic:
-        disable_login_form: true
-      auth.generic_oauth:
-        enabled: true
-        allow_sign_up: true
-        name: Authentik
-        client_id: grafana
-        client_secret: ${SECRET_AUTHENTIK_GRAFANA_CLIENT_SECRET}
-        scopes: openid profile email
-        auth_url: https://id.${SECRET_DOMAIN}/application/o/authorize/
-        token_url: https://id.${SECRET_DOMAIN}/application/o/token/
-        api_url: https://id.${SECRET_DOMAIN}/application/o/userinfo/
-      auth.generic_oauth.group_mapping:
-        role_attribute_path: "contains(groups[*], 'Grafana Admins') && 'Admin' || contains(groups[*], 'Grafana Editors') && 'Editor' || 'Viewer'"
-        org_id: 1
-      auth.anonymous:
-        enabled: true
-        org_id: 1
-        org_role: Viewer
-      security:
-        allow_embedding: true
-
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      annotations:
+        traefik.ingress.kubernetes.io/router.middlewares: "networking-cloudflare-ips@kubernetescrd"
+        external-dns/is-public: "true"
+        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+      hosts: ["grafana.${SECRET_DOMAIN}"]
+      tls:
+        - hosts:
+            - grafana.${SECRET_DOMAIN}
+    plugins:
+      - natel-discrete-panel
+      - grafana-piechart-panel
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
@@ -83,31 +55,16 @@ spec:
             editable: true
             options:
               path: /var/lib/grafana/dashboards/default
-
-    datasources:
-      datasources.yaml:
-        apiVersion: 1
-        deleteDatasources:
-          - name: Loki
-            orgId: 1
-        datasources:
-          - name: Prometheus
-            type: prometheus
-            access: proxy
-            url: http://thanos-query-http:10902/
-            isDefault: true
-          - name: Loki
-            type: loki
-            access: proxy
-            url: http://loki.monitoring.svc.cluster.local:3100
-
     dashboards:
       default:
+        blocky:
+          url: https://raw.githubusercontent.com/0xERR0R/blocky/v0.13/docs/blocky-grafana.json
+          datasource: Prometheus
         ceph-cluster:
           gnetId: 2842
           revision: 14
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/2842
+        # Ref: https://grafana.com/grafana/dashboards/5336
         ceph-osd:
           gnetId: 5336
           revision: 5
@@ -117,10 +74,70 @@ spec:
           gnetId: 5342
           revision: 5
           datasource: Prometheus
-        apc-smart-ups-1500:
-          url: https://raw.githubusercontent.com/k8s-at-home/grafana-dashboards/main/apc-smart-ups-1500-snmp.json
+        emq:
+          url: https://raw.githubusercontent.com/emqx/emqx-prometheus/master/grafana_template/EMQ.json
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/11315
+        emq-dashboard:
+          url: https://raw.githubusercontent.com/emqx/emqx-prometheus/master/grafana_template/EMQ_Dashboard.json
+          datasource: Prometheus
+        emq-vm:
+          url: https://raw.githubusercontent.com/emqx/emqx-prometheus/master/grafana_template/ErlangVM.json
+          datasource: Prometheus
+        flux-cluster:
+          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/cluster.json
+          datasource: Prometheus
+        flux-control-plane:
+          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/control-plane.json
+          datasource: Prometheus
+        frigate:
+          url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/frigate.json
+          datasource: Prometheus
+        minio-overview:
+          url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/minio_overview.json
+          datasource: Prometheus
+        node-exporter-full:
+          gnetId: 1860
+          revision: 23
+          datasource: Prometheus
+        prometheus-exporter-summary:
+          url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/prometheus_exporter_summary.json
+          datasource: Prometheus
+        thanos-overview:
+          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/overview.json
+          datasource: Prometheus
+        thanos-compact:
+          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/compact.json
+          datasource: Prometheus
+        thanos-querier:
+          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/query.json
+          datasource: Prometheus
+        thanos-store:
+          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/store.json
+          datasource: Prometheus
+        thanos-receiver:
+          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/receive.json
+          datasource: Prometheus
+        thanos-sidecar:
+          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/sidecar.json
+          datasource: Prometheus
+        thanos-ruler:
+          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/rule.json
+          datasource: Prometheus
+        thanos-replicate:
+          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/bucket-replicate.json
+          datasource: Prometheus
+        radarr-exportarr:
+          gnetId: 12896
+          revision: 1
+          datasource: Prometheus
+        sonarr-exportarr:
+          gnetId: 12530
+          revision: 2
+          datasource: Prometheus
+        speedtest:
+          gnetId: 13665
+          revision: 1
+          datasource: Prometheus
         unifi-client-insights:
           gnetId: 11315
           revision: 8
@@ -140,74 +157,66 @@ spec:
           gnetId: 11312
           revision: 8
           datasource: Prometheus
-        flux-cluster:
-          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/cluster.json
+        uptimerobot:
+          url: https://raw.githubusercontent.com/lekpamartin/uptimerobot_exporter/master/dashboards/grafana.json
           datasource: Prometheus
-        flux-control-plane:
-          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/control-plane.json
+        velero:
+          url: https://grafana.com/api/dashboards/11055/revisions/2/download
           datasource: Prometheus
-        blocky:
-          url: https://raw.githubusercontent.com/0xERR0R/blocky/master/docs/blocky-grafana.json
-          datasource: Prometheus
-        sonarr:
-          url: https://raw.githubusercontent.com/k8s-at-home/grafana-dashboards/main/sonarr.json
-          datasource: Prometheus
-        radarr:
-          url: https://raw.githubusercontent.com/k8s-at-home/grafana-dashboards/main/radarr.json
-          datasource: Prometheus
-        qbittorrent:
-          url: https://raw.githubusercontent.com/esanchezm/prometheus-qbittorrent-exporter/master/grafana/dashboard.json
-          datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/13665
-        speedtest:
-          gnetId: 13665
-          revision: 1
-          datasource: Prometheus
-        node-exporter-full:
-          url: https://grafana.com/api/dashboards/1860/revisions/22/download
-          datasource: Prometheus
-
     sidecar:
       dashboards:
         enabled: true
         searchNamespace: ALL
       datasources:
         enabled: true
+        defaultDatasourceEnabled: false
         searchNamespace: ALL
-
-    imageRenderer:
-      enabled: true
-
-    plugins:
-      - natel-discrete-panel
-      - pr0ps-trackmap-panel
-      - grafana-piechart-panel
-      - vonage-status-panel
-      - grafana-worldmap-panel
-      - grafana-clock-panel
-
-    serviceMonitor:
-      enabled: true
-
-    ingress:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: "traefik"
-        cert-manager.io/cluster-issuer: letsencrypt-production
-        external-dns/is-public: "true"
-        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-        traefik.ingress.kubernetes.io/router.entrypoints: websecure
-        traefik.ingress.kubernetes.io/router.middlewares: network-rfc1918-ips@kubernetescrd
-      hosts:
-        - "grafana.${SECRET_DOMAIN}"
-      tls:
-        - hosts:
-            - "grafana.${SECRET_DOMAIN}"
-          secretName: tls.grafana
-
-    persistence:
-      enabled: true
-      existingClaim: grafana-config-pvc
-
-    podAnnotations:
-      configmap.reloader.stakater.com/reload: "grafana"
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        datasources:
+          - name: Prometheus
+            type: prometheus
+            access: proxy
+            url: http://thanos-query:9090/
+            isDefault: true
+          - name: loki
+            type: loki
+            access: proxy
+            url: http://loki.logs.svc.cluster.local:3100
+          - name: home_assistant
+            type: influxdb
+            access: proxy
+            url: http://influxdb:8086
+            database: home_assistant
+    grafana.ini:
+      server:
+        root_url: https://grafana.${SECRET_DOMAIN}
+      auth.basic:
+        disable_login_form: true
+      auth.generic_oauth:
+        enabled: true
+        allow_sign_up: true
+        name: Dex
+        client_id: grafana
+        client_secret: ${DEX_GRAFANA_AUTHENTICATOR_CLIENT_SECRET}
+        scopes: openid profile email groups
+        auth_url: https://dex.${SECRET_DOMAIN}/auth
+        token_url: https://dex.${SECRET_DOMAIN}/token
+        api_url: https://dex.${SECRET_DOMAIN}/userinfo
+      auth.generic_oauth.group_mapping:
+        role_attribute_path: "contains(groups[*], 'russhome:cluster-admin') && 'Admin' || 'Viewer'"
+        org_id: 1
+      paths:
+        data: /var/lib/grafana/data
+        logs: /var/log/grafana
+        plugins: /var/lib/grafana/plugins
+        provisioning: /etc/grafana/provisioning
+      analytics:
+        check_for_updates: true
+      log:
+        mode: console
+      grafana_net:
+        url: https://grafana.net
+  podAnnotations:
+    configmap.reloader.stakater.com/reload: "grafana"

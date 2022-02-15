@@ -17,170 +17,200 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
-    fullnameOverride: prometheus
+    server:
+      resources:
+        requests:
+          memory: 1000Mi
+          cpu: 25m
+        limits:
+          memory: 2000Mi
+    prometheusConfigReloader:
+      resources:
+        requests:
+          cpu: 100m
+          memory: 50Mi
+        limits:
+          cpu: 200m
+          memory: 50Mi
+    prometheusOperator:
+      createCustomResource: true
+      admissionWebhooks:
+        enabled: false
     alertmanager:
-      config:
-        global:
-          slack_api_url: "${SECRET_ALERT_MANAGER_DISCORD_WEBHOOK}"
-          resolve_timeout: 5m
-        receivers:
-          - name: "null"
-          - name: "discord"
-            slack_configs:
-              - channel: "#prometheus"
-                icon_url: https://avatars3.githubusercontent.com/u/3380462
-                username: "Prometheus"
-                send_resolved: true
-                title: |-
-                  [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if ne .CommonAnnotations.summary ""}}{{ .CommonAnnotations.summary }}{{ else }}{{ .CommonLabels.alertname }}{{ end }}
-                text: >-
-                  {{ range .Alerts -}}
-                    **Alert:** {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
-                  **Description:** {{ if ne .Annotations.description ""}}{{ .Annotations.description }}{{else}}N/A{{ end }}
-                  **Details:**
-                    {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
-                    {{ end }}
-                  {{ end }}
-        route:
-          group_by: ["alertname", "job"]
-          group_wait: 30s
-          group_interval: 5m
-          repeat_interval: 6h
-          receiver: "discord"
-          routes:
-            - receiver: "null"
-              match:
-                alertname: Watchdog
-            - receiver: "discord"
-              match_re:
-                # severity: critical|warning
-                severity: critical
-              continue: true
-        inhibit_rules:
-          - source_match:
-              severity: "critical"
-            target_match:
-              severity: "warning"
-            equal: ["alertname", "namespace"]
       ingress:
         enabled: true
         pathType: Prefix
         ingressClassName: "traefik"
         annotations:
-          kubernetes.io/tls-acme: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-production
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          external-dns/is-public: "true"
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-        hosts:
-          - "alert-manager.${SECRET_DOMAIN}"
+        hosts: ["prom-alert.${SECRET_DOMAIN}"]
         tls:
           - hosts:
-              - "alert-manager.${SECRET_DOMAIN}"
-            secretName: alert-manager-cert
+              - prom-alert.${SECRET_DOMAIN}
+
+      config:
+        global:
+          slack_api_url: "${DISCORD_WEBHOOK_URL}"
+        receivers:
+          - name: "null"
+          - name: "slack-monitoring"
+            slack_configs:
+              - channel: "#alerts"
+                send_resolved: true
+                title: '{{ template "slack.title" . }}'
+                icon_emoji: ":prometheus:"
+                color: '{{ template "slack.color" . }}'
+                text: '{{ template "slack.text" . }}'
+                actions:
+                  - type: button
+                    text: "Runbook :green_book:"
+                    url: "{{ (index .Alerts 0).Annotations.runbook_url }}"
+                  - type: button
+                    text: "Query :mag:"
+                    url: "{{ (index .Alerts 0).GeneratorURL }}"
+                  - type: button
+                    text: "Silence :no_bell:"
+                    url: '{{ template "__alert_silence_link" . }}'
+          - name: "pagerduty"
+            pagerduty_configs:
+              - routing_key: ${SECRET_PAGERDUTY_TOKEN}
+                description: |-
+                  {{ template "pagerduty.custom.description" . }}
+        templates: ["*.tmpl"]
+        route:
+          group_by: ["job"]
+          group_wait: 30s
+          group_interval: 5m
+          repeat_interval: 12h
+          receiver: "null"
+          routes:
+            - match:
+                alertname: Watchdog
+              receiver: "null"
+            - receiver: "pagerduty"
+              match:
+                severity: critical
+              continue: true
+            - receiver: "slack-monitoring"
       alertmanagerSpec:
         storage:
           volumeClaimTemplate:
             spec:
-              storageClassName: "rook-ceph-block"
+              storageClassName: rook-ceph-block
               resources:
                 requests:
-                  storage: 1Gi
-    nodeExporter:
-      serviceMonitor:
-        relabelings:
-          - action: replace
-            regex: (.*)
-            replacement: $1
-            sourceLabels:
-              - __meta_kubernetes_pod_node_name
-            targetLabel: kubernetes_node
-    kube-state-metrics:
-      fullnameOverride: kube-state-metrics
-    prometheus-node-exporter:
-      fullnameOverride: node-exporter
+                  storage: 10Gi
+        tolerations:
+          - key: "arm"
+            operator: "Exists"
+      templateFiles:
+        pagerduty-custom.tmpl: |-
+          {{- define "pagerduty.custom.description" -}}[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if ne .CommonAnnotations.summary ""}}{{ .CommonAnnotations.summary }} {{ else if ne .CommonAnnotations.message ""}}{{ .CommonAnnotations.message }} {{ else if ne .CommonAnnotations.description ""}}{{ .CommonAnnotations.description }} {{ else }}{{ .CommonLabels.alertname }}{{ end }}{{- end -}}
+        slack-templates.tmpl: |-
+          # This builds the silence URL.  We exclude the alertname in the range
+          # to avoid the issue of having trailing comma separator (%2C) at the end
+          # of the generated URL
+          {{ define "__alert_silence_link" -}}
+              {{ .ExternalURL }}/#/silences/new?filter=%7B
+              {{- range .CommonLabels.SortedPairs -}}
+                  {{- if ne .Name "alertname" -}}
+                      {{- .Name }}%3D"{{- .Value -}}"%2C%20
+                  {{- end -}}
+              {{- end -}}
+              alertname%3D"{{ .CommonLabels.alertname }}"%7D
+          {{- end }}
+
+          {{ define "__alert_severity_prefix_title" -}}
+              {{ if ne .Status "firing" -}}
+              :100:
+              {{- else if eq .CommonLabels.severity "critical" -}}
+              :fire:
+              {{- else if eq .CommonLabels.severity "warning" -}}
+              :warning:
+              {{- else if eq .CommonLabels.severity "info" -}}
+              :information_source:
+              {{- else -}}
+              :question:
+              {{- end }}
+          {{- end }}
+
+          {{/* First line of Slack alerts */}}
+          {{ define "slack.title" -}}
+              [{{ .Status | toUpper -}}
+              {{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{- end -}}
+              ] {{ template "__alert_severity_prefix_title" . }} {{ .CommonLabels.alertname }}
+          {{- end }}
+
+          {{/* Color of Slack attachment (appears as line next to alert )*/}}
+          {{ define "slack.color" -}}
+              {{ if eq .Status "firing" -}}
+                  {{ if eq .CommonLabels.severity "warning" -}}
+                      warning
+                  {{- else if eq .CommonLabels.severity "critical" -}}
+                      danger
+                  {{- else -}}
+                      #439FE0
+                  {{- end -}}
+              {{ else -}}
+              good
+              {{- end }}
+          {{- end }}
+
+          {{/* The text to display in the alert */}}
+          {{ define "slack.text" -}}
+              {{ range .Alerts }}
+                  {{- if .Annotations.message }}
+                      {{ .Annotations.message }}
+                  {{- end }}
+                  {{- if .Annotations.description }}
+                      {{ .Annotations.description }}
+                  {{- end }}
+              {{- end }}
+          {{- end }}
     grafana:
       enabled: false
-      forceDeployDashboards: true
-      sidecar:
-        dashboards:
-          multicluster:
-            etcd:
-              enabled: true
+    kubeEtcd:
+      enabled: false
+    kubeControllerManager:
+      enabled: false
+    kubeScheduler:
+      enabled: false
+    kubeProxy:
+      enabled: false
     kubelet:
-      enabled: true
       serviceMonitor:
         metricRelabelings:
           - action: replace
             sourceLabels:
               - node
             targetLabel: instance
-    kubeApiServer:
-      enabled: true
-    kubeControllerManager:
-      enabled: true
-      endpoints:
-        - 10.20.0.20
-        - 10.20.0.21
-        - 10.20.0.22
-    kubeScheduler:
-      enabled: true
-      endpoints:
-        - 10.20.0.20
-        - 10.20.0.21
-        - 10.20.0.22
-    kubeProxy:
-      enabled: true
-      endpoints:
-        - 10.20.0.20
-        - 10.20.0.21
-        - 10.20.0.22
-    kubeEtcd:
-      enabled: true
-      endpoints:
-        - 10.20.0.20
-        - 10.20.0.21
-        - 10.20.0.22
-      service:
-        enabled: true
-        port: 2381
-        targetPort: 2381
-    # Setting this option to 0 disabled CPU limits
-    prometheusOperator:
-      configReloaderCpu: 0
+    prometheus-node-exporter:
+      tolerations:
+        - key: "arm"
+          operator: "Exists"
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
     prometheus:
       ingress:
         enabled: true
         pathType: Prefix
         ingressClassName: "traefik"
         annotations:
-          kubernetes.io/tls-acme: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-production
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          external-dns/is-public: "true"
-          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
-        hosts:
-          - "prom-server.${SECRET_DOMAIN}"
-        tls:
-          - hosts:
-              - "prom-server.${SECRET_DOMAIN}"
-            secretName: tls.prom-server
-      thanosService:
-        enabled: true
       prometheusSpec:
-        # externalUrl: "prom-server.${SECRET_DOMAIN}"
-        # image:
-        #   repository: quay.io/prometheus/prometheus
-        #   tag: v2.20.0
-        replicas: 1
+        replicas: 2
         replicaExternalLabelName: "replica"
+        ruleSelector: {}
+        ruleNamespaceSelector: {}
         ruleSelectorNilUsesHelmValues: false
+        serviceMonitorSelector: {}
+        serviceMonitorNamespaceSelector: {}
         serviceMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelector: {}
+        podMonitorNamespaceSelector: {}
         podMonitorSelectorNilUsesHelmValues: false
-        probeSelectorNilUsesHelmValues: false
         retention: 6h
         enableAdminAPI: true
-        walCompression: true
         storageSpec:
           volumeClaimTemplate:
             spec:
@@ -189,30 +219,72 @@ spec:
                 requests:
                   storage: 10Gi
         thanos:
-          image: quay.io/thanos/thanos:v0.23.1
-          version: v0.21.1
+          image: quay.io/thanos/thanos:v0.24.0
+          version: v0.24.0
           objectStorageConfig:
-            name: thanos
-            key: object-store.yaml
-        additionalScrapeConfigs:
-          - job_name: "netdata-scrape"
-            metrics_path: "/api/v1/allmetrics"
-            params:
-              format: [prometheus_all_hosts]
-            honor_labels: true
-            static_configs:
-              - targets:
-                  - nas-0.${SECRET_DOMAIN}:19999
-                  - nas-1.${SECRET_DOMAIN}:19999
-          - job_name: "node-exporter"
-            static_configs:
-              - targets:
-                  - fw.${SECRET_DOMAIN}:9100
-          - job_name: "home-assistant"
-            scrape_interval: 60s
-            metrics_path: "/api/prometheus"
-            bearer_token: "${SECRET_HASS_PROMETHEUS_TOKEN}"
-            scheme: http
-            static_configs:
-              - targets:
-                  - home-assistant.home.svc:8123
+            name: thanos-objstore-secret
+            key: objstore.yml
+      thanosService:
+        enabled: true
+
+alertmanager:
+  ingress:
+    hosts: ["prom-alert.${SECRET_DOMAIN}"]
+    tls:
+      - hosts:
+          - prom-alert.${SECRET_DOMAIN}
+  config:
+    global:
+      slack_api_url: "${DISCORD_WEBHOOK_URL}"
+    receivers:
+      - name: "null"
+      - name: "slack-monitoring"
+        slack_configs:
+          - channel: "#alerts"
+            send_resolved: true
+            title: '{{ template "slack.title" . }}'
+            icon_emoji: ":prometheus:"
+            color: '{{ template "slack.color" . }}'
+            text: '{{ template "slack.text" . }}'
+            actions:
+              - type: button
+                text: "Runbook :green_book:"
+                url: "{{ (index .Alerts 0).Annotations.runbook_url }}"
+              - type: button
+                text: "Query :mag:"
+                url: "{{ (index .Alerts 0).GeneratorURL }}"
+              - type: button
+                text: "Silence :no_bell:"
+                url: '{{ template "__alert_silence_link" . }}'
+      - name: "pagerduty"
+        pagerduty_configs:
+          - routing_key: ${SECRET_PAGERDUTY_TOKEN}
+            description: |-
+              {{ template "pagerduty.custom.description" . }}
+prometheus:
+  ingress:
+    hosts: ["prom-server.${SECRET_DOMAIN}"]
+    tls:
+      - hosts:
+          - prom-server.${SECRET_DOMAIN}
+  prometheusSpec:
+    additionalScrapeConfigs:
+      - job_name: "emqx"
+        metrics_path: "/api/v4/emqx_prometheus"
+        basic_auth:
+          username: admin
+          password: public
+        params:
+          type: [prometheus]
+        honor_labels: true
+        static_configs:
+          - targets:
+              - emqx.default.svc:8081
+      - job_name: "home-assistant"
+        scrape_interval: 60s
+        metrics_path: "/api/prometheus"
+        bearer_token: "${PROM_HASS_TOKEN}"
+        scheme: http
+        static_configs:
+          - targets:
+              - home-assistant.default.svc:8123

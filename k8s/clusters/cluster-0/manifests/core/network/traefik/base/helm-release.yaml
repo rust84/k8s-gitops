@@ -22,7 +22,7 @@ spec:
     deployment:
       enabled: true
       kind: Deployment
-      replicas: 2
+      replicas: 1
     service:
       enabled: true
       type: LoadBalancer
@@ -86,9 +86,6 @@ spec:
     experimental:
       plugins:
         enabled: true
-
-    nodeSelector:
-      node-role.kubernetes.io/worker: "true"
 
     affinity:
       podAntiAffinity:
