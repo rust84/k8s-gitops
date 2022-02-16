@@ -13,7 +13,7 @@ resources:
   - core-certificates.yaml
   - core-cilium.yaml
   - core-error-pages.yaml
-  - core-backups.yaml
+  #- core-backups.yaml
   - core-metrics-server.yaml
   - core-monitoring.yaml
   - core-nfd.yaml
