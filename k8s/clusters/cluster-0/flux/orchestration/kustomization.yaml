@@ -11,7 +11,6 @@ resources:
   # - apps-vpn-gateway.yaml
   - core-cert-manager.yaml
   - core-certificates.yaml
-  - core-chrony.yaml
   - core-cilium.yaml
   - core-error-pages.yaml
   - core-kasten-io.yaml
