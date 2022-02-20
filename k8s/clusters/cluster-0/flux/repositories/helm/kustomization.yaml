@@ -12,7 +12,7 @@ resources:
   - dex-charts.yaml
   - emqx-charts.yaml
   - fairwinds-charts.yaml
-  - grafana-loki-charts.yaml
+  - grafana-charts.yaml
   - hajimari-charts.yaml
   - hashicorp-charts.yaml
   - influxdata-charts.yaml
