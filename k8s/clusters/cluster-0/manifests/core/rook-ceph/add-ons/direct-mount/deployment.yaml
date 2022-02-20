@@ -72,8 +72,8 @@ spec:
                 path: mon-endpoints
         - name: nas-backup
           nfs:
-            server: "nas.${SECRET_DOMAIN}"
-            path: /mnt/tank/share/backups
+            server: "synology.${SECRET_DOMAIN}"
+            path: /volume1/backups
         - name: direct-mount-scripts
           projected:
             defaultMode: 0775
