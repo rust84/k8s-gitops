@@ -15,26 +15,13 @@ spec:
         kind: HelmRepository
         name: kubernetes-sigs-nfd-charts
         namespace: flux-system
-      interval: 5m
+  install:
+    crds: CreateReplace
+  upgrade:
+    crds: CreateReplace
   values:
-    image:
-      repository: k8s.gcr.io/nfd/node-feature-discovery
-      tag: "v0.9.0"
-    master:
-      tolerations:
-        - key: "node-role.kubernetes.io/master"
-          operator: "Equal"
-          value: "true"
-          effect: "NoSchedule"
-      affinity:
-        nodeAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              preference:
-                matchExpressions:
-                  - key: "node-role.kubernetes.io/master"
-                    operator: In
-                    values: [""]
+    nodeFeatureRule:
+      createCRD: true
     worker:
       config:
         core:
@@ -79,3 +66,10 @@ spec:
                     device: ["7523"]
       annotations:
         configmap.reloader.stakater.com/reload: "nfd-worker-conf"
+    master:
+      replicaCount: 1
+      tolerations:
+        - effect: "NoExecute"
+          operator: "Exists"
+        - effect: "NoSchedule"
+          operator: "Exists"
