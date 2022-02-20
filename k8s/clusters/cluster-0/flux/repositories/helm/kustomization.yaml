@@ -23,7 +23,7 @@ resources:
   - metallb-charts.yaml
   - nfs-subdir-external-provisioner-charts.yaml
   - node-feature-discovery-charts.yaml
-  - rook-charts.yaml
+  - rook-ceph-charts.yaml
   - rust84-charts.yaml
   - vernemq-charts.yaml
   - weaveworks-charts.yaml
