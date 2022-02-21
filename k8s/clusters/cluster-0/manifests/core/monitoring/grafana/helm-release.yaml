@@ -177,16 +177,19 @@ spec:
     datasources:
       datasources.yaml:
         apiVersion: 1
+        deleteDatasources:
+          - name: Loki
+            orgId: 1
         datasources:
           - name: Prometheus
             type: prometheus
             access: proxy
-            url: http://thanos-query:9090/
+            url: http://thanos-query-http:10902/
             isDefault: true
-          - name: loki
+          - name: Loki
             type: loki
             access: proxy
-            url: http://loki.logs.svc.cluster.local:3100
+            url: http://loki.monitoring.svc.cluster.local:3100
           - name: home_assistant
             type: influxdb
             access: proxy
