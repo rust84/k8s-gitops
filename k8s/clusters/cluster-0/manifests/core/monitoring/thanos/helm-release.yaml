@@ -36,7 +36,7 @@ spec:
             traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
             traefik.ingress.kubernetes.io/router.middlewares: "network-internal-auth@kubernetescrd"
             kubernetes.io/tls-acme: "true"
-            cert-manager.io/cluster-issuer: letsencrypt-staging
+            cert-manager.io/cluster-issuer: letsencrypt-prod
           tls:
             - hosts:
                 - "thanos.${SECRET_DOMAIN}"

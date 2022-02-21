@@ -11,5 +11,5 @@ spec:
     - "${SECRET_DOMAIN}"
     - "*.${SECRET_DOMAIN}"
   issuerRef:
-    name: letsencrypt-staging
+    name: letsencrypt-prod
     kind: ClusterIssuer
