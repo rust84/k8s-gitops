@@ -17,6 +17,6 @@ resources:
   - core-metrics-server.yaml
   - core-monitoring.yaml
   - core-nfd.yaml
-  #- core-rbac.yaml
+  - core-rbac.yaml
   - core-rook-ceph.yaml
   - core-traefik.yaml
