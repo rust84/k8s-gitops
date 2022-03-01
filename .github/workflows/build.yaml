@@ -8,7 +8,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[ci-skip]')"
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: true
 
@@ -34,7 +34,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[ci-skip]')"
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           submodules: true
 
