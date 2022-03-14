@@ -172,6 +172,13 @@ spec:
                   width: 640
                   height: 360
                   fps: 7
+                  stationary:
+                    interval: 10
+                    threshold: 70
+                    max_frames:
+                      default: 3000
+                      objects:
+                        person: 1000
                 snapshots:
                   enabled: false
                   timestamp: False
