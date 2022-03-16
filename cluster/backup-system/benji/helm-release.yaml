@@ -1,237 +1,237 @@
----
-apiVersion: helm.toolkit.fluxcd.io/v2beta1
-kind: HelmRelease
-metadata:
-  name: benji
-  namespace: backup-system
-spec:
-  releaseName: benji
-  interval: 5m
-  chart:
-    spec:
-      chart: ./charts/benji-k8s
-      version: 0.2.0
-      sourceRef:
-        kind: GitRepository
-        name: benji-charts
-        namespace: flux-system
-      interval: 5m
-  values:
-    timeZone: Europe/London
-    benji:
-      image:
-        registry: ghcr.io
-        repository: elemental-lf/benji-k8s
-        tag: 0.15.0
-        pullPolicy: IfNotPresent
-      configuration:
-        configurationVersion: "1"
-        defaultStorage: storage-1
-        storages:
-          - name: storage-1
-            storageId: 1
-            module: file
-            configuration:
-              path: /backup-nas/k8s-backups
-        ios:
-          - module: rbdaio
-            name: replicapool
-            configuration:
-              simultaneousReads: 3
-              simultaneousWrites: 3
-              cephConfigFile: /etc/ceph/ceph.conf
-              clientIdentifier: admin
-              newImageFeatures:
-                - RBD_FEATURE_LAYERING
-                - RBD_FEATURE_EXCLUSIVE_LOCK
-                - RBD_FEATURE_STRIPINGV2
-                - RBD_FEATURE_OBJECT_MAP
-                - RBD_FEATURE_FAST_DIFF
-                - RBD_FEATURE_DEEP_FLATTEN
-      cronJob:
-        activeDeadlineSeconds: null
-        startingDeadlineSeconds: null
-      crontab:
-        - name: backup-default
-          schedule: "00 02 * * *"
-          command:
-            - benji-backup-pvc
-            - --namespace
-            - default
-        - name: backup-security
-          schedule: "00 03 * * *"
-          command:
-            - benji-backup-pvc
-            - --namespace
-            - security
-        - name: enforce
-          schedule: "00 10 * * *"
-          command:
-            - benji-command
-            - enforce
-            - latest5,days5
-            - 'labels["benji-backup.me/instance"] == "benji-k8s"'
-        - name: cleanup
-          schedule: "00 11 * * *"
-          command:
-            - benji-command
-            - cleanup
-      volumes:
-        - name: backup-nas
-          nfs:
-            server: "10.20.0.51"
-            path: /volume1/backups
-        - name: mon-endpoint-volume
-          configMap:
-            name: rook-ceph-mon-endpoints
-            items:
-              - key: data
-                path: mon-endpoints
-        - name: ceph-data
-          emptyDir: {}
-        - name: ceph-config
-          configMap:
-            name: ceph-config
-      volumeMounts:
-        - name: backup-nas
-          mountPath: /backup-nas
-        - name: ceph-data
-          mountPath: /etc/ceph
-    fsfreeze:
-      enabled: true
-    postgresql:
-      enabled: false
-      postgresqlUsername: benji
-      postgresqlDatabase: benji
-      persistence:
-        enabled: true
-        storageClass: "rook-ceph-block"
-    pushgateway:
-      image:
-        repository: quay.io/prometheus/pushgateway
-        tag: v1.4.2
-        pullPolicy: IfNotPresent
-      nameOverride: pushgateway
-  postRenderers:
-    - kustomize:
-        patchesJson6902:
-          - target:
-              kind: Deployment
-              name: benji-maint
-            patch:
-              - op: add
-                path: /spec/template/metadata/annotations
-                value:
-                  configmap.reloader.stakater.com/reload: "ceph-config"
-              - op: add
-                path: /spec/template/metadata/annotations
-                value:
-                  secret.reloader.stakater.com/reload: "rook-ceph-mon"
-              - op: add
-                path: /spec/template/spec/initContainers
-                value:
-                  - name: generate-ceph-files
-                    image: rook/ceph:v1.8.7
-                    imagePullPolicy: Always
-                    command: ["/usr/bin/bash"]
-                    args: ["-c", "bash /script/generate-ceph.sh"]
-                    volumeMounts:
-                      - name: mon-endpoint-volume
-                        mountPath: /etc/rook
-                      - name: ceph-data
-                        mountPath: /etc/ceph
-                      - name: ceph-config
-                        mountPath: /script/generate-ceph.sh
-                        subPath: generate-ceph.sh
-                    env:
-                      - name: ROOK_CEPH_USERNAME
-                        valueFrom:
-                          secretKeyRef:
-                            name: rook-ceph-mon
-                            key: ceph-username
-                      - name: ROOK_CEPH_SECRET
-                        valueFrom:
-                          secretKeyRef:
-                            name: rook-ceph-mon
-                            key: ceph-secret
-          - target:
-              kind: DaemonSet
-              name: benji-fsfreeze
-            patch:
-              - op: replace
-                path: /spec/template/spec/volumes
-                value:
-                  - name: rbd-mounts
-                    hostPath:
-                      path: /var/lib/kubelet/plugins/kubernetes.io/csi/pv/
-                      type: DirectoryOrCreate
-                  - name: tz-config
-                    hostPath:
-                      path: /usr/share/zoneinfo/Europe/London
-                      type: ""
-          - target:
-              kind: CronJob
-              name: benji-backup-default
-            patch:
-              - op: add
-                path: /spec/jobTemplate/spec/template/spec/initContainers
-                value:
-                  - name: generate-ceph-files
-                    image: rook/ceph:v1.8.7
-                    imagePullPolicy: Always
-                    command: ["/usr/bin/bash"]
-                    args: ["-c", "bash /script/generate-ceph.sh"]
-                    volumeMounts:
-                      - name: mon-endpoint-volume
-                        mountPath: /etc/rook
-                      - name: ceph-data
-                        mountPath: /etc/ceph
-                      - name: ceph-config
-                        mountPath: /script/generate-ceph.sh
-                        subPath: generate-ceph.sh
-                    env:
-                      - name: ROOK_CEPH_USERNAME
-                        valueFrom:
-                          secretKeyRef:
-                            name: rook-ceph-mon
-                            key: ceph-username
-                      - name: ROOK_CEPH_SECRET
-                        valueFrom:
-                          secretKeyRef:
-                            name: rook-ceph-mon
-                            key: ceph-secret
-          - target:
-              kind: CronJob
-              name: benji-backup-security
-            patch:
-              - op: add
-                path: /spec/jobTemplate/spec/template/spec/initContainers
-                value:
-                  - name: generate-ceph-files
-                    image: rook/ceph:v1.8.7
-                    imagePullPolicy: Always
-                    command: ["/usr/bin/bash"]
-                    args: ["-c", "bash /script/generate-ceph.sh"]
-                    volumeMounts:
-                      - name: mon-endpoint-volume
-                        mountPath: /etc/rook
-                      - name: ceph-data
-                        mountPath: /etc/ceph
-                      - name: ceph-config
-                        mountPath: /script/generate-ceph.sh
-                        subPath: generate-ceph.sh
-                    env:
-                      - name: ROOK_CEPH_USERNAME
-                        valueFrom:
-                          secretKeyRef:
-                            name: rook-ceph-mon
-                            key: ceph-username
-                      - name: ROOK_CEPH_SECRET
-                        valueFrom:
-                          secretKeyRef:
-                            name: rook-ceph-mon
-                            key: ceph-secret
-  valuesFrom:
-    - kind: Secret
-      name: "benji-helm-values"
-      optional: false
+# ---
+# apiVersion: helm.toolkit.fluxcd.io/v2beta1
+# kind: HelmRelease
+# metadata:
+#   name: benji
+#   namespace: backup-system
+# spec:
+#   releaseName: benji
+#   interval: 5m
+#   chart:
+#     spec:
+#       chart: ./charts/benji-k8s
+#       version: 0.2.0
+#       sourceRef:
+#         kind: GitRepository
+#         name: benji-charts
+#         namespace: flux-system
+#       interval: 5m
+#   values:
+#     timeZone: Europe/London
+#     benji:
+#       image:
+#         registry: ghcr.io
+#         repository: elemental-lf/benji-k8s
+#         tag: 0.15.0
+#         pullPolicy: IfNotPresent
+#       configuration:
+#         configurationVersion: "1"
+#         defaultStorage: storage-1
+#         storages:
+#           - name: storage-1
+#             storageId: 1
+#             module: file
+#             configuration:
+#               path: /backup-nas/k8s-backups
+#         ios:
+#           - module: rbdaio
+#             name: replicapool
+#             configuration:
+#               simultaneousReads: 3
+#               simultaneousWrites: 3
+#               cephConfigFile: /etc/ceph/ceph.conf
+#               clientIdentifier: admin
+#               newImageFeatures:
+#                 - RBD_FEATURE_LAYERING
+#                 - RBD_FEATURE_EXCLUSIVE_LOCK
+#                 - RBD_FEATURE_STRIPINGV2
+#                 - RBD_FEATURE_OBJECT_MAP
+#                 - RBD_FEATURE_FAST_DIFF
+#                 - RBD_FEATURE_DEEP_FLATTEN
+#       cronJob:
+#         activeDeadlineSeconds: null
+#         startingDeadlineSeconds: null
+#       crontab:
+#         - name: backup-default
+#           schedule: "00 02 * * *"
+#           command:
+#             - benji-backup-pvc
+#             - --namespace
+#             - default
+#         - name: backup-security
+#           schedule: "00 03 * * *"
+#           command:
+#             - benji-backup-pvc
+#             - --namespace
+#             - security
+#         - name: enforce
+#           schedule: "00 10 * * *"
+#           command:
+#             - benji-command
+#             - enforce
+#             - latest5,days5
+#             - 'labels["benji-backup.me/instance"] == "benji-k8s"'
+#         - name: cleanup
+#           schedule: "00 11 * * *"
+#           command:
+#             - benji-command
+#             - cleanup
+#       volumes:
+#         - name: backup-nas
+#           nfs:
+#             server: "10.20.0.51"
+#             path: /volume1/backups
+#         - name: mon-endpoint-volume
+#           configMap:
+#             name: rook-ceph-mon-endpoints
+#             items:
+#               - key: data
+#                 path: mon-endpoints
+#         - name: ceph-data
+#           emptyDir: {}
+#         - name: ceph-config
+#           configMap:
+#             name: ceph-config
+#       volumeMounts:
+#         - name: backup-nas
+#           mountPath: /backup-nas
+#         - name: ceph-data
+#           mountPath: /etc/ceph
+#     fsfreeze:
+#       enabled: true
+#     postgresql:
+#       enabled: false
+#       postgresqlUsername: benji
+#       postgresqlDatabase: benji
+#       persistence:
+#         enabled: true
+#         storageClass: "rook-ceph-block"
+#     pushgateway:
+#       image:
+#         repository: quay.io/prometheus/pushgateway
+#         tag: v1.4.2
+#         pullPolicy: IfNotPresent
+#       nameOverride: pushgateway
+#   postRenderers:
+#     - kustomize:
+#         patchesJson6902:
+#           - target:
+#               kind: Deployment
+#               name: benji-maint
+#             patch:
+#               - op: add
+#                 path: /spec/template/metadata/annotations
+#                 value:
+#                   configmap.reloader.stakater.com/reload: "ceph-config"
+#               - op: add
+#                 path: /spec/template/metadata/annotations
+#                 value:
+#                   secret.reloader.stakater.com/reload: "rook-ceph-mon"
+#               - op: add
+#                 path: /spec/template/spec/initContainers
+#                 value:
+#                   - name: generate-ceph-files
+#                     image: rook/ceph:v1.8.7
+#                     imagePullPolicy: Always
+#                     command: ["/usr/bin/bash"]
+#                     args: ["-c", "bash /script/generate-ceph.sh"]
+#                     volumeMounts:
+#                       - name: mon-endpoint-volume
+#                         mountPath: /etc/rook
+#                       - name: ceph-data
+#                         mountPath: /etc/ceph
+#                       - name: ceph-config
+#                         mountPath: /script/generate-ceph.sh
+#                         subPath: generate-ceph.sh
+#                     env:
+#                       - name: ROOK_CEPH_USERNAME
+#                         valueFrom:
+#                           secretKeyRef:
+#                             name: rook-ceph-mon
+#                             key: ceph-username
+#                       - name: ROOK_CEPH_SECRET
+#                         valueFrom:
+#                           secretKeyRef:
+#                             name: rook-ceph-mon
+#                             key: ceph-secret
+#           - target:
+#               kind: DaemonSet
+#               name: benji-fsfreeze
+#             patch:
+#               - op: replace
+#                 path: /spec/template/spec/volumes
+#                 value:
+#                   - name: rbd-mounts
+#                     hostPath:
+#                       path: /var/lib/kubelet/plugins/kubernetes.io/csi/pv/
+#                       type: DirectoryOrCreate
+#                   - name: tz-config
+#                     hostPath:
+#                       path: /usr/share/zoneinfo/Europe/London
+#                       type: ""
+#           - target:
+#               kind: CronJob
+#               name: benji-backup-default
+#             patch:
+#               - op: add
+#                 path: /spec/jobTemplate/spec/template/spec/initContainers
+#                 value:
+#                   - name: generate-ceph-files
+#                     image: rook/ceph:v1.8.7
+#                     imagePullPolicy: Always
+#                     command: ["/usr/bin/bash"]
+#                     args: ["-c", "bash /script/generate-ceph.sh"]
+#                     volumeMounts:
+#                       - name: mon-endpoint-volume
+#                         mountPath: /etc/rook
+#                       - name: ceph-data
+#                         mountPath: /etc/ceph
+#                       - name: ceph-config
+#                         mountPath: /script/generate-ceph.sh
+#                         subPath: generate-ceph.sh
+#                     env:
+#                       - name: ROOK_CEPH_USERNAME
+#                         valueFrom:
+#                           secretKeyRef:
+#                             name: rook-ceph-mon
+#                             key: ceph-username
+#                       - name: ROOK_CEPH_SECRET
+#                         valueFrom:
+#                           secretKeyRef:
+#                             name: rook-ceph-mon
+#                             key: ceph-secret
+#           - target:
+#               kind: CronJob
+#               name: benji-backup-security
+#             patch:
+#               - op: add
+#                 path: /spec/jobTemplate/spec/template/spec/initContainers
+#                 value:
+#                   - name: generate-ceph-files
+#                     image: rook/ceph:v1.8.7
+#                     imagePullPolicy: Always
+#                     command: ["/usr/bin/bash"]
+#                     args: ["-c", "bash /script/generate-ceph.sh"]
+#                     volumeMounts:
+#                       - name: mon-endpoint-volume
+#                         mountPath: /etc/rook
+#                       - name: ceph-data
+#                         mountPath: /etc/ceph
+#                       - name: ceph-config
+#                         mountPath: /script/generate-ceph.sh
+#                         subPath: generate-ceph.sh
+#                     env:
+#                       - name: ROOK_CEPH_USERNAME
+#                         valueFrom:
+#                           secretKeyRef:
+#                             name: rook-ceph-mon
+#                             key: ceph-username
+#                       - name: ROOK_CEPH_SECRET
+#                         valueFrom:
+#                           secretKeyRef:
+#                             name: rook-ceph-mon
+#                             key: ceph-secret
+#   valuesFrom:
+#     - kind: Secret
+#       name: "benji-helm-values"
+#       optional: false
