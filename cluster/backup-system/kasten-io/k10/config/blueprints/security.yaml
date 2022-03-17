@@ -44,5 +44,5 @@ actions:
             - "24"
             - "--checkers"
             - "24"
-            - "/mnt/k10-backups/default"
-            - "b2:k10-default/"
+            - "/mnt/k10-backups/backup-system"
+            - "b2:k10-security/"

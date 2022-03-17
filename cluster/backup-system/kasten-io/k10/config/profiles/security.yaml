@@ -2,14 +2,14 @@
 kind: Profile
 apiVersion: config.kio.kasten.io/v1alpha1
 metadata:
-  name: k10-disaster-recovery
+  name: security
   namespace: backup-system
 spec:
   locationSpec:
     type: FileStore
     fileStore:
       claimName: k10-backups
-      path: k10-disaster-recovery
+      path: security
     credential:
       secretType: ""
       secret:
