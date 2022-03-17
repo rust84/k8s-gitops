@@ -2,7 +2,7 @@
 apiVersion: cr.kanister.io/v1alpha1
 kind: Blueprint
 metadata:
-  name: default
+  name: security
   namespace: backup-system
 actions:
   post-export:
