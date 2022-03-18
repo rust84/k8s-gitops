@@ -10,7 +10,7 @@ actions:
       - func: KubeTask
         name: hookPhase
         args:
-          namespace: kasten-io
+          namespace: backup-system
           image: ghcr.io/k8s-at-home/rclone:v1.57.0
           podOverride:
             containers:
