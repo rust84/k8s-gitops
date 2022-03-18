@@ -8,7 +8,7 @@ spec:
   locationSpec:
     type: FileStore
     fileStore:
-      claimName: k10-backup
+      claimName: k10-backups
       path: security
     credential:
       secretType: ""

@@ -17,7 +17,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: k10-backup
+  name: k10-backups
   namespace: backup-system
 spec:
   accessModes:
