@@ -21,7 +21,8 @@ actions:
                     value: Europe/London
                 volumeMounts:
                   - name: rclone-conf
-                    mountPath: /config
+                    mountPath: /config/rclone.conf
+                    subPath: rclone.conf
                   - name: k10-backups
                     mountPath: /mnt/k10-backups
             volumes:
