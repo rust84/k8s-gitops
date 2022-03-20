@@ -9,41 +9,48 @@ spec:
   interval: 5m
   chart:
     spec:
+      # renovate: registryUrl=https://charts.kasten.io/
       chart: k10
-      version: 4.5.7
+      version: 4.5.11
       sourceRef:
         kind: HelmRepository
         name: kasten-charts
         namespace: flux-system
       interval: 5m
+  install:
+    createNamespace: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    crds: CreateReplace
+    remediation:
+      retries: 3
   values:
     eula:
       accept: true
       company: rust84
-      email: ${SECRET_EMAIL}
+      email: rust84@users.noreply.github.com
     global:
       persistence:
-        storageClass: ceph-block
+        storageClass: rook-ceph-block
     auth:
-      k10AdminUsers:
-        - ${SECRET_EMAIL}
-      oidcAuth:
+      tokenAuth:
         enabled: true
-        secretName: kasten-secret
     clusterName: k8s
     ingress:
       create: true
       class: traefik
-      host: "k10.${SECRET_DOMAIN}"
+      host: k10.microserver.space
       annotations:
         kubernetes.io/tls-acme: "true"
         cert-manager.io/cluster-issuer: letsencrypt-prod
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        external-dns/is-public: "true"
-        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+        external-dns/is-public: "false"
+        external-dns.alpha.kubernetes.io/target: "ipv4.microserver.space"
       urlPath: k10
       hosts:
-        - "k10.${SECRET_DOMAIN}"
+        - k10.microserver.space
       tls:
         enabled: true
         secretName: "tls.k10"
