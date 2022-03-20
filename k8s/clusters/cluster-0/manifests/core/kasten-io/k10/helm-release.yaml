@@ -41,16 +41,16 @@ spec:
     ingress:
       create: true
       class: traefik
-      host: k10.microserver.space
+      host: "k10.${SECRET_DOMAIN}"
       annotations:
         kubernetes.io/tls-acme: "true"
         cert-manager.io/cluster-issuer: letsencrypt-prod
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         external-dns/is-public: "false"
-        external-dns.alpha.kubernetes.io/target: "ipv4.microserver.space"
+        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
       urlPath: k10
       hosts:
-        - k10.microserver.space
+        - "k10.${SECRET_DOMAIN}"
       tls:
         enabled: true
         secretName: "tls.k10"
