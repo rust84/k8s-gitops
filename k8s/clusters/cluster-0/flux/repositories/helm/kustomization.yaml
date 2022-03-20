@@ -18,6 +18,7 @@ resources:
   - influxdata-charts.yaml
   - infracloudio-charts.yaml
   - ingress-nginx-charts.yaml
+  - kasten-charts.yaml
   - kubernetes-sigs-descheduler-charts.yaml
   - kubernetes-stable-charts.yaml
   - metallb-charts.yaml
