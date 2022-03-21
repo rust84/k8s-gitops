@@ -82,7 +82,7 @@ spec:
             size: 1
         storageClass:
           enabled: true
-          name: ceph-block
+          name: rook-ceph-block
           isDefault: true
           reclaimPolicy: Delete
           allowVolumeExpansion: true
