@@ -6,5 +6,5 @@ metadata:
 spec:
   keys:
     - rclone.conf
-  path: secrets/kasten-io/kasten-io/k10/config/blueprints/rclone-conf
+  path: secrets/backup-system/kasten-io/k10/config/blueprints/rclone-conf
   type: Opaque
