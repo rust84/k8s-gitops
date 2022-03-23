@@ -3,14 +3,14 @@ apiVersion: cr.kanister.io/v1alpha1
 kind: Blueprint
 metadata:
   name: security
-  namespace: backup-system
+  namespace: kasten-io
 actions:
   post-export:
     phases:
       - func: KubeTask
         name: hookPhase
         args:
-          namespace: backup-system
+          namespace: kasten-io
           image: ghcr.io/k8s-at-home/rclone:v1.58.0
           podOverride:
             containers:
@@ -45,5 +45,5 @@ actions:
             - "24"
             - "--checkers"
             - "24"
-            - "/mnt/k10-backups/backup-system"
+            - "/mnt/k10-backups/kasten-io"
             - "b2:k10-security/"

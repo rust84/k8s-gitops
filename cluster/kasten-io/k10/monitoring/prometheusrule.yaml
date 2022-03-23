@@ -6,7 +6,7 @@ metadata:
     prometheus: k8s
     role: alert-rules
   name: kasten-io
-  namespace: backup-system
+  namespace: kasten-io
 spec:
   groups:
     - name: kasten.rules

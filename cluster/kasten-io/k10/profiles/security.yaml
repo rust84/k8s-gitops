@@ -3,7 +3,7 @@ kind: Profile
 apiVersion: config.kio.kasten.io/v1alpha1
 metadata:
   name: security
-  namespace: backup-system
+  namespace: kasten-io
 spec:
   locationSpec:
     type: FileStore

@@ -3,14 +3,14 @@ apiVersion: cr.kanister.io/v1alpha1
 kind: Blueprint
 metadata:
   name: default
-  namespace: backup-system
+  namespace: kasten-io
 actions:
   post-export:
     phases:
       - func: KubeTask
         name: hookPhase
         args:
-          namespace: backup-system
+          namespace: kasten-io
           image: ghcr.io/k8s-at-home/rclone:v1.58.0
           podOverride:
             containers:
