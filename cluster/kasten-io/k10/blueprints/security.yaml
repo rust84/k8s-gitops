@@ -44,5 +44,5 @@ actions:
             - "24"
             - "--checkers"
             - "24"
-            - "/mnt/k10-backups/kasten-io"
+            - "/mnt/k10-backups/security"
             - "b2:k10-security/"
