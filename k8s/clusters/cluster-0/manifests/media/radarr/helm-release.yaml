@@ -60,7 +60,13 @@ spec:
         existingClaim: radarr-config
       media:
         enabled: true
-        existingClaim: nfs-media-pvc
+        type: custom
+        volumeSpec:
+          nfs:
+            server: 10.20.0.51
+            path: /volume2/media
+        mountPath: /media
+        readOnly: false
     podSecurityContext:
       runAsUser: 1001
       runAsGroup: 1001
