@@ -6,7 +6,7 @@ resources:
   # - apps-comms.yaml
   # - apps-network.yaml
   # - apps-home.yaml
-  # - apps-media.yaml
+  - apps-media.yaml
   # - apps-security.yaml
   # - apps-vpn-gateway.yaml
   - core-cert-manager.yaml
