@@ -24,10 +24,10 @@ jobs:
       # - name: Lint Yaml
       #   uses: ibiqlik/action-yamllint@v1
 
-      - name: Kubeval
-        uses: instrumenta/kubeval-action@master
-        with:
-          files: "cluster/"
+      # - name: Kubeval
+      #   uses: instrumenta/kubeval-action@master
+      #   with:
+      #     files: 'cluster/'
 
   # compliance:
   #   runs-on: ubuntu-latest

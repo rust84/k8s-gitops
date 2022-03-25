@@ -1,0 +1,4 @@
+[b2]
+type = b2
+account = $B2_K10_KEY_ID
+key = $B2_K10_SECRET_KEY

@@ -14,7 +14,7 @@
   },
   kubernetes: {
     fileMatch: ["\\.yaml$"],
-    ignorePaths: ["flux-system/", ".github"],
+    ignorePaths: ["cluster/flux-system/", ".github"],
   },
   regexManagers: [
     {

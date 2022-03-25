@@ -199,6 +199,7 @@ loadSecretsToVault() {
   kvault "security/authentik/authentik-helm-values.txt"
   kvault "security/dex/dex-helm-values.txt"
   kvault "security/dex/dex-k8s-authenticator-helm-values.txt"
+  kvault "backup-system/kasten-io/k10/config/blueprints/rclone-conf.txt"
 }
 
 FIRST_RUN=1

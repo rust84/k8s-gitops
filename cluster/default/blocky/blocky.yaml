@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: blocky
-      version: 10.1.0
+      version: 10.1.1
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -33,7 +33,7 @@ spec:
   values:
     image:
       repository: spx01/blocky
-      tag: v0.17
+      tag: v0.18
     controller:
       replicas: 3
       strategy: RollingUpdate
@@ -54,8 +54,8 @@ spec:
           - https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
           - http://sysctl.org/cameleon/hosts
           - https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
-          special: []
-          #   - https://hosts-file.net/ad_servers.txt
+          cookies:
+          - https://www.fanboy.co.nz/fanboy-cookiemonster.txt
         whiteLists:
           ads:
           - https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt

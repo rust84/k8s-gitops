@@ -5,11 +5,11 @@ metadata:
   name: prometheus-crds
   namespace: monitoring
 resources:
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-25.0.0/charts/kube-prometheus-stack/crds/crd-alertmanagerconfigs.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-25.0.0/charts/kube-prometheus-stack/crds/crd-alertmanagers.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-25.0.0/charts/kube-prometheus-stack/crds/crd-podmonitors.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-25.0.0/charts/kube-prometheus-stack/crds/crd-probes.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-25.0.0/charts/kube-prometheus-stack/crds/crd-prometheuses.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-25.0.0/charts/kube-prometheus-stack/crds/crd-prometheusrules.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-25.0.0/charts/kube-prometheus-stack/crds/crd-servicemonitors.yaml
-  - https://raw.githubusercontent.com/prometheus-community/helm-charts/kube-prometheus-stack-25.0.0/charts/kube-prometheus-stack/crds/crd-thanosrulers.yaml
+  - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.55.0/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagerconfigs.yaml
+  - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.55.0/example/prometheus-operator-crd/monitoring.coreos.com_alertmanagers.yaml
+  - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.55.0/example/prometheus-operator-crd/monitoring.coreos.com_podmonitors.yaml
+  - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.55.0/example/prometheus-operator-crd/monitoring.coreos.com_probes.yaml
+  - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.55.0/example/prometheus-operator-crd/monitoring.coreos.com_prometheuses.yaml
+  - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.55.0/example/prometheus-operator-crd/monitoring.coreos.com_prometheusrules.yaml
+  - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.55.0/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
+  - https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/v0.55.0/example/prometheus-operator-crd/monitoring.coreos.com_thanosrulers.yaml
