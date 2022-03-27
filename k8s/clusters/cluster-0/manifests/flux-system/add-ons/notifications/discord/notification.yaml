@@ -30,4 +30,4 @@ spec:
       name: "*"
   exclusionList:
     - "waiting.*socket"
-  suspend: false
+  suspend: true
