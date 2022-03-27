@@ -1,0 +1,10 @@
+ingress:
+  main:
+    hosts:
+      - host: node-red.$DOMAIN
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - "node-red.$DOMAIN"

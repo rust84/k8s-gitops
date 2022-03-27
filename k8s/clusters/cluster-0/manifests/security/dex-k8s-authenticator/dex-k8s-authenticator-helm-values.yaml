@@ -1,0 +1,10 @@
+apiVersion: ricoberger.de/v1alpha1
+kind: VaultSecret
+metadata:
+  name: dex-k8s-authenticator-helm-values
+  namespace: security
+spec:
+  keys:
+    - values.yaml
+  path: secrets/security/dex/dex-k8s-authenticator-helm-values
+  type: Opaque

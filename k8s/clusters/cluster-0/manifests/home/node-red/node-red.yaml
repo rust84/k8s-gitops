@@ -1,0 +1,71 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: node-red
+  namespace: default
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: node-red
+      version: 10.0.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 10m
+  test:
+    enable: false # Enable helm test
+  install:
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  rollback:
+    timeout: 10m
+    recreate: true
+    cleanupOnFail: true
+  values:
+    image:
+      repository: nodered/node-red
+      tag: 2.2.2-12-minimal
+    env:
+      TZ: "Europe/London"
+      FLOWS: "flows.json"
+      NODE_RED_ENABLE_PROJECTS: "true"
+      NODE_RED_ENABLE_SAFE_MODE: "false"
+    ingress:
+      main:
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "resistor-nodes"
+        enabled: true
+        ingressClassName: traefik
+    persistence:
+      data:
+        enabled: true
+        mountPath: /data
+        storageClass: rook-ceph-block
+        accessMode: ReadWriteOnce
+        size: "5Gi"
+    podAnnotations:
+      backup.velero.io/backup-volumes: data
+    resources:
+      requests:
+        memory: 250Mi
+        cpu: 25m
+      limits:
+        memory: 500Mi
+    tolerations:
+      - key: "arm"
+        operator: "Exists"
+  valuesFrom:
+    - kind: Secret
+      name: "node-red-helm-values"

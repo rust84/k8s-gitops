@@ -1,0 +1,16 @@
+ingress:
+  main:
+    annotations:
+      external-dns.alpha.kubernetes.io/target: "ipv4.$DOMAIN"
+    hosts:
+      - host: "frigate.$DOMAIN"
+        paths:
+          - path: /
+            pathType: Prefix
+    tls:
+      - hosts:
+          - "frigate.$DOMAIN"
+env:
+  TZ: "Europe/London"
+  FRIGATE_RTSP_PASSWORD: "$RTSP_PASSWORD"
+  FRIGATE_MQTT_PASSWORD: "$EMQX_MQTT_USER_PASSWORD"

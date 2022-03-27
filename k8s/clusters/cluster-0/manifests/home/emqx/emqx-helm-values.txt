@@ -1,0 +1,13 @@
+ingress:
+  dashboard:
+    path: /
+    hosts:
+    - emqx.$DOMAIN
+    tls:
+    - hosts:
+      - emqx.$DOMAIN
+emqxConfig:
+  EMQX_ADMIN_PASSWORD: $EMQX_ADMIN_PASSWORD
+  EMQX_AUTH__MNESIA__PASSWORD_HASH: plain
+  EMQX_AUTH__USER__1__USERNAME: mqtt
+  EMQX_AUTH__USER__1__PASSWORD: $EMQX_MQTT_USER_PASSWORD

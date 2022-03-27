@@ -1,0 +1,10 @@
+ingress:
+  main:
+    hosts:
+    - host: unifi.$DOMAIN
+      paths:
+      - path: /
+        pathType: Prefix
+    tls:
+    - hosts:
+      - "unifi.$DOMAIN"

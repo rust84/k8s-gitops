@@ -1,0 +1,4 @@
+domainFilters:
+  - $DOMAIN
+cloudflare:
+  email: $EMAIL

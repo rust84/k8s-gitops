@@ -1,0 +1,76 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: vaultwarden
+  namespace: default
+spec:
+  releaseName: vaultwarden
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: vaultwarden
+      version: 4.0.1
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 10m
+  test:
+    enable: false # Enable helm test
+  install:
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  rollback:
+    timeout: 10m
+    recreate: true
+    cleanupOnFail: true
+  values:
+    nameOverride: vaultwarden
+    fullnameOverride: vaultwarden
+    image:
+      repository: vaultwarden/server
+      tag: 1.24.0-alpine
+    ingress:
+      main:
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: "networking-cloudflare-ips@kubernetescrd"
+          external-dns/is-public: "true"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "shield-key"
+        enabled: true
+        ingressClassName: traefik
+    persistence:
+      config:
+        enabled: true
+        storageClass: rook-ceph-block
+        accessMode: ReadWriteOnce
+        size: 10Gi
+    podAnnotations:
+      backup.velero.io/backup-volumes: config
+      secret.reloader.stakater.com/reload: "vaultwarden"
+    postgresql:
+      enabled: true
+      postgresqlUsername: "vaultwarden"
+      postgresqlDatabase: "vaultwarden"
+      persistence:
+        enabled: true
+        annotations:
+          benji-backup.me/fsfreeze: "yes"
+        storageClass: rook-ceph-block
+        accessModes:
+          - ReadWriteOnce
+        size: 10Gi
+      primary:
+        podAnnotations:
+          backup.velero.io/backup-volumes: data
+  valuesFrom:
+    - kind: Secret
+      name: "vaultwarden-helm-values"

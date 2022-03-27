@@ -1,0 +1,69 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: authentik
+  namespace: security
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://charts.goauthentik.io
+      chart: authentik
+      version: 2022.3.1
+      sourceRef:
+        kind: HelmRepository
+        name: authentik-charts
+        namespace: flux-system
+      interval: 10m
+  values:
+    ingress:
+      enabled: true
+      ingressClassName: "traefik"
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        kubernetes.io/tls-acme: "true"
+        external-dns/is-public: "true"
+
+    geoip:
+      enabled: false
+    authentik:
+      email:
+        host: email-smtp.eu-west-1.amazonaws.com
+        port: 465
+        use_ssl: true
+      log_level: debug
+
+      outposts:
+        docker_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
+
+      postgresql:
+        host: "authentik-postgresql"
+        name: authentik
+        user: authentik
+      redis:
+        host: "authentik-redis-master"
+
+    postgresql:
+      enabled: true
+      annotations:
+        benji-backup.me/fsfreeze: "yes"
+      primary:
+        podAnnotations:
+          backup.velero.io/backup-volumes: data
+      persistence:
+        enabled: true
+        storageClass: rook-ceph-block
+        accessModes:
+          - ReadWriteOnce
+      postgresqlUsername: authentik
+      postgresqlDatabase: authentik
+
+    redis:
+      enabled: true
+      auth:
+        enabled: true
+  valuesFrom:
+    - kind: Secret
+      name: "authentik-helm-values"

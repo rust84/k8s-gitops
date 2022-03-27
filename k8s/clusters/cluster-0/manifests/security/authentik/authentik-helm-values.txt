@@ -1,0 +1,36 @@
+ingress:
+  annotations:
+    external-dns.alpha.kubernetes.io/target: "ipv4.$DOMAIN"
+  hosts:
+    - host: id.$DOMAIN
+      paths:
+        - path: /
+  tls:
+    - secretName: tls.authentik
+      hosts:
+        - id.$DOMAIN
+authentik:
+  email:
+    username: $SECRET_EMAIL_USERNAME
+    password: $SECRET_EMAIL_PASSWORD
+    from: $AUTHENTIK_MAIL_FROM_ADDRESS
+  secret_key: $AUTHENTIK_SECRET_KEY
+
+  postgresql:
+    password: $AUTHENTIK_POSTGRES_PASSWORD
+    s3_backup:
+      access_key: "$MINIO_ACCESS_KEY"
+      secret_key: "$MINIO_SECRET_KEY"
+      bucket: "authentik"
+      region: "us-east-1"
+      host: "https://synology.$DOMAIN:9000"
+      insecure_skip_verify: false
+  redis:
+    password: $AUTHENTIK_REDIS_PASSWORD
+
+postgresql:
+  postgresqlPassword: $AUTHENTIK_POSTGRES_PASSWORD
+
+redis:
+  auth:
+    password: $AUTHENTIK_REDIS_PASSWORD

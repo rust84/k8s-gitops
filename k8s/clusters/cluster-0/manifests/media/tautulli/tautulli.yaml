@@ -1,0 +1,76 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: tautulli
+  namespace: default
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: tautulli
+      version: 11.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 10m
+  test:
+    enable: false # Enable helm test
+  install:
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  rollback:
+    timeout: 10m
+    recreate: true
+    cleanupOnFail: true
+  values:
+    image:
+      repository: ghcr.io/k8s-at-home/tautulli
+      tag: v2.9.4
+      pullPolicy: Always
+    env:
+      TZ: "Europe/London"
+    ingress:
+      main:
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "chart-bar"
+        enabled: true
+        ingressClassName: traefik
+    strategy:
+      type: Recreate
+    podAnnotations:
+      backup.velero.io/backup-volumes: config
+    persistence:
+      config:
+        enabled: true
+        annotations:
+          benji-backup.me/fsfreeze: "yes"
+        storageClass: rook-ceph-block
+        accessMode: ReadWriteOnce
+        size: 1Gi
+    podSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+    resources:
+      limits:
+        memory: 450Mi
+      requests:
+        cpu: 25m
+        memory: 300Mi
+    tolerations:
+      - key: "arm"
+        operator: "Exists"
+  valuesFrom:
+    - kind: Secret
+      name: "tautulli-helm-values"

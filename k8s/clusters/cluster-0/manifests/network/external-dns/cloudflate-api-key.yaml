@@ -1,0 +1,10 @@
+apiVersion: ricoberger.de/v1alpha1
+kind: VaultSecret
+metadata:
+  name: cloudflare-api-key
+  namespace: network
+spec:
+  keys:
+    - cloudflare_api_token
+  path: secrets/networking/external-dns/cloudflare-api-key
+  type: Opaque

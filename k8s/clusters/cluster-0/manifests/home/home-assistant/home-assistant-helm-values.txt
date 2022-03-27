@@ -1,0 +1,29 @@
+ingress:
+  main:
+    annotations:
+      external-dns.alpha.kubernetes.io/target: "ipv4.$DOMAIN"
+    hosts:
+    - host: hass.$DOMAIN
+      paths:
+      - path: /
+        pathType: Prefix
+    tls:
+    - hosts:
+      - "hass.$DOMAIN"
+      
+addons:
+  codeserver:
+    ingress:
+      hosts:
+      - host: hass-vscode.$DOMAIN
+        paths:
+        - path: /
+          pathType: Prefix
+      tls:
+      - hosts:
+        - hass-vscode.$DOMAIN
+
+    git:
+      deployKeyBase64: "${HASS_DEPLOY_KEY_B64}"
+postgresql:
+  postgresqlPassword: "${HASS_DB_PASSWORD}"
