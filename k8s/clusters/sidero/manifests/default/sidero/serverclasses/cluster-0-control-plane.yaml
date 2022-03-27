@@ -49,6 +49,11 @@ spec:
         feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
 
     - op: add
+      path: /cluster/apiServer/extraArgs
+      value:
+        feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
+
+    - op: add
       path: /cluster/apiServer/certSANs
       value:
         - cluster-0.our.house
