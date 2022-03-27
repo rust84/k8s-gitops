@@ -15,16 +15,30 @@ spec:
         kind: HelmRepository
         name: authentik-charts
         namespace: flux-system
-      interval: 10m
+      interval: 5m
   values:
+    image:
+      repository: ghcr.io/goauthentik/server
+      tag: 2022.3.2
+
     ingress:
       enabled: true
       ingressClassName: "traefik"
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-prod
+        cert-manager.io/cluster-issuer: letsencrypt-production
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         kubernetes.io/tls-acme: "true"
         external-dns/is-public: "true"
+        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+      hosts:
+        - host: id.${SECRET_DOMAIN}
+          paths:
+            - path: /
+
+      tls:
+        - secretName: tls.authentik
+          hosts:
+            - id.${SECRET_DOMAIN}
 
     geoip:
       enabled: false
@@ -32,38 +46,37 @@ spec:
       email:
         host: email-smtp.eu-west-1.amazonaws.com
         port: 465
+        username: ${SECRET_EMAIL_USERNAME}
+        password: ${SECRET_EMAIL_PASSWORD}
         use_ssl: true
+        from: ${AUTHENTIK_MAIL_FROM_ADDRESS}
+      secret_key: ${AUTHENTIK_SECRET_KEY}
       log_level: debug
 
       outposts:
         docker_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
 
       postgresql:
-        host: "authentik-postgresql"
+        host: "{{ .Release.Name }}-postgresql"
         name: authentik
         user: authentik
+        password: ${AUTHENTIK_POSTGRES_PASSWORD}
       redis:
-        host: "authentik-redis-master"
+        host: "{{ .Release.Name }}-redis-master"
+        password: ${AUTHENTIK_REDIS_PASSWORD}
 
     postgresql:
       enabled: true
-      annotations:
-        benji-backup.me/fsfreeze: "yes"
-      primary:
-        podAnnotations:
-          backup.velero.io/backup-volumes: data
       persistence:
         enabled: true
-        storageClass: rook-ceph-block
-        accessModes:
-          - ReadWriteOnce
+        existingClaim: authentik-postgresql-pvc
+
       postgresqlUsername: authentik
       postgresqlDatabase: authentik
+      postgresqlPassword: ${AUTHENTIK_POSTGRES_PASSWORD}
 
     redis:
       enabled: true
       auth:
         enabled: true
-  valuesFrom:
-    - kind: Secret
-      name: "authentik-helm-values"
+        password: ${AUTHENTIK_REDIS_PASSWORD}

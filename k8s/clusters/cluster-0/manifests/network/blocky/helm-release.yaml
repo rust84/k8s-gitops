@@ -16,20 +16,6 @@ spec:
         name: k8s-at-home-charts
         namespace: flux-system
       interval: 10m
-  test:
-    enable: false # Enable helm test
-  install:
-    remediation: # perform remediation when helm install fails
-      retries: 3
-  upgrade:
-    remediation: # perform remediation when helm upgrade fails
-      retries: 3
-      remediateLastFailure: true # remediate the last failure, when no retries remain
-    cleanupOnFail: true
-  rollback:
-    timeout: 10m
-    recreate: true
-    cleanupOnFail: true
   values:
     image:
       repository: spx01/blocky
@@ -79,20 +65,19 @@ spec:
       dns-tcp:
         enabled: true
         type: LoadBalancer
-        loadBalancerIP: 10.1.0.160
+        externalIPs:
+          - "${SVC_BLOCKY_ADDRESS}"
         ports:
           dns-tcp:
             enabled: true
             port: 53
             protocol: TCP
             targetPort: 53
-        externalTrafficPolicy: Local
-        annotations:
-          metallb.universe.tf/allow-shared-ip: blocky
       dns-udp:
         enabled: true
         type: LoadBalancer
-        loadBalancerIP: 10.1.0.160
+        externalIPs:
+          - "${SVC_BLOCKY_ADDRESS}"
         ports:
           dns-udp:
             enabled: true
@@ -100,15 +85,10 @@ spec:
             protocol: UDP
             targetPort: 53
         externalTrafficPolicy: Local
-        annotations:
-          metallb.universe.tf/allow-shared-ip: blocky
     metrics:
       enabled: true
     podAnnotations:
       configmap.reloader.stakater.com/reload: "blocky-config"
-    tolerations:
-      - key: "arm"
-        operator: "Exists"
     affinity:
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
@@ -121,7 +101,7 @@ spec:
             topologyKey: "kubernetes.io/hostname"
     resources:
       requests:
-        memory: 275Mi
-        cpu: 50m
+        memory: 100Mi
+        cpu: 100m
       limits:
-        memory: 1000Mi
+        memory: 750Mi

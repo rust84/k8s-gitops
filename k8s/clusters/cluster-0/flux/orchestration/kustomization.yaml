@@ -3,12 +3,10 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
   # - apps-collab.yaml
-  # - apps-comms.yaml
-  # - apps-network.yaml
+  - apps-network.yaml
   # - apps-home.yaml
   - apps-media.yaml
-  # - apps-security.yaml
-  # - apps-vpn-gateway.yaml
+  - apps-security.yaml
   - core-cert-manager.yaml
   - core-certificates.yaml
   - core-cilium.yaml
