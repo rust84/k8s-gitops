@@ -90,3 +90,6 @@ spec:
       enabled: true
       announce:
         loadbalancerIP: true
+
+    externalIPs:
+      enabled: true
