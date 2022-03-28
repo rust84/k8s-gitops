@@ -65,7 +65,8 @@ spec:
       dns-tcp:
         enabled: true
         type: LoadBalancer
-        loadBalancerIP: "${SVC_BLOCKY_ADDRESS}"
+        externalIPs:
+          - "${SVC_BLOCKY_ADDRESS}"
         ports:
           dns-tcp:
             enabled: true
@@ -75,7 +76,8 @@ spec:
       dns-udp:
         enabled: true
         type: LoadBalancer
-        loadBalancerIP: "${SVC_BLOCKY_ADDRESS}"
+        externalIPs:
+          - "${SVC_BLOCKY_ADDRESS}"
         ports:
           dns-udp:
             enabled: true
