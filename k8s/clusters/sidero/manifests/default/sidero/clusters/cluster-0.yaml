@@ -53,7 +53,7 @@ spec:
   controlPlaneConfig:
     controlplane:
       generateType: controlplane
-      talosVersion: v0.14.0
+      talosVersion: v0.14.3
     init:
       configPatches:
         - op: add
@@ -65,13 +65,13 @@ spec:
                 vip:
                   ip: ${CLUSTER_0_API_IP}
       generateType: init
-      talosVersion: v0.14.0
+      talosVersion: v0.14.3
   infrastructureTemplate:
     apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
     kind: MetalMachineTemplate
     name: cluster-0-cp
   replicas: 3
-  version: v1.22.2
+  version: v1.23.5
 ---
 apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
 kind: TalosConfigTemplate
@@ -82,7 +82,7 @@ spec:
   template:
     spec:
       generateType: join
-      talosVersion: v0.14.0
+      talosVersion: v0.14.3
 ---
 apiVersion: cluster.x-k8s.io/v1alpha4
 kind: MachineDeployment
@@ -106,7 +106,7 @@ spec:
         apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
         kind: MetalMachineTemplate
         name: cluster-0-workers
-      version: v1.22.2
+      version: v1.23.5
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
 kind: MetalMachineTemplate
