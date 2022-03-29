@@ -98,7 +98,7 @@ spec:
 
         - id: grafana
           name: grafana
-          secret: $DEX_GRAFANA_AUTHENTICATOR_CLIENT_SECRET
+          secret: ${DEX_GRAFANA_AUTHENTICATOR_CLIENT_SECRET}
           redirectURIs:
             - "https://grafana.${SECRET_DOMAIN}/login/generic_oauth"
 
