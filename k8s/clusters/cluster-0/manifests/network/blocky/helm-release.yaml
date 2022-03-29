@@ -62,29 +62,22 @@ spec:
         ports:
           http:
             port: 4000
-      dns-tcp:
+      dns:
         enabled: true
         type: LoadBalancer
-        externalIPs:
-          - "${SVC_BLOCKY_ADDRESS}"
+        loadBalancerIP: ${SVC_BLOCKY_ADDRESS}
+        externalTrafficPolicy: Local
         ports:
-          dns-tcp:
+          tcp:
             enabled: true
             port: 53
             protocol: TCP
             targetPort: 53
-      dns-udp:
-        enabled: true
-        type: LoadBalancer
-        externalIPs:
-          - "${SVC_BLOCKY_ADDRESS}"
-        ports:
-          dns-udp:
+          udp:
             enabled: true
             port: 53
             protocol: UDP
             targetPort: 53
-        externalTrafficPolicy: Local
     metrics:
       enabled: true
     podAnnotations:
