@@ -25,7 +25,7 @@ spec:
       enabled: true
       ingressClassName: "traefik"
       annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-production
+        cert-manager.io/cluster-issuer: letsencrypt-prod
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         kubernetes.io/tls-acme: "true"
         external-dns/is-public: "true"
