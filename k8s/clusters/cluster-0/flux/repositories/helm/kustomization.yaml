@@ -26,5 +26,6 @@ resources:
   - node-feature-discovery-charts.yaml
   - rook-ceph-charts.yaml
   - rust84-charts.yaml
+  - vector-charts.yaml
   - vernemq-charts.yaml
   - weaveworks-charts.yaml
