@@ -33,7 +33,8 @@ spec:
           cpu: 200m
           memory: 50Mi
     prometheusOperator:
-      createCustomResource: true
+      tls:
+        enabled: false
       admissionWebhooks:
         enabled: false
     alertmanager:
