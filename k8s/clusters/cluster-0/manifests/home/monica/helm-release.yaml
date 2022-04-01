@@ -59,8 +59,9 @@ spec:
         enabled: true
         existingClaim: monica-config
     mariadb:
-      existingSecret: monica-mariadb-secret
       enabled: true
+      auth:
+        existingSecret: monica-mariadb-secret
       persistence:
         enabled: true
         existingClaim: monica-mariadb-pvc
