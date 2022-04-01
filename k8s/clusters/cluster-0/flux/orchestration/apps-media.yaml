@@ -1,88 +1,88 @@
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
-# kind: Kustomization
-# metadata:
-#   name: apps-media-plex
-#   namespace: flux-system
-# spec:
-#   dependsOn:
-#     - name: cluster-namespaces
-#     - name: rook-ceph-cluster
-#   interval: 5m
-#   path: "./k8s/clusters/cluster-0/manifests/media/plex"
-#   prune: true
-#   wait: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: k8s-gitops
-#   decryption:
-#     provider: sops
-#     secretRef:
-#       name: sops-age
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
-# kind: Kustomization
-# metadata:
-#   name: apps-media-tautulli
-#   namespace: flux-system
-# spec:
-#   dependsOn:
-#     - name: cluster-namespaces
-#     - name: rook-ceph-cluster
-#     - name: apps-media-plex
-#   interval: 5m
-#   path: "./k8s/clusters/cluster-0/manifests/media/tautulli"
-#   prune: true
-#   wait: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: k8s-gitops
-#   decryption:
-#     provider: sops
-#     secretRef:
-#       name: sops-age
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
-# kind: Kustomization
-# metadata:
-#   name: apps-media-prowlarr
-#   namespace: flux-system
-# spec:
-#   dependsOn:
-#     - name: cluster-namespaces
-#     - name: rook-ceph-cluster
-#   interval: 5m
-#   path: "./k8s/clusters/cluster-0/manifests/media/prowlarr"
-#   prune: true
-#   wait: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: k8s-gitops
-#   decryption:
-#     provider: sops
-#     secretRef:
-#       name: sops-age
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
-# kind: Kustomization
-# metadata:
-#   name: apps-media-nzbget
-#   namespace: flux-system
-# spec:
-#   dependsOn:
-#     - name: cluster-namespaces
-#     - name: rook-ceph-cluster
-#   interval: 5m
-#   path: "./k8s/clusters/cluster-0/manifests/media/nzbget"
-#   prune: true
-#   wait: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: k8s-gitops
-#   decryption:
-#     provider: sops
-#     secretRef:
-#       name: sops-age
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-media-plex
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: rook-ceph-cluster
+  interval: 5m
+  path: "./k8s/clusters/cluster-0/manifests/media/plex"
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-gitops
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-media-tautulli
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: rook-ceph-cluster
+    - name: apps-media-plex
+  interval: 5m
+  path: "./k8s/clusters/cluster-0/manifests/media/tautulli"
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-gitops
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-media-prowlarr
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: rook-ceph-cluster
+  interval: 5m
+  path: "./k8s/clusters/cluster-0/manifests/media/prowlarr"
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-gitops
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-media-nzbget
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: rook-ceph-cluster
+  interval: 5m
+  path: "./k8s/clusters/cluster-0/manifests/media/nzbget"
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-gitops
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -93,8 +93,8 @@ spec:
   dependsOn:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
-    #- name: apps-media-prowlarr
-    #- name: apps-media-nzbget
+    - name: apps-media-prowlarr
+    - name: apps-media-nzbget
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/sonarr"
   prune: true
@@ -116,8 +116,8 @@ spec:
   dependsOn:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
-    #- name: apps-media-prowlarr
-    #- name: apps-media-nzbget
+    - name: apps-media-prowlarr
+    - name: apps-media-nzbget
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/radarr"
   prune: true
@@ -129,26 +129,26 @@ spec:
     provider: sops
     secretRef:
       name: sops-age
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
-# kind: Kustomization
-# metadata:
-#   name: apps-media-overseerr
-#   namespace: flux-system
-# spec:
-#   dependsOn:
-#     - name: cluster-namespaces
-#     - name: rook-ceph-cluster
-#     - name: apps-media-sonarr
-#     - name: apps-media-radarr
-#   interval: 5m
-#   path: "./k8s/clusters/cluster-0/manifests/media/overseerr"
-#   prune: true
-#   wait: true
-#   sourceRef:
-#     kind: GitRepository
-#     name: k8s-gitops
-#   decryption:
-#     provider: sops
-#     secretRef:
-#       name: sops-age
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-media-overseerr
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: rook-ceph-cluster
+    - name: apps-media-sonarr
+    - name: apps-media-radarr
+  interval: 5m
+  path: "./k8s/clusters/cluster-0/manifests/media/overseerr"
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-gitops
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
