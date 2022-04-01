@@ -64,7 +64,7 @@ spec:
           - hosts:
               - "warden.${SECRET_DOMAIN}"
     persistence:
-      data:
+      config:
         enabled: true
         existingClaim: vaultwarden-config
     podAnnotations:
