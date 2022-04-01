@@ -32,7 +32,7 @@ spec:
       main:
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          traefik.ingress.kubernetes.io/router.middlewares: "networking-cloudflare-ips@kubernetescrd"
+          traefik.ingress.kubernetes.io/router.middlewares: "network-cloudflare-ips@kubernetescrd"
           external-dns/is-public: "true"
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
           hajimari.io/enable: "true"
@@ -77,7 +77,7 @@ spec:
           ingressClassName: traefik
           annotations:
             traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-            traefik.ingress.kubernetes.io/router.middlewares: "network-internal-auth@kubernetescrd"
+            # traefik.ingress.kubernetes.io/router.middlewares: "network-internal-auth@kubernetescrd"
           hosts:
             - host: hass-vscode.${SECRET_DOMAIN}
               paths:
