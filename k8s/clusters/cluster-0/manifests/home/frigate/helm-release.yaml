@@ -30,7 +30,7 @@ spec:
         data:
           config.yml: |
             mqtt:
-              host: emqx-headless.default.svc
+              host: emqx-headless.home.svc
               topic_prefix: frigate
               user: mqtt
               password: '{FRIGATE_MQTT_PASSWORD}'
