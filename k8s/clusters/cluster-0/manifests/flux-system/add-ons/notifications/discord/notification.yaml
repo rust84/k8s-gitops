@@ -14,10 +14,10 @@ spec:
 apiVersion: notification.toolkit.fluxcd.io/v1beta1
 kind: Alert
 metadata:
-  name: ${CLUSTER_NAME}-discord
+  name: cluster-0-discord
   namespace: flux-system
 spec:
-  summary: "${CLUSTER_NAME}"
+  summary: "cluster-0"
   providerRef:
     name: discord
   eventSeverity: error
