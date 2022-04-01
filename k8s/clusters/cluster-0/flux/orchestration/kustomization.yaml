@@ -12,6 +12,7 @@ resources:
   - core-cilium.yaml
   - core-error-pages.yaml
   - core-flux-system-add-ons.yaml
+  - core-intel-gpu-plugin.yaml
   - core-kasten-io.yaml
   - core-metrics-server.yaml
   - core-monitoring.yaml
