@@ -4,5 +4,5 @@ kind: Kustomization
 resources:
   - config-pvc.yaml
   - helm-release.yaml
-  - postgres-data-pvc.yaml
+  - postgresql-data-pvc.yaml
   - vaultwarden-postgresql-secret.enc.yaml
