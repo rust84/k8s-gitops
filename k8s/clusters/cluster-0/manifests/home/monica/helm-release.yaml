@@ -44,7 +44,7 @@ spec:
         ingressClassName: traefik
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          traefik.ingress.kubernetes.io/router.middlewares: "networking-rfc1918@kubernetescrd"
+          traefik.ingress.kubernetes.io/router.middlewares: "network-rfc1918@kubernetescrd"
         hosts:
           - host: monica.${SECRET_DOMAIN}
             paths:
