@@ -43,7 +43,7 @@ spec:
     podAnnotations:
       configmap.reloader.stakater.com/reload: "zigbee2mqtt-settings"
     persistence:
-      config:
+      data:
         enabled: true
         existingClaim: zigbee2mqtt-data
     config:
