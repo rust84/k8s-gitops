@@ -9,7 +9,7 @@ spec:
     type: FileStore
     fileStore:
       claimName: k10-backups
-      path: k10-cluster-0-disaster-recovery
+      path: k10-disaster-recovery
     credential:
       secretType: ""
       secret:
