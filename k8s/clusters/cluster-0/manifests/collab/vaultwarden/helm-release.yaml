@@ -71,7 +71,7 @@ spec:
       postgresqlDatabase: vaultwarden
       persistence:
         enabled: true
-        existingClaim: vaultwarden-postgresql-pvc
+        existingClaim: data-vaultwarden-postgresql-0
   valuesFrom:
     - kind: Secret
       name: vaultwarden

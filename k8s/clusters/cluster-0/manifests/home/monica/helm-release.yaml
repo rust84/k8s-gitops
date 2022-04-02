@@ -64,4 +64,4 @@ spec:
       primary:
         persistence:
           enabled: true
-          existingClaim: monica-mariadb-pvc
+          existingClaim: data-monica-mariadb-0

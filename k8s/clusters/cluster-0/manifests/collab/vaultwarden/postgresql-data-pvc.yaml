@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: vaultwarden-postgresql-pvc
+  name: data-vaultwarden-postgresql-0
   namespace: collab
 spec:
   accessModes:

@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: monica-mariadb-pvc
+  name: data-monica-mariadb-0
   namespace: home
 spec:
   accessModes:

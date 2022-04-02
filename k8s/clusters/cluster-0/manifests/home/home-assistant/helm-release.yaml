@@ -100,6 +100,6 @@ spec:
       enabled: true
       persistence:
         enabled: true
-        existingClaim: home-assistant-postgresql-pvc
+        existingClaim: data-home-assistant-postgresql-0
     podAnnotations:
       secret.reloader.stakater.com/reload: "home-assistant"

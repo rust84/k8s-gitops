@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: home-assistant-postgresql-pvc
+  name: data-home-assistant-postgresql-0
   namespace: home
 spec:
   accessModes:
