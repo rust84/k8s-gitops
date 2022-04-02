@@ -4,6 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: data-vaultwarden-postgresql-0
   namespace: collab
+  labels:
+    kasten.io/backup-volume: "enabled"
 spec:
   accessModes:
     - ReadWriteOnce

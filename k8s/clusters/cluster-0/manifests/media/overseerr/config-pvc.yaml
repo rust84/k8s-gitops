@@ -4,6 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: overseerr-config
   namespace: media
+  labels:
+    kasten.io/backup-volume: "enabled"
 spec:
   accessModes:
     - ReadWriteOnce
