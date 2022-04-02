@@ -43,7 +43,7 @@ spec:
           - hosts:
               - "node-red.${SECRET_DOMAIN}"
     persistence:
-      config:
+      data:
         enabled: true
         existingClaim: node-red-data
     resources:
