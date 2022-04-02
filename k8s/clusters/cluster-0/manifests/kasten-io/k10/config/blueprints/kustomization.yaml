@@ -6,4 +6,6 @@ resources:
   - home.yaml
   - k10-disaster-recovery.yaml
   - media.yaml
+  - network.yaml
   - secret.sops.yaml
+  - security.yaml

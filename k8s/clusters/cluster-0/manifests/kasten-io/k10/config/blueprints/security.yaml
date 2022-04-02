@@ -2,7 +2,7 @@
 apiVersion: cr.kanister.io/v1alpha1
 kind: Blueprint
 metadata:
-  name: media
+  name: security
   namespace: kasten-io
 actions:
   post-export:
@@ -44,5 +44,5 @@ actions:
             - "24"
             - "--checkers"
             - "24"
-            - "/mnt/k10-backups/cluster-0-security"
+            - "/mnt/k10-backups/security"
             - "b2:k10-cluster-0-security/"

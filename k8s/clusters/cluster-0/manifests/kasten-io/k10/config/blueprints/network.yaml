@@ -2,7 +2,7 @@
 apiVersion: cr.kanister.io/v1alpha1
 kind: Blueprint
 metadata:
-  name: k10-disaster-recovery
+  name: network
   namespace: kasten-io
 actions:
   post-export:
@@ -44,5 +44,5 @@ actions:
             - "24"
             - "--checkers"
             - "24"
-            - "/mnt/k10-backups/k10-disaster-recovery"
-            - "b2:k10-cluster-0-disaster-recovery/"
+            - "/mnt/k10-backups/network"
+            - "b2:k10-cluster-0-network/"

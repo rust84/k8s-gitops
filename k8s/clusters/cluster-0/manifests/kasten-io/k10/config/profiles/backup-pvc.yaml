@@ -12,7 +12,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: 10.20.0.51
-    path: /volume1/backups/K10
+    path: /volume1/backups/K10-cluster-0
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
