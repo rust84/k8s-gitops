@@ -21,7 +21,7 @@ spec:
       repository: spx01/blocky
       tag: v0.18
     controller:
-      replicas: 3
+      replicas: 1 #TODO: Set to 3 replicas
       strategy: RollingUpdate
     env:
       TZ: "Europe/London"
