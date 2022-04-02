@@ -33,7 +33,7 @@ spec:
   values:
     image:
       repository: homeassistant/home-assistant
-      tag: 2022.3.7
+      tag: 2022.3.8
     env:
       TZ: "Europe/London"
     securityContext:
@@ -78,7 +78,7 @@ spec:
         enabled: true
         image:
           repository: codercom/code-server
-          tag: 4.1.0
+          tag: 4.2.0
         workingDir: "/config"
         args:
           - --user-data-dir
