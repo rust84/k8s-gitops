@@ -2,7 +2,7 @@
 apiVersion: cr.kanister.io/v1alpha1
 kind: Blueprint
 metadata:
-  name: home
+  name: collab
   namespace: kasten-io
 actions:
   post-export:
@@ -44,5 +44,5 @@ actions:
             - "24"
             - "--checkers"
             - "24"
-            - "/mnt/k10-backups/cluster-0-home"
-            - "b2:k10-cluster-0-home/"
+            - "/mnt/k10-backups/cluster-0-collab"
+            - "b2:k10-cluster-0-collab/"
