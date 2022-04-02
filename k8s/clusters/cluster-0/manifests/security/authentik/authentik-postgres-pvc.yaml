@@ -4,6 +4,8 @@ kind: PersistentVolumeClaim
 metadata:
   name: data-authentik-postgresql-0
   namespace: security
+  labels:
+    kasten.io/backup-volume: "enabled"
 spec:
   accessModes:
     - ReadWriteOnce
