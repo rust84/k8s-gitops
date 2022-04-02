@@ -18,8 +18,6 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
-    nameOverride: vaultwarden
-    fullnameOverride: vaultwarden
     image:
       repository: vaultwarden/server
       tag: 1.24.0-alpine
