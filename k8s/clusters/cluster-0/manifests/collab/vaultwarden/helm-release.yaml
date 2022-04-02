@@ -59,7 +59,7 @@ spec:
                 pathType: Prefix
                 servicePort: 3012
         tls:
-          - secretName: vaultwarden.authentik
+          - secretName: vaultwarden.tls
             hosts:
               - warden.${SECRET_PUBLIC_DOMAIN}
     persistence:
