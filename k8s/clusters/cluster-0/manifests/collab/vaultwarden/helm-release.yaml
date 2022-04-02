@@ -28,7 +28,6 @@ spec:
       WEBSOCKET_ADDRESS: 0.0.0.0
       WEBSOCKET_PORT: 3012
       DOMAIN: https://warden.${SECRET_DOMAIN}
-      ADMIN_TOKEN: ${SECRET_WARDEN_ADMIN_TOKEN}
       SMTP_HOST: email-smtp.eu-west-1.amazonaws.com
       SMTP_FROM: ${SECRET_WARDEN_SMTP_FROM}
       SMTP_FROM_NAME: "Vaultwarden"
@@ -36,7 +35,6 @@ spec:
       SMTP_PORT: 25
       SMTP_PASSWORD: ${SECRET_WARDEN_SMTP_PASSWORD}
       SMTP_USERNAME: ${SECRET_WARDEN_SMTP_USERNAME}
-      DATABASE_URL: "postgresql://vaultwarden:${VAULTWARDEN_DB_PASSWORD}@vaultwarden-postgresql/vaultwarden"
     ingress:
       main:
         annotations:
@@ -68,8 +66,22 @@ spec:
     podAnnotations:
       secret.reloader.stakater.com/reload: "vaultwarden"
     postgresql:
-      existingSecret: vaultwarden-postgresql-secret
       enabled: true
-      persistence:
-        enabled: true
-        existingClaim: vaultwarden-postgresql-pvc
+      postgresqlUsername: vaultwarden
+      postgresqlDatabase: vaultwarden
+  valuesFrom:
+    - kind: Secret
+      name: vaultwarden
+      valuesKey: postgresql_password
+      targetPath: postgresql.postgresqlPassword
+      optional: false
+    - kind: Secret
+      name: vaultwarden
+      valuesKey: vaultwarden_admin_token
+      targetPath: env.ADMIN_TOKEN
+      optional: false
+    - kind: Secret
+      name: vaultwarden
+      valuesKey: vaultwarden_database_url
+      targetPath: env.DATABASE_URL
+      optional: false
