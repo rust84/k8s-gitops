@@ -197,6 +197,10 @@ spec:
         ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        hosts: ["prom-server.${SECRET_DOMAIN}"]
+        tls:
+          - hosts:
+              - prom-server.${SECRET_DOMAIN}
       prometheusSpec:
         replicas: 2
         replicaExternalLabelName: "replica"
