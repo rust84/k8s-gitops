@@ -46,7 +46,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: overseer-config
+        existingClaim: overseerr-config
     resources:
       requests:
         memory: 250Mi
