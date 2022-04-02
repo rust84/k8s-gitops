@@ -2,7 +2,7 @@
 apiVersion: metal.sidero.dev/v1alpha1
 kind: ServerClass
 metadata:
-  name: workers
+  name: cluster-0-worker
 spec:
   configPatches:
     - op: replace
@@ -13,7 +13,6 @@ spec:
       path: /machine/kubelet/extraArgs
       value:
         rotate-server-certificates: true
-        #node-labels: node-role.kubernetes.io/worker=true
 
     - op: add
       path: /machine/sysctls
@@ -30,7 +29,7 @@ spec:
 
   selector:
     matchExpressions:
-      - key: cp-arm64
+      - key: control-plane
         operator: NotIn
         values:
           - "true"

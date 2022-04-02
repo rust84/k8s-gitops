@@ -4,7 +4,8 @@ ignore: |
   integrations/
   ignore/
   *-crds.yaml
-  *.asc.yaml
+  *.enc.yaml
+  *.sops.yaml
 extends: default
 rules:
   truthy:
