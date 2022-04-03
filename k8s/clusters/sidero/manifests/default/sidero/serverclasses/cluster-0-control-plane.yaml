@@ -77,12 +77,6 @@ spec:
         feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
 
     - op: add
-      path: /machine/kubelet/extraArgs
-      value:
-        rotate-server-certificates: true
-        feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
-
-    - op: add
       path: /cluster/apiServer/certSANs
       value:
         - ${CLUSTER_0_API_IP}
