@@ -11,4 +11,4 @@ spec:
   wait: true
   sourceRef:
     kind: GitRepository
-    name: home-ops
+    name: k8s-gitops
