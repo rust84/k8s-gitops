@@ -28,7 +28,7 @@ metadata:
   namespace: default
 spec:
   controlPlaneEndpoint:
-    host: cluster-0.russhome.xyz
+    host: cluster-0.our.house
     port: 6443
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3

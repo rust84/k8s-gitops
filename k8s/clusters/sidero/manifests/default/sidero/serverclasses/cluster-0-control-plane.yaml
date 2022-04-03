@@ -79,9 +79,9 @@ spec:
       path: /cluster/apiServer/certSANs
       value:
         - ${CLUSTER_0_API_IP}
-        - cluster-0.russhome.xyz
+        - cluster-0.our.house
 
     - op: add
       path: /machine/certSANs
       value:
-        - cluster-0.russhome.xyz
+        - cluster-0.our.house

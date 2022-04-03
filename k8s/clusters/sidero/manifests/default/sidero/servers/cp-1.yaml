@@ -10,14 +10,14 @@ spec:
     namespace: default
     name: default-arm64
   accepted: true
-  hostname: cp-1.russhome.xyz
+  hostname: cp-1.our.house
   configPatches:
     - op: replace
       path: /machine/install/disk
       value: /dev/sda
     - op: add
       path: /machine/network/hostname
-      value: cp-1.russhome.xyz
+      value: cp-1.our.house
   cpu:
     manufacturer: Broadcom
     version: BCM2711 (ARM Cortex-A72)
