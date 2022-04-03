@@ -2,7 +2,7 @@
 apiVersion: metal.sidero.dev/v1alpha1
 kind: Server
 metadata:
-  name: 00c03111-0000-0000-0000-dca63250dcf9
+  name: 00c03111-0000-0000-0000-dca63243db27
   labels:
     control-plane: "true"
 spec:
