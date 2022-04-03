@@ -46,7 +46,6 @@ spec:
       value:
         disabled: false
         servers:
-          - ${GATEWAY_MANAGEMENT}
           - time.cloudflare.com
 
     - op: replace
@@ -80,9 +79,9 @@ spec:
       path: /cluster/apiServer/certSANs
       value:
         - ${CLUSTER_0_API_IP}
-        - cluster-0.our.house
+        - cluster-0.russhome.xyz
 
     - op: add
       path: /machine/certSANs
       value:
-        - cluster-0.our.house
+        - cluster-0.russhome.xyz

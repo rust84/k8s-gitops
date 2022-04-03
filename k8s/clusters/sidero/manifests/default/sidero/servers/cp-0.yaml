@@ -10,14 +10,14 @@ spec:
     namespace: default
     name: default-arm64
   accepted: true
-  hostname: pi4-c.our.house
+  hostname: cp-0.russhome.xyz
   configPatches:
     - op: replace
       path: /machine/install/disk
       value: /dev/sda
     - op: add
       path: /machine/network/hostname
-      value: pi4-c.our.house
+      value: cp-0.russhome.xyz
   cpu:
     manufacturer: Broadcom
     version: BCM2711 (ARM Cortex-A72)
