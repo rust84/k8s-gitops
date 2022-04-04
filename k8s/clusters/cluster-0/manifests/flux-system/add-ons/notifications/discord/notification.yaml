@@ -20,7 +20,7 @@ spec:
   summary: "cluster-0"
   providerRef:
     name: discord
-  eventSeverity: error
+  eventSeverity: info
   eventSources:
     - kind: HelmRelease
       name: "*"
