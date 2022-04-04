@@ -53,9 +53,6 @@ spec:
           coredns.io/hostname: unifi
         externalTrafficPolicy: Local
 
-    nodeSelector:
-      node-role.kubernetes.io/worker: "true"
-
     persistence:
       data:
         enabled: true
