@@ -5,7 +5,7 @@ metadata:
     name: cloudflare-api-key
     namespace: network
 stringData:
-    cloudflare_api_token: ENC[AES256_GCM,data:3vh33SaOMcUiyW6FUO/eAl8/alwglbck/RBfOFKjlEwnbX9m2prbcw==,iv:ye0AcUH0t44VO9dbYVlQJsoWjpTGWf3A7Y9jjxvCPTQ=,tag:S2Xj78kR/Ised9rNVGB7Jg==,type:str]
+    cloudflare_api_token: ENC[AES256_GCM,data:UHz8sA6SlcoDAWnI63GFnrf3qPJI7McjT3fSJ8Z4+D+P2SBB6N/HEw==,iv:FEd3A/Fo/q2Zv4wpwZuJ3LUCx25KoeIJydQ9RDhgBw0=,tag:2LEQWRLdsXhCz3XlmPsbag==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -21,8 +21,8 @@ sops:
             MHFJdXU0U1BPamQyU0Yza2NNcFVPbjQKF8ZFs0CDdoKWsasJINIaKe6ozseZZNfz
             oX+/HFtrs4WuYwW1ArJ2xmClnykQQLP0+dqUz0h6MKV0LbdD4FmHLA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2022-03-28T00:48:03Z"
-    mac: ENC[AES256_GCM,data:vYlH6Ms2kYnayWNDrakh1GzUnI3r55iV8WNzkkvR0tZqTf2GWJPjOrptdwESSeAIilWnZyOW7ZQvXTHaU6g+A+zdtl8D1s5Ag4E5CX7gSdpf/7kvgJ28wNURRadCpGiJdOWKA1+VDBRA8v7w306xKvM+5TIL2qwdXGn/6K03a/A=,iv:Cisj8vO4USx5aQXc3xHLrEZvMNcEJDBphggOGeODmMU=,tag:/DW9M2nrw6+dv+aEatOouQ==,type:str]
+    lastmodified: "2022-04-04T22:24:34Z"
+    mac: ENC[AES256_GCM,data:+wsYgvpthWQSYJgmqLXldrEB9xw89l4fP70nnDb0QOHNk3ZzjA/nq865yRDrYJJBjxNr8J32uwzCInfWdQ01IokIOyPdNzCOyWY2Cv3moNYTH1iJehB1K7W0ETI0MfxRnAwIzFjJqSlgmy9LPJiQO9Td8vHxBMskUib7T2x5uoU=,iv:JfuiWC33Xpc88fOU7y//voLiSHhd9w8yi6eWYhj0vxw=,tag:7s1/LjbddRUYMWSQWT5gqg==,type:str]
     pgp: []
     encrypted_regex: ((?i)(pass|secret($|[^N])|key|token|^data$|^stringData))
     version: 3.7.1
