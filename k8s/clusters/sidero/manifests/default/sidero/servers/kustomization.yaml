@@ -6,4 +6,6 @@ resources:
   - cp-1.yaml
   - cp-2.yaml
   - node-0.yaml
+  - node-1.yaml
+  - node-2.yaml
   - hp.yaml
