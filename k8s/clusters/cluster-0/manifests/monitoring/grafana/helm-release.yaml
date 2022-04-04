@@ -1,0 +1,226 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: grafana
+  namespace: monitoring
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://grafana.github.io/helm-charts
+      chart: grafana
+      version: 6.20.5
+      sourceRef:
+        kind: HelmRepository
+        name: grafana-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    deploymentStrategy:
+      type: Recreate
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: "grafana"
+    persistence:
+      enabled: true
+      existingClaim: grafana-config-pvc
+    env:
+      GF_EXPLORE_ENABLED: true
+      GF_PANELS_DISABLE_SANITIZE_HTML: true
+      GF_LOG_FILTERS: rendering:debug
+    adminPassword: "${SECRET_GRAFANA_PASSWORD}"
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-prod
+        external-dns/is-public: "true"
+        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+        traefik.ingress.kubernetes.io/router.entrypoints: websecure
+        traefik.ingress.kubernetes.io/router.middlewares: network-rfc1918-ips@kubernetescrd
+      hosts: ["grafana.${SECRET_DOMAIN}"]
+      tls:
+        - hosts:
+            - grafana.${SECRET_DOMAIN}
+          secretName: tls.grafana
+    plugins:
+      - natel-discrete-panel
+      - grafana-piechart-panel
+    dashboardProviders:
+      dashboardproviders.yaml:
+        apiVersion: 1
+        providers:
+          - name: "default"
+            orgId: 1
+            folder: ""
+            type: file
+            disableDeletion: false
+            editable: true
+            options:
+              path: /var/lib/grafana/dashboards/default
+    dashboards:
+      default:
+        blocky:
+          url: https://raw.githubusercontent.com/0xERR0R/blocky/v0.13/docs/blocky-grafana.json
+          datasource: Prometheus
+        ceph-cluster:
+          gnetId: 2842
+          revision: 14
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/5336
+        ceph-osd:
+          gnetId: 5336
+          revision: 5
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/5342
+        ceph-pools:
+          gnetId: 5342
+          revision: 5
+          datasource: Prometheus
+        emq:
+          url: https://raw.githubusercontent.com/emqx/emqx-prometheus/master/grafana_template/EMQ.json
+          datasource: Prometheus
+        emq-dashboard:
+          url: https://raw.githubusercontent.com/emqx/emqx-prometheus/master/grafana_template/EMQ_Dashboard.json
+          datasource: Prometheus
+        emq-vm:
+          url: https://raw.githubusercontent.com/emqx/emqx-prometheus/master/grafana_template/ErlangVM.json
+          datasource: Prometheus
+        flux-cluster:
+          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/cluster.json
+          datasource: Prometheus
+        flux-control-plane:
+          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/grafana/dashboards/control-plane.json
+          datasource: Prometheus
+        frigate:
+          url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/frigate.json
+          datasource: Prometheus
+        minio-overview:
+          url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/minio_overview.json
+          datasource: Prometheus
+        node-exporter-full:
+          gnetId: 1860
+          revision: 23
+          datasource: Prometheus
+        prometheus-exporter-summary:
+          url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/prometheus_exporter_summary.json
+          datasource: Prometheus
+        thanos-overview:
+          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/overview.json
+          datasource: Prometheus
+        thanos-compact:
+          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/compact.json
+          datasource: Prometheus
+        thanos-querier:
+          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/query.json
+          datasource: Prometheus
+        thanos-store:
+          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/store.json
+          datasource: Prometheus
+        thanos-receiver:
+          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/receive.json
+          datasource: Prometheus
+        thanos-sidecar:
+          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/sidecar.json
+          datasource: Prometheus
+        thanos-ruler:
+          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/rule.json
+          datasource: Prometheus
+        thanos-replicate:
+          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/bucket-replicate.json
+          datasource: Prometheus
+        radarr-exportarr:
+          gnetId: 12896
+          revision: 1
+          datasource: Prometheus
+        sonarr-exportarr:
+          gnetId: 12530
+          revision: 2
+          datasource: Prometheus
+        speedtest:
+          gnetId: 13665
+          revision: 1
+          datasource: Prometheus
+        unifi-client-insights:
+          gnetId: 11315
+          revision: 8
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/11311
+        unifi-network-sites:
+          gnetId: 11311
+          revision: 4
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/11314
+        unifi-uap-insights:
+          gnetId: 11314
+          revision: 9
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/11312
+        unifi-usw-insights:
+          gnetId: 11312
+          revision: 8
+          datasource: Prometheus
+        uptimerobot:
+          url: https://raw.githubusercontent.com/lekpamartin/uptimerobot_exporter/master/dashboards/grafana.json
+          datasource: Prometheus
+        velero:
+          url: https://grafana.com/api/dashboards/11055/revisions/2/download
+          datasource: Prometheus
+    sidecar:
+      dashboards:
+        enabled: true
+        searchNamespace: ALL
+      datasources:
+        enabled: true
+        defaultDatasourceEnabled: false
+        searchNamespace: ALL
+    datasources:
+      datasources.yaml:
+        apiVersion: 1
+        deleteDatasources:
+          - name: loki
+            orgId: 1
+        datasources:
+          - name: Prometheus
+            type: prometheus
+            access: proxy
+            url: http://thanos-query:9090/
+            isDefault: true
+          - name: Loki
+            type: loki
+            access: proxy
+            url: http://loki.monitoring.svc.cluster.local:3100
+          - name: home_assistant
+            type: influxdb
+            access: proxy
+            url: http://influxdb:8086
+            database: home_assistant
+    grafana.ini:
+      server:
+        root_url: https://grafana.${SECRET_DOMAIN}
+      auth.basic:
+        disable_login_form: true
+      auth.generic_oauth:
+        enabled: true
+        allow_sign_up: true
+        name: Dex
+        client_id: grafana
+        client_secret: ${DEX_GRAFANA_AUTHENTICATOR_CLIENT_SECRET}
+        scopes: openid profile email groups
+        auth_url: https://dex.${SECRET_DOMAIN}/auth
+        token_url: https://dex.${SECRET_DOMAIN}/token
+        api_url: https://dex.${SECRET_DOMAIN}/userinfo
+      auth.generic_oauth.group_mapping:
+        role_attribute_path: "contains(groups[*], 'russhome:cluster-admin') && 'Admin' || 'Viewer'"
+        org_id: 1
+      paths:
+        data: /var/lib/grafana/data
+        logs: /var/log/grafana
+        plugins: /var/lib/grafana/plugins
+        provisioning: /etc/grafana/provisioning
+      analytics:
+        check_for_updates: true
+      log:
+        mode: console
+      grafana_net:
+        url: https://grafana.net

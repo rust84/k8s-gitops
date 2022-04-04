@@ -1,0 +1,99 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: radarr
+  namespace: media
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: radarr
+      version: 15.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 10m
+  values:
+    image:
+      repository: ghcr.io/k8s-at-home/radarr
+      tag: v4.0.4.5922
+    env:
+      TZ: "Europe/London"
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: traefik
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "filmstrip"
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: "networking-internal-auth@kubernetescrd"
+        hosts:
+          - host: radarr.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - "radarr.${SECRET_DOMAIN}"
+      api:
+        enabled: true
+        ingressClassName: "traefik"
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        hosts:
+          - host: "radarr.${SECRET_DOMAIN}"
+            paths:
+              - path: /api
+                pathType: Prefix
+        tls:
+          - hosts:
+              - "radarr.${SECRET_DOMAIN}"
+    podAnnotations:
+      backup.velero.io/backup-volumes: config
+    persistence:
+      config:
+        enabled: true
+        existingClaim: radarr-config
+      media:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: 10.20.0.51
+            path: /volume2/media
+        mountPath: /media
+        readOnly: false
+    podSecurityContext:
+      runAsUser: 1001
+      runAsGroup: 1001
+      fsGroup: 1001
+    resources:
+      requests:
+        memory: 350Mi
+        cpu: 25m
+      limits:
+        memory: 500Mi
+    prometheus:
+      podMonitor:
+        enabled: true
+        interval: 3m
+        scrapeTimeout: 1m30s
+    metrics:
+      enabled: true
+      serviceMonitor:
+        interval: 3m
+        scrapeTimeout: 1m
+      prometheusRule:
+        enabled: true
+      # exporter:
+      #   image:
+      #     repository: ghcr.io/onedr0p/exportarr
+      #     tag: v0.6.2
+      #   env:
+      #     port: 9794
+      #     additionalMetrics: true
+      #     unknownQueueItems: false

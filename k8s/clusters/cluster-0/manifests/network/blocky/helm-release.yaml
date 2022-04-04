@@ -1,0 +1,102 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: blocky
+  namespace: network
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: blocky
+      version: 10.1.1
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 10m
+  values:
+    image:
+      repository: spx01/blocky
+      tag: v0.18
+    controller:
+      replicas: 1 #TODO: Set to 3 replicas
+      strategy: RollingUpdate
+    env:
+      TZ: "Europe/London"
+    # blocky configuration
+    config: |
+      upstream:
+        default:
+          - tcp+udp:10.20.0.1
+      conditional:
+        mapping:
+          microserver.space: tcp+udp:10.20.0.1
+      blocking:
+        blackLists:
+          ads:
+          - https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
+          - https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+          - http://sysctl.org/cameleon/hosts
+          - https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
+          cookies:
+          - https://www.fanboy.co.nz/fanboy-cookiemonster.txt
+        whiteLists:
+          ads:
+          - https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt
+          - https://raw.githubusercontent.com/rust84/k8s-gitops/master/cluster/default/blocky/whitelist.txt
+        clientGroupsBlock:
+          default:
+          - ads
+            # - special
+      clientLookup:
+        upstream: udp:10.20.0.1
+      prometheus:
+        enable: true
+        path: /metrics
+      httpPort: 4000
+      logLevel: info
+    service:
+      main:
+        ports:
+          http:
+            port: 4000
+      dns:
+        enabled: true
+        type: LoadBalancer
+        loadBalancerIP: ${SVC_BLOCKY_ADDRESS}
+        externalTrafficPolicy: Local
+        ports:
+          tcp:
+            enabled: true
+            port: 53
+            protocol: TCP
+            targetPort: 53
+          udp:
+            enabled: true
+            port: 53
+            protocol: UDP
+            targetPort: 53
+    metrics:
+      enabled: true
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: "blocky-config"
+    affinity:
+      podAntiAffinity:
+        preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values:
+                      - blocky
+              topologyKey: kubernetes.io/hostname
+    resources:
+      requests:
+        memory: 100Mi
+        cpu: 100m
+      limits:
+        memory: 750Mi

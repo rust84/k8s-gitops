@@ -1,0 +1,22 @@
+---
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - apps-collab.yaml
+  - apps-network.yaml
+  - apps-home.yaml
+  - apps-media.yaml
+  - apps-security.yaml
+  - core-cert-manager.yaml
+  - core-certificates.yaml
+  - core-cilium.yaml
+  - core-error-pages.yaml
+  - core-flux-system-add-ons.yaml
+  - core-intel-gpu-plugin.yaml
+  - core-kasten-io.yaml
+  - core-metrics-server.yaml
+  - core-monitoring.yaml
+  - core-nfd.yaml
+  - core-rbac.yaml
+  - core-rook-ceph.yaml
+  - core-traefik.yaml

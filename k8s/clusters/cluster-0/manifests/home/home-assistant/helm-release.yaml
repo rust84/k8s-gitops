@@ -1,0 +1,105 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: home-assistant
+  namespace: home
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: home-assistant
+      version: 12.1.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: homeassistant/home-assistant
+      tag: 2022.3.7
+    env:
+      TZ: "Europe/London"
+    securityContext:
+      privileged: true
+    persistence:
+      config:
+        enabled: true
+        existingClaim: home-assistant-config
+    ingress:
+      main:
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: "network-cloudflare-ips@kubernetescrd"
+          external-dns/is-public: "true"
+          external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "home-assistant"
+        enabled: true
+        ingressClassName: traefik
+        hosts:
+          - host: hass.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - "hass.${SECRET_DOMAIN}"
+    metrics:
+      enabled: false
+    hostNetwork: true
+    dnsPolicy: ClusterFirstWithHostNet
+    probes:
+      liveness:
+        enabled: false
+      readiness:
+        enabled: false
+      startup:
+        enabled: true
+    addons:
+      codeserver:
+        enabled: true
+        image:
+          repository: codercom/code-server
+          tag: 4.1.0
+        workingDir: "/config"
+        git:
+          deployKeySecret: home-assistant-code-server-secret
+        args:
+          - --user-data-dir
+          - "/config/.vscode"
+          - --auth
+          - "none"
+        ingress:
+          enabled: true
+          ingressClassName: traefik
+          annotations:
+            traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+            # traefik.ingress.kubernetes.io/router.middlewares: "network-internal-auth@kubernetescrd"
+          hosts:
+            - host: hass-vscode.${SECRET_DOMAIN}
+              paths:
+                - path: /
+                  pathType: Prefix
+          tls:
+            - hosts:
+                - hass-vscode.${SECRET_DOMAIN}
+        volumeMounts:
+          - name: config
+            mountPath: /config
+    resources:
+      limits:
+        memory: 2500Mi
+      requests:
+        cpu: 35m
+        memory: 2000Mi
+    postgresql:
+      existingSecret: home-assistant-postgresql-secret
+      enabled: true
+      persistence:
+        enabled: true
+        existingClaim: data-home-assistant-postgresql-0
+    podAnnotations:
+      secret.reloader.stakater.com/reload: "home-assistant"

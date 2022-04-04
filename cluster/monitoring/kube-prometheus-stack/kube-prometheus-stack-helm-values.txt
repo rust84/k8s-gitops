@@ -50,7 +50,7 @@ prometheus:
         honor_labels: true
         static_configs:
           - targets:
-              - emqx.default.svc:8081
+              - emqx.home.svc:8081
       - job_name: 'home-assistant'
         scrape_interval: 60s
         metrics_path: '/api/prometheus'

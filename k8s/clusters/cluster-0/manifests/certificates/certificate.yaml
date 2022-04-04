@@ -1,0 +1,15 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: tls.acme-wildcard
+  namespace: kube-system
+spec:
+  secretName: tls.acme-wildcard-secret
+  commonName: "*.${SECRET_DOMAIN}"
+  dnsNames:
+    - "${SECRET_DOMAIN}"
+    - "*.${SECRET_DOMAIN}"
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
