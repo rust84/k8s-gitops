@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: unifi
-      version: 4.6.1
+      version: 4.7.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -33,7 +33,7 @@ spec:
   values:
     image:
       repository: jacobalberty/unifi
-      tag: "v7.0.23"
+      tag: "v7.0.25"
     persistence:
       data:
         enabled: true
@@ -67,7 +67,7 @@ spec:
         type: LoadBalancer
         annotations:
           metallb.universe.tf/allow-shared-ip: unifi
-        loadBalancerIP: 10.20.0.156
+        loadBalancerIP: 10.1.0.151
         externalTrafficPolicy: Local
         ports:
           stun:
@@ -81,7 +81,7 @@ spec:
         type: LoadBalancer
         annotations:
           metallb.universe.tf/allow-shared-ip: unifi
-        loadBalancerIP: 10.20.0.156
+        loadBalancerIP: 10.1.0.151
         externalTrafficPolicy: Local
         ports:
           stun:
