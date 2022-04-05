@@ -40,7 +40,7 @@ jobs:
           delete-branch: true
           title: "chore(deps): update KaH common library chart"
           signoff: true
-          assignees: "RUST84"
+          assignees: "rust84"
           commit-message: "chore(deps): update KaH common library chart"
           body: |
             Update the kah library chart
