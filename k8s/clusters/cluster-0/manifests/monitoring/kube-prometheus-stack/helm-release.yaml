@@ -89,7 +89,7 @@ spec:
               match:
                 severity: critical
               continue: true
-            - receiver: "slack-monitoring"
+            - receiver: "discord"
       alertmanagerSpec:
         storage:
           volumeClaimTemplate:
