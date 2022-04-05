@@ -33,14 +33,14 @@ jobs:
       - run: helm dep update
         working-directory: k8s/charts/kah-common-chart
 
-      - uses: peter-evans/create-pull-request@v3
+      - uses: peter-evans/create-pull-request@v4
         with:
           token: ${{ steps.get-app-token.outputs.token }}
           branch: "renovate-kah-library-chart"
           delete-branch: true
           title: "chore(deps): update KaH common library chart"
           signoff: true
-          assignees: "RUST84"
+          assignees: "rust84"
           commit-message: "chore(deps): update KaH common library chart"
           body: |
             Update the kah library chart
