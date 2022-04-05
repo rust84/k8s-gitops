@@ -2,15 +2,13 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: apps-network-unifi
+  name: core-metrics-server
   namespace: flux-system
 spec:
   dependsOn:
     - name: cluster-namespaces
-    - name: rook-ceph-cluster
-    - name: core-traefik
   interval: 5m
-  path: "./k8s/clusters/cluster-0/manifests/network/unifi"
+  path: "./k8s/clusters/cluster-0/manifests/kube-system/metrics-server"
   prune: true
   wait: true
   sourceRef:
@@ -24,13 +22,13 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: apps-network-external-dns
+  name: core-rbac
   namespace: flux-system
 spec:
   dependsOn:
     - name: cluster-namespaces
   interval: 5m
-  path: "./k8s/clusters/cluster-0/manifests/network/external-dns"
+  path: "./k8s/clusters/cluster-0/manifests/kube-system/rbac"
   prune: true
   wait: true
   sourceRef:
@@ -44,13 +42,13 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: apps-network-blocky
+  name: core-nfd
   namespace: flux-system
 spec:
   dependsOn:
     - name: cluster-namespaces
   interval: 5m
-  path: "./k8s/clusters/cluster-0/manifests/network/blocky"
+  path: "./k8s/clusters/cluster-0/manifests/kube-system/node-feature-discovery"
   prune: true
   wait: true
   sourceRef:
@@ -64,17 +62,13 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: core-error-pages
+  name: core-reloader
   namespace: flux-system
 spec:
   dependsOn:
     - name: cluster-namespaces
-    - name: traefik-crds
-    - name: core-cilium
-    - name: core-cert-manager
-    - name: core-traefik
   interval: 5m
-  path: "./k8s/clusters/cluster-0/manifests/network/error-pages"
+  path: "./k8s/clusters/cluster-0/manifests/kube-system/reloader"
   prune: true
   wait: true
   sourceRef:
