@@ -107,5 +107,5 @@ spec:
     - kind: Secret
       name: home-assistant-postgresql-secret
       valuesKey: postgresql-password
-      targetPath: postgresql.postgresqlPassword
+      targetPath: postgresql.auth.postgresPassword
       optional: false
