@@ -169,21 +169,44 @@ spec:
           {{- end }}
     grafana:
       enabled: false
-    kubeEtcd:
-      enabled: false
-    kubeControllerManager:
-      enabled: false
-    kubeScheduler:
-      enabled: false
-    kubeProxy:
-      enabled: false
     kubelet:
+      enabled: true
       serviceMonitor:
         metricRelabelings:
           - action: replace
             sourceLabels:
               - node
             targetLabel: instance
+    kubeApiServer:
+      enabled: true
+    kubeControllerManager:
+      enabled: true
+      endpoints:
+        - 10.20.0.120
+        - 10.20.0.115
+        - 10.20.0.121
+    kubeScheduler:
+      enabled: true
+      endpoints:
+        - 10.20.0.120
+        - 10.20.0.115
+        - 10.20.0.121
+    kubeProxy:
+      enabled: true
+      endpoints:
+        - 10.20.0.120
+        - 10.20.0.115
+        - 10.20.0.121
+    kubeEtcd:
+      enabled: true
+      endpoints:
+        - 10.20.0.120
+        - 10.20.0.115
+        - 10.20.0.121
+      service:
+        enabled: true
+        port: 2381
+        targetPort: 2381
     prometheus-node-exporter:
       tolerations:
         - key: "arm"
