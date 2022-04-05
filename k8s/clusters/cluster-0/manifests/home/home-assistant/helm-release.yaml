@@ -103,3 +103,9 @@ spec:
         existingClaim: data-home-assistant-postgresql-0
     podAnnotations:
       secret.reloader.stakater.com/reload: "home-assistant"
+  valuesFrom:
+    - kind: Secret
+      name: home-assistant-postgresql-secret
+      valuesKey: postgresql-password
+      targetPath: postgresql.postgresqlPassword
+      optional: false
