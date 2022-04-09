@@ -1,0 +1,159 @@
+mqtt:
+  host: emqx-headless.home.svc
+  topic_prefix: frigate
+  user: mqtt
+  password: "{FRIGATE_MQTT_PASSWORD}"
+
+database:
+  path: /data/frigate.db
+
+detectors:
+  coral:
+    type: edgetpu
+    device: usb
+
+objects:
+  track:
+    - person
+    - dog
+    - cat
+  filters:
+    person:
+      min_area: 2500
+      max_area: 100000
+      threshold: 0.7
+    dog:
+      min_area: 1000
+      max_area: 10000
+      threshold: 0.7
+    cat:
+      min_area: 1000
+      max_area: 10000
+      threshold: 0.7
+
+# Global ffmpeg configuration
+ffmpeg:
+  hwaccel_args:
+    - -hwaccel
+    - vaapi
+    - -hwaccel_device
+    - /dev/dri/renderD128
+    - -hwaccel_output_format
+    - yuv420p
+
+cameras:
+  lounge:
+    ffmpeg:
+      inputs:
+        - path: rtsp://rtsp:{FRIGATE_RTSP_PASSWORD}@{FRIGATE_CAMERA_LOUNGE_HOST}:554/av_stream/ch0
+          roles:
+            - detect
+            - rtmp
+            - record
+          input_args:
+            - "-avoid_negative_ts"
+            - make_zero
+            - "-fflags"
+            - nobuffer
+            - "-flags"
+            - low_delay
+            - "-strict"
+            - experimental
+            - "-fflags"
+            - +genpts+discardcorrupt
+            - "-use_wallclock_as_timestamps"
+            - "1"
+            - "-rtsp_transport"
+            - tcp
+    detect:
+      width: 1920
+      height: 1080
+      fps: 10
+    snapshots:
+      enabled: false
+      timestamp: False
+      bounding_box: true
+      crop: False
+      retain:
+        default: 14
+    record:
+      enabled: false
+      retain_days: 0
+      events:
+        retain:
+          default: 14
+    mqtt:
+      timestamp: False
+      bounding_box: False
+      crop: True
+      quality: 100
+      height: 500
+
+  driveway:
+    ffmpeg:
+      inputs:
+        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@{FRIGATE_CAMERA_DRIVEWAY_HOST}:554/h264Preview_01_sub
+          roles:
+            - detect
+        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@{FRIGATE_CAMERA_DRIVEWAY_HOST}:554/h264Preview_01_main
+          roles:
+            - rtmp
+            - record
+    detect:
+      width: 640
+      height: 360
+      fps: 7
+    snapshots:
+      enabled: true
+      timestamp: False
+      bounding_box: true
+      crop: False
+      retain:
+        default: 14
+    record:
+      enabled: true
+      retain_days: 0
+      events:
+        retain:
+          default: 14
+
+  office:
+    ffmpeg:
+      inputs:
+        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@{FRIGATE_CAMERA_OFFICE_HOST}:554/h264Preview_01_sub
+          roles:
+            - detect
+        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@{FRIGATE_CAMERA_OFFICE_HOST}:554/h264Preview_01_main
+          roles:
+            - rtmp
+            - record
+    detect:
+      width: 640
+      height: 360
+      fps: 7
+      stationary:
+        interval: 10
+        threshold: 70
+        max_frames:
+          default: 3000
+          objects:
+            person: 1000
+    snapshots:
+      enabled: false
+      timestamp: False
+      bounding_box: true
+      crop: False
+      retain:
+        default: 1
+    record:
+      enabled: false
+      retain_days: 0
+      events:
+        retain:
+          default: 14
+    mqtt:
+      timestamp: False
+      bounding_box: False
+      crop: True
+      quality: 100
+      height: 500
