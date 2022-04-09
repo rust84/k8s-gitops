@@ -89,11 +89,11 @@ spec:
         scrapeTimeout: 1m
       prometheusRule:
         enabled: true
-      # exporter:
-      #   image:
-      #     repository: ghcr.io/onedr0p/exportarr
-      #     tag: v0.6.2
-      #   env:
-      #     port: 9794
-      #     additionalMetrics: true
-      #     unknownQueueItems: false
+      exporter:
+        image:
+          repository: ghcr.io/onedr0p/exportarr
+          tag: v0.6.2
+        env:
+          port: 9794
+          additionalMetrics: true
+          unknownQueueItems: false

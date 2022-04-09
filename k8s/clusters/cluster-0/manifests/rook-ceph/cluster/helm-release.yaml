@@ -52,27 +52,6 @@ spec:
       useAllDevices: true
       config:
         osdsPerDevice: "1"
-      # nodes:
-      #   - name: "node-0"
-      #     devices:
-      #       - name: "sdb"
-      #       - name: "sdc"
-      #       - name: "sdd"
-      #   - name: "node-1"
-      #     devices:
-      #       - name: "sdb"
-      #       - name: "sdc"
-      #       - name: "sdd"
-      #   - name: "node-2"
-      #     devices:
-      #       - name: "sdb"
-      #       - name: "sdc"
-      #       - name: "sdd"
-      #   - name: "node-3"
-      #     devices:
-      #       - name: "sdb"
-      #       - name: "sdc"
-      #       - name: "sdd"
 
     cephBlockPools:
       - name: ceph-blockpool
