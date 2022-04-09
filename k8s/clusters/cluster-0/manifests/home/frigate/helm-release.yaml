@@ -63,6 +63,13 @@ spec:
     securityContext:
       privileged: true
     persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: frigate-config
+        subPath: config.yaml
+        mountPath: /config/config.yml
+        readOnly: true
       data:
         enabled: true
         existingClaim: frigate-data
