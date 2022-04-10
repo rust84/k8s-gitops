@@ -62,8 +62,8 @@ spec:
               period: 24h
       storage_config:
         aws:
-          bucketnames: loki-cluster-0
-          endpoint: synology.${SECRET_PUBLIC_DOMAIN}:9000
+          bucketnames: loki
+          endpoint: nas.${SECRET_PUBLIC_DOMAIN}:9000
           access_key_id: "${MINIO_ACCESS_KEY}"
           secret_access_key: "${MINIO_SECRET_KEY}"
           s3forcepathstyle: true
