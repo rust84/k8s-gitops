@@ -51,7 +51,7 @@ spec:
       type: s3
       config:
         bucket: thanos
-        endpoint: nas.${SECRET_PUBLIC_DOMAIN}:9000
+        endpoint: nas.${SECRET_DOMAIN}:9000
         access_key: "${MINIO_ACCESS_KEY}"
         secret_key: "${MINIO_SECRET_KEY}"
         insecure: false

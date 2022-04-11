@@ -63,7 +63,7 @@ spec:
       storage_config:
         aws:
           bucketnames: loki
-          endpoint: nas.${SECRET_PUBLIC_DOMAIN}:9000
+          endpoint: nas.${SECRET_DOMAIN}:9000
           access_key_id: "${MINIO_ACCESS_KEY}"
           secret_access_key: "${MINIO_SECRET_KEY}"
           s3forcepathstyle: true
