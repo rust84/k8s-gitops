@@ -1,14 +1,16 @@
----
 ignore: |
-  .private/
-  .vscode/
+  .yamllint.yml
+  .github/
+  integrations/
+  ignore/
+  *-crds.yaml
+  *.enc.*
   *.sops.*
-  ansible/roles/xanmanning.k3s/
   gotk-components.yaml
 extends: default
 rules:
   truthy:
-    allowed-values: ["true", "false", "on"]
+    allowed-values: ["true", "false", "on", "yes"]
   comments:
     min-spaces-from-content: 1
   line-length: disable
@@ -18,4 +20,8 @@ rules:
   brackets:
     min-spaces-inside: 0
     max-spaces-inside: 0
-  indentation: enable
+  indentation:
+    spaces: 2
+    indent-sequences: consistent
+  hyphens:
+    max-spaces-after: 1

@@ -4,8 +4,9 @@ ignore: |
   integrations/
   ignore/
   *-crds.yaml
-  *.enc.yaml
-  *.sops.yaml
+  *.enc.*
+  *.sops.*
+  gotk-components.yaml
 extends: default
 rules:
   truthy:
