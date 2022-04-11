@@ -61,13 +61,13 @@ spec:
         enabled: true
         type: emptyDir
         medium: Memory
-      nfs-media-pvc:
+      nfs-media:
         enabled: true
         type: custom
         volumeSpec:
           nfs:
-            server: 10.20.0.51
-            path: /volume2/media
+            server: "nas.${SECRET_DOMAIN}"
+            path: /mnt/borg/share
         mountPath: /data
         readOnly: false
     podAnnotations:
