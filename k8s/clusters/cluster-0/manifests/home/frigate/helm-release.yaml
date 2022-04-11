@@ -79,7 +79,7 @@ spec:
         volumeSpec:
           nfs:
             server: "nas.${SECRET_DOMAIN}"
-            path: /borg/share/media
+            path: /mnt/borg/share
         mountPath: /media
         readOnly: false
       usb:
