@@ -184,7 +184,7 @@ spec:
           - name: Prometheus
             type: prometheus
             access: proxy
-            url: http://thanos-query:9090/
+            url: http://thanos-query-http:10902/
             isDefault: true
           - name: Loki
             type: loki
@@ -193,7 +193,7 @@ spec:
           - name: home_assistant
             type: influxdb
             access: proxy
-            url: http://influxdb:8086
+            url: http://influxdb.home.svc:8086
             database: home_assistant
     grafana.ini:
       server:
