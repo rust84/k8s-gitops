@@ -145,20 +145,18 @@ spec:
         tls:
           - hosts:
               - prom-server.${SECRET_DOMAIN}
+      thanosService:
+        enabled: true
       prometheusSpec:
-        replicas: 2
+        replicas: 1
         replicaExternalLabelName: "replica"
-        ruleSelector: {}
-        ruleNamespaceSelector: {}
         ruleSelectorNilUsesHelmValues: false
-        serviceMonitorSelector: {}
-        serviceMonitorNamespaceSelector: {}
         serviceMonitorSelectorNilUsesHelmValues: false
-        podMonitorSelector: {}
-        podMonitorNamespaceSelector: {}
         podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
         retention: 6h
         enableAdminAPI: true
+        walCompression: true
         storageSpec:
           volumeClaimTemplate:
             spec:
@@ -172,5 +170,3 @@ spec:
           objectStorageConfig:
             name: thanos
             key: object-store.yaml
-      thanosService:
-        enabled: true
