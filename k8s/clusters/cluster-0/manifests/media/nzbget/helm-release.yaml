@@ -56,6 +56,9 @@ spec:
             path: /mnt/borg/share
         mountPath: /media
         readOnly: false
+      incomplete:
+        enabled: true
+        type: emptyDir
     podSecurityContext:
       runAsUser: 1001
       runAsGroup: 1001
