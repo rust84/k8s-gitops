@@ -48,13 +48,13 @@ spec:
     compact:
       enabled: true
     store:
-      enabled: true
-      persistentVolumeClaim:
-        spec:
-          storageClassName: rook-ceph-block
-          resources:
-            requests:
-              storage: 20Gi
+      name: thanos-data-pvc
+      spec:
+        storageClassName: rook-ceph-block
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 20Gi
     rule:
       enabled: false
     objstore:
