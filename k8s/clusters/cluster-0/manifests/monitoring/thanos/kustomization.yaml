@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - thanos-ceph-object-bucket.yaml
   - helm-release.yaml
+  - store-data-pvc.yaml
