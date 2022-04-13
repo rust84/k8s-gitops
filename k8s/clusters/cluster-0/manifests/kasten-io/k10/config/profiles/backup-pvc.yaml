@@ -12,7 +12,7 @@ spec:
   persistentVolumeReclaimPolicy: Retain
   nfs:
     server: "nas.${SECRET_DOMAIN}"
-    path: /mnt/Borg-2TB-Mirror/share/K10
+    path: /mnt/apps/backups/K10
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
