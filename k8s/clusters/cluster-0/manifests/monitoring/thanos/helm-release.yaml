@@ -41,6 +41,8 @@ spec:
             - hosts:
                 - "thanos.${SECRET_DOMAIN}"
               secretName: tls.thanos
+      stores:
+        - prometheus-thanos-discovery:10901
     queryFrontend:
       enabled: false
     bucket:
