@@ -62,6 +62,10 @@ spec:
               period: 24h
       storage_config:
         aws:
+          bucketnames: loki
+          endpoint: nas.${SECRET_DOMAIN}:9000
+          access_key_id: "${MINIO_ACCESS_KEY}"
+          secret_access_key: "${MINIO_SECRET_KEY}"
           s3forcepathstyle: true
           insecure: true
         boltdb_shipper:
@@ -97,20 +101,3 @@ spec:
                   values:
                     - loki
             topologyKey: "kubernetes.io/hostname"
-  valuesFrom:
-    - kind: ConfigMap
-      name: loki-ceph-bucket
-      valuesKey: BUCKET_NAME
-      targetPath: config.storage_config.aws.bucketnames
-    - kind: ConfigMap
-      name: loki-ceph-bucket
-      valuesKey: BUCKET_HOST
-      targetPath: config.storage_config.aws.endpoint
-    - kind: Secret
-      name: loki-ceph-bucket
-      valuesKey: AWS_ACCESS_KEY_ID
-      targetPath: config.storage_config.aws.access_key_id
-    - kind: Secret
-      name: loki-ceph-bucket
-      valuesKey: AWS_SECRET_ACCESS_KEY
-      targetPath: config.storage_config.aws.secret_access_key

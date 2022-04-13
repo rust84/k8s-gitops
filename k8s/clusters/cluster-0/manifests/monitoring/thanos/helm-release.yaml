@@ -8,85 +8,69 @@ spec:
   interval: 5m
   chart:
     spec:
-      # renovate: registryUrl=https://kubernetes-charts.banzaicloud.com
+      # renovate: registryUrl=https://charts.bitnami.com/bitnami
       chart: thanos
-      version: 0.4.6
+      version: 10.3.3
       sourceRef:
         kind: HelmRepository
-        name: banzaicloud-charts
+        name: bitnami-charts
         namespace: flux-system
-      interval: 5m
+      interval: 10m
+  test:
+    enable: false # Enable helm test
+  install:
+    remediation: # perform remediation when helm install fails
+      retries: 3
+  upgrade:
+    remediation: # perform remediation when helm upgrade fails
+      retries: 3
+      remediateLastFailure: true # remediate the last failure, when no retries remain
+    cleanupOnFail: true
+  rollback:
+    timeout: 10m
+    recreate: true
+    cleanupOnFail: true
   values:
-    sidecar:
-      metrics:
-        serviceMonitor:
-          enabled: true
     query:
       enabled: true
       replicaCount: 2
       replicaLabels:
         - replica
-      http:
-        ingress:
-          enabled: true
-          hosts:
-            - "thanos.${SECRET_DOMAIN}"
-          annotations:
-            kubernetes.io/ingress.class: traefik
-            traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-            traefik.ingress.kubernetes.io/router.middlewares: "network-internal-auth@kubernetescrd"
-            kubernetes.io/tls-acme: "true"
-            cert-manager.io/cluster-issuer: letsencrypt-prod
-          tls:
-            - hosts:
-                - "thanos.${SECRET_DOMAIN}"
-              secretName: tls.thanos
-      stores:
-        - prometheus-thanos-discovery:10901
+      dnsDiscovery:
+        sidecarsService: kube-prometheus-stack-thanos-discovery
+        sidecarsNamespace: monitoring
+      ingress:
+        enabled: true
+        hostname: thanos.${SECRET_DOMAIN}
+        ingressClassName: "traefik"
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: "network-internal-auth@kubernetescrd"
+        tls: true
+    objstoreConfig: |-
+      type: s3
+      config:
+        bucket: thanos
+        endpoint: nas.${SECRET_DOMAIN}:9000
+        access_key: "${MINIO_ACCESS_KEY}"
+        secret_key: "${MINIO_SECRET_KEY}"
+        insecure: true
     queryFrontend:
       enabled: false
-    bucket:
+    bucketweb:
       enabled: true
-    compact:
+    compactor:
       enabled: true
-    store:
-      dataVolume:
-        backend:
-          persistentVolumeClaim:
-            claimName: store-data-pvc
-    rule:
+      persistence:
+        enabled: false
+    storegateway:
+      enabled: true
+      persistence:
+        enabled: true
+        size: 20Gi
+    ruler:
       enabled: false
-    objstore:
-      type: S3
-      config:
-        insecure: true
-        signature_version2: false
-        put_user_metadata: {}
-        http_config:
-          idle_conn_timeout: 0s
-          response_header_timeout: 0s
-          insecure_skip_verify: false
-        trace:
-          enable: false
-        part_size: 0
-  valuesFrom:
-    - kind: ConfigMap
-      name: thanos-ceph-bucket
-      valuesKey: BUCKET_NAME
-      targetPath: objstore.config.bucket
-    - kind: ConfigMap
-      name: thanos-ceph-bucket
-      valuesKey: BUCKET_HOST
-      targetPath: objstore.config.endpoint
-    - kind: ConfigMap
-      name: thanos-ceph-bucket
-      valuesKey: BUCKET_REGION
-      targetPath: objstore.config.region
-    - kind: Secret
-      name: thanos-ceph-bucket
-      valuesKey: AWS_ACCESS_KEY_ID
-      targetPath: objstore.config.access_key
-    - kind: Secret
-      name: thanos-ceph-bucket
-      valuesKey: AWS_SECRET_ACCESS_KEY
-      targetPath: objstore.config.secret_key
+    metrics:
+      enabled: true
+      serviceMonitor:
+        enabled: true
