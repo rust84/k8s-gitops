@@ -18,6 +18,8 @@ spec:
       interval: 5m
   values:
     fullnameOverride: prometheus
+    commonLabels:
+      app: prometheus
     server:
       resources:
         requests:
