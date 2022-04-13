@@ -11,7 +11,7 @@ spec:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
   nfs:
-    server: "10.20.0.132"
+    server: "nas.${SECRET_DOMAIN}"
     path: /mnt/apps/backups/K10
 ---
 apiVersion: v1
