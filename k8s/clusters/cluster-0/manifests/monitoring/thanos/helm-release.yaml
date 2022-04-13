@@ -21,6 +21,8 @@ spec:
       metrics:
         serviceMonitor:
           enabled: true
+      selector:
+        app.kubernetes.io/name: prometheus
     query:
       enabled: true
       replicaCount: 2
