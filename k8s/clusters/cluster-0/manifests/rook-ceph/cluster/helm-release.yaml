@@ -98,12 +98,11 @@ spec:
             activeCount: 1
             activeStandby: true
             resources:
-              limits:
-                cpu: "2000m"
-                memory: "4Gi"
               requests:
-                cpu: "1000m"
-                memory: "4Gi"
+                cpu: 1000m
+                memory: 4Gi
+              limits:
+                memory: 4Gi
         storageClass:
           enabled: true
           isDefault: false
@@ -137,12 +136,11 @@ spec:
           gateway:
             port: 80
             resources:
-              limits:
-                cpu: "2000m"
-                memory: "2Gi"
               requests:
-                cpu: "1000m"
-                memory: "1Gi"
+                cpu: 1000m
+                memory: 1Gi
+              limits:
+                memory: 2Gi
             instances: 1
           healthCheck:
             bucket:
