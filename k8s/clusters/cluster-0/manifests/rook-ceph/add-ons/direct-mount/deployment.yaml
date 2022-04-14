@@ -72,7 +72,7 @@ spec:
                 path: mon-endpoints
         - name: nas-backup
           nfs:
-            server: "synology.${SECRET_DOMAIN}"
+            server: "nas.${SECRET_DOMAIN}"
             path: /mnt/apps/backups
         - name: direct-mount-scripts
           projected:
