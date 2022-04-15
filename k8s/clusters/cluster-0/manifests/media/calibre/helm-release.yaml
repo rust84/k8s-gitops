@@ -1,0 +1,69 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: calibre
+  namespace: media
+spec:
+  interval: 5m
+  chart:
+    spec:
+      # renovate: registryUrl=https://k8s-at-home.com/charts/
+      chart: calibre
+      version: 5.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: ghcr.io/linuxserver/calibre
+      tag: version-v5.40.0
+
+    env:
+      TZ: "Europe/London"
+      PUID: "1001"
+      PGID: "1001"
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: calibre-config-pvc
+      nfs-nas-media:
+        enabled: true
+        type: custom
+        volumeSpec:
+          nfs:
+            server: "nas.${SECRET_DOMAIN}"
+            path: /mnt/borg/share
+        mountPath: /data
+
+    service:
+      webserver:
+        enabled: true
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "traefik"
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: websecure
+          traefik.ingress.kubernetes.io/router.middlewares: "network-internal-auth@kubernetescrd"
+
+        hosts:
+          - host: calibre.${SECRET_DOMAIN}
+            paths:
+              - path: /
+
+        tls:
+          - secretName: tls.calibre
+            hosts:
+              - calibre.${SECRET_DOMAIN}
+
+    resources:
+      requests:
+        cpu: 20m
+        memory: 768Mi
+      limits:
+        memory: 1Gi
