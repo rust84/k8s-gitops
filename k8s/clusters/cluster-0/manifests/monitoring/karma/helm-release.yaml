@@ -1,0 +1,51 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: karma
+  namespace: monitoring
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: /k8s/charts/kah-common-chart/
+      sourceRef:
+        kind: GitRepository
+        name: k8s-gitops
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: ghcr.io/prymitive/karma
+      tag: v0.99
+    nameOverride: karma
+    env:
+      ALERTMANAGER_URI: http://prometheus-alertmanager:9093
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: traefik
+        annotations:
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: "network-internal-auth@kubernetescrd"
+        hosts:
+          - host: karma.${SECRET_DOMAIN}
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - "karma.${SECRET_DOMAIN}"
+    service:
+      main:
+        ports:
+          http:
+            port: 8080
+
+    resources:
+      requests:
+        memory: 50Mi
+        cpu: 10m
+      limits:
+        memory: 200Mi
+        cpu: 100m
