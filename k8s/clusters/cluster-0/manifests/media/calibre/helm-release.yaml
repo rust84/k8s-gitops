@@ -23,8 +23,10 @@ spec:
 
     env:
       TZ: "Europe/London"
-      PUID: "1001"
-      PGID: "1001"
+
+    podSecurityContext:
+      supplementalGroups:
+        - 100
 
     persistence:
       config:
