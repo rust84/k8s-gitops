@@ -138,7 +138,6 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
-    - name: rook-ceph-cluster
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/monitoring/botkube"
   prune: true
@@ -159,9 +158,28 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
-    - name: rook-ceph-cluster
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/monitoring/unifi-poller"
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-gitops
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: core-monitoring-karma
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+  interval: 5m
+  path: "./k8s/clusters/cluster-0/manifests/monitoring/karma"
   prune: true
   wait: true
   sourceRef:
