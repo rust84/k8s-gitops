@@ -36,7 +36,7 @@ spec:
           nfs:
             server: "nas.${SECRET_DOMAIN}"
             path: /mnt/borg/share
-        mountPath: /data
+        mountPath: /media
 
     service:
       webserver:

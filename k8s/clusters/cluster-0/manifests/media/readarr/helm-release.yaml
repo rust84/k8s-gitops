@@ -70,7 +70,7 @@ spec:
           nfs:
             server: "nas.${SECRET_DOMAIN}"
             path: /mnt/borg/share
-        mountPath: /data
+        mountPath: /media
     resources:
       requests:
         memory: 100Mi
