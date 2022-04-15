@@ -53,6 +53,10 @@ spec:
           - hosts:
               - "readarr.${SECRET_DOMAIN}"
     podSecurityContext:
+      runAsUser: 1001
+      runAsGroup: 1001
+      fsGroup: 1001
+      fsGroupChangePolicy: OnRootMismatch
       supplementalGroups:
         - 100
     persistence:
