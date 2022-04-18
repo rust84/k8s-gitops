@@ -78,7 +78,7 @@ spec:
         type: custom
         volumeSpec:
           nfs:
-            server: 10.20.0.132
+            server: "nas.${SECRET_DOMAIN}"
             path: /mnt/borg/share
         mountPath: /media
         readOnly: false
