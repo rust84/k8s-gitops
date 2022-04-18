@@ -32,8 +32,8 @@ spec:
           - network
       name: "russell"
       customApps:
-        - name: Synology
-          url: "https://synology.${SECRET_PUBLIC_DOMAIN}"
+        - name: TrueNAS
+          url: "https://nas.${SECRET_PUBLIC_DOMAIN}"
           icon: harddisk
       groups:
         - name: Communicate
