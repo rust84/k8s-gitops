@@ -17,6 +17,11 @@ spec:
         name: rook-ceph-charts
         namespace: flux-system
   values:
+    image:
+      repository: rook/ceph
+      tag: v1.9.0-42.g82fde5ea4
+      pullPolicy: IfNotPresent
+
     crds:
       enabled: false
 
