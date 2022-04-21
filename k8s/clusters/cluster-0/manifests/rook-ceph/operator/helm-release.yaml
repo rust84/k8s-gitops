@@ -44,3 +44,8 @@ spec:
       limits:
         cpu: 1000m
         memory: 256Mi
+
+csiRBDProvisionerResource: []
+csiRBDPluginResource: []
+csiCephFSProvisionerResource: []
+csiCephFSPluginResource: []
