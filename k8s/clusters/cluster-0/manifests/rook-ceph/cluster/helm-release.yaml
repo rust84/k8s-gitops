@@ -18,10 +18,14 @@ spec:
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 10
   upgrade:
     remediation:
-      retries: 5
+      retries: 10
+  dependsOn:
+    # TODO(rook-ceph): Rename dependency to rook-ceph-operator
+    - name: rook-ceph
+      namespace: rook-ceph
   values:
     toolbox:
       enabled: false
@@ -75,7 +79,11 @@ spec:
       useAllDevices: true
       config:
         osdsPerDevice: "1"
-
+    cephBlockPoolsVolumeSnapshotClass:
+      enabled: true
+      name: csi-rbdplugin-snapclass
+      annotations:
+        k10.kasten.io/is-snapshot-class: "true"
     cephBlockPools:
       - name: ceph-blockpool
         spec:
