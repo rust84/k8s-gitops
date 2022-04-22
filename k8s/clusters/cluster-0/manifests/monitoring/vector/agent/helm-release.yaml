@@ -17,34 +17,41 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
-    role: "Agent"
-
+    image:
+      repository: timberio/vector
+      tag: 0.21.1-debian
+    role: Agent
     podMonitor:
       enabled: true
-
     service:
       enabled: false
-
+    securityContext:
+      privileged: true
     tolerations:
       - key: node-role.kubernetes.io/master
         effect: NoSchedule
-
     customConfig:
       data_dir: /vector-data-dir
-
       api:
         enabled: false
-
       # Sources
       sources:
+        journal_logs:
+          type: journald
+          journal_directory: /var/log/journal
         kubernetes_logs:
           type: kubernetes_logs
-
       # Sinks
       sinks:
+        loki_journal_sink:
+          type: vector
+          inputs:
+            - journal_logs
+          address: vector-aggregator:6000
+          version: "2"
         loki_kubernetes_sink:
           type: vector
           inputs:
             - kubernetes_logs
-          address: "vector-aggregator.monitoring:6000"
+          address: vector-aggregator:6010
           version: "2"

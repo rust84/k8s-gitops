@@ -17,6 +17,10 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
+    image:
+      repository: timberio/vector
+      tag: 0.21.1-debian
+
     role: "Stateless-Aggregator"
 
     podMonitor:
@@ -38,23 +42,37 @@ spec:
 
       # Sources
       sources:
-        kubernetes_logs:
-          address: 0.0.0.0:6000
+        journal_logs:
           type: vector
+          address: 0.0.0.0:6000
           version: "2"
-
-        sys_logs:
-          address: 0.0.0.0:6001
+        kubernetes_logs:
+          address: 0.0.0.0:6010
           type: vector
           version: "2"
 
       # Sinks
       sinks:
+        loki_journal:
+          type: loki
+          inputs:
+            - journal_logs
+          endpoint: http://loki:3100
+          encoding:
+            codec: json
+          batch:
+            max_bytes: 2049000
+          out_of_order_action: accept
+          remove_label_fields: true
+          remove_timestamp: true
+          labels:
+            hostname: >-
+              {{`{{ host }}`}}
         loki_kubernetes:
           type: loki
           inputs:
             - kubernetes_logs
-          endpoint: http://loki.monitoring:3100
+          endpoint: http://loki:3100
           encoding:
             codec: json
           batch:
@@ -77,21 +95,6 @@ spec:
               {{`{{ kubernetes.pod_node_name }}`}}
             pod: >-
               {{`{{ kubernetes.pod_name }}`}}
-        loki_nas:
-          type: loki
-          inputs:
-            - sys_logs
-          endpoint: http://loki.monitoring:3100
-          encoding:
-            codec: json
-          batch:
-            max_bytes: 400000
-          out_of_order_action: rewrite_timestamp
-          labels:
-            hostname: >-
-              {{`{{ host }}`}}
-            syslog_identifier: >-
-              {{`{{ SYSLOG_IDENTIFIER }}`}}
   postRenderers:
     - kustomize:
         patchesJson6902:
