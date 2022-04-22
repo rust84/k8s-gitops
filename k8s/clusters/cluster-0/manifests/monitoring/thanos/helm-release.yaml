@@ -31,6 +31,10 @@ spec:
     recreate: true
     cleanupOnFail: true
   values:
+    objstoreConfig:
+      type: s3
+      config:
+        insecure: true
     query:
       enabled: true
       replicaCount: 2
