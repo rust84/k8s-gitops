@@ -44,9 +44,7 @@ spec:
     - op: add
       path: /machine/time
       value:
-        disabled: false
-        servers:
-          - time.cloudflare.com
+        disabled: true
 
     - op: replace
       path: /cluster/proxy/disabled
