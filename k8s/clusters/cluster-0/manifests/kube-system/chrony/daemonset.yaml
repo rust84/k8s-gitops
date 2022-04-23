@@ -18,11 +18,11 @@ spec:
       updateStrategy:
         type: RollingUpdate
 
-      tolerations:
-        - effect: NoSchedule
-          operator: Exists
-        - effect: NoExecute
-          operator: Exists
+      # tolerations:
+      #   - effect: NoSchedule
+      #     operator: Exists
+      #   - effect: NoExecute
+      #     operator: Exists
 
       containers:
         - name: chrony

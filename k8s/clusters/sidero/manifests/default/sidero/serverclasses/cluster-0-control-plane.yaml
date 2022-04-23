@@ -44,7 +44,9 @@ spec:
     - op: add
       path: /machine/time
       value:
-        disabled: true
+        disabled: false
+        servers:
+          - ${GATEWAY_MANAGEMENT}
 
     - op: replace
       path: /cluster/proxy/disabled
