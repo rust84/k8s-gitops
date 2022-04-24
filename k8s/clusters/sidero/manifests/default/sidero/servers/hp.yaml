@@ -9,14 +9,14 @@ spec:
     endpoint: 10.20.0.90
     pass: ${IPMI_PASSWORD}
     user: russell
-  hostname: hp.our.house
+  hostname: hp.${SECRET_DOMAIN}
   configPatches:
     - op: replace
       path: /machine/install/disk
       value: /dev/sda
     - op: add
       path: /machine/network/hostname
-      value: hp.our.house
+      value: hp.${SECRET_DOMAIN}
   cpu:
     manufacturer: Intel
     version: Intel(R) Xeon(R) CPU E3-1265L V2 @ 2.50GHz

@@ -10,14 +10,14 @@ spec:
     namespace: default
     name: default-arm64
   accepted: true
-  hostname: cp-0.our.house
+  hostname: cp-0.${SECRET_DOMAIN}
   configPatches:
     - op: replace
       path: /machine/install/disk
       value: /dev/sda
     - op: add
       path: /machine/network/hostname
-      value: cp-0.our.house
+      value: cp-0.${SECRET_DOMAIN}
   cpu:
     manufacturer: Broadcom
     version: BCM2711 (ARM Cortex-A72)

@@ -5,14 +5,14 @@ metadata:
   name: a55bb2de-e613-5a27-1d15-1c697a617fa1
 spec:
   accepted: true
-  hostname: node-2.our.house
+  hostname: node-2.${SECRET_DOMAIN}
   configPatches:
     - op: replace
       path: /machine/install/disk
       value: /dev/sda
     - op: add
       path: /machine/network/hostname
-      value: node-2.our.house
+      value: node-2.${SECRET_DOMAIN}
   cpu:
     manufacturer: Intel(R) Corporation
     version: Intel(R) Core(TM) i5-8259U CPU @ 2.30GHz
