@@ -131,7 +131,7 @@ spec:
         spec:
           failureDomain: host
           replicated:
-            size: 3
+            size: 1 #TODO: set to 3
         storageClass:
           enabled: true
           name: rook-ceph-block
@@ -157,7 +157,7 @@ spec:
           metadataPool:
             failureDomain: host
             replicated:
-              size: 3
+              size: 1 #TODO: set to 3
           dataPool:
             failureDomain: host
             erasureCoded:
