@@ -55,6 +55,15 @@ spec:
       generateType: controlplane
       talosVersion: v1.0.3
     init:
+      configPatches:
+        - op: add
+          path: /machine/network
+          value:
+            interfaces:
+              - interface: eth0
+                dhcp: true
+                vip:
+                  ip: ${CLUSTER_0_API_IP}
       generateType: init
       talosVersion: v1.0.3
   infrastructureTemplate:
