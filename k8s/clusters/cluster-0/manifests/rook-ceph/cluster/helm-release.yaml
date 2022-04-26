@@ -36,13 +36,13 @@ spec:
       bdev_async_discard = true
 
     cephClusterSpec:
-      cephVersion:
-        image: quay.io/ceph/ceph:v17.2.0
-      network:
-        provider: host
-        connections:
-          compression:
-            enabled: true
+      # cephVersion:
+      #   image: quay.io/ceph/ceph:v17.2.0
+      # network:
+      #   provider: host
+      #   connections:
+      #     compression:
+      #       enabled: true
 
       resources:
         mgr:
