@@ -27,10 +27,12 @@ spec:
         enabled: true
         ingressClassName: traefik
         annotations:
-          hajimari.io/enable: "true"
-          hajimari.io/icon: "filmstrip"
+          kubernetes.io/tls-acme: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-prod
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           traefik.ingress.kubernetes.io/router.middlewares: "network-internal-auth@kubernetescrd"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "filmstrip"
         hosts:
           - host: radarr.${SECRET_DOMAIN}
             paths:

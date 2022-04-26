@@ -27,6 +27,8 @@ spec:
     ingress:
       main:
         annotations:
+          kubernetes.io/tls-acme: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-prod
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           traefik.ingress.kubernetes.io/router.middlewares: "network-cloudflare-ips@kubernetescrd"
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
