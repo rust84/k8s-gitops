@@ -47,8 +47,9 @@ spec:
               - path: /
                 pathType: Prefix
         tls:
-          - hosts:
-              - "hass.${SECRET_DOMAIN}"
+          - secretName: tls.home-assistant
+            hosts:
+              - hass.${SECRET_DOMAIN}
     metrics:
       enabled: false
     hostNetwork: true
