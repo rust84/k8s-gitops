@@ -102,6 +102,22 @@ spec:
         enabled: true
         urlPrefix: /
 
+      storage:
+        useAllNodes: false
+        useAllDevices: false
+        config:
+          osdsPerDevice: "1"
+        nodes:
+          - name: "node-0"
+            devices:
+              - name: "/dev/disk/by-id/nvme-PNY_CS3030_250GB_SSD_PNY2619002035030049D"
+          - name: "node-1"
+            devices:
+              - name: "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_500GB_S46BNX0KB01668N"
+          - name: "node-2"
+            devices:
+              - name: "/dev/disk/by-id/nvme-WDC_WDS500G2B0C-00PXH0_200965802897"
+
     ingress:
       dashboard:
         annotations:
@@ -116,21 +132,7 @@ spec:
           - secretName: tls.rook-ceph
             hosts:
               - "rook.${SECRET_DOMAIN}"
-    storage:
-      useAllNodes: false
-      useAllDevices: false
-      config:
-        osdsPerDevice: "1"
-      nodes:
-        - name: "node-0"
-          devices:
-            - name: "/dev/disk/by-id/nvme-PNY_CS3030_250GB_SSD_PNY2619002035030049D"
-        - name: "node-1"
-          devices:
-            - name: "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_500GB_S46BNX0KB01668N"
-        - name: "node-2"
-          devices:
-            - name: "/dev/disk/by-id/nvme-WDC_WDS500G2B0C-00PXH0_200965802897"
+
     cephBlockPoolsVolumeSnapshotClass:
       enabled: true
       name: csi-rbdplugin-snapclass
