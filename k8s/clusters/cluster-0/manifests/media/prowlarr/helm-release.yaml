@@ -38,8 +38,9 @@ spec:
               - path: /
                 pathType: Prefix
         tls:
-          - hosts:
-              - "prowlarr.${SECRET_DOMAIN}"
+          - secretName: tls.prowlarr
+            hosts:
+              - prowlarr.${SECRET_DOMAIN}
     persistence:
       config:
         enabled: true

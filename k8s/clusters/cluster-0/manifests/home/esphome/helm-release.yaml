@@ -41,8 +41,9 @@ spec:
               - path: /
                 pathType: Prefix
         tls:
-          - hosts:
-              - "esphome.${SECRET_DOMAIN}"
+          - secretName: tls.esphome
+            hosts:
+              - esphome.${SECRET_DOMAIN}
     persistence:
       config:
         enabled: true

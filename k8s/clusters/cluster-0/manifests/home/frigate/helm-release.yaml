@@ -42,8 +42,9 @@ spec:
               - path: /
                 pathType: Prefix
         tls:
-          - hosts:
-              - "frigate.${SECRET_DOMAIN}"
+          - secretName: tls.frigate
+            hosts:
+              - frigate.${SECRET_DOMAIN}
     podAnnotations:
       configmap.reloader.stakater.com/reload: "frigate-config"
     affinity:

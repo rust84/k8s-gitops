@@ -45,8 +45,9 @@ spec:
               - path: /
                 pathType: Prefix
         tls:
-          - hosts:
-              - "dt.${SECRET_DOMAIN}"
+          - secretName: tls.double-take
+            hosts:
+              - dt.${SECRET_DOMAIN}
     podAnnotations:
       backup.velero.io/backup-volumes: config
     persistence:

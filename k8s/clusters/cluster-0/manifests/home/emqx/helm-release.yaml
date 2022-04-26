@@ -32,7 +32,8 @@ spec:
         hosts:
           - emqx.${SECRET_DOMAIN}
         tls:
-          - hosts:
+          - secretName: tls.emqx
+            hosts:
               - emqx.${SECRET_DOMAIN}
     service:
       type: LoadBalancer

@@ -39,8 +39,9 @@ spec:
               - path: /
                 pathType: Prefix
         tls:
-          - hosts:
-              - "radarr.${SECRET_DOMAIN}"
+          - secretName: tls.radarr
+            hosts:
+              - radarr.${SECRET_DOMAIN}
       api:
         enabled: true
         ingressClassName: "traefik"

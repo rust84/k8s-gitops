@@ -38,8 +38,9 @@ spec:
               - path: /
                 pathType: Prefix
         tls:
-          - hosts:
-              - "zigbee2mqtt.${SECRET_DOMAIN}"
+          - secretName: tls.zigbee2mqtt
+            hosts:
+              - zigbee2mqtt.${SECRET_DOMAIN}
     securityContext:
       privileged: true
     podAnnotations:

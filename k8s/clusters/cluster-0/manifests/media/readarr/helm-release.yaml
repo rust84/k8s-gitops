@@ -39,8 +39,9 @@ spec:
               - path: /
                 pathType: Prefix
         tls:
-          - hosts:
-              - "readarr.${SECRET_DOMAIN}"
+          - secretName: tls.readarr
+            hosts:
+              - readarr.${SECRET_DOMAIN}
       api:
         enabled: true
         ingressClassName: "traefik"

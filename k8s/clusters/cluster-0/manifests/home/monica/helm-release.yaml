@@ -53,7 +53,8 @@ spec:
               - path: /
                 pathType: Prefix
         tls:
-          - hosts:
+          - secretName: tls.monica
+            hosts:
               - monica.${SECRET_DOMAIN}
     persistence:
       config:

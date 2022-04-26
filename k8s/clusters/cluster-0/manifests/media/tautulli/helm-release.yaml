@@ -40,8 +40,9 @@ spec:
               - path: /
                 pathType: Prefix
         tls:
-          - hosts:
-              - "tautulli.${SECRET_DOMAIN}"
+          - secretName: tls.tautulli
+            hosts:
+              - tautulli.${SECRET_DOMAIN}
     strategy:
       type: Recreate
     persistence:

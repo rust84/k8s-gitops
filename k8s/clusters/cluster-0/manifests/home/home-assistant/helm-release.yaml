@@ -89,7 +89,8 @@ spec:
                 - path: /
                   pathType: Prefix
           tls:
-            - hosts:
+            - secretName: tls.hass-vscode
+              hosts:
                 - hass-vscode.${SECRET_DOMAIN}
         volumeMounts:
           - name: config
