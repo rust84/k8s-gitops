@@ -1,0 +1,70 @@
+---
+# Project information
+site_name: rust84 | k8s-gitops
+site_description: My home cluster documentation
+site_author: rust84
+site_url: https://rust84.github.io/k8s-gitops/
+
+# Repository
+repo_name: rust84/k8s-gitops
+repo_url: https://github.com/rust84/k8s-gitops
+edit_uri: ""
+
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.sections
+    - navigation.tracking
+    - search.highlight
+    - search.share
+    - search.suggest
+  palette:
+    primary: blue
+    accent: indigo
+
+docs_dir: ./docs
+
+extra_css:
+  - _static/custom.css
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - abbr
+  - attr_list
+  - def_list
+  - footnotes
+  - meta
+  - md_in_html
+  - toc:
+      permalink: true
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.critic
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.highlight
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.magiclink
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.tabbed
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+nav:
+  - Introduction: index.md
+  - General:
+      - Hardware: general/hardware.md
+  - Sidero & Talos:
+      - Installation: talos/installation.md
