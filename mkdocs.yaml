@@ -13,15 +13,31 @@ edit_uri: ""
 theme:
   name: material
   language: en
+  static_templates:
+    - 404.html
   features:
+    - header.autohide
+    - navigation.instant
     - navigation.sections
     - navigation.tracking
     - search.highlight
     - search.share
     - search.suggest
   palette:
-    primary: blue
-    accent: indigo
+    - scheme: default
+      primary: blue
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch-off-outline
+        name: Switch to light mode
+    - scheme: slate
+      primary: blue
+      accent: indigo
+      toggle:
+        icon: material/toggle-switch
+        name: Switch to dark mode
+  icon:
+    repo: fontawesome/brands/github
 
 docs_dir: ./docs
 
@@ -30,6 +46,8 @@ extra_css:
 
 plugins:
   - search
+  - git-revision-date-localized
+  - diagrams
 
 markdown_extensions:
   - admonition
