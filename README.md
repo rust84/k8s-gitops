@@ -1,4 +1,4 @@
-## Gitops + Kubernetes
+# Gitops + Kubernetes
 
 <p align="center"><img src="https://i.imgur.com/p1RzXjQ.png"><br></p>
 
