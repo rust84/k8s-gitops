@@ -10,6 +10,11 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=for-the-badge)](https://github.com/pre-commit/pre-commit "Precommit status")
 [![GitHub Workflow Status](https://img.shields.io/github/workflow/status/rust84/k8s-gitops/Schedule%20-%20Renovate?label=renovate&logo=renovatebot&style=for-the-badge)](https://github.com/onedr0p/home-ops/actions/workflows/schedule-renovate.yaml)
 
+[![Home-Internet](https://img.shields.io/uptimerobot/ratio/7/m782786554-078b80f6fe79b398b2209642?label=home-internet&style=for-the-badge)](https://uptimerobot.com)
+[![My-Plex](https://img.shields.io/uptimerobot/ratio/7/m785594509-005b82f7fd84a7c017d3214d?label=plex&logo=plex&style=for-the-badge)](https://plex.tv)
+[![My-Home-Assistant](https://img.shields.io/uptimerobot/ratio/7/m784865271-86a5bf6ee73f4d3b287f5318?label=homeassistant&logo=homeassistant&style=for-the-badge)](https://www.home-assistant.io/)
+[![My-Vaultwarden](https://img.shields.io/uptimerobot/ratio/7/m791605709-be413bc8bfebcd19c65277b1?label=vaultwarden&logo=bitwarden&style=for-the-badge)](https://bitwarden.com/)
+
 ## Overview
 
 Leveraging [Sidero](https://github.com/siderolabs/sidero), [Flux](https://toolkit.fluxcd.io/) and [Renovate](https://github.com/renovatebot/renovate) to automate my home clusters state using GitOps principles.
