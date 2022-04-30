@@ -33,7 +33,7 @@ spec:
       name: "russell"
       customApps:
         - name: TrueNAS
-          url: "https://nas.${SECRET_PUBLIC_DOMAIN}"
+          url: "https://nas.${SECRET_DOMAIN}"
           icon: harddisk
       groups:
         - name: Communicate
