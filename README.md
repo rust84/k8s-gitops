@@ -19,7 +19,7 @@
 
 Leveraging [Sidero](https://github.com/siderolabs/sidero), [Flux](https://toolkit.fluxcd.io/) and [Renovate](https://github.com/renovatebot/renovate) to automate my home clusters state using GitOps principles.
 
-This repo is constantly evolving and the documentation is currently a WIP.
+This repo is constantly evolving and the [documentation](https://rust84.github.io/k8s-gitops/) is currently a WIP.
 
 ## Thanks
 
