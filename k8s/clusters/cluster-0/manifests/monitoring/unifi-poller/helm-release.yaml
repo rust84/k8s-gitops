@@ -32,6 +32,10 @@ spec:
       UP_INFLUXDB_DISABLE: true
       UP_PROMETHEUS_DISABLE: false
       UP_PROMETHEUS_NAMESPACE: "unifipoller"
-    prometheus:
+    metrics:
+      enabled: true
       serviceMonitor:
+        interval: 1m
+        scrapeTimeout: 30s
+      prometheusRule:
         enabled: true
