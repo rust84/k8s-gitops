@@ -10,7 +10,7 @@ spec:
     spec:
       # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: speedtest-exporter
-      version: 5.1.0
+      version: 5.2.0
       sourceRef:
         kind: HelmRepository
         name: k8s-at-home-charts
@@ -19,9 +19,9 @@ spec:
   values:
     image:
       repository: ghcr.io/miguelndecarvalho/speedtest-exporter
-      tag: v3.3.4
-    prometheus:
+      tag: v3.5.1
+    metrics:
+      enabled: true
       serviceMonitor:
-        enabled: true
-        interval: 1h
+        interval: 60m
         scrapeTimeout: 1m
