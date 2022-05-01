@@ -136,7 +136,7 @@ spec:
           datasource: Prometheus
         speedtest:
           gnetId: 13665
-          revision: 1
+          revision: 4
           datasource: Prometheus
         unifi-client-insights:
           gnetId: 11315
