@@ -95,9 +95,6 @@ spec:
         frigate:
           url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/frigate.json
           datasource: Prometheus
-        minio-overview:
-          url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/minio_overview.json
-          datasource: Prometheus
         node-exporter-full:
           gnetId: 1860
           revision: 23
@@ -159,12 +156,6 @@ spec:
         unifi-usw-insights:
           gnetId: 11312
           revision: 8
-          datasource: Prometheus
-        uptimerobot:
-          url: https://raw.githubusercontent.com/lekpamartin/uptimerobot_exporter/master/dashboards/grafana.json
-          datasource: Prometheus
-        velero:
-          url: https://grafana.com/api/dashboards/11055/revisions/2/download
           datasource: Prometheus
     sidecar:
       dashboards:
