@@ -18,8 +18,8 @@ spec:
       interval: 10m
   values:
     image:
-      repository: ghcr.io/k8s-at-home/sonarr
-      tag: v3.0.8.1507
+      repository: ghcr.io/k8s-at-home/sonarr-develop
+      tag: v3.0.8.1517
     env:
       TZ: "Europe/London"
     ingress:
