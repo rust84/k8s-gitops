@@ -69,11 +69,9 @@ spec:
         medium: Memory
       nfs-media:
         enabled: true
-        type: custom
-        volumeSpec:
-          nfs:
-            server: "nas.${SECRET_DOMAIN}"
-            path: /mnt/borg/share
+        type: nfs
+        server: "nas.${SECRET_DOMAIN}"
+        path: /mnt/borg/share
         mountPath: /data
         readOnly: false
     podAnnotations:
