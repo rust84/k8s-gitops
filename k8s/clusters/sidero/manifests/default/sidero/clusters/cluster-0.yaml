@@ -53,6 +53,7 @@ spec:
   controlPlaneConfig:
     controlplane:
       generateType: controlplane
+      # renovate: datasource=github-releases depName=siderolabs/talos
       talosVersion: v1.0.3
     init:
       # configPatches:
@@ -65,12 +66,14 @@ spec:
       #           vip:
       #             ip: ${CLUSTER_0_API_IP}
       generateType: init
+      # renovate: datasource=github-releases depName=siderolabs/talos
       talosVersion: v1.0.3
   infrastructureTemplate:
     apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
     kind: MetalMachineTemplate
     name: cluster-0-cp
   replicas: 3
+  # renovate: datasource=docker depName=ghcr.io/talos-systems/kubelet
   version: v1.23.6
 ---
 apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
@@ -82,6 +85,7 @@ spec:
   template:
     spec:
       generateType: join
+      # renovate: datasource=github-releases depName=siderolabs/talos
       talosVersion: v1.0.3
 ---
 apiVersion: cluster.x-k8s.io/v1alpha4
@@ -106,6 +110,7 @@ spec:
         apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
         kind: MetalMachineTemplate
         name: cluster-0-workers
+      # renovate: datasource=docker depName=ghcr.io/talos-systems/kubelet
       version: v1.23.6
 ---
 apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
