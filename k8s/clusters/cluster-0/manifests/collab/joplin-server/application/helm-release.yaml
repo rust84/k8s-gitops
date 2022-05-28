@@ -32,7 +32,7 @@ spec:
       APP_BASE_URL: https://joplin.${SECRET_DOMAIN}
       APP_PORT: 22300
       DB_CLIENT: pg
-      POSTGRES_HOST: joplin-postgresql
+      POSTGRES_HOST: joplin-database-postgresql
       POSTGRES_PORT: 5432
       POSTGRES_DATABASE: joplin
       POSTGRES_USER: joplin
