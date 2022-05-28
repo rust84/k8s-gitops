@@ -38,7 +38,7 @@ spec:
       POSTGRES_USER: postgres
       MAILER_ENABLED: 1
       MAILER_HOST: email-smtp.eu-west-1.amazonaws.com
-      MAILER_PORT: 587
+      MAILER_PORT: 465
       MAILER_SECURE: 1
       MAILER_AUTH_USER: ${SECRET_JOPLIN_USERNAME}
       MAILER_AUTH_PASSWORD: ${SECRET_JOPLIN_PASSWORD}
