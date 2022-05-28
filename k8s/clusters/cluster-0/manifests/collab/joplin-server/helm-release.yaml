@@ -72,7 +72,7 @@ spec:
         existingClaim: data-joplin-postgresql-0
   valuesFrom:
     - kind: Secret
-      name: joplin-postgresql
+      name: joplin-postgresql-secret
       valuesKey: postgres-password
       targetPath: env.POSTGRES_PASSWORD
       optional: false
