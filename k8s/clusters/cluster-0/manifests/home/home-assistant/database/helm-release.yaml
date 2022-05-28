@@ -34,3 +34,9 @@ spec:
           memory: 100M
         limits:
           memory: 500M
+  valuesFrom:
+    - kind: Secret
+      name: home-assistant-postgresql-secret
+      valuesKey: postgres-password
+      targetPath: global.postgresql.auth.postgresPassword
+      optional: false
