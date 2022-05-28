@@ -18,6 +18,7 @@ spec:
   values:
     auth:
       database: joplin
+      username: joplin
       existingSecret: joplin-postgresql-secret
 
     primary:
@@ -26,7 +27,7 @@ spec:
         min_wal_size = 160
       persistence:
         enabled: true
-        existingClaim: data-postgresql-pvc
+        existingClaim: data-joplin-postgresql-pvc
 
       resources:
         requests:
