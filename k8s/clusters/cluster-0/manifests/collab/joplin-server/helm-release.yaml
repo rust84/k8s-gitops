@@ -65,12 +65,11 @@ spec:
               - "joplin.${SECRET_DOMAIN}"
             secretName: "${SECRET_DOMAIN//./-}-tls"
     postgresql:
-      primary:
+      enabled: true
+      existingSecret: joplin-postgresql-secret
+      persistence:
         enabled: true
-        existingSecret: joplin-postgresql-secret
-        persistence:
-          enabled: true
-          existingClaim: joplin-postgresql-pvc
+        existingClaim: data-joplin-postgresql-0
   valuesFrom:
     - kind: Secret
       name: joplin-postgresql
