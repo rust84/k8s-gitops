@@ -35,7 +35,7 @@ spec:
       POSTGRES_HOST: joplin-database-postgresql
       POSTGRES_PORT: 5432
       POSTGRES_DATABASE: joplin
-      POSTGRES_USER: joplin
+      POSTGRES_USER: postgres
       MAILER_ENABLED: 1
       MAILER_HOST: email-smtp.eu-west-1.amazonaws.com
       MAILER_PORT: 587
@@ -44,7 +44,6 @@ spec:
       MAILER_AUTH_PASSWORD: ${SECRET_JOPLIN_PASSWORD}
       MAILER_NOREPLY_NAME: Joplin
       MAILER_NOREPLY_EMAIL: ${SECRET_JOPLIN_FROM}
-
     ingress:
       main:
         enabled: true
