@@ -26,10 +26,14 @@ spec:
       defaultEnable: false
       namespaceSelector:
         matchNames:
+          - collab
           - home
+          - kasten-io
           - media
           - monitoring
           - network
+          - rook-ceph
+          - security
       name: "russell"
       customApps:
         - name: TrueNAS
