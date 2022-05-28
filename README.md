@@ -12,9 +12,10 @@
 
 [![Home-Internet](https://img.shields.io/uptimerobot/ratio/m782786554-078b80f6fe79b398b2209642?label=home-internet&style=for-the-badge)](https://uptimerobot.com)
 [![My-Plex](https://img.shields.io/uptimerobot/ratio/m785594509-005b82f7fd84a7c017d3214d?label=plex&logo=plex&style=for-the-badge)](https://plex.tv)
+[![My-Jellyfin](https://img.shields.io/uptimerobot/ratio/m791890384-ad4aa08cb47aec6edace0e13?logo=jellyfin&style=for-the-badge)](https://jellyfin.org/)
 [![My-Home-Assistant](https://img.shields.io/uptimerobot/ratio/m784865271-86a5bf6ee73f4d3b287f5318?label=homeassistant&logo=homeassistant&style=for-the-badge)](https://www.home-assistant.io/)
 [![My-Vaultwarden](https://img.shields.io/uptimerobot/ratio/m791605709-be413bc8bfebcd19c65277b1?label=vaultwarden&logo=bitwarden&style=for-the-badge)](https://bitwarden.com/)
-[![Joplin](https://img.shields.io/uptimerobot/ratio/m791890347-51ea0d70d5526ca89b1edad8?logo=joplin&style=for-the-badge)](https://joplinapp.org/)
+[![My-Joplin](https://img.shields.io/uptimerobot/ratio/m791890347-51ea0d70d5526ca89b1edad8?logo=joplin&style=for-the-badge)](https://joplinapp.org/)
 
 ## Overview
 
