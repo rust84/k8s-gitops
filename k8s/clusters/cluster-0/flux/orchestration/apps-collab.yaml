@@ -8,9 +8,29 @@ spec:
   dependsOn:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
-    - name: core-traefik
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/collab/vaultwarden"
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-gitops
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-collab-joplin-database
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: rook-ceph-cluster
+  interval: 5m
+  path: "./k8s/clusters/cluster-0/manifests/collab/joplin-server/database"
   prune: true
   wait: true
   sourceRef:
@@ -29,9 +49,9 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
-    - name: core-traefik
+    - name: apps-collab-joplin-database
   interval: 5m
-  path: "./k8s/clusters/cluster-0/manifests/collab/joplin-server"
+  path: "./k8s/clusters/cluster-0/manifests/collab/joplin-server/application"
   prune: true
   wait: true
   sourceRef:
