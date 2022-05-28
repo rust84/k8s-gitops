@@ -18,7 +18,6 @@ spec:
   values:
     auth:
       database: joplin
-      username: joplin
       existingSecret: joplin-postgresql-secret
 
     primary:
