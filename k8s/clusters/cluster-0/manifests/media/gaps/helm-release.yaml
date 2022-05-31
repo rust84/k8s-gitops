@@ -1,0 +1,56 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: gaps
+  namespace: media
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: gaps
+      version: 5.3.2
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      # -- image repository
+      repository: housewrecker/gaps
+      tag: x64-v0.10.1
+    env:
+      TZ: "Europe/London"
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: traefik
+        annotations:
+          kubernetes.io/tls-acme: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          external-dns/is-public: "false"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "tag-search"
+        hosts:
+          - host: "gaps.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - secretName: tls.gaps
+            hosts:
+              - gaps.${SECRET_DOMAIN}
+
+    persistence:
+      data:
+        enabled: true
+        existingClaim: gaps-config-v1
+
+    resources:
+      requests:
+        cpu: 15m
+        memory: 588M
+      limits:
+        memory: 749M
