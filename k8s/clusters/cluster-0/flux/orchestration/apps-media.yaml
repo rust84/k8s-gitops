@@ -315,6 +315,8 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
+    - name: rook-ceph-cluster
+    - name: apps-media-plex
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/gaps"
   prune: true
