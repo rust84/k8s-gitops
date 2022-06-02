@@ -1,0 +1,63 @@
+{
+    "packageRules": [
+      {
+        "description": "Rook-Ceph image and chart",
+        "groupName": "Rook Ceph",
+        "matchPackagePatterns": ["rook.ceph"],
+        "matchDatasources": ["docker", "helm"],
+        "group": { "commitMessageTopic": "{{{groupName}}} group" },
+        "separateMinorPatch": true
+      },
+      {
+        "description": "External Snapshotter image and kustomization",
+        "groupName": "External Snapshotter",
+        "matchPackagePatterns": ["external-snapshotter", "snapshot-controller"],
+        "matchDatasources": ["docker", "github-tags"],
+        "group": { "commitMessageTopic": "{{{groupName}}} group" },
+        "separateMinorPatch": true
+      },
+      {
+        "description": "Thanos image and chart - versions do not match",
+        "groupName": "Thanos",
+        "matchPackagePatterns": ["thanos"],
+        "matchDatasources": ["docker", "github-releases", "helm"],
+        "matchUpdateTypes": ["minor", "patch"],
+        "group": { "commitMessageTopic": "{{{groupName}}} group" },
+        "separateMinorPatch": false
+      },
+      {
+        "description": "Vector image and chart - versions do not match",
+        "groupName": "Vector",
+        "matchPackagePatterns": ["vector"],
+        "matchDatasources": ["docker", "github-releases", "helm"],
+        "matchUpdateTypes": ["minor", "patch"],
+        "group": { "commitMessageTopic": "{{{groupName}}} group" },
+        "separateMinorPatch": false
+      },
+      {
+        "description": "Kubernetes images",
+        "groupName": "kubernetes",
+        "matchDatasources": ["docker"],
+        "matchPackageNames": [
+          "k8s.gcr.io/kube-apiserver",
+          "k8s.gcr.io/kube-controller-manager",
+          "k8s.gcr.io/kube-scheduler",
+          "ghcr.io/siderolabs/kubelet"
+        ],
+        "group": { "commitMessageTopic": "{{{groupName}}} group" },
+        "separateMinorPatch": true
+      },
+      {
+        "description": "Cilium image and chart",
+        "groupName": "cilium",
+        "matchDatasources": ["helm", "docker"],
+        "matchPackageNames": [
+          "quay.io/cilium/cilium",
+          "quay.io/cilium/operator-generic",
+          "cilium"
+        ],
+        "group": { "commitMessageTopic": "{{{groupName}}} group" },
+        "separateMinorPatch": true
+      }
+    ]
+  }
