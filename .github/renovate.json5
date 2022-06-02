@@ -1,6 +1,6 @@
 {
   // General RenovateBot configuration
-  extends: [
+  "extends": [
     ":enableRenovate",
     "config:base",
     ":disableRateLimiting",
@@ -11,97 +11,96 @@
     ":enablePreCommit",
     "github>rust84/k8s-gitops//.github/renovate/commitMessage",
     "github>rust84/k8s-gitops//.github/renovate/labels",
-    // "github>rust84/k8s-gitops//.github/renovate/privateModules",
     "github>rust84/k8s-gitops//.github/renovate/semanticCommits",
     "github>rust84/k8s-gitops//.github/renovate/allowedVersions",
     "github>rust84/k8s-gitops//.github/renovate/autoMerge",
-    "github>rust84/k8s-gitops//.github/renovate/groups",
+    "github>rust84/k8s-gitops//.github/renovate/groups"
   ],
-  platform: "github",
-  username: "rust84-bot[bot]",
-  repositories: ["rust84/k8s-gitops"],
-  onboarding: false,
-  requireConfig: false,
-  gitAuthor: "rust84-bot <103048774+rust84-bot[bot]@users.noreply.github.com>",
-  timezone: "Europe/London",
-  dependencyDashboardTitle: "Renovate Dashboard",
-  suppressNotifications: ["prIgnoreNotification"],
-  rebaseWhen: "conflicted",
+  "platform": "github",
+  "username": "rust84-bot[bot]",
+  "repositories": ["rust84/k8s-gitops"],
+  "onboarding": false,
+  "requireConfig": false,
+  "gitAuthor": "rust84-bot <103048774+rust84-bot[bot]@users.noreply.github.com>",
+  "timezone": "Europe/London",
+  "dependencyDashboardTitle": "Renovate Dashboard",
+  "suppressNotifications": ["prIgnoreNotification"],
+  "rebaseWhen": "conflicted",
   // Set up Renovate Managers
-  helmv3: {
-    fileMatch: ["k8s/charts/.+/Chart\\.yaml$"],
+  "helmv3": {
+    "fileMatch": ["k8s/charts/.+/Chart\\.yaml$"]
   },
   "helm-values": {
-    fileMatch: [
+    "fileMatch": [
       "k8s/clusters/.+/helm-release\\.yaml$",
-      "k8s/global/.+/helm-release\\.yaml$",
-    ],
+      "k8s/global/.+/helm-release\\.yaml$"
+    ]
   },
-  kubernetes: {
-    fileMatch: ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"],
+  "kubernetes": {
+    "fileMatch": ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"]
   },
-  flux: {
-    fileMatch: ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"],
+  "flux": {
+    "fileMatch": ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"]
   },
-  regexManagers: [
+  "regexManagers": [
     {
-      description: "Regex manager to read and process GitHub release artifacts",
-      fileMatch: ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"],
-      matchStrings: [
-        "https://github.com/(?<org>.*=?)/(?<repo>.*=?)/releases/download/(?<currentValue>.*=?)/.*",
+      "description": "Regex manager to read and process GitHub release artifacts",
+      "fileMatch": ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"],
+      "matchStrings": [
+        "https://github.com/(?<org>.*=?)/(?<repo>.*=?)/releases/download/(?<currentValue>.*=?)/.*"
       ],
-      datasourceTemplate: "github-releases",
-      depNameTemplate: "{{org}}/{{repo}}",
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "{{org}}/{{repo}}"
     },
     {
-      description: "Generic Regex manager",
-      fileMatch: ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"],
-      matchStrings: [
-        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( registryUrl=(?<registryUrl>.*?))?( versioning=(?<versioning>.*=?))?\n .*: (?<currentValue>.*=?)",
+      "description": "Generic Regex manager",
+      "fileMatch": ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>.*?) depName=(?<depName>.*?)( registryUrl=(?<registryUrl>.*?))?( versioning=(?<versioning>.*=?))?\n .*: (?<currentValue>.*=?)"
       ],
-      versioningTemplate: "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
-      registryUrlTemplate: "{{#if registryUrl}}{{{registryUrl}}}{{else}}{{/if}}",
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}",
+      "registryUrlTemplate": "{{#if registryUrl}}{{{registryUrl}}}{{else}}{{/if}}"
     },
     {
-      description: "Generic Docker image Regex manager",
-      fileMatch: ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"],
-      matchStrings: [
-        "# renovate: docker-image( registryUrl=(?<registryUrl>.*?))?( versioning=(?<versioning>.*=?))?\n .*: (?<depName>.*?):(?<currentValue>.*=?)",
+      "description": "Generic Docker image Regex manager",
+      "fileMatch": ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"],
+      "matchStrings": [
+        "# renovate: docker-image( registryUrl=(?<registryUrl>.*?))?( versioning=(?<versioning>.*=?))?\n .*: (?<depName>.*?):(?<currentValue>.*=?)"
       ],
-      datasourceTemplate: "docker",
-      versioningTemplate: "{{#if versioning}}{{{versioning}}}{{else}}docker{{/if}}",
-      registryUrlTemplate: "{{#if registryUrl}}{{{registryUrl}}}{{else}}{{/if}}",
-    },
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}docker{{/if}}",
+      "registryUrlTemplate": "{{#if registryUrl}}{{{registryUrl}}}{{else}}{{/if}}"
+    }
   ],
-  packageRules: [
+  "packageRules": [
     // Setup datasources
     {
-      matchDatasources: ["helm"],
-      ignoreDeprecated: true,
+      "matchDatasources": ["helm"],
+      "ignoreDeprecated": true
     },
     {
-      matchDatasources: ["docker"],
-      commitMessageExtra: "to {{newVersion}}",
+      "matchDatasources": ["docker"],
+      "commitMessageExtra": "to {{newVersion}}"
     },
     // Custom version schemes
     {
-      matchDatasources: ["docker"],
-      matchPackageNames: ["blakeblackshear/frigate"],
-      versioning: "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<compatibility>.*)$",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["blakeblackshear/frigate"],
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<compatibility>.*)$"
     },
     {
-      matchDatasources: ["docker"],
-      matchPackageNames: [
+      "matchDatasources": ["docker"],
+      "matchPackageNames": [
         "ghcr.io/linuxserver/calibre",
-        "ghcr.io/linuxserver/calibre-web",
+        "ghcr.io/linuxserver/calibre-web"
       ],
-      versioning: "regex:^version-v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$",
+      "versioning": "regex:^version-v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
     },
     // Version strategies
     {
-      matchDatasources: ["docker"],
-      matchPackageNames: ["ghcr.io/k8s-at-home/plex"],
-      versioning: "loose",
-    },
-  ],
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/k8s-at-home/plex"],
+      "versioning": "loose"
+    }
+  ]
 }
