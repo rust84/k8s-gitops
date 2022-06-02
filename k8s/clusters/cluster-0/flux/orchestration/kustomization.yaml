@@ -8,7 +8,6 @@ resources:
   - apps-media.yaml
   - apps-security.yaml
   - core-cert-manager.yaml
-  - core-certificates.yaml
   - core-cilium.yaml
   - core-flux-system-add-ons.yaml
   - core-kasten-io.yaml
