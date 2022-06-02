@@ -62,7 +62,7 @@ spec:
         type: emptyDir
     podSecurityContext:
       supplementalGroups:
-        - 1000
+        - 1001
         - 100
     tolerations:
       - key: "arm"
