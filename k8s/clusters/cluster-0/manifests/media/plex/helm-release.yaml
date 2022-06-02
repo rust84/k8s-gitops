@@ -23,10 +23,9 @@ spec:
     env:
       TZ: "Europe/London"
     podSecurityContext:
-      supplementalGroups:
-        - 44
-        - 109
-        - 100
+      runAsUser: 1001
+      runAsGroup: 1001
+      fsGroup: 1001
     service:
       main:
         type: LoadBalancer
