@@ -23,9 +23,9 @@ spec:
     env:
       TZ: "Europe/London"
     podSecurityContext:
-      runAsUser: 1001
-      runAsGroup: 1001
-      fsGroup: 1001
+      supplementalGroups:
+        - 1001
+        - 100
     service:
       main:
         type: LoadBalancer
@@ -58,21 +58,16 @@ spec:
       config:
         enabled: true
         existingClaim: plex-kube-plex-config
-      transcode:
-        enabled: true
-        type: emptyDir
-        medium: Memory
-      tmp:
-        enabled: true
-        type: emptyDir
-        medium: Memory
-      nfs-media:
+      media:
         enabled: true
         type: nfs
         server: "nas.${SECRET_DOMAIN}"
         path: /mnt/borg/share
         mountPath: /data
-        readOnly: false
+        readOnly: true
+      transcode:
+        enabled: true
+        type: emptyDir
     podAnnotations:
       backup.velero.io/backup-volumes: config
       configmap.reloader.stakater.com/reload: "plex-promtail"
