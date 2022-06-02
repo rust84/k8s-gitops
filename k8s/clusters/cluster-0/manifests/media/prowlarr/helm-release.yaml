@@ -52,9 +52,9 @@ spec:
       limits:
         memory: 500Mi
     podSecurityContext:
-      runAsUser: 1001
-      runAsGroup: 1001
-      fsGroup: 1001
+      supplementalGroups:
+        - 1001
+        - 100
     prometheus:
       podMonitor:
         enabled: true

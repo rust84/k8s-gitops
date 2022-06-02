@@ -69,9 +69,9 @@ spec:
         mountPath: /media
         readOnly: false
     podSecurityContext:
-      runAsUser: 1001
-      runAsGroup: 1001
-      fsGroup: 1001
+      supplementalGroups:
+        - 1001
+        - 100
     resources:
       requests:
         memory: 350Mi
