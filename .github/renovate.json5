@@ -70,6 +70,22 @@
       "datasourceTemplate": "docker",
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}docker{{/if}}",
       "registryUrlTemplate": "{{#if registryUrl}}{{{registryUrl}}}{{else}}{{/if}}"
+    },
+    {
+      "description": "Process GitRepository CRD dependencies - Chart and Github Release are the same version",
+      "fileMatch": ["k8s/clusters/.+\\.ya?ml$"],
+      "matchStrings": [
+        "registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n.*?(?<currentValue>[^-\\s]*)\n"
+      ],
+      "datasourceTemplate": "helm"
+    },
+    {
+      "description": "Process Kustomization CRD dependencies - Image and Github Release are the same version",
+      "fileMatch": ["k8s/clusters/.+\\.ya?ml$"],
+      "matchStrings": [
+        "datasource=(?<datasource>\\S+) image=(?<depName>\\S+)\n.*?-\\s(.*?)\/(?<currentValue>[^/]+)\/[^/]+\n"
+      ],
+      "datasourceTemplate": "docker"
     }
   ],
   "packageRules": [
