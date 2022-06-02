@@ -11,9 +11,7 @@ resources:
   - core-certificates.yaml
   - core-cilium.yaml
   - core-flux-system-add-ons.yaml
-  - core-intel-gpu-plugin.yaml
   - core-kasten-io.yaml
   - core-monitoring.yaml
   - core-rook-ceph.yaml
-  - core-traefik.yaml
   - core-kube-system.yaml
