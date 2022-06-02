@@ -92,6 +92,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
+    - name: traefik-crds
     - name: core-cilium
     - name: core-cert-manager
   interval: 5m

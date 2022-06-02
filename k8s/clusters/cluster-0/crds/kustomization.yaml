@@ -6,3 +6,4 @@ resources:
   - external-snapshotter
   - kube-prometheus-stack
   - rook-ceph
+  - traefik
