@@ -61,9 +61,9 @@ spec:
         enabled: true
         type: emptyDir
     podSecurityContext:
-      runAsUser: 1001
-      runAsGroup: 1001
-      fsGroup: 1001
+      supplementalGroups:
+        - 1000
+        - 100
     tolerations:
       - key: "arm"
         operator: "Exists"
