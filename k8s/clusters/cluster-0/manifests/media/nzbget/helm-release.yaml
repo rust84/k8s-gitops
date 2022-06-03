@@ -20,10 +20,6 @@ spec:
     image:
       repository: ghcr.io/k8s-at-home/nzbget
       tag: v21.1
-    # service:
-    #   main:
-    #     type: LoadBalancer
-    #     loadBalancerIP: 10.1.0.153
     env:
       TZ: "Europe/London"
     ingress:
@@ -61,9 +57,9 @@ spec:
         enabled: true
         type: emptyDir
     podSecurityContext:
-      supplementalGroups:
-        - 1001
-        - 100
+      runAsUser: 1001
+      runAsGroup: 1001
+      fsGroup: 1001
     tolerations:
       - key: "arm"
         operator: "Exists"
