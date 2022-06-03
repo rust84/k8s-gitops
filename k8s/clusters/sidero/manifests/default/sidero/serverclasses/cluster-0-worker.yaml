@@ -33,12 +33,12 @@ spec:
     - op: add
       path: /machine/install/extraKernelArgs
       value:
-        - talos.logging.kernel=udp://vector.trux.dev:6050/
+        - talos.logging.kernel=udp://vector.${SECRET_DOMAIN}:6050/
 
     - op: add
-      path: /logging/destinations
+      path: /machine/logging/destinations
       value:
-        - endpoint: talos.logging.kernel=udp://vector.trux.dev:6051/
+        - endpoint: talos.logging.kernel=udp://vector.${SECRET_DOMAIN}:6051/
           format: json_lines
 
   selector:
