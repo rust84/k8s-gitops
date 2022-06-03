@@ -47,6 +47,49 @@ spec:
           type: vector
           version: "2"
 
+        talos_kernel_logs:
+          address: 0.0.0.0:6050
+          type: socket
+          mode: udp
+          max_length: 102400
+          decoding:
+            codec: json
+          host_key: __host
+
+        talos_service_logs:
+          address: 0.0.0.0:6051
+          type: socket
+          mode: udp
+          max_length: 102400
+          decoding:
+            codec: json
+          host_key: __host
+
+      # Transforms
+      transforms:
+        talos_kernel_logs_xform:
+          type: remap
+          inputs:
+            - talos_kernel_logs
+          source: |-
+            .__host = replace(.__host, "10.20.0.120", "cp-0")
+            .__host = replace(.__host, "10.20.0.115", "cp-1")
+            .__host = replace(.__host, "10.20.0.121", "cp-2")
+            .__host = replace(.__host, "10.20.0.128", "node-0")
+            .__host = replace(.__host, "10.20.0.125", "node-1")
+            .__host = replace(.__host, "10.20.0.127", "node-2")
+        talos_service_logs_xform:
+          type: remap
+          inputs:
+            - talos_service_logs
+          source: |-
+            .__host = replace(.__host, "10.20.0.120", "cp-0")
+            .__host = replace(.__host, "10.20.0.115", "cp-1")
+            .__host = replace(.__host, "10.20.0.121", "cp-2")
+            .__host = replace(.__host, "10.20.0.128", "node-0")
+            .__host = replace(.__host, "10.20.0.125", "node-1")
+            .__host = replace(.__host, "10.20.0.127", "node-2")
+
       # Sinks
       sinks:
         loki_kubernetes:
@@ -76,6 +119,53 @@ spec:
               {{`{{ kubernetes.pod_node_name }}`}}
             pod: >-
               {{`{{ kubernetes.pod_name }}`}}
+
+        talos_kernel:
+          type: loki
+          inputs:
+            - talos_kernel_logs_xform
+          endpoint: http://loki:3100
+          encoding:
+            codec: json
+            except_fields:
+              - __host
+          batch:
+            max_bytes: 1048576
+          out_of_order_action: rewrite_timestamp
+          labels:
+            hostname: >-
+              {{`{{ __host }}`}}
+            service: >-
+              {{`{{ facility }}`}}
+
+        talos_service:
+          type: loki
+          inputs:
+            - talos_service_logs_xform
+          endpoint: http://loki:3100
+          encoding:
+            codec: json
+            except_fields:
+              - __host
+          batch:
+            max_bytes: 400000
+          out_of_order_action: rewrite_timestamp
+          labels:
+            hostname: >-
+              {{`{{ __host }}`}}
+            service: >-
+              {{`{{ "talos-service" }}`}}
+
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: vector-aggregator
+
+    resources:
+      requests:
+        cpu: 22m
+        memory: 145M
+      limits:
+        memory: 214M
+
   postRenderers:
     - kustomize:
         patchesJson6902:
