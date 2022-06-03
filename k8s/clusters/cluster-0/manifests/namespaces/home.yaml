@@ -4,5 +4,4 @@ kind: Namespace
 metadata:
   name: home
   labels:
-    istio-injection: disabled
     goldilocks.fairwinds.com/enabled: "true"

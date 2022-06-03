@@ -9,7 +9,6 @@ resources:
   - home.yaml
   - kasten-io.yaml
   - kube-system.yaml
-  - logs.yaml
   - media.yaml
   - monitoring.yaml
   - network.yaml
