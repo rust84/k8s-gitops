@@ -72,23 +72,23 @@ spec:
           inputs:
             - talos_kernel_logs
           source: |-
-            .__host = replace(.__host, "10.20.0.120", "cp-0")
-            .__host = replace(.__host, "10.20.0.115", "cp-1")
-            .__host = replace(.__host, "10.20.0.121", "cp-2")
-            .__host = replace(.__host, "10.20.0.128", "node-0")
-            .__host = replace(.__host, "10.20.0.125", "node-1")
-            .__host = replace(.__host, "10.20.0.127", "node-2")
+            .__host, err = replace(.__host, "10.20.0.120", "cp-0")
+            .__host, err = replace(.__host, "10.20.0.115", "cp-1")
+            .__host, err = replace(.__host, "10.20.0.121", "cp-2")
+            .__host, err = replace(.__host, "10.20.0.128", "node-0")
+            .__host, err = replace(.__host, "10.20.0.125", "node-1")
+            .__host, err = replace(.__host, "10.20.0.127", "node-2")
         talos_service_logs_xform:
           type: remap
           inputs:
             - talos_service_logs
           source: |-
-            .__host = replace(.__host, "10.20.0.120", "cp-0")
-            .__host = replace(.__host, "10.20.0.115", "cp-1")
-            .__host = replace(.__host, "10.20.0.121", "cp-2")
-            .__host = replace(.__host, "10.20.0.128", "node-0")
-            .__host = replace(.__host, "10.20.0.125", "node-1")
-            .__host = replace(.__host, "10.20.0.127", "node-2")
+            .__host, err = replace(.__host, "10.20.0.120", "cp-0")
+            .__host, err = replace(.__host, "10.20.0.115", "cp-1")
+            .__host, err = replace(.__host, "10.20.0.121", "cp-2")
+            .__host, err = replace(.__host, "10.20.0.128", "node-0")
+            .__host, err = replace(.__host, "10.20.0.125", "node-1")
+            .__host, err = replace(.__host, "10.20.0.127", "node-2")
 
       # Sinks
       sinks:
