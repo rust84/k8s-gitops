@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: trueosiris/vrising
-      tag: 1.9
+      tag: "1.9"
     nameOverride: vrising
     env:
       TZ: "Europe/London"
