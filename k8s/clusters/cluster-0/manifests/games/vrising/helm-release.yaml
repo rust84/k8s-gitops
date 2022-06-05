@@ -46,6 +46,14 @@ spec:
             protocol: UDP
             targetPort: 27016
 
+    probes:
+      liveness:
+        enabled: false
+      readiness:
+        enabled: false
+      startup:
+        enabled: false
+
     resources:
       requests:
         memory: 500Mi
