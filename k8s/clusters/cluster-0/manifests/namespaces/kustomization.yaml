@@ -6,6 +6,7 @@ resources:
   - collab.yaml
   - default.yaml
   - flux-system.yaml
+  - games.yaml
   - home.yaml
   - kasten-io.yaml
   - kube-system.yaml
