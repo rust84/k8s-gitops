@@ -67,6 +67,9 @@ spec:
         mountPath: /mnt/vrising
         existingClaim: vrising-config-v1
 
+    podAnnotations:
+      secret.reloader.stakater.com/reload: "vrising"
+
   valuesFrom:
     - kind: Secret
       name: vrising
