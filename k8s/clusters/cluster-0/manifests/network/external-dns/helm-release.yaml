@@ -29,6 +29,7 @@ spec:
     interval: "5m"
     logLevel: debug
     sources:
+      - crd
       - ingress
     provider: cloudflare
     cloudflare:
