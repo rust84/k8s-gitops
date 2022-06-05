@@ -26,6 +26,10 @@ spec:
       QUERYPORT: 27016
     service:
       main:
+        ports:
+          http:
+            port: 4000
+      server:
         enabled: true
         type: LoadBalancer
         loadBalancerIP: ${SVC_VRISING_ADDRESS}
