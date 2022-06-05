@@ -1,0 +1,66 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: vrising
+  namespace: games
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: kah-common-chart
+      version: 1.1.2
+      sourceRef:
+        kind: HelmRepository
+        name: k8s-at-home-charts
+        namespace: flux-system
+      interval: 5m
+  values:
+    image:
+      repository: trueosiris/vrising
+      tag: 1.9
+    nameOverride: vrising
+    env:
+      GAMEPORT: 27015
+      QUERYPORT: 27016
+    service:
+      main:
+        type: LoadBalancer
+        loadBalancerIP: ${SVC_VRISING_ADDRESS}
+        externalTrafficPolicy: Local
+        ports:
+          server:
+            enabled: true
+            port: 27015
+            protocol: UDP
+            targetPort: 27015
+          query:
+            enabled: true
+            port: 27016
+            protocol: UDP
+            targetPort: 27016
+
+    resources:
+      requests:
+        memory: 500Mi
+        cpu: 100m
+      limits:
+        memory: 2000Mi
+
+    persistence:
+      config:
+        enabled: true
+        mountPath: /mnt/vrising
+        existingClaim: vrising-config-v1
+
+  valuesFrom:
+    - kind: Secret
+      name: vrising
+      valuesKey: server_name
+      targetPath: env.SERVERNAME
+      optional: false
+    - kind: Secret
+      name: vrising
+      valuesKey: world_name
+      targetPath: env.WORLDNAME
+      optional: false
