@@ -26,24 +26,21 @@ spec:
       QUERYPORT: 27016
     service:
       main:
-        ports:
-          http:
-            port: 4000
-      server:
-        type: LoadBalancer
-        loadBalancerIP: ${SVC_VRISING_ADDRESS}
-        externalTrafficPolicy: Local
-        port: 27015
-        protocol: UDP
-        targetPort: 27015
-      query:
         enabled: true
         type: LoadBalancer
         loadBalancerIP: ${SVC_VRISING_ADDRESS}
         externalTrafficPolicy: Local
-        port: 27016
-        protocol: UDP
-        targetPort: 27016
+        ports:
+          server:
+            enabled: true
+            port: 27015
+            protocol: UDP
+            targetPort: 27015
+          query:
+            enabled: true
+            port: 27016
+            protocol: UDP
+            targetPort: 27016
 
     resources:
       requests:
