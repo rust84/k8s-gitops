@@ -17,8 +17,8 @@ spec:
       interval: 5m
   values:
     image:
-      repository: bjg96/vrising-server
-      tag: latest
+      repository: trueosiris/vrising
+      tag: "1.9"
     nameOverride: vrising
     env:
       TZ: "Europe/London"
@@ -64,7 +64,7 @@ spec:
     persistence:
       config:
         enabled: true
-        mountPath: /data
+        mountPath: /mnt/vrising
         existingClaim: vrising-config-v1
 
     podAnnotations:
