@@ -64,8 +64,12 @@ spec:
     persistence:
       config:
         enabled: true
-        mountPath: /mnt/vrising
+        mountPath: /mnt/vrising/persistentdata
         existingClaim: vrising-config-v1
+      server:
+        enabled: true
+        type: emptyDir
+        mountPath: /mnt/vrising/server
 
     podAnnotations:
       secret.reloader.stakater.com/reload: "vrising"
