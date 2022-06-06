@@ -22,8 +22,8 @@ spec:
     nameOverride: vrising
     env:
       TZ: "Europe/London"
-      GAMEPORT: 9876
-      QUERYPORT: 9877
+      GAMEPORT: 27015
+      QUERYPORT: 27016
     service:
       main:
         ports:
@@ -37,14 +37,14 @@ spec:
         ports:
           server:
             enabled: true
-            port: 9876
+            port: 27015
             protocol: UDP
-            targetPort: 9876
+            targetPort: 27015
           query:
             enabled: true
-            port: 9877
+            port: 27016
             protocol: UDP
-            targetPort: 9877
+            targetPort: 27016
 
     probes:
       liveness:
