@@ -59,7 +59,7 @@ spec:
         memory: 2000Mi
         cpu: 100m
       limits:
-        memory: 3000Mi
+        memory: 3500Mi
 
     persistence:
       config:
