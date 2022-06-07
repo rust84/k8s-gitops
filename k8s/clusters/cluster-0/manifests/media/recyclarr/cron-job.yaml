@@ -43,6 +43,8 @@ spec:
                 # TODO(recyclarr): Remove once new version is pushed
                 - name: XDG_CONFIG_HOME
                   value: /config
+                - name: RECYCLARR_APP_DATA
+                  value: /config
               command:
                 - /app/recyclarr
               args:
@@ -62,6 +64,8 @@ spec:
                   value: "Europe/London"
                 # TODO(recyclarr): Remove once new version is pushed
                 - name: XDG_CONFIG_HOME
+                  value: /config
+                - name: RECYCLARR_APP_DATA
                   value: /config
               command:
                 - /app/recyclarr
