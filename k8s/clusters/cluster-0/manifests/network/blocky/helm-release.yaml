@@ -51,7 +51,7 @@ spec:
           - ads
             # - special
       clientLookup:
-        upstream: udp:10.20.0.1
+        upstream: tcp+udp:10.20.0.1
       prometheus:
         enable: true
         path: /metrics
