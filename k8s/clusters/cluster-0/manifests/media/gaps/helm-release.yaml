@@ -17,7 +17,6 @@ spec:
       interval: 5m
   values:
     image:
-      # -- image repository
       repository: housewrecker/gaps
       tag: x64-v0.10.1
     env:

@@ -9,7 +9,6 @@ spec:
   releaseName: unifi
   chart:
     spec:
-      # renovate: registryUrl=https://k8s-at-home.com/charts/
       chart: unifi
       version: 4.10.1
       sourceRef:
