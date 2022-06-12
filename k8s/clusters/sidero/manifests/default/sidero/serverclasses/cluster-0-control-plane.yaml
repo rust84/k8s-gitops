@@ -10,24 +10,24 @@ spec:
   configPatches:
     - op: replace
       path: /cluster/apiServer/image
-      # renovate: datasource=docker depName=k8s.gcr.io/kube-apiserver versioning=docker
+      # renovate: docker-image
       value: k8s.gcr.io/kube-apiserver:v1.23.7
     - op: replace
       path: /cluster/controllerManager/image
-      # renovate: datasource=docker depName=k8s.gcr.io/kube-controller-manager versioning=docker
+      # renovate: docker-image
       value: k8s.gcr.io/kube-controller-manager:v1.23.7
     - op: replace
       path: /cluster/scheduler/image
-      # renovate: datasource=docker depName=k8s.gcr.io/kube-scheduler versioning=docker
+      # renovate: docker-image
       value: k8s.gcr.io/kube-scheduler:v1.23.7
     - op: replace
       path: /machine/kubelet/image
-      # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet versioning=docker
+      # renovate: docker-image
       value: ghcr.io/siderolabs/kubelet:v1.23.7
     - op: add
       path: /cluster/coreDNS
       value:
-        # renovate: datasource=docker depName=docker.io/coredns/coredns versioning=docker
+        # renovate: docker-image
         image: docker.io/coredns/coredns:1.9.3
 
     - op: replace
