@@ -44,6 +44,15 @@
   },
   "regexManagers": [
     {
+      "description": "Regex manager to read and process GitHub release artifacts",
+      "fileMatch": ["k8s/.+\\.ya?ml$"],
+      "matchStrings": [
+        "https://github.com/(?<org>.*=?)/(?<repo>.*=?)/releases/download/(?<currentValue>.*=?)/.*"
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "{{org}}/{{repo}}"
+    },
+    {
       "description": "Process various dependencies",
       "fileMatch": ["k8s/.+\\.ya?ml$"],
       "matchStrings": [
@@ -68,16 +77,6 @@
         "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n *tag: v(?<currentValue>.*)\n"
       ],
       "datasourceTemplate": "helm"
-    },
-    {
-      "description": "Generic Docker image Regex manager",
-      "fileMatch": ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"],
-      "matchStrings": [
-        "# renovate: docker-image( registryUrl=(?<registryUrl>.*?))?( versioning=(?<versioning>.*=?))?\n .*: (?<depName>.*?):(?<currentValue>.*=?)"
-      ],
-      "datasourceTemplate": "docker",
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}docker{{/if}}",
-      "registryUrlTemplate": "{{#if registryUrl}}{{{registryUrl}}}{{else}}{{/if}}"
     }
   ],
   "packageRules": [
