@@ -6,6 +6,7 @@ metadata:
   namespace: default
 spec:
   kernel:
+    # renovate: datasource=github-releases depName=siderolabs/talos
     url: https://github.com/siderolabs/talos/releases/download/v1.0.5/vmlinuz-arm64
     args:
       - console=tty0
@@ -25,4 +26,5 @@ spec:
       - talos.config=http://${LB_SIDERO}:8081/configdata?uuid=
       - talos.platform=metal
   initrd:
+    # renovate: datasource=github-releases depName=siderolabs/talos
     url: https://github.com/siderolabs/talos/releases/download/v1.0.5/initramfs-arm64.xz
