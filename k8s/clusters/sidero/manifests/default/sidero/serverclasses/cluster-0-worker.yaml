@@ -6,9 +6,7 @@ metadata:
 spec:
   configPatches:
     - op: replace
-      path:
-        /machine/kubelet/image
-        # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+      path: /machine/kubelet/image
       value: ghcr.io/siderolabs/kubelet:v1.23.7
 
     - op: replace
