@@ -21,6 +21,7 @@ resources:
   - kasten-charts.yaml
   - kubernetes-sigs-descheduler-charts.yaml
   - kubernetes-stable-charts.yaml
+  - kyverno-charts.yaml
   - nfs-subdir-external-provisioner-charts.yaml
   - node-feature-discovery-charts.yaml
   - rook-ceph-charts.yaml
