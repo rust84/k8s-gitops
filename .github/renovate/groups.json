@@ -66,6 +66,14 @@
       "matchPackageNames": ["ghcr.io/goauthentik/server", "authentik"],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
       "separateMinorPatch": true
+    },
+    {
+      "description": "Cert Manager CRDs and chart",
+      "groupName": "cert-manager",
+      "matchDatasources": ["helm", "docker"],
+      "matchPackagePatterns": ["cert-manager"],
+      "group": { "commitMessageTopic": "{{{groupName}}} group" },
+      "separateMinorPatch": true
     }
   ]
 }
