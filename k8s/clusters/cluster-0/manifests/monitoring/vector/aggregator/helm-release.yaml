@@ -71,7 +71,7 @@ spec:
           inputs:
             - talos_kernel_logs
           source: |-
-            r1, err = replace!(.__host, "10.20.0.120", "cp-0")
+            r1, err = replace(.__host, "10.20.0.120", "cp-0")
             r2 = replace(r1, "10.20.0.115", "cp-1")
             r3 = replace(r2, "10.20.0.121", "cp-2")
             r4 = replace(r3, "10.20.0.128", "node-0")
@@ -82,7 +82,7 @@ spec:
           inputs:
             - talos_service_logs
           source: |-
-            r1, err = replace!(.__host, "10.20.0.120", "cp-0")
+            r1, err = replace(.__host, "10.20.0.120", "cp-0")
             r2 = replace(r1, "10.20.0.115", "cp-1")
             r3 = replace(r2, "10.20.0.121", "cp-2")
             r4 = replace(r3, "10.20.0.128", "node-0")
