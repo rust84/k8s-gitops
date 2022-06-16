@@ -12,8 +12,13 @@
     },
     {
       "matchDatasources": ["docker"],
-      "matchPackageNames": ["tomsquest/docker-radicale"],
-      "allowedVersions": "/^[0-9]+\\.[0-9]+\\.[0-9]+(\\.[0-9]+)?$/"
+      "matchPackageNames": [
+        "k8s.gcr.io/kube-apiserver",
+        "k8s.gcr.io/kube-controller-manager",
+        "k8s.gcr.io/kube-scheduler",
+        "ghcr.io/siderolabs/kubelet"
+      ],
+      "allowedVersions": "<1.24"
     }
   ]
 }
