@@ -15,7 +15,8 @@
       "matchPackageNames": [
         "kube-prometheus-stack",
         "lycheeverse/lychee-action",
-        "zricethezav/gitleaks"
+        "zricethezav/gitleaks",
+        "renovatebot/github-action"
       ]
     }
   ]
