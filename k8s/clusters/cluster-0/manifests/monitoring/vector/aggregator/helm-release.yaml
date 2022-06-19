@@ -132,10 +132,11 @@ spec:
             max_bytes: 1048576
           out_of_order_action: rewrite_timestamp
           labels:
-            hostname: >-
-              {{`{{ __host }}`}}
+            node: >-
+              {{`{{ node }}`}}
             service: >-
               {{`{{ facility }}`}}
+            namespace: "talos:kernel"
 
         talos_service:
           type: loki
@@ -150,10 +151,11 @@ spec:
             max_bytes: 400000
           out_of_order_action: rewrite_timestamp
           labels:
-            hostname: >-
-              {{`{{ __host }}`}}
+            node: >-
+              {{`{{ node }}`}}
             service: >-
               {{`{{ "talos-service" }}`}}
+            namespace: "talos:service"
 
     podAnnotations:
       configmap.reloader.stakater.com/reload: vector-aggregator
