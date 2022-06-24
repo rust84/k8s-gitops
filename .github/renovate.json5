@@ -9,6 +9,8 @@
     ":separatePatchReleases",
     "docker:enableMajor",
     ":enablePreCommit",
+    ":automergeDigest",
+    ":automergeBranchPush",
     "github>rust84/k8s-gitops//.github/renovate/commitMessage",
     "github>rust84/k8s-gitops//.github/renovate/labels",
     "github>rust84/k8s-gitops//.github/renovate/semanticCommits",
