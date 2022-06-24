@@ -1,17 +1,14 @@
 ---
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-resources:
-  - dashboard
-  - config-pvc.yaml
-  - secret.enc.yaml
-  - helm-release.yaml
-namespace: home
+namespace: flux-system
 configMapGenerator:
-  - name: frigate-config
+  - name: blocky-dashboard
     files:
-      - config.yaml
+      - https://raw.githubusercontent.com/0xERR0R/blocky/v0.13/docs/blocky-grafana.json
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
     kustomize.toolkit.fluxcd.io/substitute: disabled
+  labels:
+    grafana_dashboard: "true"

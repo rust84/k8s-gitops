@@ -16,10 +16,6 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
-    deploymentStrategy:
-      type: Recreate
-    podAnnotations:
-      configmap.reloader.stakater.com/reload: "grafana"
     persistence:
       enabled: true
       existingClaim: grafana-config-pvc
@@ -27,6 +23,9 @@ spec:
       GF_EXPLORE_ENABLED: true
       GF_PANELS_DISABLE_SANITIZE_HTML: true
       GF_LOG_FILTERS: rendering:debug
+      GF_DATE_FORMATS_FULL_DATE: "MMM Do, YYYY hh:mm:ss a"
+      GF_SECURITY_ALLOW_EMBEDDING: true
+      GF_SECURITY_COOKIE_SAMESITE: grafana
     adminPassword: "${SECRET_GRAFANA_PASSWORD}"
     ingress:
       enabled: true
@@ -59,71 +58,21 @@ spec:
               path: /var/lib/grafana/dashboards/default
     dashboards:
       default:
-        blocky:
-          url: https://raw.githubusercontent.com/0xERR0R/blocky/v0.13/docs/blocky-grafana.json
-          datasource: Prometheus
         ceph-cluster:
           gnetId: 2842
           revision: 14
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/5336
         ceph-osd:
           gnetId: 5336
           revision: 5
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/5342
         ceph-pools:
           gnetId: 5342
           revision: 5
           datasource: Prometheus
-        emq:
-          url: https://raw.githubusercontent.com/emqx/emqx-prometheus/master/grafana_template/EMQ.json
-          datasource: Prometheus
-        emq-dashboard:
-          url: https://raw.githubusercontent.com/emqx/emqx-prometheus/master/grafana_template/EMQ_Dashboard.json
-          datasource: Prometheus
-        emq-vm:
-          url: https://raw.githubusercontent.com/emqx/emqx-prometheus/master/grafana_template/ErlangVM.json
-          datasource: Prometheus
-        flux-cluster:
-          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/cluster.json
-          datasource: Prometheus
-        flux-control-plane:
-          url: https://raw.githubusercontent.com/fluxcd/flux2/main/manifests/monitoring/monitoring-config/dashboards/control-plane.json
-          datasource: Prometheus
-        frigate:
-          url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/frigate.json
-          datasource: Prometheus
         node-exporter-full:
           gnetId: 1860
-          revision: 23
-          datasource: Prometheus
-        prometheus-exporter-summary:
-          url: https://raw.githubusercontent.com/billimek/k8s-gitops/master/monitoring/grafana/dashboards/prometheus_exporter_summary.json
-          datasource: Prometheus
-        thanos-overview:
-          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/overview.json
-          datasource: Prometheus
-        thanos-compact:
-          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/compact.json
-          datasource: Prometheus
-        thanos-querier:
-          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/query.json
-          datasource: Prometheus
-        thanos-store:
-          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/store.json
-          datasource: Prometheus
-        thanos-receiver:
-          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/receive.json
-          datasource: Prometheus
-        thanos-sidecar:
-          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/sidecar.json
-          datasource: Prometheus
-        thanos-ruler:
-          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/rule.json
-          datasource: Prometheus
-        thanos-replicate:
-          url: https://raw.githubusercontent.com/thanos-io/thanos/b5431c44a6f40fd8f2aef54747dd1eaf9dfcbd25/examples/dashboards/bucket-replicate.json
+          revision: 27
           datasource: Prometheus
         radarr-exportarr:
           gnetId: 12896
@@ -133,25 +82,18 @@ spec:
           gnetId: 12530
           revision: 2
           datasource: Prometheus
-        speedtest:
-          gnetId: 13665
-          revision: 4
-          datasource: Prometheus
         unifi-client-insights:
           gnetId: 11315
           revision: 8
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/11311
         unifi-network-sites:
           gnetId: 11311
           revision: 4
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/11314
         unifi-uap-insights:
           gnetId: 11314
           revision: 9
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/11312
         unifi-usw-insights:
           gnetId: 11312
           revision: 8
@@ -160,9 +102,11 @@ spec:
       dashboards:
         enabled: true
         searchNamespace: ALL
+        folderAnnotation: grafana_folder
+        provider:
+          foldersFromFilesStructure: true
       datasources:
         enabled: true
-        defaultDatasourceEnabled: false
         searchNamespace: ALL
     datasources:
       datasources.yaml:
@@ -209,7 +153,7 @@ spec:
         plugins: /var/lib/grafana/plugins
         provisioning: /etc/grafana/provisioning
       analytics:
-        check_for_updates: true
+        check_for_updates: false
       log:
         mode: console
       grafana_net:
