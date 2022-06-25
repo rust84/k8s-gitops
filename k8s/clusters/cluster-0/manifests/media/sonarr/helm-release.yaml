@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: ghcr.io/k8s-at-home/sonarr-develop
-      tag: v3.0.8.1537
+      tag: v3.0.8.1538@sha256:9ea2f65117e6c9be19a83178f79fa49033336892c8013b6aa3691347182a08d2
     env:
       TZ: "Europe/London"
     ingress:
