@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: ghcr.io/k8s-at-home/readarr-nightly
-      tag: v0.1.1.1377@sha256:4f633ae9b901de776a3d70bd23858c3e0854bbea38c0eaefbd23b00830041111
+      tag: v0.1.1.1377@sha256:23b15c67a0fefe6f700ce8fb325ab4baccc52991578c5b7ff29f61a5a9db8ea7
     env:
       TZ: "Europe/London"
     ingress:
