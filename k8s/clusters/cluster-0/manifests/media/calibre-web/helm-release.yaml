@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: ghcr.io/linuxserver/calibre-web
-      tag: version-0.6.18
+      tag: version-0.6.18@sha256:98a8e46c7050ff5bbedf6356735914c4f1b5ad3419a4bea22f37c9f0f9a04746
 
     env:
       TZ: "Europe/London"
