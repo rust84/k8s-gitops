@@ -76,7 +76,7 @@
       "description": "Generic Docker image Regex manager",
       "fileMatch": ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"],
       "matchStrings": [
-        "# renovate: docker-image( registryUrl=(?<registryUrl>.*?))?( versioning=(?<versioning>.*=?))?\n .*: (?<depName>.*?):(?<currentValue>.*=?)"
+        "docker-image(registryUrl=(?<registryUrl>.*?))?( versioning=(?<versioning>.*=?))?\n.*: (?<depName>.*?):(?<currentValue>.*=?)"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}docker{{/if}}",
@@ -132,6 +132,5 @@
       "matchPackageNames": ["ghcr.io/k8s-at-home/plex"],
       "versioning": "loose"
     }
-  ],
-  "ignoreDeps": ["emqx"]
+  ]
 }
