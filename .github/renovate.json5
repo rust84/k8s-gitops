@@ -132,5 +132,6 @@
       "matchPackageNames": ["ghcr.io/k8s-at-home/plex"],
       "versioning": "loose"
     }
-  ]
+  ],
+  "ignoreDeps": ["emqx"]
 }
