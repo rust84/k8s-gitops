@@ -5,7 +5,7 @@ namespace: network
 configMapGenerator:
   - name: blocky-dashboard
     files:
-      - https://raw.githubusercontent.com/0xERR0R/blocky/v0.13/docs/blocky-grafana.json
+      - https://raw.githubusercontent.com/0xERR0R/blocky/v0.19/docs/blocky-grafana.json
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
