@@ -76,7 +76,7 @@
       "description": "Generic Docker image Regex manager",
       "fileMatch": ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"],
       "matchStrings": [
-        "docker-image(registryUrl=(?<registryUrl>.*?))?( versioning=(?<versioning>.*=?))?\n.*: (?<depName>.*?):(?<currentValue>.*=?)"
+        "docker-image( registryUrl=(?<registryUrl>.*?))?( versioning=(?<versioning>.*=?))?\n.*: (?<depName>.*?):(?<currentValue>.*=?)"
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}docker{{/if}}",
