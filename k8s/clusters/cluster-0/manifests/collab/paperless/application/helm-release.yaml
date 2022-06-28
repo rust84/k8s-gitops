@@ -92,7 +92,7 @@ spec:
         type: nfs
         server: "nas.${SECRET_DOMAIN}"
         path: /mnt/borg/documents/paperless/incoming
-        mountPath: /usr/src/paperless/incoming
+        mountPath: /usr/src/paperless/consume
       export:
         enabled: true
         type: nfs
