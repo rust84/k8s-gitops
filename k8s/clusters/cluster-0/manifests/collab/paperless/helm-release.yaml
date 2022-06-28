@@ -8,7 +8,7 @@ spec:
   interval: 5m
   chart:
     spec:
-      chart: collab
+      chart: paperless
       version: 8.8.3
       sourceRef:
         kind: HelmRepository
