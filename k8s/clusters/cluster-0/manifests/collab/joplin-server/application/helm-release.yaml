@@ -28,6 +28,7 @@ spec:
           prometheus.io/protocol: tcp
 
     env:
+      TZ: "${TZ}"
       APP_BASE_URL: https://joplin.${SECRET_DOMAIN}
       APP_PORT: 22300
       DB_CLIENT: pg
