@@ -56,7 +56,6 @@ spec:
           external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
           hajimari.io/enable: "true"
           hajimari.io/icon: notebook-multiple
-          hajimari.io/appName: joplin
         hosts:
           - host: joplin.${SECRET_DOMAIN}
             paths:

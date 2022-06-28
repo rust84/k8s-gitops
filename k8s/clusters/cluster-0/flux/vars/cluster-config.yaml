@@ -8,6 +8,8 @@ data:
   CLUSTER_NAME: cluster-0
   CLUSTER_ID: "1"
 
+  TZ: "Europe/London"
+
   # Router Gateway IP
   GATEWAY_IP: "10.20.0.1"
 
