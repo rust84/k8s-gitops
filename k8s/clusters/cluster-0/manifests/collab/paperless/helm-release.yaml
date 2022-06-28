@@ -54,7 +54,7 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: file-outline
         hosts:
-          - host: joplin.${SECRET_DOMAIN}
+          - host: paperless.${SECRET_DOMAIN}
             paths:
               - path: /
                 pathType: Prefix
