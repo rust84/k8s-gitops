@@ -64,7 +64,7 @@ spec:
         tls:
           - hosts:
               - "joplin.${SECRET_DOMAIN}"
-            secretName: tls.paperless
+            secretName: tls.joplin
     postgresql:
       enabled: false
   valuesFrom:
