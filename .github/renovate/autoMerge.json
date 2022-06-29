@@ -1,6 +1,7 @@
 {
   "packageRules": [
     {
+      "description": "Auto merge container digests",
       "matchDatasources": ["docker"],
       "automerge": true,
       "automergeType": "branch",
@@ -9,22 +10,35 @@
       "matchPackagePattern": ["ghcr.io/k8s-at-home"]
     },
     {
-      "matchDatasources": [
-        "docker",
-        "github-actions",
-        "github-releases",
-        "github-tags",
-        "helm"
-      ],
+      "description": "Auto merge containers",
+      "matchDatasources": ["docker"],
+      "automerge": true,
+      "automergeType": "branch",
+      "requiredStatusChecks": null,
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackageNames": ["ghcr.io/k8s-at-home/prowlarr-nightly"]
+    },
+    {
+      "description": "Auto merge GitHub Actions",
+      "matchDatasources": ["github-tags"],
       "automerge": true,
       "automergeType": "branch",
       "requiredStatusChecks": null,
       "matchUpdateTypes": ["minor", "patch"],
       "matchPackageNames": [
-        "kube-prometheus-stack",
         "lycheeverse/lychee-action",
-        "zricethezav/gitleaks"
+        "zricethezav/gitleaks",
+        "renovatebot/github-action"
       ]
+    },
+    {
+      "description": "Auto merge Helm charts",
+      "matchDatasources": ["helm"],
+      "automerge": true,
+      "automergeType": "branch",
+      "requiredStatusChecks": null,
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchPackageNames": ["kube-prometheus-stack"]
     }
   ]
 }
