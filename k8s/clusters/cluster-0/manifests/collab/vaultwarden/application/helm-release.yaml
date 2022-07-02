@@ -77,11 +77,6 @@ spec:
   valuesFrom:
     - kind: Secret
       name: vaultwarden
-      valuesKey: postgres-password
-      targetPath: postgresql.auth.postgresPassword
-      optional: false
-    - kind: Secret
-      name: vaultwarden
       valuesKey: vaultwarden_admin_token
       targetPath: env.ADMIN_TOKEN
       optional: false

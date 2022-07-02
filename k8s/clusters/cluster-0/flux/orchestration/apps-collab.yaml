@@ -2,14 +2,36 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: apps-collab-vault
+  name: apps-collab-vault-database
   namespace: flux-system
 spec:
   dependsOn:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
   interval: 5m
-  path: "./k8s/clusters/cluster-0/manifests/collab/vaultwarden"
+  path: "./k8s/clusters/cluster-0/manifests/collab/vaultwarden/database"
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-gitops
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-collab-vault
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: rook-ceph-cluster
+    - name: apps-collab-vault-database
+  interval: 5m
+  path: "./k8s/clusters/cluster-0/manifests/collab/vaultwarden/application"
   prune: true
   wait: true
   sourceRef:
