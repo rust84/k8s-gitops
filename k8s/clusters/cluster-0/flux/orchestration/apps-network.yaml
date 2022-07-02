@@ -44,13 +44,34 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: apps-network-blocky
+  name: apps-network-blocky-redis
   namespace: flux-system
 spec:
   dependsOn:
     - name: cluster-namespaces
   interval: 5m
-  path: "./k8s/clusters/cluster-0/manifests/network/blocky"
+  path: "./k8s/clusters/cluster-0/manifests/network/blocky/redis"
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-gitops
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-network-blocky
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: apps-network-blocky-redis
+  interval: 5m
+  path: "./k8s/clusters/cluster-0/manifests/network/blocky/application"
   prune: true
   wait: true
   sourceRef:

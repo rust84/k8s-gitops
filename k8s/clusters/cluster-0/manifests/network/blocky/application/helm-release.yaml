@@ -23,12 +23,18 @@ spec:
       replicas: 3
       strategy: RollingUpdate
     env:
-      TZ: "Europe/London"
+      TZ: "${TZ}"
     # blocky configuration
     config: |
       upstream:
         default:
           - tcp+udp:10.20.0.1
+      redis:
+        address: blocky-redis-master.network.svc.cluster.local:6379
+        database: 2
+        required: true
+        connectionAttempts: 10
+        connectionCooldown: 3s
       conditional:
         mapping:
           microserver.space: tcp+udp:10.20.0.1
