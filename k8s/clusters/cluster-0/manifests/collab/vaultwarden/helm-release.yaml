@@ -75,11 +75,11 @@ spec:
         enabled: true
         existingClaim: data-vaultwarden-postgresql-0
   valuesFrom:
-    # - kind: Secret
-    #   name: vaultwarden
-    #   valuesKey: postgres-password
-    #   targetPath: postgresql.auth.postgresPassword
-    #   optional: false
+    - kind: Secret
+      name: vaultwarden
+      valuesKey: postgres-password
+      targetPath: postgresql.auth.postgresPassword
+      optional: false
     - kind: Secret
       name: vaultwarden
       valuesKey: vaultwarden_admin_token
