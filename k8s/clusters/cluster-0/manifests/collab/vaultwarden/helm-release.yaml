@@ -69,17 +69,16 @@ spec:
       secret.reloader.stakater.com/reload: "vaultwarden"
     postgresql:
       enabled: true
-      postgresqlUsername: vaultwarden
-      postgresqlDatabase: vaultwarden
+      existingSecret: vaultwarden
       persistence:
         enabled: true
         existingClaim: data-vaultwarden-postgresql-0
   valuesFrom:
-    - kind: Secret
-      name: vaultwarden
-      valuesKey: postgresql_password
-      targetPath: postgresql.postgresqlPassword
-      optional: false
+    # - kind: Secret
+    #   name: vaultwarden
+    #   valuesKey: postgres-password
+    #   targetPath: postgresql.auth.postgresPassword
+    #   optional: false
     - kind: Secret
       name: vaultwarden
       valuesKey: vaultwarden_admin_token
