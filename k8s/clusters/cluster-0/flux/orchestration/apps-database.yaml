@@ -1,40 +1,40 @@
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
-kind: Kustomization
-metadata:
-  name: apps-database-cloudnativepg-operator
-  namespace: flux-system
-spec:
-  dependsOn:
-    - name: cluster-namespaces
-  interval: 5m
-  path: "./k8s/clusters/cluster-0/manifests/database/cloudnative-pg/operator"
-  prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
-kind: Kustomization
-metadata:
-  name: apps-database-cloudnativepg-clusters
-  namespace: flux-system
-spec:
-  dependsOn:
-    - name: apps-database-cloudnativepg-operator
-  interval: 5m
-  path: "./k8s/clusters/cluster-0/manifests/database/cloudnative-pg/clusters"
-  prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
+# ---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+# kind: Kustomization
+# metadata:
+#   name: apps-database-cloudnativepg-operator
+#   namespace: flux-system
+# spec:
+#   dependsOn:
+#     - name: cluster-namespaces
+#   interval: 5m
+#   path: "./k8s/clusters/cluster-0/manifests/database/cloudnative-pg/operator"
+#   prune: true
+#   wait: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: k8s-gitops
+#   decryption:
+#     provider: sops
+#     secretRef:
+#       name: sops-age
+# ---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+# kind: Kustomization
+# metadata:
+#   name: apps-database-cloudnativepg-clusters
+#   namespace: flux-system
+# spec:
+#   dependsOn:
+#     - name: apps-database-cloudnativepg-operator
+#   interval: 5m
+#   path: "./k8s/clusters/cluster-0/manifests/database/cloudnative-pg/clusters"
+#   prune: true
+#   wait: true
+#   sourceRef:
+#     kind: GitRepository
+#     name: k8s-gitops
+#   decryption:
+#     provider: sops
+#     secretRef:
+#       name: sops-age
