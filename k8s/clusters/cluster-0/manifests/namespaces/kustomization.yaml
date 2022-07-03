@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - cert-manager.yaml
   - collab.yaml
+  - database
   - default.yaml
   - flux-system.yaml
   - games.yaml
