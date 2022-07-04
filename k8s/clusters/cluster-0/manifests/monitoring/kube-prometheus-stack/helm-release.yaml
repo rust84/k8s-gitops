@@ -135,9 +135,17 @@ spec:
     kubeApiServer:
       enabled: true
     kubeControllerManager:
-      enabled: false
+      enabled: true
+      endpoints:
+        - 10.20.0.120
+        - 10.20.0.115
+        - 10.20.0.121
     kubeScheduler:
-      enabled: false
+      enabled: true
+      endpoints:
+        - 10.20.0.120
+        - 10.20.0.115
+        - 10.20.0.121
     kubeProxy:
       enabled: false
     kubeEtcd:
