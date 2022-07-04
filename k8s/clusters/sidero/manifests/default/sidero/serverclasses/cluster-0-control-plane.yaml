@@ -97,3 +97,9 @@ spec:
         destinations:
           - endpoint: udp://vector.${SECRET_DOMAIN}:6051/
             format: json_lines
+
+    - op: add
+      path: /cluster/etcd
+      value:
+        extraArgs:
+          listen-metrics-urls: http://0.0.0.0:2381
