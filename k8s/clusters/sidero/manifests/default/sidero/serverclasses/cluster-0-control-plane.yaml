@@ -99,7 +99,6 @@ spec:
             format: json_lines
 
     - op: add
-      path: /cluster/etcd
+      path: /cluster/etcd/extraArgs
       value:
-        extraArgs:
-          listen-metrics-urls: http://0.0.0.0:2381
+        listen-metrics-urls: http://0.0.0.0:2381
