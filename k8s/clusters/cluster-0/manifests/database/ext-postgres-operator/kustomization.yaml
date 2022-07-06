@@ -12,6 +12,7 @@ patchesJson6902:
       version: v1
       kind: Deployment
       name: ext-postgres-operator
+      namespace: database
     patch: |-
       - op: remove
         path: /spec/template/spec/containers/0/envFrom
