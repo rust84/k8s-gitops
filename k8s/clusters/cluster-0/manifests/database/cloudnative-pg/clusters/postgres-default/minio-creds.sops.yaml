@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: Secret
+type: Opaque
+metadata:
+    name: minio-creds
+    namespace: database
+data:
+    ACCESS_KEY_ID: ENC[AES256_GCM,data:FdeD7ybnINfjGpESsHSnVLGDRrZJCLfX,iv:mpr+wqcCzPIoYcSOpBMw1lekwT5+AmpJRNeFTsD67d4=,tag:yPl++u3YC9sm7N9ge7bVFQ==,type:str]
+    ACCESS_SECRET_KEY: ENC[AES256_GCM,data:EprnxZUB/6X9yI0NlRaE8V6t3akWbNQoSLqqcdOQzMLGsBxJ7erRHIrRn5Y=,iv:Atl0vXI8POO+eheCXZm9dM3it2PbRXVs1BTdk3W0io0=,tag:ixQMFwA86Oo1MB+PoiZ/PA==,type:str]
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1knsdzqjgfty7fghdvk8ayr4kmj9kre8nqcg5tvjpjfy6m7a5ap8srhjd6k
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBnOXdEMzVuVjBIbG1ubWRp
+            VVZyWElPbW4rcDFucmowazhaV2xncDFDclJrCi93R2xlS1MwWHlKNVdKaHlURHJ5
+            TUhET1dFWUlyenFweC93RFFrbXFRQWcKLS0tIER2a29DSmI1aVpqY0NjQytsL2Jn
+            blhsUEZJYjhxTHdBS1phNjREM2I5QjQKWDcMebN3LbN6Z9/Or8AR7kq0eWM7J335
+            1FdHJO6scoTqjkBCAz8vJcr9XkhRivnCxhEfcE6eRoEhNoYv6CTvsQ==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2022-07-08T23:19:56Z"
+    mac: ENC[AES256_GCM,data:zindpkhHB2Q0/KmvzElkArTBd+MOKNTYrkow1imVzHdRaxzTlos5zfAurwr8WWykfUE5ezSeGrmMCMbT8q+Z7jau5GLvPg84WUjxIOoFuvBguKsoRCCcggYk8NqFpz4sG+js2ygm4UgdPOSLGH+clB5QOS2N9luAmxBXlrw78U4=,iv:tdmDQFL9DTIfOTWtXC9kmktxanDjUD9toLE+QxCuGv8=,tag:p8SPrkOQF3jhI/5+h4E2HA==,type:str]
+    pgp: []
+    encrypted_regex: ((?i)(pass|secret($|[^N])|key|token|^data$|^stringData))
+    version: 3.7.3

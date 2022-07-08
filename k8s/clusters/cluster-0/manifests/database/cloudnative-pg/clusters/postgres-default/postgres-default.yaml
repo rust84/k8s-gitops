@@ -12,3 +12,37 @@ spec:
 
   superuserSecret:
     name: postgres-default-superuser
+
+  backup:
+    retentionPolicy: "30d"
+    barmanObjectStore:
+      wal:
+        compression: bzip2
+      destinationPath: s3://postgres-default/
+      endpointURL: "https://nas.{$SECRET_DOMAIN}:9000"
+      s3Credentials:
+        accessKeyId:
+          name: minio-creds
+          key: ACCESS_KEY_ID
+        secretAccessKey:
+          name: minio-creds
+          key: ACCESS_SECRET_KEY
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: daily-backup
+  namespace: database
+spec:
+  schedule: "@daily"
+  cluster:
+    name: postgres-default
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Backup
+metadata:
+  name: backup-default
+  namespace: database
+spec:
+  cluster:
+    name: postgres-default
