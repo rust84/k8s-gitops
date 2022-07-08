@@ -76,6 +76,10 @@ spec:
         feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
 
     - op: add
+      path: /cluster/apiServer/admissionControl
+      value: []
+
+    - op: add
       path: /cluster/apiServer/certSANs
       value:
         - ${CLUSTER_0_API_IP}
