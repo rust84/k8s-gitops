@@ -19,7 +19,7 @@ spec:
       wal:
         compression: bzip2
       destinationPath: s3://postgres-default/
-      endpointURL: "https://nas.{$SECRET_DOMAIN}:9000"
+      endpointURL: "https://nas.${SECRET_DOMAIN}:9000"
       s3Credentials:
         accessKeyId:
           name: minio-creds
