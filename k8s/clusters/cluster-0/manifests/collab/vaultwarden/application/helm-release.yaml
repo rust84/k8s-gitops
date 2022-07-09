@@ -74,7 +74,7 @@ spec:
       targetPath: env.ADMIN_TOKEN
       optional: false
     - kind: Secret
-      name: vaultwarden
-      valuesKey: vaultwarden_database_url
+      name: database-vaultwarden-user
+      valuesKey: POSTGRES_URL
       targetPath: env.DATABASE_URL
       optional: false
