@@ -32,10 +32,9 @@ spec:
       APP_BASE_URL: https://joplin.${SECRET_DOMAIN}
       APP_PORT: 22300
       DB_CLIENT: pg
-      POSTGRES_HOST: joplin-database-postgresql
+      POSTGRES_HOST: postgres-default-rw.database.svc.cluster.local
       POSTGRES_PORT: 5432
       POSTGRES_DATABASE: joplin
-      POSTGRES_USER: postgres
       MAILER_ENABLED: 1
       MAILER_HOST: email-smtp.eu-west-1.amazonaws.com
       MAILER_PORT: 465
@@ -70,7 +69,12 @@ spec:
       enabled: false
   valuesFrom:
     - kind: Secret
-      name: joplin-postgresql-secret
-      valuesKey: postgres-password
+      name: database-joplin-user
+      valuesKey: PASSWORD
       targetPath: env.POSTGRES_PASSWORD
+      optional: false
+    - kind: Secret
+      name: database-joplin-user
+      valuesKey: LOGIN
+      targetPath: env.POSTGRES_USER
       optional: false
