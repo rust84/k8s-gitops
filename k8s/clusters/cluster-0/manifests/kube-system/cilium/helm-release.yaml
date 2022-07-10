@@ -29,7 +29,7 @@ spec:
 
     nativeRoutingCIDR: ${NETWORK_K8S_POD_CIDR}
 
-    k8sServiceHost: 10.20.0.250
+    k8sServiceHost: "cluster-0.${SECRET_DOMAIN}"
     k8sServicePort: 6443
 
     loadBalancer:
