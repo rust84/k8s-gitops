@@ -41,6 +41,7 @@ spec:
             - key: kubernetes.io/metadata.name
               operator: NotIn
               values:
+                - database
                 - kube-system
                 - kyverno
 
