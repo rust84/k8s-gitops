@@ -30,6 +30,19 @@ spec:
   values:
     installCRDs: false
     replicaCount: 3
+    extraArgs:
+      - --autogenInternals=false
+      - --clientRateLimitQPS=30
+      - --clientRateLimitBurst=60
+
+    webhooks:
+      - namespaceSelector:
+          matchExpressions:
+            - key: kubernetes.io/metadata.name
+              operator: NotIn
+              values:
+                - kube-system
+                - kyverno
 
     topologySpreadConstraints:
       - maxSkew: 1
