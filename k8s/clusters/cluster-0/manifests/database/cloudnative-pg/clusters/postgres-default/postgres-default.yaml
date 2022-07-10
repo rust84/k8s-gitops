@@ -34,15 +34,6 @@ metadata:
   name: daily-backup
   namespace: database
 spec:
-  schedule: "@daily"
-  cluster:
-    name: postgres-default
----
-apiVersion: postgresql.cnpg.io/v1
-kind: Backup
-metadata:
-  name: backup-default
-  namespace: database
-spec:
+  schedule: "@weekly"
   cluster:
     name: postgres-default
