@@ -106,6 +106,8 @@ spec:
       path: /cluster/etcd/extraArgs
       value:
         listen-metrics-urls: http://0.0.0.0:2381
+        election-timeout: 5000
+        heartbeat-interval: 250
 
     - op: add
       path: /cluster/controllerManager/extraArgs
