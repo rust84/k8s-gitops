@@ -35,15 +35,16 @@ spec:
       - --clientRateLimitQPS=30
       - --clientRateLimitBurst=60
 
-    webhooks:
-      - namespaceSelector:
-          matchExpressions:
-            - key: kubernetes.io/metadata.name
-              operator: NotIn
-              values:
-                - database
-                - kube-system
-                - kyverno
+    config:
+      webhooks:
+        - namespaceSelector:
+            matchExpressions:
+              - key: kubernetes.io/metadata.name
+                operator: NotIn
+                values:
+                  - database
+                  - kube-system
+                  - kyverno
 
     topologySpreadConstraints:
       - maxSkew: 1
