@@ -67,6 +67,12 @@ spec:
         path: /mnt/borg/share
         mountPath: /media
         readOnly: false
+      backup:
+        enabled: true
+        type: nfs
+        server: "nas.${SECRET_DOMAIN}"
+        path: /mnt/apps/backups/sonarr-uhd
+        mountPath: /config/Backups
     podSecurityContext:
       supplementalGroups:
         - 1001

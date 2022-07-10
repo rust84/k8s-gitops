@@ -68,6 +68,12 @@ spec:
         server: "nas.${SECRET_DOMAIN}"
         path: /mnt/borg/share
         mountPath: /media
+      backup:
+        enabled: true
+        type: nfs
+        server: "nas.${SECRET_DOMAIN}"
+        path: /mnt/apps/backups/readarr
+        mountPath: /config/Backups
     resources:
       requests:
         memory: 100Mi

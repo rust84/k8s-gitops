@@ -44,6 +44,12 @@ spec:
       config:
         enabled: true
         existingClaim: prowlarr-config
+      backup:
+        enabled: true
+        type: nfs
+        server: "nas.${SECRET_DOMAIN}"
+        path: /mnt/apps/backups/prowlarr
+        mountPath: /config/Backups
     resources:
       requests:
         memory: 100Mi

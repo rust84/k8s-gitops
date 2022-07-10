@@ -48,6 +48,12 @@ spec:
       config:
         enabled: true
         existingClaim: tautulli-config
+      backup:
+        enabled: true
+        type: nfs
+        server: "nas.${SECRET_DOMAIN}"
+        path: /mnt/apps/backups/tautulli
+        mountPath: /config/backups
     podSecurityContext:
       supplementalGroups:
         - 1000

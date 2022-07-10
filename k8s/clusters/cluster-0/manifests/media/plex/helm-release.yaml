@@ -64,6 +64,13 @@ spec:
         path: /mnt/borg/share
         mountPath: /data
         readOnly: true
+      backup:
+        enabled: true
+        type: nfs
+        server: "nas.${SECRET_DOMAIN}"
+        path: /mnt/apps/backups/plex
+        mountPath: /config/Backups
+        readOnly: false
       transcode:
         enabled: true
         type: emptyDir
