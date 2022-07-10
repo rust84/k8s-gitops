@@ -2,6 +2,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - database.yaml
+  - config-pvc.yaml
   - helm-release.yaml
-  - postgresql-data-pvc.yaml
-  - postgresql-secret.enc.yaml
+  - secret.enc.yaml
