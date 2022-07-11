@@ -18,21 +18,9 @@ spec:
   values:
     image:
       repository: homeassistant/home-assistant
-      tag: 2022.6.7
-
-    initContainers:
-      wait-for-pg:
-        image: busybox:latest
-        imagePullPolicy: IfNotPresent
-        command:
-          [
-            "sh",
-            "-c",
-            'until nc -vz home-assistant-database-postgresql.home 5432; do echo "Waiting for postgresql..."; sleep 3; done;',
-          ]
-
+      tag: 2022.7.3
     env:
-      TZ: "Europe/London"
+      TZ: "${TZ}"
     securityContext:
       privileged: true
     persistence:
