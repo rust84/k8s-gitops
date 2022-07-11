@@ -35,7 +35,7 @@ spec:
           kubernetes.io/tls-acme: "true"
           cert-manager.io/cluster-issuer: letsencrypt-prod
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          traefik.ingress.kubernetes.io/router.middlewares: "network-internal-auth@kubernetescrd"
+          traefik.ingress.kubernetes.io/router.middlewares: "network-rfc1918@kubernetescrd"
         hosts:
           - emqx.${SECRET_DOMAIN}
         tls:
@@ -59,12 +59,6 @@ spec:
                   values:
                     - emqx
             topologyKey: "kubernetes.io/hostname"
-    emqxConfig:
-      EMQX_ALLOW_ANONYMOUS: "false"
-      EMQX_ADMIN_PASSWORD: ${EMQX_ADMIN_PASSWORD}
-      EMQX_AUTH__MNESIA__PASSWORD_HASH: plain
-      EMQX_AUTH__USER__1__USERNAME: mqtt
-      EMQX_AUTH__USER__1__PASSWORD: ${EMQX_MQTT_USER_PASSWORD}
     resources:
       limits:
         memory: 512Mi
