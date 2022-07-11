@@ -17,11 +17,11 @@ spec:
       interval: 5m
   values:
     image:
-      repository: ghcr.io/onedr0p/home-assistant
-      tag: 2022.7.3@sha256:51344fa706283937d711f98436712184e5bd30877ecaa83bbfbcebf8402dd789
+      repository: homeassistant/home-assistant
+      tag: 2022.6.7
+
     env:
-      TZ: "${TZ}"
-      PYTHONUSERBASE: /config/deps
+      TZ: "Europe/London"
     securityContext:
       privileged: true
     persistence:
@@ -61,13 +61,6 @@ spec:
         enabled: false
       startup:
         enabled: true
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
-      supplementalGroups:
-        - 100
     addons:
       codeserver:
         enabled: true
