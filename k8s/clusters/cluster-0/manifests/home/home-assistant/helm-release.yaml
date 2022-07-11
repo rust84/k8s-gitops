@@ -17,8 +17,8 @@ spec:
       interval: 5m
   values:
     image:
-      repository: homeassistant/home-assistant
-      tag: 2022.7.3
+      repository: ghcr.io/onedr0p/home-assistant
+      tag: 2022.7.3@sha256:51344fa706283937d711f98436712184e5bd30877ecaa83bbfbcebf8402dd789
     env:
       TZ: "${TZ}"
     securityContext:
