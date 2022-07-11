@@ -21,6 +21,7 @@ spec:
       tag: 2022.7.3@sha256:51344fa706283937d711f98436712184e5bd30877ecaa83bbfbcebf8402dd789
     env:
       TZ: "${TZ}"
+      PYTHONUSERBASE: /config/deps
     securityContext:
       privileged: true
     persistence:
@@ -60,6 +61,13 @@ spec:
         enabled: false
       startup:
         enabled: true
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
+      supplementalGroups:
+        - 100
     addons:
       codeserver:
         enabled: true
