@@ -18,19 +18,14 @@
       "matchUpdateTypes": ["minor", "patch"],
       "matchPackageNames": ["ghcr.io/k8s-at-home/prowlarr-nightly"]
     },
-    {
-      "description": "Auto merge GitHub Actions",
-      "matchDatasources": ["github-tags"],
-      "automerge": true,
-      "automergeType": "branch",
-      "requiredStatusChecks": null,
-      "matchUpdateTypes": ["minor", "patch"],
-      "matchPackageNames": [
-        "lycheeverse/lychee-action",
-        "zricethezav/gitleaks",
-        "renovatebot/github-action"
-      ]
-    },
+    // {
+    //   "description": "Auto merge GitHub Actions",
+    //   "matchManagers": ["github-actions"],
+    //   "automerge": true,
+    //   "automergeType": "branch",
+    //   "requiredStatusChecks": null,
+    //   "matchUpdateTypes": ["minor", "patch"]
+    // },
     {
       "description": "Auto merge Helm charts",
       "matchDatasources": ["helm"],
