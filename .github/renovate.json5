@@ -6,7 +6,6 @@
     ":disableRateLimiting",
     ":dependencyDashboard",
     ":semanticCommits",
-    ":separatePatchReleases",
     ":enablePreCommit",
     ":automergeDigest",
     ":automergeBranchPush",
