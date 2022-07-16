@@ -39,6 +39,8 @@ spec:
       PAPERLESS_CONSUMER_RECURSIVE: "true"
       PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
       PAPERLESS_CONSUMER_ENABLE_BARCODES: "true"
+      PAPERLESS_DBHOST: postgres-default-rw.database.svc.cluster.local
+      PAPERLESS_DBNAME: paperless
       PAPERLESS_REDIS: redis://paperless-redis-master.collab.svc.cluster.local:6379
       PAPERLESS_TASK_WORKERS: 2
       PAPERLESS_TIME_ZONE: "${TZ}"
@@ -107,3 +109,15 @@ spec:
         memory: 2975M
       limits:
         memory: 6572M
+
+  valuesFrom:
+    - kind: Secret
+      name: database-paperless-user
+      valuesKey: PASSWORD
+      targetPath: env.PAPERLESS_DBPASS
+      optional: false
+    - kind: Secret
+      name: database-paperless-user
+      valuesKey: LOGIN
+      targetPath: env.PAPERLESS_DBUSER
+      optional: false
