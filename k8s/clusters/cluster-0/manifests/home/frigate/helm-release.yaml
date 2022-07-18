@@ -77,8 +77,11 @@ spec:
         existingClaim: frigate-data
       media:
         enabled: true
-        existingClaim: frigate-nfs
+        type: nfs
+        server: "nas.${SECRET_DOMAIN}"
+        path: /mnt/borg/share
         mountPath: /media
+        readOnly: false
       usb:
         enabled: true
         type: hostPath
