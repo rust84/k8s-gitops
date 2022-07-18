@@ -15,3 +15,9 @@ spec:
         name: cloudnative-pg
         namespace: flux-system
       interval: 5m
+  values:
+    webhook:
+      mutating:
+        create: true
+      validating:
+        create: false
