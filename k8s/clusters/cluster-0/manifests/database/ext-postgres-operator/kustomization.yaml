@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: database
 resources:
   - github.com/movetokube/postgres-operator/deploy?ref=1.1.1
+  - secret.sops.yaml
 images:
   - name: movetokube/postgres-operator
     newTag: 1.1.1
@@ -25,7 +26,7 @@ patchesJson6902:
         path: /spec/template/spec/containers/0/env/-
         value:
           name: POSTGRES_HOST
-          value: postgres-default-rw.database.svc.cluster.local
+          value: 10.20.0.144
       - op: add
         path: /spec/template/spec/containers/0/env/-
         value:
