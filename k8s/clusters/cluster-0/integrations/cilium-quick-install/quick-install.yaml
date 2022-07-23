@@ -144,6 +144,7 @@ data:
 
   auto-direct-node-routes: "true"
   enable-local-redirect-policy: "true"
+  ipv4-native-routing-cidr: 10.244.0.0/16
 
   kube-proxy-replacement: "strict"
   kube-proxy-replacement-healthz-bind-address: "0.0.0.0:10256"
@@ -545,7 +546,7 @@ spec:
     metadata:
       annotations:
         # ensure pods roll when configmap updates
-        cilium.io/cilium-configmap-checksum: "e32c836dcea2425cc33643c90d7876482bdf43c11929bc8039ee1db939aa2cb5"
+        cilium.io/cilium-configmap-checksum: "be6bbb45a9394d1e583ba29880601946c467d6f0dc209327df1c8cdf0f07d9fb"
       labels:
         k8s-app: cilium
     spec:
@@ -820,7 +821,7 @@ spec:
     metadata:
       annotations:
         # ensure pods roll when configmap updates
-        cilium.io/cilium-configmap-checksum: "e32c836dcea2425cc33643c90d7876482bdf43c11929bc8039ee1db939aa2cb5"
+        cilium.io/cilium-configmap-checksum: "be6bbb45a9394d1e583ba29880601946c467d6f0dc209327df1c8cdf0f07d9fb"
       labels:
         io.cilium/app: operator
         name: cilium-operator
