@@ -56,7 +56,7 @@ spec:
         docker_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
 
       postgresql:
-        host: postgres-default-rw.database.svc.cluster.local
+        host: 10.20.0.144
         name: authentik
       redis:
         host: "{{ .Release.Name }}-redis-master"
