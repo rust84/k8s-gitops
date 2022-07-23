@@ -62,3 +62,6 @@ cgroup:
   autoMount:
     enabled: false
   hostRoot: /sys/fs/cgroup
+
+securityContext:
+  privileged: true

@@ -92,3 +92,6 @@ spec:
 
     externalIPs:
       enabled: true
+
+    securityContext:
+      privileged: true
