@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: vaultwarden/server
-      tag: 1.25.1-alpine
+      tag: 1.25.2-alpine
     env:
       DATA_FOLDER: "config"
       SIGNUPS_ALLOWED: false
