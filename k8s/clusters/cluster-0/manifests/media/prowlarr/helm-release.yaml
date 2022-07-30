@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: ghcr.io/k8s-at-home/prowlarr-nightly
-      tag: v0.4.3.1921@sha256:7bca9bc715c7fb8302511704607d8ab5b9eb6f4a81f1995a61a7926681863b1a
+      tag: v0.4.4.1922@sha256:d0c2b91b461c3f62a4a60459cb33d3d6f9dea9480a03ccc297e302e143d64a8c
     env:
       TZ: "Europe/London"
     ingress:
