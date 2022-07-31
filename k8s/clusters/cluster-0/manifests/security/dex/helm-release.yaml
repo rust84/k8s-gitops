@@ -117,8 +117,7 @@ spec:
           name: node-red
           secret: ${DEX_NODE_RED_CLIENT_SECRET}
           redirectURIs:
-            #- https://node-red.${SECRET_DOMAIN}/auth/strategy/callback
-            - http://127.0.0.1:1880/auth/strategy/callback
+            - https://node-red.${SECRET_DOMAIN}/auth/strategy/callback
     resources:
       requests:
         memory: 250Mi
