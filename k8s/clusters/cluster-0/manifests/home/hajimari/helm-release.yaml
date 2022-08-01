@@ -52,7 +52,7 @@ spec:
         - name: Dev
           links:
             - name: Github
-              url: "https://github.com/rust84/k8s-gitops"
+              url: "https://github.com/rust84"
         - name: Media
           links:
             - name: YouTube
