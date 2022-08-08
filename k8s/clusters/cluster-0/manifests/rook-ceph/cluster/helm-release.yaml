@@ -187,3 +187,13 @@ spec:
           reclaimPolicy: Delete
           parameters:
             region: us-east-1
+
+  postRenderers:
+    - kustomize:
+        patchesJson6902:
+          - target:
+              kind: PrometheusRule
+              name: prometheus-ceph-rules
+            patch:
+              - op: remove
+                path: /spec/groups/6/rules/1
