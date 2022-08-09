@@ -16,6 +16,8 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
+    deploymentStrategy:
+      type: Recreate
     persistence:
       enabled: true
       existingClaim: grafana-config-pvc
