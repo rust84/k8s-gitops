@@ -197,3 +197,5 @@ spec:
             patch:
               - op: remove
                 path: /spec/groups/6/rules/1
+              - op: remove
+                path: /spec/groups/7/rules/0
