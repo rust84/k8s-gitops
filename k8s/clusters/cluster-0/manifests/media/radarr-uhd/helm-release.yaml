@@ -18,7 +18,7 @@ spec:
   values:
     image:
       repository: ghcr.io/k8s-at-home/radarr-develop
-      tag: v4.2.0.6438@sha256:2fbe6eeab9bcc730197a01e32dc169466d37fec9e0a8d7036d1989e4c18a05de
+      tag: v4.2.1.6478@sha256:eaca5305329e5660e0579b938a369e9695660a74d07001fcdfc64ea463aa760e
     env:
       TZ: "Europe/London"
     ingress:
