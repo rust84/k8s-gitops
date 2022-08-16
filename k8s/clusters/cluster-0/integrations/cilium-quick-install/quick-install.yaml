@@ -659,26 +659,6 @@ spec:
       hostNetwork: true
       initContainers:
       - command:
-        - sh
-        - -ec
-        - |
-          cp /usr/bin/cilium-sysctlfix /hostbin/cilium-sysctlfix;
-          nsenter --mount=/hostproc/1/ns/mnt "${BIN_PATH}/cilium-sysctlfix";
-          rm /hostbin/cilium-sysctlfix
-        env:
-        - name: BIN_PATH
-          value: /opt/cni/bin
-        image: quay.io/cilium/cilium:v1.12.1@sha256:ea2db1ee21b88127b5c18a96ad155c25485d0815a667ef77c2b7c7f31cab601b
-        imagePullPolicy: IfNotPresent
-        name: apply-sysctl-overwrites
-        securityContext:
-          privileged: true
-        volumeMounts:
-        - mountPath: /hostproc
-          name: hostproc
-        - mountPath: /hostbin
-          name: cni-path
-      - command:
         - /init-container.sh
         env:
         - name: CILIUM_ALL_STATE
