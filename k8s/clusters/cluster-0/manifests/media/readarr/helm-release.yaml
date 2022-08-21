@@ -5,22 +5,33 @@ metadata:
   name: readarr
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: readarr
-      version: 6.4.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     image:
       repository: ghcr.io/k8s-at-home/readarr-nightly
       tag: v0.1.1.1409@sha256:ff24978e80a791b3449b05e262f48a71969c96674340ee908821f59e70b6be07
     env:
-      TZ: "Europe/London"
+      TZ: "${TZ}"
+    service:
+      main:
+        ports:
+          http:
+            port: 8787
     ingress:
       main:
         enabled: true
@@ -33,27 +44,45 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "book-open"
         hosts:
-          - host: "readarr.${SECRET_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: tls.readarr
+          - secretName: &tls "tls.{{ .Release.Name }}"
             hosts:
-              - readarr.${SECRET_DOMAIN}
+              - *host
       api:
         enabled: true
         ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
-          - host: "readarr.${SECRET_DOMAIN}"
+          - host: *host
             paths:
               - path: /api
                 pathType: Prefix
         tls:
-          - hosts:
-              - "readarr.${SECRET_DOMAIN}"
+          - secretName: *tls
+            hosts:
+              - *host
+    probes:
+      liveness:
+        enabled: true
+        custom: true
+        spec:
+          exec:
+            command:
+              - /usr/bin/env
+              - bash
+              - -c
+              - curl --fail localhost:8787/api/v1/system/status?apiKey=`IFS=\> && while
+                read -d \< E C; do if [[ $E = "ApiKey" ]]; then echo $C; fi; done < /config/config.xml`
+          failureThreshold: 5
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
     podSecurityContext:
       supplementalGroups:
         - 1001

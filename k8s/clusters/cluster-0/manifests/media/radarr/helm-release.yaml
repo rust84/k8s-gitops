@@ -5,22 +5,33 @@ metadata:
   name: radarr
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: radarr
-      version: 16.3.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 10m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     image:
       repository: ghcr.io/k8s-at-home/radarr-develop
       tag: v4.2.2.6503@sha256:e8a0a3e662ca2ac99aa5b44d85b4d6c80e24ab120492d181de8b1f8bf52f9be2
     env:
-      TZ: "Europe/London"
+      TZ: "${TZ}"
+    service:
+      main:
+        ports:
+          http:
+            port: 7878
     ingress:
       main:
         enabled: true
@@ -33,27 +44,45 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "filmstrip"
         hosts:
-          - host: radarr.${SECRET_DOMAIN}
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: tls.radarr
+          - secretName: &tls "tls.{{ .Release.Name }}"
             hosts:
-              - radarr.${SECRET_DOMAIN}
+              - *host
       api:
         enabled: true
         ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         hosts:
-          - host: "radarr.${SECRET_DOMAIN}"
+          - host: *host
             paths:
               - path: /api
                 pathType: Prefix
         tls:
-          - hosts:
-              - "radarr.${SECRET_DOMAIN}"
+          - secretName: *tls
+            hosts:
+              - *host
+    probes:
+      liveness:
+        enabled: true
+        custom: true
+        spec:
+          exec:
+            command:
+              - /usr/bin/env
+              - bash
+              - -c
+              - curl --fail localhost:7878/api/v3/system/status?apiKey=`IFS=\> && while
+                read -d \< E C; do if [[ $E = "ApiKey" ]]; then echo $C; fi; done < /config/config.xml`
+          failureThreshold: 5
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 10
     podAnnotations:
       backup.velero.io/backup-volumes: config
     persistence:
@@ -83,23 +112,3 @@ spec:
         cpu: 250m
       limits:
         memory: 2000Mi
-    prometheus:
-      podMonitor:
-        enabled: true
-        interval: 3m
-        scrapeTimeout: 1m30s
-    metrics:
-      enabled: true
-      serviceMonitor:
-        interval: 3m
-        scrapeTimeout: 1m
-      prometheusRule:
-        enabled: true
-      exporter:
-        image:
-          repository: ghcr.io/onedr0p/exportarr
-          tag: v1.1.0
-        env:
-          port: 9794
-          additionalMetrics: true
-          unknownQueueItems: true
