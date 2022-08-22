@@ -5,23 +5,33 @@ metadata:
   name: jellyfin
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: jellyfin
-      version: 9.5.3
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
   install:
     createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  dependsOn:
+    - name: intel-gpu-plugin
+      namespace: kube-system
+    - name: node-feature-discovery
+      namespace: kube-system
   values:
     image:
       repository: docker.io/jellyfin/jellyfin
       tag: 10.8.4
     env:
-      TZ: "Europe/London"
+      TZ: "${TZ}"
       JELLYFIN_CACHE_DIR: "/config/cache"
     podSecurityContext:
       supplementalGroups:
@@ -32,6 +42,9 @@ spec:
         type: LoadBalancer
         loadBalancerIP: ${SVC_JELLYFIN_ADDRESS}
         externalTrafficPolicy: Local
+        ports:
+          http:
+            port: 8096
     ingress:
       main:
         enabled: true
@@ -47,14 +60,13 @@ spec:
           hajimari.io/icon: "jellyfish"
           hajimari.io/appName: "jellyfin"
         hosts:
-          - host: "jellyfin.${SECRET_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: tls.jellyfin
-            hosts:
-              - jellyfin.${SECRET_DOMAIN}
+          - hosts:
+              - *host
     persistence:
       config:
         enabled: true
