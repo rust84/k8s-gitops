@@ -5,25 +5,37 @@ metadata:
   name: calibre-web
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: calibre-web
-      version: 8.4.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     image:
       repository: ghcr.io/linuxserver/calibre-web
       tag: version-0.6.19@sha256:fbe3c65238a19ff5d39d389557368c16b6c7557f3adda186f083e91a4b15e502
 
     env:
-      TZ: "Europe/London"
+      TZ: "${TZ}"
       PGID: 65539
       DOCKER_MODS: "linuxserver/calibre-web:calibre"
+
+    service:
+      main:
+        ports:
+          http:
+            port: 8083
 
     persistence:
       config:
@@ -48,14 +60,14 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "book-open"
         hosts:
-          - host: calibre-web.${SECRET_DOMAIN}
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
-
+                pathType: Prefix
         tls:
-          - secretName: tls.calibre-web
+          - secretName: "tls.{{ .Release.Name }}"
             hosts:
-              - calibre-web.${SECRET_DOMAIN}
+              - *host
 
     resources:
       requests:

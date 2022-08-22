@@ -5,22 +5,33 @@ metadata:
   name: gaps
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: gaps
-      version: 5.4.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     image:
       repository: housewrecker/gaps
       tag: x64-v0.10.1
     env:
-      TZ: "Europe/London"
+      TZ: "${TZ}"
+    service:
+      main:
+        ports:
+          http:
+            port: 8484
     ingress:
       main:
         enabled: true
@@ -33,14 +44,14 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: "tag-search"
         hosts:
-          - host: "gaps.${SECRET_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: tls.gaps
+          - secretName: "tls.{{ .Release.Name }}"
             hosts:
-              - gaps.${SECRET_DOMAIN}
+              - *host
 
     persistence:
       data:
