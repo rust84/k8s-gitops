@@ -5,24 +5,45 @@ metadata:
   name: calibre
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: calibre
-      version: 5.4.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     image:
       repository: ghcr.io/linuxserver/calibre
       tag: version-v6.3.0
 
     env:
-      TZ: "Europe/London"
+      TZ: "${TZ}"
       PGID: 65539
+
+    service:
+      main:
+        ports:
+          http:
+            port: 8080
+      webserver:
+        enabled: true
+        ports:
+          webserver:
+            enabled: true
+            port: 8081
+            protocol: TCP
+            targetPort: 8081
+        type: ClusterIP
 
     persistence:
       config:
@@ -35,10 +56,6 @@ spec:
         path: /mnt/borg/share
         mountPath: /media
 
-    service:
-      webserver:
-        enabled: true
-
     ingress:
       main:
         enabled: true
@@ -50,14 +67,14 @@ spec:
           traefik.ingress.kubernetes.io/router.middlewares: "network-internal-auth@kubernetescrd"
 
         hosts:
-          - host: calibre.${SECRET_DOMAIN}
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
-
+                pathType: Prefix
         tls:
-          - secretName: tls.calibre
+          - secretName: "tls.{{ .Release.Name }}"
             hosts:
-              - calibre.${SECRET_DOMAIN}
+              - *host
 
     resources:
       requests:
