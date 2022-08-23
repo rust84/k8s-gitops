@@ -179,7 +179,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: apps-media-overseerr
+  name: apps-media-jellyseer
   namespace: flux-system
 spec:
   dependsOn:
@@ -188,7 +188,7 @@ spec:
     - name: apps-media-sonarr
     - name: apps-media-radarr
   interval: 5m
-  path: "./k8s/clusters/cluster-0/manifests/media/overseerr"
+  path: "./k8s/clusters/cluster-0/manifests/media/jellyseer"
   prune: true
   wait: true
   sourceRef:

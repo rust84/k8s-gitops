@@ -2,27 +2,38 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: overseerr
+  name: jellyseer
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: overseerr
-      version: 5.4.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
-    controllerType: deployment
     image:
-      repository: sctx/overseerr
-      tag: 1.29.1
+      repository: docker.io/fallenbagel/jellyseerr
+      tag: 1.1.1
     env:
-      TZ: "Europe/London"
+      TZ: "${TZ}"
       LOG_LEVEL: "info"
+      PORT: &port 80
+    service:
+      main:
+        ports:
+          http:
+            port: *port
     ingress:
       main:
         annotations:
@@ -37,18 +48,19 @@ spec:
         enabled: true
         ingressClassName: traefik
         hosts:
-          - host: requests.${SECRET_DOMAIN}
+          - host: &host "requests.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: tls.overseerr
+          - secretName: "tls.{{ .Release.Name }}"
             hosts:
-              - requests.${SECRET_DOMAIN}
+              - *host
     persistence:
       config:
         enabled: true
         existingClaim: overseerr-config
+        mountPath: /app/config
     resources:
       requests:
         memory: 250Mi
