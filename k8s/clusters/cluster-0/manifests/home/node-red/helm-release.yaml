@@ -5,25 +5,22 @@ metadata:
   name: node-red
   namespace: home
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: node-red
-      version: 10.3.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
   install:
     createNamespace: true
-    remediation: # perform remediation when helm install fails
-      retries: 3
+    remediation:
+      retries: 5
   upgrade:
-    remediation: # perform remediation when helm upgrade fails
-      retries: 3
-      remediateLastFailure: true # remediate the last failure, when no retries remain
-    cleanupOnFail: true
+    remediation:
+      retries: 5
   values:
     initContainers:
       npm-update:
@@ -49,6 +46,11 @@ spec:
       FLOWS: "flows.json"
       NODE_RED_ENABLE_PROJECTS: "true"
       NODE_RED_ENABLE_SAFE_MODE: "false"
+    service:
+      main:
+        ports:
+          http:
+            port: 1880
     ingress:
       main:
         annotations:
@@ -61,14 +63,13 @@ spec:
         enabled: true
         ingressClassName: traefik
         hosts:
-          - host: node-red.${SECRET_DOMAIN}
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: tls.node-red
-            hosts:
-              - node-red.${SECRET_DOMAIN}
+          - hosts:
+              - *host
     persistence:
       config:
         enabled: true

@@ -36,10 +36,6 @@ spec:
     #       name: *app TODO: move secrets to !env_var SECRET
     service:
       main:
-        type: LoadBalancer
-        externalIPs:
-          - "${SVC_HOME_ASSISTANT_ADDR}"
-        externalTrafficPolicy: Local
         ports:
           http:
             port: 8123
@@ -69,7 +65,6 @@ spec:
           - secretName: "tls.{{ .Release.Name }}"
             hosts:
               - *host
-
     probes:
       liveness:
         enabled: false
