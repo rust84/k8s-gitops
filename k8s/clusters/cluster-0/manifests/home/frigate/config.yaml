@@ -45,7 +45,7 @@ cameras:
   lounge:
     ffmpeg:
       inputs:
-        - path: rtsp://rtsp:{RTSP_PASSWORD}@10.30.0.111:554/av_stream/ch0
+        - path: rtsp://rtsp:{FRIGATE_RTSP_PASSWORD}@10.30.0.111:554/av_stream/ch0
           roles:
             - detect
             - rtmp
@@ -92,10 +92,10 @@ cameras:
   driveway:
     ffmpeg:
       inputs:
-        - path: rtsp://frigate:{RTSP_PASSWORD}@10.30.0.243:554/h264Preview_01_sub
+        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.30.0.243:554/h264Preview_01_sub
           roles:
             - detect
-        - path: rtsp://frigate:{RTSP_PASSWORD}@10.30.0.243:554/h264Preview_01_main
+        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.30.0.243:554/h264Preview_01_main
           roles:
             - rtmp
             - record
@@ -120,10 +120,10 @@ cameras:
   office:
     ffmpeg:
       inputs:
-        - path: rtsp://frigate:{RTSP_PASSWORD}@10.30.0.244:554/h264Preview_01_sub
+        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.30.0.244:554/h264Preview_01_sub
           roles:
             - detect
-        - path: rtsp://frigate:{RTSP_PASSWORD}@10.30.0.244:554/h264Preview_01_main
+        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.30.0.244:554/h264Preview_01_main
           roles:
             - rtmp
             - record
