@@ -5,7 +5,7 @@ metadata:
   name: plex-trakt-sync
   namespace: media
 spec:
-  interval: 10m
+  interval: 15m
   chart:
     spec:
       chart: app-template
@@ -14,7 +14,13 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     global:
       nameOverride: plex-trakt-sync

@@ -5,24 +5,37 @@ metadata:
   name: overseerr
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: overseerr
-      version: 5.4.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
-    controllerType: deployment
     image:
       repository: sctx/overseerr
       tag: 1.29.1
+
     env:
-      TZ: "Europe/London"
       LOG_LEVEL: "info"
+      PORT: 80
+
+    service:
+      main:
+        ports:
+          http:
+            port: 80
+
     ingress:
       main:
         annotations:
@@ -37,18 +50,21 @@ spec:
         enabled: true
         ingressClassName: traefik
         hosts:
-          - host: requests.${SECRET_DOMAIN}
+          - host: &host "requests.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: tls.overseerr
+          - secretName: "tls.{{ .Release.Name }}"
             hosts:
-              - requests.${SECRET_DOMAIN}
+              - *host
+
     persistence:
       config:
         enabled: true
         existingClaim: overseerr-config
+        mountPath: /app/config
+
     resources:
       requests:
         memory: 250Mi
