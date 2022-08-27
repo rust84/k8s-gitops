@@ -24,9 +24,6 @@ spec:
       retries: 5
       remediateLastFailure: true
     cleanupOnFail: true
-  dependsOn:
-    - name: kube-prometheus-stack
-      namespace: monitoring
   values:
     installCRDs: false
     replicaCount: 3

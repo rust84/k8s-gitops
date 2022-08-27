@@ -15,9 +15,6 @@ spec:
         name: bjw-s-charts
         namespace: flux-system
       interval: 5m
-  dependsOn:
-    - name: traefik
-      namespace: network
   values:
     image:
       repository: ghcr.io/tarampampam/error-pages

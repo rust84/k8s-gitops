@@ -54,6 +54,7 @@ spec:
     - name: core-nfd
     - name: rook-ceph-cluster
     - name: apps-home-emqx
+    - name: core-intel-gpu-plugin
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/home/frigate"
   prune: true

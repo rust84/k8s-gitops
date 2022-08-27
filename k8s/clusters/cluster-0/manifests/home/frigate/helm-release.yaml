@@ -21,13 +21,6 @@ spec:
   upgrade:
     remediation:
       retries: 5
-  dependsOn:
-    - name: emqx
-      namespace: home
-    - name: intel-gpu-plugin
-      namespace: kube-system
-    - name: node-feature-discovery
-      namespace: kube-system
   values:
     image:
       repository: ghcr.io/k8s-at-home/frigate
