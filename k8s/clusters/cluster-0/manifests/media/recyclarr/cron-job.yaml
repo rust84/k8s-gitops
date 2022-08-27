@@ -19,7 +19,7 @@ spec:
           restartPolicy: OnFailure
           initContainers:
             - name: render-configs
-              image: ghcr.io/k8s-at-home/recyclarr:v2.3.1@sha256:5f616f5fbe4d89bdd6fa172431018a3bd0e34ce34762b8763977a66bd75409be
+              image: ghcr.io/k8s-at-home/recyclarr:v2.4.1@sha256:35b3fc7f9e6c32fcced150be67b6b1ccef34033534dfe8335c40cbdb9b036f1f
               envFrom:
                 - secretRef:
                     name: *app
@@ -35,7 +35,7 @@ spec:
                   mountPath: /shared
           containers:
             - name: sonarrs
-              image: ghcr.io/k8s-at-home/recyclarr:v2.3.1@sha256:5f616f5fbe4d89bdd6fa172431018a3bd0e34ce34762b8763977a66bd75409be
+              image: ghcr.io/k8s-at-home/recyclarr:v2.4.1@sha256:35b3fc7f9e6c32fcced150be67b6b1ccef34033534dfe8335c40cbdb9b036f1f
               imagePullPolicy: IfNotPresent
               env:
                 - name: TZ
@@ -57,7 +57,7 @@ spec:
                   subPath: recyclarr.yaml
                   readOnly: true
             - name: radarrs
-              image: ghcr.io/k8s-at-home/recyclarr:v2.3.1@sha256:5f616f5fbe4d89bdd6fa172431018a3bd0e34ce34762b8763977a66bd75409be
+              image: ghcr.io/k8s-at-home/recyclarr:v2.4.1@sha256:35b3fc7f9e6c32fcced150be67b6b1ccef34033534dfe8335c40cbdb9b036f1f
               imagePullPolicy: IfNotPresent
               env:
                 - name: TZ
