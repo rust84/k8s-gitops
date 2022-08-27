@@ -23,7 +23,7 @@ spec:
       retries: 5
   dependsOn:
     - name: emqx
-      namespace: default
+      namespace: home
     - name: intel-gpu-plugin
       namespace: kube-system
     - name: node-feature-discovery
@@ -37,6 +37,26 @@ spec:
     envFrom:
       - secretRef:
           name: *app
+    service:
+      main:
+        ports:
+          http:
+            port: &port 5000
+    probes:
+      liveness: &probes
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /api/version
+            port: *port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      readiness: *probes
+      startup:
+        enabled: false
     configmap:
       config:
         enabled: false

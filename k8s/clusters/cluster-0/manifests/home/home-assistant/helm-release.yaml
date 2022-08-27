@@ -2,28 +2,47 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: home-assistant
+  name: &app home-assistant
   namespace: home
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: home-assistant
-      version: 13.4.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
+  dependsOn:
+    - name: emqx
+      namespace: home
   values:
     image:
       repository: ghcr.io/onedr0p/home-assistant
       tag: 2022.8.7@sha256:cd456a5e4d6c989da7d700d0fc86897d55c2fa0ef0fb8b8980f673f50fb077c7
     env:
-      TZ: "Europe/London"
+      TZ: "${TZ}"
       PYTHONUSERBASE: /config/deps
-    securityContext:
-      privileged: true
+    # envFrom:
+    #   - secretRef:
+    #       name: *app TODO: move secrets to !env_var SECRET
+    service:
+      main:
+        type: LoadBalancer
+        externalIPs:
+          - "${SVC_HOME_ASSISTANT_ADDR}"
+        externalTrafficPolicy: Local
+        ports:
+          http:
+            port: 8123
     persistence:
       config:
         enabled: true
@@ -42,18 +61,15 @@ spec:
         enabled: true
         ingressClassName: traefik
         hosts:
-          - host: hass.${SECRET_DOMAIN}
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: tls.home-assistant
+          - secretName: "tls.{{ .Release.Name }}"
             hosts:
-              - hass.${SECRET_DOMAIN}
-    metrics:
-      enabled: false
-    hostNetwork: true
-    dnsPolicy: ClusterFirstWithHostNet
+              - *host
+
     probes:
       liveness:
         enabled: false
