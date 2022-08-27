@@ -25,6 +25,11 @@ spec:
     image:
       repository: ghcr.io/miguelndecarvalho/speedtest-exporter
       tag: v3.5.2
+    service:
+      main:
+        ports:
+          http:
+            port: 9798
     metrics:
       enabled: true
       serviceMonitor:
