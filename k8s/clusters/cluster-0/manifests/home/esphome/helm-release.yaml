@@ -5,26 +5,30 @@ metadata:
   name: esphome
   namespace: home
 spec:
-  releaseName: esphome
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: esphome
-      version: 8.4.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
   values:
     image:
       repository: ghcr.io/esphome/esphome
       tag: 2022.8.0
+
     env:
-      TZ: "Europe/London"
+      TZ: "${TZ}"
       ESPHOME_DASHBOARD_USE_PING: true
-    hostNetwork: true
-    dnsPolicy: ClusterFirstWithHostNet
+
+    service:
+      main:
+        ports:
+          http:
+            port: 6052
+
     ingress:
       main:
         enabled: true
@@ -35,14 +39,15 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           traefik.ingress.kubernetes.io/router.middlewares: "network-internal-auth@kubernetescrd"
         hosts:
-          - host: esphome.${SECRET_DOMAIN}
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: tls.esphome
+          - secretName: "tls.{{ .Release.Name }}"
             hosts:
-              - esphome.${SECRET_DOMAIN}
+              - *host
+
     persistence:
       config:
         enabled: true
