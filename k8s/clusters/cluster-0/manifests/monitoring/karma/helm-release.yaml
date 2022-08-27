@@ -5,7 +5,7 @@ metadata:
   name: karma
   namespace: monitoring
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
       chart: app-template
@@ -14,7 +14,13 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     image:
       repository: ghcr.io/prymitive/karma
@@ -32,14 +38,13 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           traefik.ingress.kubernetes.io/router.middlewares: "network-internal-auth@kubernetescrd"
         hosts:
-          - host: karma.${SECRET_DOMAIN}
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: tls.karma
-            hosts:
-              - karma.${SECRET_DOMAIN}
+          - hosts:
+              - *host
     service:
       main:
         ports:
