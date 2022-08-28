@@ -5,23 +5,34 @@ metadata:
   name: zigbee2mqtt
   namespace: home
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: zigbee2mqtt
-      version: 9.4.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     image:
       repository: ghcr.io/koenkk/zigbee2mqtt
       tag: 1.27.0
     env:
-      TZ: Europe/London
+      TZ: "${TZ}"
       ZIGBEE2MQTT_DATA: /data
+    service:
+      main:
+        ports:
+          http:
+            port: 8080
     ingress:
       main:
         enabled: true
@@ -32,56 +43,29 @@ spec:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           traefik.ingress.kubernetes.io/router.middlewares: "network-internal-auth@kubernetescrd"
         hosts:
-          - host: zigbee2mqtt.${SECRET_DOMAIN}
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: tls.zigbee2mqtt
+          - secretName: "tls.{{ .Release.Name }}"
             hosts:
-              - zigbee2mqtt.${SECRET_DOMAIN}
-    securityContext:
-      privileged: true
+              - *host
+    podSecurityContext:
+      runAsUser: 1000
+      runAsGroup: 1000
+      fsGroup: 1000
+      fsGroupChangePolicy: "OnRootMismatch"
     podAnnotations:
       configmap.reloader.stakater.com/reload: "zigbee2mqtt-settings"
     persistence:
       data:
         enabled: true
         existingClaim: zigbee2mqtt-data
-    config:
-      homeassistant: true
-      device_options:
-        retain: true
-      permit_join: false
-      mqtt:
-        user: mqtt
-        password: "${EMQX_MQTT_USER_PASSWORD}"
-        base_topic: zigbee2mqtt
-        server: "mqtt://emqx-headless.home.svc:1883"
-      serial:
-        port: "tcp://10.20.0.85:6638"
-      advanced:
-        log_output:
-          - console
-        network_key:
-          - 43
-          - 244
-          - 5
-          - 239
-          - 154
-          - 132
-          - 166
-          - 197
-          - 26
-          - 253
-          - 154
-          - 166
-          - 21
-          - 206
-          - 78
-          - 82
-        pan_id: 6752
-      frontend:
-        port: 8080
-      experimental:
-        new_api: true
+        mountPath: "/data"
+    resources:
+      requests:
+        cpu: 10m
+        memory: 100Mi
+      limits:
+        memory: 500Mi
