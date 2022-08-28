@@ -5,16 +5,22 @@ metadata:
   name: joplin
   namespace: collab
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: joplin-server
-      version: 5.3.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     image:
       repository: joplin/server
@@ -26,6 +32,9 @@ spec:
         annotations:
           prometheus.io/probe: "true"
           prometheus.io/protocol: tcp
+        ports:
+          http:
+            port: 22300
 
     env:
       TZ: "${TZ}"
@@ -43,6 +52,7 @@ spec:
       MAILER_AUTH_PASSWORD: ${SECRET_JOPLIN_PASSWORD}
       MAILER_NOREPLY_NAME: Joplin
       MAILER_NOREPLY_EMAIL: ${SECRET_JOPLIN_FROM}
+
     ingress:
       main:
         enabled: true
@@ -57,16 +67,15 @@ spec:
           hajimari.io/enable: "true"
           hajimari.io/icon: notebook-multiple
         hosts:
-          - host: joplin.${SECRET_DOMAIN}
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - hosts:
-              - "joplin.${SECRET_DOMAIN}"
-            secretName: tls.joplin
-    postgresql:
-      enabled: false
+          - secretName: "tls.{{ .Release.Name }}"
+            hosts:
+              - *host
+
   valuesFrom:
     - kind: Secret
       name: database-joplin-user
