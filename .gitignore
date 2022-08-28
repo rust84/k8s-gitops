@@ -25,3 +25,6 @@ setup/cluster/*cluster.yml
 
 # Quick-install
 charts
+
+#VSCode
+*.code-workspace
