@@ -5,22 +5,28 @@ metadata:
   name: plex
   namespace: media
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: plex
-      version: 6.4.3
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     image:
       repository: ghcr.io/k8s-at-home/plex
       tag: v1.28.1.6104-788f82488@sha256:7fa487e30c3f8f95e56e6ee38edcac2e3a8d8c454dc7db75680925d2f7031730
     env:
-      TZ: "Europe/London"
+      TZ: "${TZ}"
     podSecurityContext:
       supplementalGroups:
         - 1001
@@ -30,6 +36,9 @@ spec:
         type: LoadBalancer
         loadBalancerIP: ${SVC_PLEX_ADDRESS}
         externalTrafficPolicy: Local
+        ports:
+          http:
+            port: 32400
     ingress:
       main:
         enabled: true
@@ -45,14 +54,14 @@ spec:
           hajimari.io/icon: "plex"
           hajimari.io/appName: "plex"
         hosts:
-          - host: "plex.${SECRET_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: tls.plex
+          - secretName: "tls.{{ .Release.Name }}"
             hosts:
-              - plex.${SECRET_DOMAIN}
+              - *host
     persistence:
       config:
         enabled: true
@@ -85,21 +94,3 @@ spec:
       limits:
         gpu.intel.com/i915: 1
         memory: 4900Mi
-    addons:
-      promtail:
-        enabled: true
-        image:
-          repository: grafana/promtail
-          tag: 2.6.1
-        loki: http://loki.monitoring.svc.cluster.local:3100/loki/api/v1/push
-        logs:
-          - name: promtail/plex
-            path: "/config/Library/Application Support/Plex Media Server/Logs/*.log"
-          - name: promtail/plex/plugins
-            path: "/config/Library/Application Support/Plex Media Server/Logs/PMS Plugin Logs/*.log"
-        volumeMounts:
-          - name: config
-            mountPath: /config
-            readOnly: true
-        securityContext:
-          runAsUser: 0
