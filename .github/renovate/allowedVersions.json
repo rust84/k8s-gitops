@@ -7,11 +7,6 @@
     },
     {
       "matchDatasources": ["docker"],
-      "matchPackageNames": ["influxdb"],
-      "allowedVersions": "<2"
-    },
-    {
-      "matchDatasources": ["docker"],
       "matchPackageNames": [
         "k8s.gcr.io/kube-apiserver",
         "k8s.gcr.io/kube-controller-manager",

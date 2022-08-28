@@ -116,6 +116,8 @@ spec:
         deleteDatasources:
           - name: loki
             orgId: 1
+          - name: home_assistant
+            orgId: 1
         datasources:
           - name: Prometheus
             type: prometheus
@@ -126,11 +128,6 @@ spec:
             type: loki
             access: proxy
             url: http://loki.monitoring.svc.cluster.local:3100
-          - name: home_assistant
-            type: influxdb
-            access: proxy
-            url: http://influxdb.home.svc:8086
-            database: home_assistant
     grafana.ini:
       server:
         root_url: https://grafana.${SECRET_DOMAIN}
