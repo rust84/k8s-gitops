@@ -5,88 +5,123 @@ metadata:
   name: blocky
   namespace: network
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
-      chart: blocky
-      version: 10.5.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 10m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     image:
       repository: spx01/blocky
       tag: v0.19
+
     controller:
-      replicas: 3
+      enabled: true
+      type: deployment
       strategy: RollingUpdate
+      replicas: 3
+
     env:
       TZ: "${TZ}"
-    # blocky configuration
-    config: |
-      upstream:
-        default:
-          - tcp+udp:10.20.0.1
-      redis:
-        address: blocky-redis-master.network.svc.cluster.local:6379
-        database: 2
-        required: true
-        connectionAttempts: 10
-        connectionCooldown: 3s
-      conditional:
-        mapping:
-          microserver.space: tcp+udp:10.20.0.1
-      blocking:
-        blackLists:
-          ads:
-          - https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
-          - https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
-          - http://sysctl.org/cameleon/hosts
-          - https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
-          cookies:
-          - https://www.fanboy.co.nz/fanboy-cookiemonster.txt
-        whiteLists:
-          ads:
-          - https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt
-          - https://raw.githubusercontent.com/rust84/k8s-gitops/main/k8s/clusters/cluster-0/manifests/network/blocky/whitelist.txt
-        clientGroupsBlock:
-          default:
-          - ads
-            # - special
-      clientLookup:
-        upstream: tcp+udp:10.20.0.1
-      prometheus:
-        enable: true
-        path: /metrics
-      httpPort: 4000
-      logLevel: info
+
+    persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: &config blocky-config
+        subPath: config.yml
+        mountPath: /app/config.yml
+        readOnly: true
+
+    configmap:
+      config:
+        enabled: true
+        data:
+          config.yml: |-
+            upstream:
+              default:
+                - tcp+udp:10.20.0.1
+            redis:
+              address: blocky-redis-master.network.svc.cluster.local:6379
+              database: 2
+              required: true
+              connectionAttempts: 10
+              connectionCooldown: 3s
+            conditional:
+              mapping:
+                microserver.space: tcp+udp:10.20.0.1
+            blocking:
+              blackLists:
+                ads:
+                - https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
+                - https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+                - http://sysctl.org/cameleon/hosts
+                - https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
+                cookies:
+                - https://www.fanboy.co.nz/fanboy-cookiemonster.txt
+              whiteLists:
+                ads:
+                - https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt
+                - https://raw.githubusercontent.com/rust84/k8s-gitops/main/k8s/clusters/cluster-0/manifests/network/blocky/whitelist.txt
+              clientGroupsBlock:
+                default:
+                - ads
+                  # - special
+            clientLookup:
+              upstream: tcp+udp:10.20.0.1
+            prometheus:
+              enable: true
+              path: /metrics
+            httpPort: 4000
+            logLevel: info
+
     service:
       main:
+        enabled: true
         ports:
           http:
             port: 4000
       dns:
         enabled: true
         type: LoadBalancer
-        loadBalancerIP: ${SVC_BLOCKY_ADDRESS}
+        loadBalancerIP: "${SVC_BLOCKY_ADDRESS}"
         externalTrafficPolicy: Local
         ports:
-          tcp:
+          dns-tcp:
             enabled: true
             port: 53
             protocol: TCP
             targetPort: 53
-          udp:
+          dns-udp:
             enabled: true
             port: 53
             protocol: UDP
             targetPort: 53
-    metrics:
-      enabled: true
+          dns-dot:
+            enabled: true
+            port: 853
+            protocol: TCP
+            targetPort: 853
+          dns-https:
+            enabled: true
+            port: 443
+            protocol: TCP
+            targetPort: 443
+
     podAnnotations:
-      configmap.reloader.stakater.com/reload: "blocky-config"
+      configmap.reloader.stakater.com/reload: *config
+
     affinity:
       podAntiAffinity:
         preferredDuringSchedulingIgnoredDuringExecution:
@@ -99,6 +134,7 @@ spec:
                     values:
                       - blocky
               topologyKey: kubernetes.io/hostname
+
     resources:
       requests:
         memory: 100Mi
