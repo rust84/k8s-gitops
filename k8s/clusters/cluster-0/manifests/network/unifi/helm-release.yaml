@@ -5,24 +5,34 @@ metadata:
   name: unifi
   namespace: network
 spec:
-  interval: 5m
-  releaseName: unifi
+  interval: 15m
   chart:
     spec:
-      chart: unifi
-      version: 5.1.2
+      chart: app-template
+      version: 0.1.1
       sourceRef:
         kind: HelmRepository
-        name: k8s-at-home-charts
+        name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
+  install:
+    createNamespace: true
+    remediation:
+      retries: 5
+  upgrade:
+    remediation:
+      retries: 5
   values:
     image:
       repository: jacobalberty/unifi
       tag: v7.2.92
 
     env:
-      TZ: Europe/London
+      RUNAS_UID0: "false"
+      UNIFI_UID: "999"
+      UNIFI_GID: "999"
+      UNIFI_STDOUT: "true"
+      JVM_INIT_HEAP_SIZE:
+      JVM_MAX_HEAP_SIZE: 1024M
 
     ingress:
       main:
@@ -38,31 +48,62 @@ spec:
           hajimari.io/icon: wifi
           hajimari.io/appName: unifi
         hosts:
-          - host: "unifi.${SECRET_DOMAIN}"
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
                 pathType: Prefix
         tls:
-          - hosts:
-              - "unifi.${SECRET_DOMAIN}"
-            secretName: tls.unifi
+          - secretName: "tls.{{ .Release.Name }}"
+            hosts:
+              - *host
 
     service:
       main:
         type: LoadBalancer
-        loadBalancerIP: ${SVC_UNIFI_ADDRESS}
-        annotations:
-          coredns.io/hostname: unifi
+        loadBalancerIP: "${SVC_UNIFI_ADDRESS}"
         externalTrafficPolicy: Local
+        ports:
+          http:
+            port: 8443
+            protocol: HTTPS
+          controller:
+            enabled: true
+            port: 8080
+            protocol: TCP
+          portal-http:
+            enabled: false
+            port: 8880
+            protocol: HTTP
+          portal-https:
+            enabled: false
+            port: 8843
+            protocol: HTTPS
+          speedtest:
+            enabled: true
+            port: 6789
+            protocol: TCP
+          stun:
+            enabled: true
+            port: 3478
+            protocol: UDP
+          syslog:
+            enabled: true
+            port: 5514
+            protocol: UDP
+          discovery:
+            enabled: true
+            port: 10001
+            protocol: UDP
 
     persistence:
       data:
         enabled: true
         existingClaim: unifi-data
+        mountPath: /unifi
 
     resources:
       requests:
-        memory: 1000Mi
-        cpu: 35m
+        cpu: 23m
+        memory: 1390M
       limits:
-        memory: 2000Mi
+        memory: 1390M
