@@ -23,8 +23,8 @@ spec:
       retries: 5
   values:
     image:
-      repository: monica
-      tag: 3.7.0-apache
+      repository: ghcr.io/rust84/monica
+      tag: v0.0.3
     env:
       APP_ENV: production
       DB_CONNECTION: pgsql
