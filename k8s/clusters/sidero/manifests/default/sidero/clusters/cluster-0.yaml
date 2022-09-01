@@ -54,7 +54,7 @@ spec:
     controlplane:
       generateType: controlplane
       # renovate: datasource=github-releases depName=siderolabs/talos
-      talosVersion: "v1.1.2"
+      talosVersion: "v1.2.0"
     init:
       # configPatches:
       #   - op: add
@@ -67,7 +67,7 @@ spec:
       #             ip: ${CLUSTER_0_API_IP}
       generateType: init
       # renovate: datasource=github-releases depName=siderolabs/talos
-      talosVersion: "v1.1.2"
+      talosVersion: "v1.2.0"
   infrastructureTemplate:
     apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
     kind: MetalMachineTemplate
@@ -86,7 +86,7 @@ spec:
     spec:
       generateType: join
       # renovate: datasource=github-releases depName=siderolabs/talos
-      talosVersion: "v1.1.2"
+      talosVersion: "v1.2.0"
 ---
 apiVersion: cluster.x-k8s.io/v1alpha4
 kind: MachineDeployment
