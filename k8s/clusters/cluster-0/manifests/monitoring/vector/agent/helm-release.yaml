@@ -27,7 +27,7 @@ spec:
     securityContext:
       privileged: true
     tolerations:
-      - key: node-role.kubernetes.io/master
+      - key: node-role.kubernetes.io/control-plane
         effect: NoSchedule
     customConfig:
       data_dir: /vector-data-dir

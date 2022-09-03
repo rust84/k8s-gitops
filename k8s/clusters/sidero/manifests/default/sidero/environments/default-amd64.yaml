@@ -6,7 +6,7 @@ metadata:
   namespace: default
 spec:
   kernel:
-    url: https://github.com/siderolabs/talos/releases/download/v1.1.2/vmlinuz-amd64
+    url: https://github.com/siderolabs/talos/releases/download/v1.2.0/vmlinuz-amd64
     args:
       - console=tty0
       - console=ttyS1,115200n8
@@ -25,4 +25,4 @@ spec:
       - talos.config=http://${LB_SIDERO}:8081/configdata?uuid=
       - talos.platform=metal
   initrd:
-    url: https://github.com/siderolabs/talos/releases/download/v1.1.2/initramfs-amd64.xz
+    url: https://github.com/siderolabs/talos/releases/download/v1.2.0/initramfs-amd64.xz
