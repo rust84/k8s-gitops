@@ -23,8 +23,8 @@ spec:
       retries: 5
   values:
     image:
-      repository: ghcr.io/k8s-at-home/radarr-develop
-      tag: v4.2.2.6503@sha256:e8a0a3e662ca2ac99aa5b44d85b4d6c80e24ab120492d181de8b1f8bf52f9be2
+      repository: ghcr.io/onedr0p/radarr-develop
+      tag: 4.2.2.6503@sha256:4252feffee3058d739f63e8b4201ff55ca047db686a8ce587c1120c1964d987c
     env:
       TZ: "${TZ}"
     service:

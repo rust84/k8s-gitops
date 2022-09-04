@@ -23,8 +23,8 @@ spec:
       retries: 5
   values:
     image:
-      repository: ghcr.io/k8s-at-home/frigate
-      tag: v0.10.1-amd64
+      repository: docker.io/blakeblackshear/frigate
+      tag: 0.11.0-rc2
     env:
       TZ: "${TZ}"
     envFrom:

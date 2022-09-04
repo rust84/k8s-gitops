@@ -23,8 +23,8 @@ spec:
       retries: 5
   values:
     image:
-      repository: ghcr.io/k8s-at-home/sonarr-develop
-      tag: v3.0.9.1555@sha256:de9a4837a398bbd25a7e78e711744e5df3a3bc2ea4aa286057357ae1b509f3d7
+      repository: ghcr.io/onedr0p/sonarr-develop
+      tag: 3.0.9.1555@sha256:63e06362f8c14829086c908e6e92768bc22568b70095bc21124cdf21f235e785
     env:
       TZ: "${TZ}"
     service:

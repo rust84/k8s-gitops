@@ -23,8 +23,8 @@ spec:
       retries: 5
   values:
     image:
-      repository: ghcr.io/k8s-at-home/prowlarr-nightly
-      tag: v0.4.5.1955@sha256:4ec04870776fd9515b79cd8c8619f6897d89ee93f515466c1c92cfcc3050b4d3
+      repository: ghcr.io/onedr0p/prowlarr-nightly
+      tag: 0.4.5.1955@sha256:23477241bd7873f2d71c406de2382f802ed294ee31569bf7736a6fb87a52bfbb
     env:
       TZ: "${TZ}"
     service:

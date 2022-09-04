@@ -56,15 +56,13 @@
         // GitRepository and Flux Kustomization where 'Git release/tag' matches 'Helm' version
         "registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n.*?(?<currentValue>[^-\\s]*)\n",
         // Kustomization where 'GitHub release artifact URL' matches 'Docker image' version
-        "datasource=(?<datasource>\\S+) image=(?<depName>\\S+)\n.*?-\\s(.*?)\/(?<currentValue>[^/]+)\/[^/]+\n"
+        "datasource=(?<datasource>\\S+) image=(?<depName>\\S+)\n.*?-\\s(.*?)/(?<currentValue>[^/]+)/[^/]+\n"
       ],
       "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}helm{{/if}}"
     },
     {
       "description": "Process various other dependencies",
-      "fileMatch": [
-        "k8s/.+\\.ya?ml$"
-      ],
+      "fileMatch": ["k8s/.+\\.ya?ml$"],
       "matchStrings": [
         "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?\n.*?\"(?<currentValue>.*)\"\n"
       ],
@@ -83,9 +81,7 @@
     },
     {
       "description": "regexManager to read and process Traefik CRD's",
-      "fileMatch": [
-        "k8s/clusters/cluster-0/crds/traefik/.+\\.ya?ml$"
-      ],
+      "fileMatch": ["k8s/clusters/cluster-0/crds/traefik/.+\\.ya?ml$"],
       "matchStrings": [
         "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n *tag: v(?<currentValue>.*)\n"
       ],
@@ -128,7 +124,7 @@
     // Version strategies
     {
       "matchDatasources": ["docker"],
-      "matchPackageNames": ["ghcr.io/k8s-at-home/plex"],
+      "matchPackageNames": ["ghcr.io/onedr0p/plex"],
       "versioning": "loose"
     }
   ]
