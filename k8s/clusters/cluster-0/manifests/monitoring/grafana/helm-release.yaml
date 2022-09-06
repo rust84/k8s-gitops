@@ -18,6 +18,8 @@ spec:
   values:
     deploymentStrategy:
       type: Recreate
+    rbac:
+      pspEnabled: false
     persistence:
       enabled: true
       existingClaim: grafana-config-pvc
