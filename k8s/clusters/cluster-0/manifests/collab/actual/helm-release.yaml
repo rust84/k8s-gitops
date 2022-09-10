@@ -45,7 +45,7 @@ spec:
           kubernetes.io/tls-acme: "true"
           cert-manager.io/cluster-issuer: letsencrypt-prod
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          traefik.ingress.kubernetes.io/router.middlewares: "network-rfc1918@kubernetescrd"
+          traefik.ingress.kubernetes.io/router.middlewares: "network-internal-auth@kubernetescrd"
           hajimari.io/enable: "true"
           hajimari.io/icon: cash-multiple
         hosts:
