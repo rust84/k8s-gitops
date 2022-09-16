@@ -493,6 +493,7 @@ spec:
           periodSeconds: 10
           timeoutSeconds: 3
         name: cilium-operator
+        terminationMessagePolicy: FallbackToLogsOnError
         volumeMounts:
         - mountPath: /tmp/cilium/config-map
           name: cilium-config-path
@@ -633,6 +634,7 @@ spec:
             scheme: HTTP
           periodSeconds: 2
           successThreshold: 1
+        terminationMessagePolicy: FallbackToLogsOnError
         volumeMounts:
         - mountPath: /sys/fs/bpf
           mountPropagation: Bidirectional
@@ -686,6 +688,7 @@ spec:
             memory: 100Mi
         securityContext:
           privileged: true
+        terminationMessagePolicy: FallbackToLogsOnError
         volumeMounts:
         - mountPath: /sys/fs/bpf
           name: bpf-maps
