@@ -108,7 +108,7 @@ spec:
               - path: /
                 pathType: Prefix
         tls:
-          - secretName: "tls.{{ .Release.Name }}"
+          - secretName: "tls.loki"
             hosts:
               - *host
     write:
