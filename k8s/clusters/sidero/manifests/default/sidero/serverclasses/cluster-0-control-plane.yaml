@@ -28,7 +28,7 @@ spec:
       path: /cluster/coreDNS
       value:
         # renovate: docker-image
-        image: docker.io/coredns/coredns:1.9.4
+        image: docker.io/coredns/coredns:1.10.0
 
     - op: replace
       path: /persist
