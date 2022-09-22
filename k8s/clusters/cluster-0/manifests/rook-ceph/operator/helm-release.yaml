@@ -21,6 +21,9 @@ spec:
 
     pspEnable: false # Can safely remove after upgrade to v1.25
 
+    hostpathRequiresPrivileged: true
+    enableDiscoveryDaemon: true
+
     csi:
       kubeletDirPath: /var/lib/kubelet
       enableCSIHostNetwork: true
