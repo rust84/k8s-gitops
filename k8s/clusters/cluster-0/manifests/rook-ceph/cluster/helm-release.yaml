@@ -64,7 +64,7 @@ spec:
             memory: "4Gi"
         prepareosd:
           limits:
-            memory: "200Mi"
+            memory: "800Mi"
           requests:
             cpu: "500m"
             memory: "50Mi"
