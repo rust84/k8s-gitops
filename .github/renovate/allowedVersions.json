@@ -13,7 +13,7 @@
         "k8s.gcr.io/kube-scheduler",
         "ghcr.io/siderolabs/kubelet"
       ],
-      "allowedVersions": "~1.24.2"
+      "allowedVersions": "~1.25.2"
     }
   ]
 }
