@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: docker.io/jellyfin/jellyfin
-      tag: 10.8.4
+      tag: 10.8.5
     env:
       TZ: "${TZ}"
       JELLYFIN_CACHE_DIR: "/config/cache"
