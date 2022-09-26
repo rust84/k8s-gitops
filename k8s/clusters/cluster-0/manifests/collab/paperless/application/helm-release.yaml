@@ -30,7 +30,7 @@ spec:
 
     image:
       repository: ghcr.io/paperless-ngx/paperless-ngx
-      tag: 1.8.0
+      tag: 1.9.0
 
     env:
       COMPOSE_PROJECT_NAME: paperless
