@@ -95,8 +95,6 @@ spec:
           - name: "pagerduty"
             pagerduty_configs:
               - routing_key: ${SECRET_PAGERDUTY_TOKEN}
-                description: |-
-                  {{ template "pagerduty.custom.description" . }}
         templates: ["*.tmpl"]
       templateFiles:
         pagerduty-custom.tmpl: |-
