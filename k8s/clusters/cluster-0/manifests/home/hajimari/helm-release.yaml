@@ -38,33 +38,33 @@ spec:
         - name: TrueNAS
           url: "https://nas.${SECRET_DOMAIN}"
           icon: harddisk
-      groups:
-        - name: Communicate
-          links:
+      globalBookmarks:
+        - group: Communicate
+          bookmarks:
             - name: Discord
               url: "https://discord.com"
-        - name: Cloud
-          links:
+        - group: Cloud
+          bookmarks:
             - name: AWS
               url: "https://console.aws.amazon.com/console/home"
             - name: Cloudflare
               url: "https://dash.cloudflare.com"
-        - name: Dev
-          links:
+        - group: Dev
+          bookmarks:
             - name: Github
               url: "https://github.com/rust84"
-        - name: Media
-          links:
+        - group: Media
+          bookmarks:
             - name: YouTube
               url: "https://youtube.com/feed/subscriptions"
-        - name: Reading
-          links:
+        - group: Reading
+          bookmarks:
             - name: Medium
               url: "http://medium.com"
             - name: Reddit
               url: "http://reddit.com"
-        - name: Tech
-          links:
+        - group: Tech
+          bookmarks:
             - name: Hacker News
               url: "https://news.ycombinator.com/"
             - name: The Verge
