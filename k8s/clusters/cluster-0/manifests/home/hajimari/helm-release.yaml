@@ -21,6 +21,9 @@ spec:
       tag: v0.3.1
     env:
       TZ: "Europe/London"
+    securityContext:
+      fsGroup: 101
+      fsGroupChangePolicy: "OnRootMismatch"
     hajimari:
       defaultEnable: false
       namespaceSelector:
