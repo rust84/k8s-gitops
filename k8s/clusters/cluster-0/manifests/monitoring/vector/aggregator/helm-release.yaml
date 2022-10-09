@@ -165,7 +165,7 @@ spec:
         cpu: 22m
         memory: 145M
       limits:
-        memory: 214M
+        memory: 500M
 
   postRenderers:
     - kustomize:
