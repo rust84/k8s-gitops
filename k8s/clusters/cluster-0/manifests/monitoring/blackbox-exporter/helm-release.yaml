@@ -56,8 +56,6 @@ spec:
               insecure_skip_verify: true
           icmp:
             ip_protocol_fallback: true
-          dns:
-            ip_protocol_fallback: true
     serviceMonitor:
       enabled: true
       defaults:
