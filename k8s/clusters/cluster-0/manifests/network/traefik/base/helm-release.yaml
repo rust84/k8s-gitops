@@ -20,8 +20,10 @@ spec:
       name: traefik
     deployment:
       enabled: true
-      kind: Deployment
-      replicas: 2
+      kind: DaemonSet
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
     service:
       enabled: true
       type: LoadBalancer
