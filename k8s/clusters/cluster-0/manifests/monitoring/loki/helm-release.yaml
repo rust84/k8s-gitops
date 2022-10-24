@@ -94,6 +94,8 @@ spec:
     gateway:
       enabled: true
       replicas: 3
+      deploymentStrategy:
+        type: Recreate
       ingress:
         enabled: true
         ingressClassName: traefik
