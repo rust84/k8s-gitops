@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: ghcr.io/linuxserver/calibre-web
-      tag: version-0.6.19@sha256:5e52d1f26be06b311cf6350c727ded1e047b0cbe945a1dbe5a5ac396a76015f5
+      tag: version-0.6.19@sha256:38f93028cc5fb2e8dfa5821fe08535b7c024ed48148dce8b6cc3472722abb5b4
 
     env:
       TZ: "${TZ}"
