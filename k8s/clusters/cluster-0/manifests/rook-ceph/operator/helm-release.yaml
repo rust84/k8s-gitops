@@ -19,7 +19,7 @@ spec:
     crds:
       enabled: false
 
-    pspEnable: false # Can safely remove after upgrade to v1.25
+    disableAdmissionController: true # https://github.com/rook/rook/issues/10719
 
     hostpathRequiresPrivileged: true
     enableDiscoveryDaemon: true
