@@ -34,8 +34,12 @@ spec:
             enabled: true
             protocol: TCP
             port: 9798
-    metrics:
-      enabled: true
-      serviceMonitor:
-        interval: 60m
-        scrapeTimeout: 1m
+    serviceMonitor:
+      main:
+        enabled: true
+        endpoints:
+          - port: http
+            scheme: http
+            path: /metrics
+            interval: 60m
+            scrapeTimeout: 1m
