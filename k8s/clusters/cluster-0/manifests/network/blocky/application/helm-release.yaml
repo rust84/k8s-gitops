@@ -44,7 +44,7 @@ spec:
         mountPath: /app/config.yml
         readOnly: true
 
-    configmap:
+    configMaps:
       config:
         enabled: true
         data:
