@@ -1,0 +1,23 @@
+domainName: microserver.space
+clusterEndpointIP: 10.20.0.250
+ingressDomain: microserver.space
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1knsdzqjgfty7fghdvk8ayr4kmj9kre8nqcg5tvjpjfy6m7a5ap8srhjd6k
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBESEZUcDd4cW9HTThHdTFm
+            R0YxdkdFVVY0dGpRN3NzU2dDVUhvT1kxRzEwCkxhOVM0anU2QjFOQ1NRaVk0aS84
+            RFlJSGtZZ3ZoNlhLMmFpbVVwck41SnMKLS0tIHhmazZZaUo5SGJTUmtWNHNHWWcy
+            WUQzQkFCZTZTaHFLdHZFVWNPWS9PdDAKBA0DBh5BNd3Z8kmCZ5o3mAmJ8q4zcsNq
+            PRQEaR5bB9f5vhVbTV1wnhOdFAV9cR2nFP7+59hYARtYC75q99SsyA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2022-11-12T23:54:29Z"
+    mac: ENC[AES256_GCM,data:Sygw7RVsrSCQD1Ykvz40oK4S+tBmrmwKAKO4S8mQrqEcTR8WWrnxZuvYKnY0zMEcEsKDJvtTYfYXscKdkoLOgMy1sweeaZ5gi6nBFEmXoDX6JEBl18H29H9XL2nU4zaD5NBQvz0L4OidAB2QiaFPUHwLDv5YlFCDeBUvPWrdoWU=,iv:s9SwCxnZm0ypHbAAPp46LWOK5ON7QE9Y7zxrddni130=,tag:EYFbl/RGeoOikwjzMdHbNA==,type:str]
+    pgp: []
+    encrypted_regex: ((?i)(pass|secret($|[^N])|key|token|^data$|^stringData))
+    version: 3.7.3
