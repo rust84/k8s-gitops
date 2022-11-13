@@ -20,36 +20,9 @@ cniConfig:
     - https://raw.githubusercontent.com/rust84/k8s-gitops/main/infrastructure/talos/cluster-0/cni/quick-install.yaml
 
 nodes:
-  - hostname: cp-0.${domainName}
-    ipAddress: 10.20.0.120
-    controlPlane: true
-    installDisk: /dev/sda
-    disableSearchDomain: true
-    networkInterfaces:
-      - interface: eth0
-        mtu: 0
-        dhcp: true
-  - hostname: cp-1.${domainName}
-    ipAddress: 10.20.0.115
-    controlPlane: true
-    installDisk: /dev/sda
-    disableSearchDomain: true
-    networkInterfaces:
-      - interface: eth0
-        mtu: 0
-        dhcp: true
-  - hostname: cp-2.${domainName}
-    ipAddress: 10.20.0.121
-    controlPlane: true
-    installDisk: /dev/sda
-    disableSearchDomain: true
-    networkInterfaces:
-      - interface: eth0
-        mtu: 0
-        dhcp: true
   - hostname: node-0.${domainName}
     ipAddress: 10.20.0.128
-    controlPlane: false
+    controlPlane: true
     installDisk: /dev/sda
     disableSearchDomain: true
     networkInterfaces:
@@ -58,7 +31,7 @@ nodes:
         dhcp: true
   - hostname: node-1.${domainName}
     ipAddress: 10.20.0.125
-    controlPlane: false
+    controlPlane: true
     installDisk: /dev/sda
     disableSearchDomain: true
     networkInterfaces:
@@ -67,7 +40,7 @@ nodes:
         dhcp: true
   - hostname: node-2.${domainName}
     ipAddress: 10.20.0.127
-    controlPlane: false
+    controlPlane: true
     installDisk: /dev/sda
     disableSearchDomain: true
     networkInterfaces:
