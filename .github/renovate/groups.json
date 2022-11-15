@@ -74,6 +74,17 @@
       "matchPackagePatterns": ["cert-manager"],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
       "separateMinorPatch": true
+    },
+    {
+      "description": "Home Assistant and Code Server",
+      "groupName": "Cilium",
+      "matchDatasources": ["docker"],
+      "matchPackageNames": [
+        "ghcr.io/onedr0p/home-assistant",
+        "codercom/code-server"
+      ],
+      "group": { "commitMessageTopic": "{{{groupName}}} group" },
+      "separateMinorPatch": true
     }
   ]
 }
