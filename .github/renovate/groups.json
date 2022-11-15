@@ -77,7 +77,7 @@
     },
     {
       "description": "Home Assistant and Code Server",
-      "groupName": "Cilium",
+      "groupName": "Home Assistant",
       "matchDatasources": ["docker"],
       "matchPackageNames": [
         "ghcr.io/onedr0p/home-assistant",
