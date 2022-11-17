@@ -20,7 +20,8 @@ spec:
       name: traefik
     deployment:
       enabled: true
-      kind: DaemonSet
+      kind: Deployment
+      replicas: 2
     rollingUpdate:
       maxUnavailable: 0
       maxSurge: 1
