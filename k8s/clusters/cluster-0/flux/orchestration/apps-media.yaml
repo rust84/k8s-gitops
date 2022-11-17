@@ -12,14 +12,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/plex"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -34,14 +26,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/tautulli"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -55,14 +39,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/prowlarr"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -76,14 +52,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/nzbget"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -99,14 +67,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/sonarr"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -122,14 +82,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/sonarr-uhd"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -145,14 +97,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/radarr"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -168,14 +112,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/radarr-uhd"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -191,14 +127,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/overseerr"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -212,14 +140,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/readarr"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -233,14 +153,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/calibre"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -254,14 +166,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/calibre-web"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -276,14 +180,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/jellyfin"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -297,17 +193,8 @@ spec:
     - name: apps-media-radarr-uhd
     - name: apps-media-sonarr
     - name: apps-media-sonarr-uhd
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/recyclarr"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -319,17 +206,8 @@ spec:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
     - name: apps-media-plex
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/gaps"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -341,14 +219,5 @@ spec:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
     - name: apps-media-plex
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/plex-trakt-sync"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age

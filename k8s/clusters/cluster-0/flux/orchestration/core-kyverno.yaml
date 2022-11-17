@@ -5,13 +5,8 @@ metadata:
   name: core-kyverno-base
   namespace: flux-system
 spec:
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/kyverno/base"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -21,10 +16,5 @@ metadata:
 spec:
   dependsOn:
     - name: core-kyverno-base
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/kyverno/policies"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops

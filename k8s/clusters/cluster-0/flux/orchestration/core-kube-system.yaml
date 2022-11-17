@@ -7,17 +7,8 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/kube-system/chrony"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -27,17 +18,8 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/kube-system/metrics-server"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -47,17 +29,8 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/kube-system/rbac"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -67,17 +40,8 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/kube-system/node-feature-discovery"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -87,17 +51,8 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/kube-system/reloader"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -108,14 +63,5 @@ spec:
   dependsOn:
     - name: cluster-namespaces
     - name: core-nfd
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/kube-system/intel-gpu-plugin"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age

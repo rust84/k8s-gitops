@@ -12,14 +12,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/home/zigbee2mqtt"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -34,14 +26,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/home/home-assistant"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -58,14 +42,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/home/frigate"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -79,14 +55,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/home/esphome"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -100,14 +68,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/home/emqx"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -118,17 +78,8 @@ spec:
   dependsOn:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/home/hajimari"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -140,17 +91,8 @@ spec:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
     - name: core-traefik
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/home/monica"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -162,14 +104,5 @@ spec:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
     - name: core-traefik
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/home/node-red"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age

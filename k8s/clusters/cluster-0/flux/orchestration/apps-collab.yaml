@@ -8,17 +8,8 @@ spec:
   dependsOn:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/collab/vaultwarden"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -28,17 +19,8 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/collab/joplin-server"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -48,17 +30,8 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/collab/paperless/database"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -69,17 +42,8 @@ spec:
   dependsOn:
     - name: cluster-namespaces
     - name: apps-collab-paperless-database
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/collab/paperless/application"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -90,14 +54,5 @@ spec:
   dependsOn:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/collab/actual"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age

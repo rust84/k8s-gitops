@@ -12,14 +12,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/network/unifi"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -32,14 +24,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/network/external-dns"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -52,14 +36,6 @@ spec:
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/network/blocky/redis"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -70,17 +46,8 @@ spec:
   dependsOn:
     - name: cluster-namespaces
     - name: apps-network-blocky-redis
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/network/blocky/application"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -93,17 +60,8 @@ spec:
     - name: core-cilium
     - name: core-cert-manager
     - name: core-traefik
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/network/error-pages"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
@@ -116,14 +74,5 @@ spec:
     - name: traefik-crds
     - name: core-cilium
     - name: core-cert-manager
-  interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/network/traefik"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
