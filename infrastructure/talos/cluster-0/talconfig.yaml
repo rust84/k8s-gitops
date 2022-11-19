@@ -15,9 +15,7 @@ additionalApiServerCertSans:
   - ${clusterEndpointIP}
 
 cniConfig:
-  name: custom
-  urls:
-    - https://raw.githubusercontent.com/rust84/k8s-gitops/main/infrastructure/talos/cluster-0/cni/quick-install.yaml
+  name: none
 
 nodes:
   - hostname: node-0.${domainName}
