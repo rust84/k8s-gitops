@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: ghcr.io/onedr0p/nzbget
-      tag: 21.1@sha256:76cee7d3b434f050307290f400fd6b2f17214088201f06e7665df0ac5df336fd
+      tag: 21.1@sha256:61a7141e797703bdb9bad9cefe67d801f253b9aa42823889c981b2aa90878680
 
     podSecurityContext:
       runAsUser: 1001
