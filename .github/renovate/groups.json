@@ -89,11 +89,7 @@
     {
       "description": "Traefik CRDs and chart",
       "groupName": "Traefik",
-      "matchDatasources": ["helm", "github-releases", "docker"],
-      "matchPackageNames": [
-        "traefik",
-        "traefik-crd-source"
-      ],
+      "matchPackageNames": ["traefik", "traefik-crd-source"],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
       "separateMinorPatch": true
     }
