@@ -19,4 +19,4 @@ spec:
   values:
     image:
       repository: k8s.gcr.io/metrics-server/metrics-server
-      tag: v0.6.1
+      tag: v0.6.2
