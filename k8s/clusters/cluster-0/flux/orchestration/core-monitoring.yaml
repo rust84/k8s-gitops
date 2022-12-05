@@ -127,3 +127,26 @@ spec:
     - name: cluster-namespaces
   path: "./k8s/clusters/cluster-0/manifests/monitoring/speedtest-exporter"
   prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: core-monitoring-vpa
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+  path: "./k8s/clusters/cluster-0/manifests/monitoring/vpa"
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: core-monitoring-goldilocks
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: core-monitoring-vpa
+  path: "./k8s/clusters/cluster-0/manifests/monitoring/goldilocks"
+  prune: true
