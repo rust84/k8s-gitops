@@ -63,10 +63,10 @@ spec:
         mountPath: /config/Backups
     resources:
       requests:
-        memory: 100Mi
-        cpu: 100m
+        cpu: 15m
+        memory: 380M
       limits:
-        memory: 500Mi
+        memory: 532M
     podSecurityContext:
       supplementalGroups:
         - 1001
