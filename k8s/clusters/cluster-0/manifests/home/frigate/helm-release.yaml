@@ -88,10 +88,11 @@ spec:
                     - "true"
     resources:
       requests:
-        memory: 1000Mi
-        cpu: 750m
+        cpu: 295m
+        memory: 1312M
+        gpu.intel.com/i915: 1
       limits:
-        memory: 2500Mi
+        memory: 1828M
         gpu.intel.com/i915: 1
     securityContext:
       privileged: true
