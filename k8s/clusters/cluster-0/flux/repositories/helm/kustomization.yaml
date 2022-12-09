@@ -11,6 +11,7 @@ resources:
   - codeweave-charts.yaml
   - coredns-charts.yaml
   - dex-charts.yaml
+  - dysnix-charts.yaml
   - emqx-charts.yaml
   - fairwinds-charts.yaml
   - grafana-charts.yaml
