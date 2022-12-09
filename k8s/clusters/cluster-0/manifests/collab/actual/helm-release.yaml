@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: jlongster/actual-server
-      tag: 22.10.25-alpine
+      tag: 22.12.8-alpine
       pullPolicy: IfNotPresent
 
     service:
