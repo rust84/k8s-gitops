@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: ghcr.io/onedr0p/home-assistant
-      tag: 2022.12.2@sha256:47c8880b9e472221fc0a557c02beb3d78c65b1955b0c73a0d71d4ee0a09ec8be
+      tag: 2022.12.5@sha256:1db05f06beefb874fbdc168a213edf5fa3b5c18fe291ebcc01fe1366750792da
     env:
       TZ: "${TZ}"
       PYTHONUSERBASE: /config/deps
