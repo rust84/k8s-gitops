@@ -16,7 +16,7 @@
       "automergeType": "branch",
       "requiredStatusChecks": null,
       "matchUpdateTypes": ["minor", "patch"],
-      "matchPackageNames": ["ghcr.io/onedr0pprowlarr-nightly"]
+      "matchPackageNames": ["ghcr.io/onedr0p/prowlarr-nightly"]
     },
     {
       "description": "Auto merge GitHub Actions",
