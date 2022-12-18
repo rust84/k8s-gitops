@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: joplin/server
-      tag: 2.9.7-beta
+      tag: 2.10.4-beta
       pullPolicy: IfNotPresent
 
     service:
