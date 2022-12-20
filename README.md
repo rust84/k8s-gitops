@@ -8,7 +8,7 @@
 [![Lines of code](https://img.shields.io/tokei/lines/github/rust84/k8s-gitops?style=for-the-badge)](https://github.com/rust84/k8s-gitops/graphs/contributors "Repo # lines of code")
 [![Talos](https://img.shields.io/badge/OS-Talos-success?style=for-the-badge)](https://talos.dev "Talos OS")
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=for-the-badge)](https://github.com/pre-commit/pre-commit "Precommit status")
-[![GitHub Workflow Status](https://img.shields.io/github/workflow/status/rust84/k8s-gitops/Schedule%20-%20Renovate?label=renovate&logo=renovatebot&style=for-the-badge)](https://github.com/rust84/k8s-gitops/actions/workflows/schedule-renovate.yaml)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/rust84/k8s-gitops/schedule-renovate.yaml?branch=main&label=renovate&logo=renovatebot&style=for-the-badge)](https://github.com/rust84/k8s-gitops/actions/workflows/schedule-renovate.yaml)
 
 [![Home-Internet](https://img.shields.io/uptimerobot/ratio/m782786554-078b80f6fe79b398b2209642?label=home-internet&style=for-the-badge)](https://uptimerobot.com)
 [![My-Plex](https://img.shields.io/uptimerobot/ratio/m785594509-005b82f7fd84a7c017d3214d?label=plex&logo=plex&style=for-the-badge)](https://plex.tv)
