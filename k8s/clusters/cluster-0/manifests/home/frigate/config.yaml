@@ -92,10 +92,10 @@ cameras:
   driveway:
     ffmpeg:
       inputs:
-        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.30.0.243:554/h264Preview_01_sub
+        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.30.0.242:554/h264Preview_01_sub
           roles:
             - detect
-        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.30.0.243:554/h264Preview_01_main
+        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.30.0.242:554/h264Preview_01_main
           roles:
             - rtmp
             - record
