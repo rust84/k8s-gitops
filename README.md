@@ -10,7 +10,7 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=for-the-badge)](https://github.com/pre-commit/pre-commit "Precommit status")
 [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/rust84/k8s-gitops/schedule-renovate.yaml?branch=main&label=renovate&logo=renovatebot&style=for-the-badge)](https://github.com/rust84/k8s-gitops/actions/workflows/schedule-renovate.yaml)
 
-[![Home Internet](https://kuma.microserver.space/api/badge/7/status?label=home%20internet&style=for-the-badge)](https://kuma.microserver.space)
+[![Home Internet](https://kuma.microserver.space/api/badge/7/status?label=home%20internet&style=for-the-badge)](https://kuma.microserver.space/status/home-cluster)
 [![Plex](https://kuma.microserver.space/api/badge/4/status?label=plex&logo=Plex&style=for-the-badge)](https://plex.tv)
 [![Jellyfin](https://kuma.microserver.space/api/badge/6/status?label=Jellyfin&logo=jellyfin&style=for-the-badge)](https://jellyfin.org/)
 [![Home-Assistant](https://kuma.microserver.space/api/badge/1/status?label=home%20assistant&logo=homeassistant&style=for-the-badge)](https://www.home-assistant.io/)
