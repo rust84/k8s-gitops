@@ -55,7 +55,7 @@ jobs:
     steps:
       - name: Get rust84-bot token
         id: get-app-token
-        uses: getsentry/action-github-app-token@v1
+        uses: getsentry/action-github-app-token@v2
         with:
           app_id: ${{ secrets.RUST84_APP_ID }}
           private_key: ${{ secrets.RUST84_APP_PRIVATE_KEY }}
