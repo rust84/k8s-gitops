@@ -38,12 +38,15 @@ spec:
           - security
       name: "russell"
       customApps:
-        - name: TrueNAS
-          url: "https://nas.${SECRET_DOMAIN}"
-          icon: harddisk
-        - name: Uptime
-          url: "https://kuma.${SECRET_DOMAIN}/status/home-cluster"
-          icon: arrow-up-bold
+        - group: Home
+          apps:
+            - name: TrueNAS
+              url: "https://nas.${SECRET_DOMAIN}"
+              icon: harddisk
+            - name: Uptime
+              url: "https://kuma.${SECRET_DOMAIN}/status/home-cluster"
+              icon: arrow-up-bold
+              info: Uptime Kuma status page
       globalBookmarks:
         - group: Communicate
           bookmarks:
