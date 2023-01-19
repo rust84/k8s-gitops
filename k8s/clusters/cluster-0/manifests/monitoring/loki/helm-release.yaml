@@ -123,8 +123,10 @@ spec:
       persistence:
         size: 10Gi
         storageClass: rook-ceph-block
-    read:
+    backend:
       replicas: 3
+      persistence:
+        storageClass: local-path
       extraVolumeMounts:
         - name: rules
           mountPath: /rules/fake
@@ -136,9 +138,8 @@ spec:
             name: loki-alerting-rules
         - name: scratch
           emptyDir: {}
-      persistence:
-        size: 10Gi
-        storageClass: rook-ceph-block
+    read:
+      replicas: 3
     monitoring:
       selfMonitoring:
         enabled: false
