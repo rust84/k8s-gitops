@@ -95,6 +95,8 @@ spec:
         secret.reloader.stakater.com/reload: loki-secret
     gateway:
       replicas: 3
+      deploymentStrategy:
+        type: Recreate
       image:
         registry: ghcr.io
         repository: nginxinc/nginx-unprivileged
@@ -125,12 +127,13 @@ spec:
       replicas: 3
       extraVolumeMounts:
         - name: rules
-          mountPath: /rules
+          mountPath: /rules/fake
         - name: scratch
           mountPath: /tmp/scratch
       extraVolumes:
         - name: rules
-          emptyDir: {}
+          configMap:
+            name: loki-alerting-rules
         - name: scratch
           emptyDir: {}
       persistence:
