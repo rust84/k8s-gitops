@@ -64,17 +64,31 @@ spec:
           group_wait: 30s
           group_interval: 5m
           repeat_interval: 12h
-          receiver: "null"
+          receiver: "discord"
           routes:
             - match:
                 alertname: Watchdog
+              receiver: "null"
+            - match:
+                alertname: InfoInhibitor
               receiver: "null"
             - receiver: "pagerduty"
               match:
                 severity: critical
               continue: true
             - receiver: "discord"
+          inhibit_rules:
+            - source_match:
+                severity: "critical"
+              target_match:
+                severity: "warning"
+              # Apply inhibition if the alertname is the same.
+              equal: ["alertname", "namespace"]
         receivers:
+          - name: heartbeat
+            webhook_configs:
+              - url: "https://kuma.${SECRET_DOMAIN}/api/push/pPDdmnFbUc?status=up&msg=OK&ping="
+                send_resolved: true
           - name: "null"
           - name: "discord"
             slack_configs:
@@ -95,12 +109,6 @@ spec:
           - name: "pagerduty"
             pagerduty_configs:
               - routing_key: ${SECRET_PAGERDUTY_TOKEN}
-                description: |-
-                  {{ template "pagerduty.custom.description" . }}
-        templates: ["*.tmpl"]
-      templateFiles:
-        pagerduty-custom.tmpl: |-
-          {{- define "pagerduty.custom.description" -}}[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if ne .CommonAnnotations.summary ""}}{{ .CommonAnnotations.summary }} {{ else if ne .CommonAnnotations.message ""}}{{ .CommonAnnotations.message }} {{ else if ne .CommonAnnotations.description ""}}{{ .CommonAnnotations.description }} {{ else }}{{ .CommonLabels.alertname }}{{ end }}{{- end -}}
       prometheus:
         monitor:
           enabled: true
