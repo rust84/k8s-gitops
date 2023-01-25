@@ -37,11 +37,11 @@ spec:
     cephClusterSpec:
       # cephVersion:
       #   image: quay.io/ceph/ceph:v17.2.0
-      # network:
-      #   provider: host
-      #   connections:
-      #     compression:
-      #       enabled: true
+      network:
+        provider: host
+        connections:
+          compression:
+            enabled: true
 
       resources:
         mgr:
