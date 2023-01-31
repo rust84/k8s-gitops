@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: sctx/overseerr
-      tag: 1.32.2
+      tag: 1.32.5
 
     env:
       LOG_LEVEL: "info"
