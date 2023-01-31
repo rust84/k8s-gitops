@@ -19,7 +19,7 @@ spec:
   values:
     image:
       repository: monica
-      tag: 3.7.0-apache
+      tag: 4.0.0-apache
     env:
       APP_ENV: production
       DB_HOST: monica-mariadb
