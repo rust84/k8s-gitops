@@ -387,6 +387,7 @@ data:
   remove-cilium-node-taints: "true"
   set-cilium-is-up-condition: "true"
   sidecar-istio-proxy-image: cilium/istio_proxy
+  skip-cnp-status-startup-clean: "false"
   synchronize-k8s-nodes: "true"
   tofqdns-dns-reject-response-code: refused
   tofqdns-enable-dns-compression: "true"
@@ -438,7 +439,7 @@ spec:
   template:
     metadata:
       annotations:
-        cilium.io/cilium-configmap-checksum: be6bbb45a9394d1e583ba29880601946c467d6f0dc209327df1c8cdf0f07d9fb
+        cilium.io/cilium-configmap-checksum: f29d615ed7ab3f0113778e095174583aad61ca1dec8372d071e28a9fa0cdacce
         meta.helm.sh/release-name: cilium
         meta.helm.sh/release-namespace: kube-system
       labels:
@@ -481,7 +482,7 @@ spec:
           value: 10.20.0.250
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
-        image: quay.io/cilium/operator-generic:v1.12.3@sha256:816ec1da586139b595eeb31932c61a7c13b07fb4a0255341c0e0f18608e84eff
+        image: quay.io/cilium/operator-generic:v1.12.6@sha256:eec4430d222cb2967d42d3b404d2606e66468de47ae85e0a3ca3f58f00a5e017
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -531,7 +532,7 @@ spec:
   template:
     metadata:
       annotations:
-        cilium.io/cilium-configmap-checksum: be6bbb45a9394d1e583ba29880601946c467d6f0dc209327df1c8cdf0f07d9fb
+        cilium.io/cilium-configmap-checksum: f29d615ed7ab3f0113778e095174583aad61ca1dec8372d071e28a9fa0cdacce
         meta.helm.sh/release-name: cilium
         meta.helm.sh/release-namespace: kube-system
       labels:
@@ -579,7 +580,7 @@ spec:
           value: 10.20.0.250
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
-        image: quay.io/cilium/cilium:v1.12.3@sha256:30de50c4dc0a1e1077e9e7917a54d5cab253058b3f779822aec00f5c817ca826
+        image: quay.io/cilium/cilium:v1.12.6@sha256:454134506b0448c756398d3e8df68d474acde2a622ab58d0c7e8b272b5867d0d
         imagePullPolicy: IfNotPresent
         lifecycle:
           postStart:
@@ -679,7 +680,7 @@ spec:
           value: 10.20.0.250
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
-        image: quay.io/cilium/cilium:v1.12.3@sha256:30de50c4dc0a1e1077e9e7917a54d5cab253058b3f779822aec00f5c817ca826
+        image: quay.io/cilium/cilium:v1.12.6@sha256:454134506b0448c756398d3e8df68d474acde2a622ab58d0c7e8b272b5867d0d
         imagePullPolicy: IfNotPresent
         name: clean-cilium-state
         resources:
