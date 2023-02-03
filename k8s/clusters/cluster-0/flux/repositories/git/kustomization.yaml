@@ -5,5 +5,5 @@ resources:
   - ../../../../../global/flux/repositories/git
   - k8s-gitops.yaml
   - benji-charts.yaml
-  - invidious-charts-git.yaml
+  - local-path-provisioner.yaml
   - mintel-dex-charts.yaml

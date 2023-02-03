@@ -126,7 +126,8 @@ spec:
     backend:
       replicas: 3
       persistence:
-        storageClass: local-path
+        size: 10Gi
+        storageClass: rook-ceph-block
       extraVolumeMounts:
         - name: rules
           mountPath: /rules/fake
