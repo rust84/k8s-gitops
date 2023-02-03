@@ -3,6 +3,7 @@ kind: Secret
 type: kubernetes.io/service-account-token
 metadata:
     name: kasten-sa-token
+    namespace: kasten-io
     annotations:
         kubernetes.io/service-account.name: k10-k10
 sops:
@@ -20,8 +21,8 @@ sops:
             MXRKcnpoMGE1MlpFTEhIU2d6elduWHMKWwklab+2J5fJoEYweoVGO5cGH6woJOb2
             Y69/o6RzxUREz5Ilchd6s/ZTSF7rmg2v1HGCjT5kwKo49v6qzvwMSA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-02-03T00:39:10Z"
-    mac: ENC[AES256_GCM,data:8GG02S0bSnpDm+TF0IanwbErSvAyDiA+x2SbxI7OxTGXA5lPamqZ9p6vU1k8wSDctZIvfqGva0kuhdpBJ44g6bMtBfY8pAytwjfDlZUlS3mhI7RIXPbZcJMoRvBQKZat59AACRUjT9K4KtCGuXwYRSFgsySxFZofMc0i52Utn4g=,iv:DPqzUHOG4542uTYgfdPsOEcfknkzlbFBUMWVaEKyuEs=,tag:4mkQA3u2DhlhBpTfxe7uyQ==,type:str]
+    lastmodified: "2023-02-03T01:02:32Z"
+    mac: ENC[AES256_GCM,data:6oFaiGQ0CPqxKSVCUs3kFRhzHQ/qwP19hhgj4fidc0/PajNcXVEfblkWwmW7Rdj3fCNEfj5gffPn11kGtdDZ4W9WAjKftFSMq2Bsax0uuTJhf86T5SazOM9KaPgevl2e58UaG0iRkWAsQq9YfG2VXQJaX8yoXlhe/8A6fagZZ2Q=,iv:HC0JKCyIyyhn1pX6rB2LV7HaEyUysSwapOBjtqLaga4=,tag:ODyOTi5fTmCxWFgxDx+KgA==,type:str]
     pgp: []
     encrypted_regex: ((?i)(pass|secret($|[^N])|key|token|^data$|^stringData))
     version: 3.7.3
