@@ -10,6 +10,7 @@ metadata:
     hajimari.io/icon: "web"
     hajimari.io/appName: "traefik"
 spec:
+  ingressClassName: traefik
   tls:
     - hosts:
         - "traefik.${SECRET_DOMAIN}"
