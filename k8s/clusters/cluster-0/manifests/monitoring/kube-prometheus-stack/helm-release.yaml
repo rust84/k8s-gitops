@@ -67,23 +67,25 @@ spec:
           repeat_interval: 12h
           receiver: "discord"
           routes:
-            - match:
-                alertname: Watchdog
-              receiver: "null"
-            - match:
-                alertname: InfoInhibitor
-              receiver: "null"
+            - receiver: heartbeat
+              group_wait: 0s
+              group_interval: 2m
+              repeat_interval: 2m
+              matchers:
+                - alertname =~ "Watchdog"
+            - receiver: "null" # quote
+              matchers:
+                - alertname =~ "InfoInhibitor"
             - receiver: "pagerduty"
               match:
                 severity: critical
               continue: true
             - receiver: "discord"
         inhibit_rules:
-          - source_match:
-              severity: "critical"
-            target_match:
-              severity: "warning"
-            # Apply inhibition if the alertname is the same.
+          - source_matchers:
+              - severity = "critical"
+            target_matchers:
+              - severity = "warning"
             equal: ["alertname", "namespace"]
         receivers:
           - name: heartbeat
