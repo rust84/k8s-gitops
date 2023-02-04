@@ -38,6 +38,7 @@ spec:
       admissionWebhooks:
         enabled: false
     alertmanager:
+      enabled: true
       alertmanagerSpec:
         storage:
           volumeClaimTemplate:
@@ -52,10 +53,10 @@ spec:
         ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        hosts: ["prom-alert.${SECRET_DOMAIN}"]
+        hosts: ["alertmanager.${SECRET_DOMAIN}"]
         tls:
           - hosts:
-              - prom-alert.${SECRET_DOMAIN}
+              - alertmanager.${SECRET_DOMAIN}
       config:
         global:
           slack_api_url: "${DISCORD_WEBHOOK_URL}"
@@ -77,13 +78,13 @@ spec:
                 severity: critical
               continue: true
             - receiver: "discord"
-          inhibit_rules:
-            - source_match:
-                severity: "critical"
-              target_match:
-                severity: "warning"
-              # Apply inhibition if the alertname is the same.
-              equal: ["alertname", "namespace"]
+        inhibit_rules:
+          - source_match:
+              severity: "critical"
+            target_match:
+              severity: "warning"
+            # Apply inhibition if the alertname is the same.
+            equal: ["alertname", "namespace"]
         receivers:
           - name: heartbeat
             webhook_configs:
@@ -210,10 +211,10 @@ spec:
         ingressClassName: "traefik"
         annotations:
           traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        hosts: ["prom-server.${SECRET_DOMAIN}"]
+        hosts: ["prometheus.${SECRET_DOMAIN}"]
         tls:
           - hosts:
-              - prom-server.${SECRET_DOMAIN}
+              - prometheus.${SECRET_DOMAIN}
       thanosService:
         enabled: true
       prometheusSpec:
