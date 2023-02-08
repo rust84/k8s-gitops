@@ -44,7 +44,7 @@ spec:
 
     ingressClass:
       enabled: true
-      isDefaultClass: true
+      isDefaultClass: false # prefer nginx
       fallbackApiVersion: v1
 
     ingressRoute:

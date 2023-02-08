@@ -5,4 +5,3 @@ resources:
   - tls-store
   - dashboard
   - middlewares
-  - wildcard-certificate
