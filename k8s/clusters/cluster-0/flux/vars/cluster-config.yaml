@@ -11,7 +11,7 @@ data:
   TZ: "Europe/London"
 
   # Router Gateway IP
-  GATEWAY_IP: "10.20.0.1"
+  GATEWAY_IP: "192.168.1.1"
 
   # Networks
   NETWORK_SERVERS_CIDR: 10.20.0.0/16
