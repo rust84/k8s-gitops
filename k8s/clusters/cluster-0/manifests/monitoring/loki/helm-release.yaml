@@ -141,6 +141,15 @@ spec:
           emptyDir: {}
     read:
       replicas: 3
+      persistence:
+        size: 10Gi
+        storageClass: rook-ceph-block
+      extraVolumeMounts:
+        - name: rules
+          mountPath: /rules
+      extraVolumes:
+        - name: rules
+          emptyDir: {}
     monitoring:
       selfMonitoring:
         enabled: false
