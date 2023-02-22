@@ -62,10 +62,6 @@ spec:
               path: /var/lib/grafana/dashboards/default
     dashboards:
       default:
-        blocky:
-          gnetId: 13768
-          revision: 3
-          datasource: Prometheus
         ceph-cluster:
           gnetId: 2842
           revision: 14
