@@ -28,6 +28,19 @@ spec:
     service:
       enabled: true
       type: LoadBalancer
+      loadBalancerIP: ${SVC_VECTOR_AGGREGATOR}
+
+    # extraVolumeMounts:
+    #   - name: geoip
+    #     mountPath: /usr/share/GeoIP
+    #   - name: vector-data-dir
+    #     mountPath: /vector-data-dir
+
+    # extraVolumes:
+    #   - name: geoip
+    #     emptyDir: {}
+    #   - name: vector-data-dir
+    #     emptyDir: {}
 
     tolerations:
       - key: node-role.kubernetes.io/control-plane
@@ -64,6 +77,11 @@ spec:
             codec: json
           host_key: __host
 
+        opnsense_source:
+          type: syslog
+          address: 0.0.0.0:5140
+          mode: udp
+
       # Transforms
       transforms:
         kubernetes_logs_remap:
@@ -95,6 +113,47 @@ spec:
             r4 = replace(r3, "10.20.0.128", "node-0")
             r5 = replace(r4, "10.20.0.125", "node-1")
             .node = replace(r5, "10.20.0.127", "node-2")
+        opnsense_remap:
+          type: remap
+          inputs:
+            - opnsense_source
+          source: |
+            msg = parse_csv!(string!(.message))
+            # Only parse IPv4 / IPv6
+            if msg[8] == "4" || msg[8] == "6" {
+              .filter_interface = msg[4]
+              .filter_direction = msg[7]
+              .filter_action = msg[6]
+              .filter_ip_version = msg[8]
+              .filter_protocol = msg[16]
+              .filter_source_ip = msg[18]
+              .filter_destination_ip = msg[19]
+              if (msg[16] == "icmp" || msg[16] == "igmp" || msg[16] == "gre") {
+                .filter_data = msg[20]
+              } else {
+                .filter_source_port = msg[20]
+                .filter_destination_port = msg[21]
+                .filter_data_length = msg[22]
+                if msg[8] == "4" && msg[16] == "tcp" {
+                  .filter_tcp_flags = msg[23]
+                }
+              }
+            }
+        opnsense_route:
+          type: route
+          inputs:
+            - opnsense_remap
+          route:
+            pass_action: .filter_action == "pass"
+        # opnsense_geoip:
+        #   type: remap
+        #   inputs:
+        #     - opnsense_route.pass_action
+        #   source: |
+        #     .geoip = get_enrichment_table_record!("geoip_table",
+        #       {
+        #         "ip": .filter_source_ip
+        #       })
 
       # Sinks
       sinks:
@@ -117,11 +176,12 @@ spec:
               {{`{{ kubernetes.pod_namespace }}`}}
             hostname: >-
               {{`{{ kubernetes.pod_node_name }}`}}
+
         talos_kernel:
           type: loki
           inputs:
             - talos_kernel_logs_xform
-          endpoint: http://loki-gateway:80
+          endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
           encoding:
             codec: json
             except_fields:
@@ -140,7 +200,7 @@ spec:
           type: loki
           inputs:
             - talos_service_logs_xform
-          endpoint: http://loki-gateway:80
+          endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
           encoding:
             codec: json
             except_fields:
@@ -155,6 +215,19 @@ spec:
               {{`{{ "talos-service" }}`}}
             namespace: "talos:service"
 
+        opnsense:
+          type: loki
+          batch:
+            max_bytes: 2049000
+          encoding:
+            codec: json
+          endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
+          inputs:
+            - opnsense_route._unmatched
+          labels:
+            hostname: opnsense
+          out_of_order_action: accept
+
     podAnnotations:
       configmap.reloader.stakater.com/reload: vector-aggregator
 
@@ -164,14 +237,3 @@ spec:
         memory: 145M
       limits:
         memory: 500M
-
-  postRenderers:
-    - kustomize:
-        patchesJson6902:
-          - target:
-              kind: Service
-              name: vector-aggregator
-            patch:
-              - op: add
-                path: /spec/loadBalancerIP
-                value: ${SVC_VECTOR_AGGREGATOR}
