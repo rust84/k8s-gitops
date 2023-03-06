@@ -38,6 +38,11 @@ spec:
         - hosts:
             - *host
 
+    podSecurityContext:
+      sysctls:
+        - name: net.ipv4.ping_group_range
+          value: "0 2147483647"
+
     config:
       modules:
         http_2xx:
@@ -101,9 +106,6 @@ spec:
         scrapeTimeout: 30s
       targets:
         # PiKVM
-        - module: http_2xx
-          name: pikvm-http
-          url: "https://kvm.${SECRET_DOMAIN}"
         - module: icmp
           name: pikvm-icmp
           url: "kvm.${SECRET_DOMAIN}"
