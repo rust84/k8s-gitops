@@ -150,3 +150,23 @@ spec:
     - name: core-monitoring-vpa
   path: "./k8s/clusters/cluster-0/manifests/monitoring/goldilocks"
   prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: core-monitoring-blackbox-exporter
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+  interval: 5m
+  path: "./k8s/clusters/cluster-0/manifests/monitoring/blackbox-exporter"
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: k8s-gitops
+  decryption:
+    provider: sops
+    secretRef:
+      name: sops-age
