@@ -67,15 +67,9 @@ spec:
           repeat_interval: 12h
           receiver: "discord"
           routes:
-            - receiver: heartbeat
-              group_wait: 0s
-              group_interval: 2m
-              repeat_interval: 2m
-              matchers:
-                - alertname =~ "Watchdog"
             - receiver: "null" # quote
               matchers:
-                - alertname =~ "InfoInhibitor"
+                - alertname =~ "InfoInhibitor|Watchdog"
             - receiver: "pagerduty"
               match:
                 severity: critical
@@ -88,10 +82,6 @@ spec:
               - severity = "warning"
             equal: ["alertname", "namespace"]
         receivers:
-          - name: heartbeat
-            webhook_configs:
-              - url: "https://kuma.${SECRET_DOMAIN}/api/push/pPDdmnFbUc?status=up&msg=OK&ping="
-                send_resolved: true
           - name: "null"
           - name: "discord"
             slack_configs:
