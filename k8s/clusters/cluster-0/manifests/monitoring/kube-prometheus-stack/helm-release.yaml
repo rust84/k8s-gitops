@@ -235,15 +235,29 @@ spec:
             key: objstore.yml
         additionalScrapeConfigs:
           - job_name: node-exporter
+            scrape_interval: 1m
+            scrape_timeout: 10s
             honor_timestamps: true
             static_configs:
               - targets:
                   - "nas.${SECRET_DOMAIN}:9100"
           - job_name: "home-assistant"
-            scrape_interval: 60s
+            scrape_interval: 1m
+            scrape_timeout: 10s
             metrics_path: "/api/prometheus"
             bearer_token: "${SECRET_HASS_PROMETHEUS_TOKEN}"
             scheme: http
+            honor_timestamps: true
             static_configs:
               - targets:
                   - home-assistant.home.svc:8123
+          - job_name: "pikvm"
+            scrape_interval: 1m
+            scrape_timeout: 10s
+            metrics_path: "/api/export/prometheus/metrics"
+            basic_auth:
+              username: admin
+              password: s3cr3t
+            honor_timestamps: true
+            static_configs:
+              - targets: ["kvm.${SECRET_DOMAIN}"]
