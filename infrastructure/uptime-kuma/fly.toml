@@ -6,7 +6,7 @@ kill_timeout = 5
 processes = []
 
 [build]
-  image = "louislam/uptime-kuma:1.19.3"
+  image = "louislam/uptime-kuma:1.20.2"
 
 [mounts]
 source="kuma_data"

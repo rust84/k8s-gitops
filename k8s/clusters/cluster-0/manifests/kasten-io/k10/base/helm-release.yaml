@@ -55,3 +55,4 @@ spec:
         secretName: "tls.k10"
     grafana:
       enabled: false
+    logLevel: debug
