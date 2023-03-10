@@ -36,6 +36,9 @@ spec:
     env:
       PORT: "5006"
       TINI_SUBREAPER: 1
+    envFrom:
+      - secretRef:
+          name: actual-secrets
 
     ingress:
       main:
