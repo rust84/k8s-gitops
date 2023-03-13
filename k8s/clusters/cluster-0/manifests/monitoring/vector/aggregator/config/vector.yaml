@@ -1,0 +1,184 @@
+data_dir: /vector-data-dir
+
+api:
+  enabled: true
+  address: 0.0.0.0:8686
+
+enrichment_tables:
+  geoip_table:
+    type: geoip
+    path: /usr/share/GeoIP/GeoLite2-City.mmdb
+
+# Sources
+sources:
+  kubernetes_logs:
+    address: 0.0.0.0:6000
+    type: vector
+    version: "2"
+
+  talos_kernel_logs:
+    address: 0.0.0.0:6050
+    type: socket
+    mode: udp
+    max_length: 102400
+    decoding:
+      codec: json
+    host_key: __host
+
+  talos_service_logs:
+    address: 0.0.0.0:6051
+    type: socket
+    mode: udp
+    max_length: 102400
+    decoding:
+      codec: json
+    host_key: __host
+
+  opnsense_source:
+    type: syslog
+    address: 0.0.0.0:5140
+    mode: udp
+
+# Transforms
+transforms:
+  kubernetes_logs_remap:
+    type: remap
+    inputs:
+      - kubernetes_logs
+    source: |
+      # Standardize 'app' index
+      .custom_app_name = .pod_labels."app.kubernetes.io/name" || .pod_labels.app || .pod_labels."k8s-app" || "unknown"
+  talos_kernel_logs_xform:
+    type: remap
+    inputs:
+      - talos_kernel_logs
+    source: |-
+      r1, err = replace(.__host, "10.20.0.120", "cp-0")
+      r2 = replace(r1, "10.20.0.115", "cp-1")
+      r3 = replace(r2, "10.20.0.121", "cp-2")
+      r4 = replace(r3, "10.20.0.128", "node-0")
+      r5 = replace(r4, "10.20.0.125", "node-1")
+      .node = replace(r5, "10.20.0.127", "node-2")
+  talos_service_logs_xform:
+    type: remap
+    inputs:
+      - talos_service_logs
+    source: |-
+      r1, err = replace(.__host, "10.20.0.120", "cp-0")
+      r2 = replace(r1, "10.20.0.115", "cp-1")
+      r3 = replace(r2, "10.20.0.121", "cp-2")
+      r4 = replace(r3, "10.20.0.128", "node-0")
+      r5 = replace(r4, "10.20.0.125", "node-1")
+      .node = replace(r5, "10.20.0.127", "node-2")
+  opnsense_remap:
+    type: remap
+    inputs:
+      - opnsense_source
+    source: |
+      msg = parse_csv!(string!(.message))
+      # Only parse IPv4 / IPv6
+      if msg[8] == "4" || msg[8] == "6" {
+        .filter_interface = msg[4]
+        .filter_direction = msg[7]
+        .filter_action = msg[6]
+        .filter_ip_version = msg[8]
+        .filter_protocol = msg[16]
+        .filter_source_ip = msg[18]
+        .filter_destination_ip = msg[19]
+        if (msg[16] == "icmp" || msg[16] == "igmp" || msg[16] == "gre") {
+          .filter_data = msg[20]
+        } else {
+          .filter_source_port = msg[20]
+          .filter_destination_port = msg[21]
+          .filter_data_length = msg[22]
+          if msg[8] == "4" && msg[16] == "tcp" {
+            .filter_tcp_flags = msg[23]
+          }
+        }
+      }
+  opnsense_route:
+    type: route
+    inputs:
+      - opnsense_remap
+    route:
+      pass_action: .filter_action == "pass"
+  opnsense_geoip:
+    type: remap
+    inputs:
+      - opnsense_route.pass_action
+    source: |
+      .geoip = get_enrichment_table_record!("geoip_table",
+        {
+          "ip": .filter_source_ip
+        })
+
+# Sinks
+sinks:
+  loki_kubernetes:
+    type: loki
+    inputs:
+      - kubernetes_logs
+    endpoint: http://loki-gateway:80
+    encoding:
+      codec: json
+    batch:
+      max_bytes: 2049000
+    out_of_order_action: accept
+    remove_label_fields: true
+    remove_timestamp: true
+    labels:
+      k8s_app: '{{ custom_app_name }}'
+      k8s_container: '{{ kubernetes.container_name }}'
+      k8s_filename: '{{ kubernetes.file }}'
+      k8s_instance: '{{ kubernetes.pod_labels."app.kubernetes.io/instance" }}'
+      k8s_namespace: '{{ kubernetes.pod_namespace }}'
+      k8s_node: '{{ kubernetes.pod_node_name }}'
+      k8s_pod: '{{ kubernetes.pod_name }}'
+
+  talos_kernel:
+    type: loki
+    inputs:
+      - talos_kernel_logs_xform
+    endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
+    encoding:
+      codec: json
+      except_fields:
+        - __host
+    batch:
+      max_bytes: 1048576
+    out_of_order_action: accept
+    labels:
+      hostname: '{{ __host }}'
+      service: '{{ facility }}'
+      namespace: 'talos:kernel'
+
+  talos_service:
+    type: loki
+    inputs:
+      - talos_service_logs_xform
+    endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
+    encoding:
+      codec: json
+      except_fields:
+        - __host
+    batch:
+      max_bytes: 524288
+    out_of_order_action: accept
+    labels:
+      hostname: '{{ __host }}'
+      service: 'talos-service'
+      namespace: 'talos:service'
+
+  opnsense:
+    type: loki
+    batch:
+      max_bytes: 2049000
+    encoding:
+      codec: json
+    endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
+    inputs:
+      - opnsense_route._unmatched
+      - opnsense_geoip
+    labels:
+      hostname: opnsense
+    out_of_order_action: accept
