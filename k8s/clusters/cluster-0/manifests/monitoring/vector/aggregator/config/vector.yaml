@@ -96,16 +96,10 @@ transforms:
           }
         }
       }
-  opnsense_route:
-    type: route
-    inputs:
-      - opnsense_remap
-    route:
-      pass_action: .filter_action == "pass"
   opnsense_geoip:
     type: remap
     inputs:
-      - opnsense_route.pass_action
+      - opnsense_remap
     source: |
       .geoip = get_enrichment_table_record!("geoip_table",
         {
@@ -177,7 +171,6 @@ sinks:
       codec: json
     endpoint: http://loki-gateway.monitoring.svc.cluster.local:80
     inputs:
-      - opnsense_route._unmatched
       - opnsense_geoip
     labels:
       hostname: opnsense
