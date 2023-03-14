@@ -182,3 +182,5 @@ sinks:
     labels:
       hostname: opnsense
     out_of_order_action: accept
+    remove_label_fields: true
+    remove_timestamp: true
