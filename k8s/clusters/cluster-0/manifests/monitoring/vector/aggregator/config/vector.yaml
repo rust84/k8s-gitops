@@ -144,7 +144,6 @@ sinks:
     labels:
       hostname: '{{ __host }}'
       service: '{{ facility }}'
-      namespace: 'talos:kernel'
 
   talos_service:
     type: loki
@@ -174,6 +173,24 @@ sinks:
       - opnsense_geoip
     labels:
       hostname: opnsense
+      action: '{{ filter_action }}'
+      destination_ip: '{{ filter_destination_ip }}'
+      destination_port: '{{ filter_destination_port }}'
+      interface: '{{ filter_interface }}'
+      protocol: '{{ filter_protocol }}'
+      source_ip: '{{ filter_source_ip }}'
+      source_port: '{{ filter_source_port }}'
+      city_name: '{{ geoip.city_name }}'
+      continent_code: '{{ geoip.continent_code }}'
+      country_code: '{{ geoip.country_code }}'
+      country_name: '{{ geoip.country_name }}'
+      latitude: '{{ geoip.latitude }}'
+      longitude: '{{ geoip.longitude }}'
+      metro_code: '{{ geoip.metro_code }}'
+      postal_code: '{{ geoip.postal_code }}'
+      region_code: '{{ geoip.region_code }}'
+      region_name: '{{ geoip.region_name }}'
+      timezone: '{{ geoip.timezone }}'
     out_of_order_action: accept
     remove_label_fields: true
     remove_timestamp: true
