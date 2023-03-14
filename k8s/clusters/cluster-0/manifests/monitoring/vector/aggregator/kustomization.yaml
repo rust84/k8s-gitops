@@ -5,6 +5,7 @@ kind: Kustomization
 namespace: monitoring
 resources:
   - helm-release.yaml
+  - secret.sops.yaml
 metadata:
   namespace: monitoring
 configMapGenerator:
