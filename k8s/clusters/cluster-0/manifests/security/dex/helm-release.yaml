@@ -101,23 +101,18 @@ spec:
           redirectURIs:
             - https://id.${SECRET_DOMAIN}/source/oauth/callback/dex/
 
-        - id: proxmox
-          name: pve
-          secret: ${DEX_PROXMOX_CLIENT_SECRET}
-          redirectURIs:
-            - https://pm.${SECRET_DOMAIN}:8006
-
-        - id: proxmox-backup
-          name: pbs
-          secret: ${DEX_PROXMOX_BACKUP_CLIENT_SECRET}
-          redirectURIs:
-            - https://pbs.${SECRET_DOMAIN}:8007
-
         - id: node-red
           name: node-red
           secret: ${DEX_NODE_RED_CLIENT_SECRET}
           redirectURIs:
             - https://node-red.${SECRET_DOMAIN}/auth/strategy/callback
+
+        - id: k10
+          name: k10
+          secret: ${SECRET_DEX_K10_CLIENT_SECRET}
+          redirectURIs:
+            - https://k10.${SECRET_DOMAIN}/k10/auth-svc/v0/oidc/redirect
+
     resources:
       requests:
         memory: 250Mi

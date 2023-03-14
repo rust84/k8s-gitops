@@ -34,8 +34,11 @@ spec:
       persistence:
         storageClass: rook-ceph-block
     auth:
-      tokenAuth:
+      k10AdminUsers:
+        - owner@russellhall.co.uk
+      oidcAuth:
         enabled: true
+        secretName: kasten-secret
     clusterName: k8s
     ingress:
       create: true

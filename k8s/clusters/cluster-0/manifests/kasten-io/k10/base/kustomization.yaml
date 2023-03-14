@@ -5,4 +5,4 @@ resources:
   - monitoring
   - helm-release.yaml
   - dr-secret.sops.yaml
-  - sa-token.sops.yaml
+  - secret.sops.yaml
