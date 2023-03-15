@@ -8,6 +8,5 @@ resources:
   - games.yaml
   - home.yaml
   - k10-disaster-recovery.yaml
-  - media.yaml
   - network.yaml
   - security.yaml
