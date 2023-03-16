@@ -12,6 +12,32 @@ detectors:
     type: edgetpu
     device: usb
 
+ffmpeg:
+  hwaccel_args:
+    - -hwaccel
+    - vaapi
+    - -hwaccel_device
+    - /dev/dri/renderD128
+    - -hwaccel_output_format
+    - yuv420p
+
+snapshots:
+  enabled: true
+  timestamp: false
+  bounding_box: true
+  retain:
+    default: 14
+
+record:
+  enabled: true
+  retain:
+    days: 14
+    mode: all
+  events:
+    retain:
+      default: 14
+      mode: active_objects
+
 objects:
   track:
     - person
@@ -31,63 +57,53 @@ objects:
       max_area: 10000
       threshold: 0.7
 
-# Global ffmpeg configuration
-ffmpeg:
-  hwaccel_args:
-    - -hwaccel
-    - vaapi
-    - -hwaccel_device
-    - /dev/dri/renderD128
-    - -hwaccel_output_format
-    - yuv420p
-
 cameras:
-  lounge:
-    ffmpeg:
-      inputs:
-        - path: rtsp://rtsp:{FRIGATE_RTSP_PASSWORD}@10.30.0.111:554/av_stream/ch0
-          roles:
-            - detect
-            - rtmp
-            - record
-          input_args:
-            - "-avoid_negative_ts"
-            - make_zero
-            - "-fflags"
-            - nobuffer
-            - "-flags"
-            - low_delay
-            - "-strict"
-            - experimental
-            - "-fflags"
-            - +genpts+discardcorrupt
-            - "-use_wallclock_as_timestamps"
-            - "1"
-            - "-rtsp_transport"
-            - tcp
-    detect:
-      width: 1920
-      height: 1080
-      fps: 10
-    snapshots:
-      enabled: false
-      timestamp: false
-      bounding_box: true
-      crop: false
-      retain:
-        default: 14
-    record:
-      enabled: false
-      retain_days: 0
-      events:
-        retain:
-          default: 14
-    mqtt:
-      timestamp: false
-      bounding_box: false
-      crop: true
-      quality: 100
-      height: 500
+  # lounge:
+  #   ffmpeg:
+  #     inputs:
+  #       - path: rtsp://rtsp:{FRIGATE_RTSP_PASSWORD}@10.30.0.111:554/av_stream/ch0
+  #         roles:
+  #           - detect
+  #           - rtmp
+  #           - record
+  #         input_args:
+  #           - "-avoid_negative_ts"
+  #           - make_zero
+  #           - "-fflags"
+  #           - nobuffer
+  #           - "-flags"
+  #           - low_delay
+  #           - "-strict"
+  #           - experimental
+  #           - "-fflags"
+  #           - +genpts+discardcorrupt
+  #           - "-use_wallclock_as_timestamps"
+  #           - "1"
+  #           - "-rtsp_transport"
+  #           - tcp
+  #   detect:
+  #     width: 1920
+  #     height: 1080
+  #     fps: 10
+  #   snapshots:
+  #     enabled: false
+  #     timestamp: false
+  #     bounding_box: true
+  #     crop: false
+  #     retain:
+  #       default: 14
+  #   record:
+  #     enabled: false
+  #     retain_days: 0
+  #     events:
+  #       retain:
+  #         default: 14
+  #   mqtt:
+  #     timestamp: false
+  #     bounding_box: false
+  #     crop: true
+  #     quality: 100
+  #     height: 500
 
   driveway:
     ffmpeg:
@@ -103,19 +119,6 @@ cameras:
       width: 640
       height: 360
       fps: 7
-    snapshots:
-      enabled: true
-      timestamp: false
-      bounding_box: true
-      crop: false
-      retain:
-        default: 14
-    record:
-      enabled: true
-      retain_days: 0
-      events:
-        retain:
-          default: 14
 
   office:
     ffmpeg:
@@ -140,17 +143,8 @@ cameras:
             person: 1000
     snapshots:
       enabled: false
-      timestamp: false
-      bounding_box: true
-      crop: false
-      retain:
-        default: 1
     record:
       enabled: false
-      retain_days: 0
-      events:
-        retain:
-          default: 14
     mqtt:
       timestamp: false
       bounding_box: false
