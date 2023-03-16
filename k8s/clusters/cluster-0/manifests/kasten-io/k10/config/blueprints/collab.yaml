@@ -11,7 +11,7 @@ actions:
         name: hookPhase
         args:
           namespace: kasten-io
-          image: docker.io/rclone/rclone:1.62.0
+          image: docker.io/rclone/rclone:1.62.2
           podOverride:
             containers:
               - name: container
