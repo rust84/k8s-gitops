@@ -44,5 +44,5 @@ actions:
             - "24"
             - "--checkers"
             - "24"
-            - "/mnt/k10-backups/media"
+            - "/mnt/k10-backups/mediarr"
             - "b2:k10-cluster-0-media/"
