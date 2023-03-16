@@ -48,6 +48,7 @@ spec:
     plugins:
       - natel-discrete-panel
       - grafana-piechart-panel
+      - grafana-worldmap-panel
     dashboardProviders:
       dashboardproviders.yaml:
         apiVersion: 1
