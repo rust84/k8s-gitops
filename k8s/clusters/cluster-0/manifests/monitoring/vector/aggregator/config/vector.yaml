@@ -53,23 +53,17 @@ transforms:
     inputs:
       - talos_kernel_logs
     source: |-
-      r1, err = replace(.__host, "10.20.0.120", "cp-0")
-      r2 = replace(r1, "10.20.0.115", "cp-1")
-      r3 = replace(r2, "10.20.0.121", "cp-2")
-      r4 = replace(r3, "10.20.0.128", "node-0")
-      r5 = replace(r4, "10.20.0.125", "node-1")
-      .node = replace(r5, "10.20.0.127", "node-2")
+      .__host = replace!(.__host, "10.20.0.128", "node-0")
+      .__host = replace(.__host, "10.20.0.125", "node-1")
+      .__host = replace(.__host, "10.20.0.127", "node-2")
   talos_service_logs_xform:
     type: remap
     inputs:
       - talos_service_logs
     source: |-
-      r1, err = replace(.__host, "10.20.0.120", "cp-0")
-      r2 = replace(r1, "10.20.0.115", "cp-1")
-      r3 = replace(r2, "10.20.0.121", "cp-2")
-      r4 = replace(r3, "10.20.0.128", "node-0")
-      r5 = replace(r4, "10.20.0.125", "node-1")
-      .node = replace(r5, "10.20.0.127", "node-2")
+      .__host = replace!(.__host, "10.20.0.128", "node-0")
+      .__host = replace(.__host, "10.20.0.125", "node-1")
+      .__host = replace(.__host, "10.20.0.127", "node-2")
   opnsense_remap:
     type: remap
     inputs:
@@ -96,10 +90,16 @@ transforms:
           }
         }
       }
+  opnsense_route:
+    type: route
+    inputs:
+      - opnsense_remap
+    route:
+      pass_action: .filter_action == "pass"
   opnsense_geoip:
     type: remap
     inputs:
-      - opnsense_remap
+      - opnsense_route.pass_action
     source: |
       .geoip = get_enrichment_table_record!("geoip_table",
         {
