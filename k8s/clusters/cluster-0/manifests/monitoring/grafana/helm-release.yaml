@@ -63,45 +63,71 @@ spec:
               path: /var/lib/grafana/dashboards/default
     dashboards:
       default:
-        ceph-cluster:
-          gnetId: 2842
-          revision: 14
-          datasource: Prometheus
-        ceph-osd:
-          gnetId: 5336
-          revision: 5
-          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/5342-ceph-pools/
         ceph-pools:
           gnetId: 5342
-          revision: 5
-          datasource: Prometheus
-        node-exporter-full:
-          gnetId: 1860
-          revision: 27
-          datasource: Prometheus
-        radarr-exportarr:
-          gnetId: 12896
-          revision: 1
-          datasource: Prometheus
-        sonarr-exportarr:
-          gnetId: 12530
-          revision: 2
-          datasource: Prometheus
-        unifi-client-insights:
-          gnetId: 11315
-          revision: 8
-          datasource: Prometheus
-        unifi-network-sites:
-          gnetId: 11311
-          revision: 4
-          datasource: Prometheus
-        unifi-uap-insights:
-          gnetId: 11314
           revision: 9
           datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/5336-ceph-osd-single/
+        ceph-osd:
+          gnetId: 5336
+          revision: 9
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/2842-ceph-cluster/
+        ceph-cluster:
+          gnetId: 2842
+          revision: 16
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/1860-node-exporter-full/
+        node-exporter-full:
+          gnetId: 1860
+          revision: 30
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/11315-unifi-poller-client-insights-prometheus
+        unifi-client-insights:
+          gnetId: 11315
+          revision: 9
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/11311-unifi-poller-network-sites-prometheus
+        unifi-network-sites:
+          gnetId: 11311
+          revision: 5
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/11314-unifi-poller-uap-insights-prometheus
+        unifi-uap-insights:
+          gnetId: 11314
+          revision: 10
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/11312-unifi-poller-usw-insights-prometheus
         unifi-usw-insights:
           gnetId: 11312
-          revision: 8
+          revision: 9
+          datasource: Prometheus
+        # Ref: https://grafana.com/grafana/dashboards/7845-zfs/
+        zfs:
+          gnetId: 7845
+          revision: 4
+          datasource: Prometheus
+        cert-manager:
+          url: https://raw.githubusercontent.com/monitoring-mixins/website/master/assets/cert-manager/dashboards/cert-manager.json
+          datasource: Prometheus
+        kubernetes-api-server:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-api-server.json
+          datasource: Prometheus
+        kubernetes-coredns:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-coredns.json
+          datasource: Prometheus
+        kubernetes-global:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-global.json
+          datasource: Prometheus
+        kubernetes-namespaces:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-namespaces.json
+          datasource: Prometheus
+        kubernetes-nodes:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-nodes.json
+          datasource: Prometheus
+        kubernetes-pods:
+          url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-pods.json
           datasource: Prometheus
     sidecar:
       dashboards:
