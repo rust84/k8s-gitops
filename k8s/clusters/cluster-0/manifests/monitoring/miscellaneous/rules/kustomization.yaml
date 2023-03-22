@@ -4,4 +4,3 @@ kind: Kustomization
 resources:
   - dockerhub.yaml
   - nas.yaml
-  - node-exporter.yaml
