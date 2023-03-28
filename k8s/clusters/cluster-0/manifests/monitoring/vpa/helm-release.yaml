@@ -37,8 +37,16 @@ spec:
         storage: prometheus
         prometheus-address: |-
           http://thanos-query.monitoring.svc.cluster.local:9090
+
     updater:
-      enabled: false
+      enabled: true
+
+      image:
+        repository: registry.k8s.io/autoscaling/vpa-updater
+        tag: 0.13.0
 
     admissionController:
       enabled: false
+
+    serviceAccount:
+      create: true
