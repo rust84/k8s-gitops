@@ -10,7 +10,7 @@ spec:
     kind: Deployment
     name: radarr-uhd
   updatePolicy:
-    updateMode: "Recreate"
+    updateMode: "Auto"
   resourcePolicy:
     containerPolicies:
       - containerName: '*'
