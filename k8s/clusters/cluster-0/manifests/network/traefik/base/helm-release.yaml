@@ -16,8 +16,6 @@ spec:
         namespace: flux-system
       interval: 5m
   values:
-    image:
-      name: traefik
     deployment:
       enabled: true
       kind: Deployment
