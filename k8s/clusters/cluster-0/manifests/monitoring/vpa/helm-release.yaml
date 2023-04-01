@@ -40,24 +40,12 @@ spec:
       extraArgs:
         pod-recommendation-min-cpu-millicores: 15
         pod-recommendation-min-memory-mb: 61
-        oom-bump-up-ratio: 1.2
         storage: prometheus
         prometheus-address: |-
           http://thanos-query.monitoring.svc.cluster.local:9090
 
     updater:
-      enabled: true
-      image:
-        repository: registry.k8s.io/autoscaling/vpa-updater
-        tag: 0.13.0
+      enabled: false
 
     admissionController:
-      enabled: true
-      image:
-        repository: registry.k8s.io/autoscaling/vpa-admission-controller
-        tag: 0.13.0
-      cleanupOnDelete:
-        enabled: true
-
-    serviceAccount:
-      create: true
+      enabled: false
