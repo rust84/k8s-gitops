@@ -5,7 +5,7 @@ clusterPodNets:
 clusterSvcNets:
   - 10.96.0.0/12
 talosVersion: v1.3.3
-kubernetesVersion: v1.26.0
+kubernetesVersion: v1.26.3
 endpoint: "https://cluster-0.${domainName}:6443"
 allowSchedulingOnMasters: true
 additionalMachineCertSans:
@@ -27,6 +27,11 @@ nodes:
       - interface: eth0
         mtu: 0
         dhcp: true
+        vlans:
+          - vlanId: 30
+            dhcp: false
+            addresses:
+              - 10.30.0.138/24
   - hostname: node-1.${domainName}
     ipAddress: 10.20.0.125
     controlPlane: true
@@ -36,6 +41,11 @@ nodes:
       - interface: eth0
         mtu: 0
         dhcp: true
+        vlans:
+          - vlanId: 30
+            dhcp: false
+            addresses:
+              - 10.30.0.135/24
   - hostname: node-2.${domainName}
     ipAddress: 10.20.0.127
     controlPlane: true
@@ -45,6 +55,11 @@ nodes:
       - interface: eth0
         mtu: 0
         dhcp: true
+        vlans:
+          - vlanId: 30
+            dhcp: false
+            addresses:
+              - 10.30.0.137/24
 
 controlPlane:
   inlinePatch:
