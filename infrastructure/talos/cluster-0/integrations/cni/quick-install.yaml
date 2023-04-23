@@ -21,6 +21,27 @@ metadata:
   namespace: kube-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  annotations:
+    meta.helm.sh/release-name: cilium
+    meta.helm.sh/release-namespace: kube-system
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: cilium
+  name: cilium-config-agent
+  namespace: kube-system
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   annotations:
@@ -28,6 +49,7 @@ metadata:
     meta.helm.sh/release-namespace: kube-system
   labels:
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: cilium
   name: cilium
 rules:
 - apiGroups:
@@ -69,12 +91,11 @@ rules:
 - apiGroups:
   - cilium.io
   resources:
-  - ciliumbgploadbalancerippools
+  - ciliumloadbalancerippools
   - ciliumbgppeeringpolicies
   - ciliumclusterwideenvoyconfigs
   - ciliumclusterwidenetworkpolicies
   - ciliumegressgatewaypolicies
-  - ciliumegressnatpolicies
   - ciliumendpoints
   - ciliumendpointslices
   - ciliumenvoyconfigs
@@ -82,6 +103,7 @@ rules:
   - ciliumlocalredirectpolicies
   - ciliumnetworkpolicies
   - ciliumnodes
+  - ciliumnodeconfigs
   verbs:
   - list
   - watch
@@ -132,6 +154,7 @@ metadata:
     meta.helm.sh/release-namespace: kube-system
   labels:
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: cilium
   name: cilium-operator
 rules:
 - apiGroups:
@@ -171,6 +194,7 @@ rules:
   - services/status
   verbs:
   - update
+  - patch
 - apiGroups:
   - ""
   resources:
@@ -253,6 +277,7 @@ rules:
   - list
   - watch
   - delete
+  - patch
 - apiGroups:
   - apiextensions.k8s.io
   resources:
@@ -265,12 +290,11 @@ rules:
 - apiGroups:
   - apiextensions.k8s.io
   resourceNames:
-  - ciliumbgploadbalancerippools.cilium.io
+  - ciliumloadbalancerippools.cilium.io
   - ciliumbgppeeringpolicies.cilium.io
   - ciliumclusterwideenvoyconfigs.cilium.io
   - ciliumclusterwidenetworkpolicies.cilium.io
   - ciliumegressgatewaypolicies.cilium.io
-  - ciliumegressnatpolicies.cilium.io
   - ciliumendpoints.cilium.io
   - ciliumendpointslices.cilium.io
   - ciliumenvoyconfigs.cilium.io
@@ -279,10 +303,25 @@ rules:
   - ciliumlocalredirectpolicies.cilium.io
   - ciliumnetworkpolicies.cilium.io
   - ciliumnodes.cilium.io
+  - ciliumnodeconfigs.cilium.io
   resources:
   - customresourcedefinitions
   verbs:
   - update
+- apiGroups:
+  - cilium.io
+  resources:
+  - ciliumloadbalancerippools
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - cilium.io
+  resources:
+  - ciliumloadbalancerippools/status
+  verbs:
+  - patch
 - apiGroups:
   - coordination.k8s.io
   resources:
@@ -293,6 +332,26 @@ rules:
   - update
 ---
 apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    meta.helm.sh/release-name: cilium
+    meta.helm.sh/release-namespace: kube-system
+  labels:
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: cilium
+  name: cilium-config-agent
+  namespace: kube-system
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: cilium-config-agent
+subjects:
+- kind: ServiceAccount
+  name: cilium
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   annotations:
@@ -300,6 +359,7 @@ metadata:
     meta.helm.sh/release-namespace: kube-system
   labels:
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: cilium
   name: cilium
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -318,6 +378,7 @@ metadata:
     meta.helm.sh/release-namespace: kube-system
   labels:
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/part-of: cilium
   name: cilium-operator
 roleRef:
   apiGroup: rbac.authorization.k8s.io
@@ -345,8 +406,10 @@ data:
   cilium-endpoint-gc-interval: 5m0s
   cluster-id: "1"
   cluster-name: cluster-0
+  cni-uninstall: "true"
   custom-cni-conf: "false"
   debug: "false"
+  debug-verbose: ""
   disable-cnp-status-updates: "true"
   disable-endpoint-crd: "false"
   enable-auto-protect-node-port-range: "true"
@@ -359,6 +422,7 @@ data:
   enable-ipv4: "true"
   enable-ipv4-masquerade: "true"
   enable-ipv6: "false"
+  enable-ipv6-big-tcp: "false"
   enable-ipv6-masquerade: "true"
   enable-k8s-terminating-endpoint: "true"
   enable-l2-neigh-discovery: "true"
@@ -366,12 +430,14 @@ data:
   enable-local-redirect-policy: "true"
   enable-policy: default
   enable-remote-node-identity: "true"
+  enable-sctp: "false"
   enable-svc-source-range-check: "true"
   enable-vtep: "false"
   enable-well-known-identities: "false"
   enable-xt-socket-fallback: "true"
   identity-allocation-mode: crd
-  install-iptables-rules: "true"
+  identity-gc-interval: 15m0s
+  identity-heartbeat-timeout: 30m0s
   install-no-conntrack-iptables-rules: "false"
   ipam: kubernetes
   ipv4-native-routing-cidr: 10.244.0.0/16
@@ -420,6 +486,8 @@ metadata:
     meta.helm.sh/release-namespace: kube-system
   labels:
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: cilium-operator
+    app.kubernetes.io/part-of: cilium
     io.cilium/app: operator
     name: cilium-operator
   name: cilium-operator
@@ -428,7 +496,6 @@ spec:
   replicas: 2
   selector:
     matchLabels:
-      app.kubernetes.io/managed-by: Helm
       io.cilium/app: operator
       name: cilium-operator
   strategy:
@@ -439,11 +506,10 @@ spec:
   template:
     metadata:
       annotations:
-        cilium.io/cilium-configmap-checksum: f29d615ed7ab3f0113778e095174583aad61ca1dec8372d071e28a9fa0cdacce
-        meta.helm.sh/release-name: cilium
-        meta.helm.sh/release-namespace: kube-system
+        cilium.io/cilium-configmap-checksum: 5738bbd086547fb68c9f7ba2cd775c4f952932ad7cbdeb5b3f969bd819bb54e4
       labels:
-        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: cilium-operator
+        app.kubernetes.io/part-of: cilium
         io.cilium/app: operator
         name: cilium-operator
     spec:
@@ -452,9 +518,9 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
           - labelSelector:
               matchLabels:
-                app.kubernetes.io/managed-by: Helm
                 io.cilium/app: operator
             topologyKey: kubernetes.io/hostname
+      automountServiceAccountToken: true
       containers:
       - args:
         - --config-dir=/tmp/cilium/config-map
@@ -482,7 +548,7 @@ spec:
           value: 10.20.0.250
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
-        image: quay.io/cilium/operator-generic:v1.12.6@sha256:eec4430d222cb2967d42d3b404d2606e66468de47ae85e0a3ca3f58f00a5e017
+        image: quay.io/cilium/operator-generic:v1.13.2@sha256:a1982c0a22297aaac3563e428c330e17668305a41865a842dec53d241c5490ab
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -521,22 +587,22 @@ metadata:
     meta.helm.sh/release-namespace: kube-system
   labels:
     app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: cilium-agent
+    app.kubernetes.io/part-of: cilium
     k8s-app: cilium
   name: cilium
   namespace: kube-system
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/managed-by: Helm
       k8s-app: cilium
   template:
     metadata:
       annotations:
-        cilium.io/cilium-configmap-checksum: f29d615ed7ab3f0113778e095174583aad61ca1dec8372d071e28a9fa0cdacce
-        meta.helm.sh/release-name: cilium
-        meta.helm.sh/release-namespace: kube-system
+        cilium.io/cilium-configmap-checksum: 5738bbd086547fb68c9f7ba2cd775c4f952932ad7cbdeb5b3f969bd819bb54e4
       labels:
-        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: cilium-agent
+        app.kubernetes.io/part-of: cilium
         k8s-app: cilium
     spec:
       affinity:
@@ -546,6 +612,7 @@ spec:
               matchLabels:
                 k8s-app: cilium
             topologyKey: kubernetes.io/hostname
+      automountServiceAccountToken: true
       containers:
       - args:
         - --config-dir=/tmp/cilium/config-map
@@ -580,16 +647,16 @@ spec:
           value: 10.20.0.250
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
-        image: quay.io/cilium/cilium:v1.12.6@sha256:454134506b0448c756398d3e8df68d474acde2a622ab58d0c7e8b272b5867d0d
+        image: quay.io/cilium/cilium:v1.13.2@sha256:85708b11d45647c35b9288e0de0706d24a5ce8a378166cadc700f756cc1a38d6
         imagePullPolicy: IfNotPresent
         lifecycle:
           postStart:
             exec:
               command:
-              - /cni-install.sh
-              - --enable-debug=false
-              - --cni-exclusive=true
-              - --log-file=/var/run/cilium/cilium-cni.log
+              - bash
+              - -c
+              - |
+                /cni-install.sh --enable-debug=false --cni-exclusive=true --log-file=/var/run/cilium/cilium-cni.log
           preStop:
             exec:
               command:
@@ -644,23 +711,45 @@ spec:
           name: cilium-cgroup
         - mountPath: /var/run/cilium
           name: cilium-run
-        - mountPath: /host/opt/cni/bin
-          name: cni-path
         - mountPath: /host/etc/cni/net.d
           name: etc-cni-netd
         - mountPath: /var/lib/cilium/clustermesh
           name: clustermesh-secrets
-          readOnly: true
-        - mountPath: /tmp/cilium/config-map
-          name: cilium-config-path
           readOnly: true
         - mountPath: /lib/modules
           name: lib-modules
           readOnly: true
         - mountPath: /run/xtables.lock
           name: xtables-lock
+        - mountPath: /tmp
+          name: tmp
       hostNetwork: true
       initContainers:
+      - command:
+        - cilium
+        - build-config
+        env:
+        - name: K8S_NODE_NAME
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: spec.nodeName
+        - name: CILIUM_K8S_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: KUBERNETES_SERVICE_HOST
+          value: 10.20.0.250
+        - name: KUBERNETES_SERVICE_PORT
+          value: "6443"
+        image: quay.io/cilium/cilium:v1.13.2@sha256:85708b11d45647c35b9288e0de0706d24a5ce8a378166cadc700f756cc1a38d6
+        imagePullPolicy: IfNotPresent
+        name: config
+        terminationMessagePolicy: FallbackToLogsOnError
+        volumeMounts:
+        - mountPath: /tmp
+          name: tmp
       - command:
         - /init-container.sh
         env:
@@ -680,7 +769,7 @@ spec:
           value: 10.20.0.250
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
-        image: quay.io/cilium/cilium:v1.12.6@sha256:454134506b0448c756398d3e8df68d474acde2a622ab58d0c7e8b272b5867d0d
+        image: quay.io/cilium/cilium:v1.13.2@sha256:85708b11d45647c35b9288e0de0706d24a5ce8a378166cadc700f756cc1a38d6
         imagePullPolicy: IfNotPresent
         name: clean-cilium-state
         resources:
@@ -698,6 +787,23 @@ spec:
           name: cilium-cgroup
         - mountPath: /var/run/cilium
           name: cilium-run
+      - command:
+        - /install-plugin.sh
+        image: quay.io/cilium/cilium:v1.13.2@sha256:85708b11d45647c35b9288e0de0706d24a5ce8a378166cadc700f756cc1a38d6
+        imagePullPolicy: IfNotPresent
+        name: install-cni-binaries
+        resources:
+          requests:
+            cpu: 100m
+            memory: 10Mi
+        securityContext:
+          capabilities:
+            drop:
+            - ALL
+        terminationMessagePolicy: FallbackToLogsOnError
+        volumeMounts:
+        - mountPath: /host/opt/cni/bin
+          name: cni-path
       nodeSelector:
         kubernetes.io/os: linux
       priorityClassName: system-node-critical
@@ -708,6 +814,8 @@ spec:
       tolerations:
       - operator: Exists
       volumes:
+      - emptyDir: {}
+        name: tmp
       - hostPath:
           path: /var/run/cilium
           type: DirectoryOrCreate
@@ -740,9 +848,6 @@ spec:
           defaultMode: 256
           optional: true
           secretName: cilium-clustermesh
-      - configMap:
-          name: cilium-config
-        name: cilium-config-path
   updateStrategy:
     rollingUpdate:
       maxUnavailable: 2

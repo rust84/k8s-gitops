@@ -86,7 +86,7 @@ controlPlane:
           feature-gates: MixedProtocolLBService=true,EphemeralContainers=True
           bind-address: 0.0.0.0
       extraManifests:
-        - "https://raw.githubusercontent.com/alex1989hu/kubelet-serving-cert-approver/v0.6.3/deploy/ha-install.yaml"
+        - "https://raw.githubusercontent.com/rust84/k8s-gitops/main/infrastructure/talos/cluster-0/integrations/kubelet-csr-approver/kubelet-csr-appover.yaml"
       etcd:
         extraArgs:
           listen-metrics-urls: http://0.0.0.0:2381

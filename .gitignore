@@ -23,9 +23,6 @@ setup/cluster/*cluster.yml
 # Sops
 .decrypted*
 
-# Quick-install
-charts
-
 #VSCode
 *.code-workspace
 
