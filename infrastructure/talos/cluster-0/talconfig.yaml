@@ -101,6 +101,9 @@ controlPlane:
           path: /var/cri/conf.d/allow-unpriv-ports.toml
           op: create
       kubelet:
+        nodeIP:
+          validSubnets:
+            - 10.20.0.1/24
         extraArgs:
           feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
           rotate-server-certificates: "true"
