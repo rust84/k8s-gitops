@@ -6,3 +6,4 @@ resources:
   - config-pvc.yaml
   - helm-release.yaml
   - home-assistant-code-server-secret.enc.yaml
+  - networkattachmentdefinition.yaml
