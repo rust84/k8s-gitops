@@ -4,4 +4,4 @@ kind: Kustomization
 resources:
   - config-pvc.yaml
   - helm-release.yaml
-  - networkattachmentdefinition.yaml
+  #- networkattachmentdefinition.yaml

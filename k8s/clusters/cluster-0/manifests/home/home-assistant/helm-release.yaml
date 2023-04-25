@@ -25,8 +25,8 @@ spec:
     image:
       repository: ghcr.io/onedr0p/home-assistant
       tag: 2023.4.6@sha256:4ae7d1936544a7319ea38de8d1c6ee07378f98181fc08b3c2ed5724815da5e99
-    podAnnotations:
-      k8s.v1.cni.cncf.io/networks: macvlan-static-iot-hass
+    # podAnnotations:
+    #   k8s.v1.cni.cncf.io/networks: macvlan-static-iot-hass
     env:
       TZ: "${TZ}"
       PYTHONUSERBASE: /config/deps
