@@ -19,7 +19,7 @@ spec:
           restartPolicy: Never
           containers:
             - name: secret-reflector
-              image: ghcr.io/onedr0p/kubernetes-kubectl:1.27.1@sha256:46cd239aaf1797e5333036e41d32febf4e40f554e103f5008ff43387bcb49a57
+              image: ghcr.io/onedr0p/kubernetes-kubectl:1.27.1@sha256:c879fa55fa664ef27c6952f3e35490e91fefa03e9098e839ed1aed8038af4abe
               env:
                 - name: SECRETS
                   value: "rook-ceph-mon"
@@ -32,7 +32,7 @@ spec:
                   subPath: secret-reflector.sh
                   readOnly: true
             - name: configmap-reflector
-              image: ghcr.io/onedr0p/kubernetes-kubectl:1.27.1@sha256:46cd239aaf1797e5333036e41d32febf4e40f554e103f5008ff43387bcb49a57
+              image: ghcr.io/onedr0p/kubernetes-kubectl:1.27.1@sha256:c879fa55fa664ef27c6952f3e35490e91fefa03e9098e839ed1aed8038af4abe
               env:
                 - name: CONFIGMAPS
                   value: "rook-ceph-mon-endpoints"
