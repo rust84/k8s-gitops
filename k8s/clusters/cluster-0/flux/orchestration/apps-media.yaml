@@ -63,7 +63,7 @@ spec:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
     - name: apps-media-prowlarr
-    - name: apps-media-nzbget
+    - name: apps-media-sabnzbd
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/sonarr"
   prune: true
@@ -78,7 +78,7 @@ spec:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
     - name: apps-media-prowlarr
-    - name: apps-media-nzbget
+    - name: apps-media-sabnzbd
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/sonarr-uhd"
   prune: true
@@ -93,7 +93,7 @@ spec:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
     - name: apps-media-prowlarr
-    - name: apps-media-nzbget
+    - name: apps-media-sabnzbd
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/radarr"
   prune: true
@@ -108,7 +108,7 @@ spec:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
     - name: apps-media-prowlarr
-    - name: apps-media-nzbget
+    - name: apps-media-sabnzbd
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/media/radarr-uhd"
   prune: true
