@@ -34,18 +34,22 @@ spec:
 
     env:
       COMPOSE_PROJECT_NAME: paperless
-      PAPERLESS_PORT: 8000
+      PAPERLESS_PORT: &port 8000
       PAPERLESS_CONSUMER_POLLING: "60"
       PAPERLESS_CONSUMER_RECURSIVE: "true"
       PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
       PAPERLESS_CONSUMER_ENABLE_BARCODES: "true"
       PAPERLESS_DBHOST: 10.20.0.144
       PAPERLESS_DBNAME: paperless
-      PAPERLESS_REDIS: redis://paperless-redis-master.collab.svc.cluster.local:6379
+      PAPERLESS_REDIS: redis://localhost:6379
       PAPERLESS_TASK_WORKERS: 2
       PAPERLESS_TIME_ZONE: "${TZ}"
       PAPERLESS_URL: https://paperless.${SECRET_DOMAIN}
+      PAPERLESS_TIKA_ENABLED: 1
+      PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
+      PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
       USERMAP_GID: 65543
+
     envFrom:
       - secretRef:
           name: paperless-secrets
@@ -54,7 +58,7 @@ spec:
       main:
         ports:
           http:
-            port: 8000
+            port: *port
 
     ingress:
       main:
@@ -102,6 +106,22 @@ spec:
         server: "nas.${SECRET_DOMAIN}"
         path: /mnt/borg/documents/paperless/export
         mountPath: /usr/src/paperless/export
+
+    sidecars:
+      redis:
+        name: redis
+        image: public.ecr.aws/docker/library/redis:7.0.11@sha256:f50031a49f41e493087fb95f96fdb3523bb25dcf6a3f0b07c588ad3cdbe1d0aa
+        imagePullPolicy: IfNotPresent
+      gotenburg:
+        name: gotenburg
+        image: thecodingmachine/gotenberg:7.8.2@sha256:a7c52dc264026a64c6affab687819a2101dd5973a9280a6c7c2a451de8f4461b
+        env:
+          - name: DISABLE_GOOGLE_CHROME
+            value: '1'
+      tika:
+        image: ghcr.io/paperless-ngx/tika:2.7.0-full@sha256:b1f47cdf66079a77092e07b34013e57c12e9f0fbe284a2ef7cb35c203b894cd5
+        name: tika
+        imagePullPolicy: Always
 
     resources:
       requests:

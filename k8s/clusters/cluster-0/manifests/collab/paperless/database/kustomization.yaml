@@ -5,4 +5,3 @@ namespace: collab
 namePrefix: paperless-
 resources:
   - postgres.yaml
-  - redis.yaml
