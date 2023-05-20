@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: vrising
+  name: &app vrising
   namespace: games
 spec:
   interval: 5m
@@ -19,11 +19,16 @@ spec:
     image:
       repository: trueosiris/vrising
       tag: "1.9"
-    nameOverride: vrising
+    nameOverride: *app
     env:
       TZ: "Europe/London"
-      GAMEPORT: 27015
-      QUERYPORT: 27016
+      GAMEPORT: &server 27015
+      QUERYPORT: &query 27016
+      VR_MAX_USERS: 4
+      VR_LIST_ON_MASTER_SERVER: true
+    envFrom:
+      - secretRef:
+          name: *app
     service:
       main:
         ports:
@@ -37,15 +42,14 @@ spec:
         ports:
           server:
             enabled: true
-            port: 27015
+            port: *server
             protocol: UDP
-            targetPort: 27015
+            targetPort: *server
           query:
             enabled: true
-            port: 27016
+            port: *query
             protocol: UDP
-            targetPort: 27016
-
+            targetPort: *query
     probes:
       liveness:
         enabled: false
@@ -53,14 +57,12 @@ spec:
         enabled: false
       startup:
         enabled: false
-
     resources:
       requests:
         memory: 2000Mi
         cpu: 100m
       limits:
         memory: 3500Mi
-
     persistence:
       config:
         enabled: true
@@ -70,18 +72,5 @@ spec:
         enabled: true
         type: emptyDir
         mountPath: /mnt/vrising/server
-
     podAnnotations:
       secret.reloader.stakater.com/reload: "vrising"
-
-  valuesFrom:
-    - kind: Secret
-      name: vrising
-      valuesKey: server_name
-      targetPath: env.SERVERNAME
-      optional: false
-    - kind: Secret
-      name: vrising
-      valuesKey: world_name
-      targetPath: env.WORLDNAME
-      optional: false
