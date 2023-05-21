@@ -5,7 +5,7 @@ metadata:
   name: &app vrising
   namespace: games
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
       chart: app-template
@@ -14,18 +14,20 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
   values:
     image:
-      repository: trueosiris/vrising
-      tag: "1.9"
+      repository: solareon/vrising-svr
+      tag: latest
     nameOverride: *app
     env:
       TZ: "Europe/London"
-      GAMEPORT: &server 27015
-      QUERYPORT: &query 27016
-      VR_MAX_USERS: 4
-      VR_LIST_ON_MASTER_SERVER: true
+      GAME_PORT: &server 27015
+      QUERY_PORT: &query 27016
+      MAX_USERS: 10
+      MAX_ADMIN: 4
+      STEAM_LIST: true
+      AUTOSAVE_NUM: 10
+      AUTOSAVE_INT: 300
     envFrom:
       - secretRef:
           name: *app
