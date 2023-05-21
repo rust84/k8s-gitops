@@ -4,4 +4,13 @@ kind: Kustomization
 resources:
   - config-pvc.yaml
   - helm-release.yaml
-  - secret.enc.yaml
+  - secret.sops.yaml
+namespace: games
+configMapGenerator:
+  - name: vrising
+    files:
+      - ServerGameSettings.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled

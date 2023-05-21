@@ -1,0 +1,68 @@
+{
+  "CastleDamageMode": 2,
+  "PvPProtectionMode": 0,
+  "DeathContainerPermission": 2,
+  "RelicSpawnType": 1,
+  "TeleportBoundItems": false,
+  "InventoryStacksModifier": 3.0,
+  "DropTableModifier_General": 2.0,
+  "DropTableModifier_Missions": 2.0,
+  "MaterialYieldModifier_Global": 2.0,
+  "BloodEssenceYieldModifier": 2.0,
+  "DurabilityDrainModifier": 0.5,
+  "CastleDecayRateModifier": 0.75,
+  "CastleBloodEssenceDrainModifier": 0.75,
+  "BuildCostModifier": 0.75,
+  "RecipeCostModifier": 0.75,
+  "CraftRateModifier": 2.0,
+  "RefinementCostModifier": 0.75,
+  "RefinementRateModifier": 2.0,
+  "ServantConvertRateModifier": 3.0,
+  "Death_DurabilityFactorLoss": 0.0,
+  "VBloodUnitSettings": [],
+  "UnlockedAchievements": [],
+  "UnlockedResearchs": [],
+  "GameTimeModifiers": {
+    "DayDurationInSeconds": 3600.0
+  },
+  "VampireStatModifiers": {},
+  "UnitStatModifiers_Global": {},
+  "UnitStatModifiers_VBlood": {},
+  "EquipmentStatModifiers_Global": {},
+  "CastleStatModifiers_Global": {
+    "SafetyBoxLimit": 5,
+    "PrisonCellLimit": 50,
+    "HeartLimits": {
+      "Level1": {
+        "FloorLimit": 600,
+        "HeightLimit": 6
+      },
+      "Level2": {
+        "FloorLimit": 600,
+        "HeightLimit": 6
+      },
+      "Level3": {
+        "FloorLimit": 600,
+        "HeightLimit": 6
+      },
+      "Level4": {
+        "FloorLimit": 600,
+        "HeightLimit": 6
+      },
+      "Level5": {
+        "FloorLimit": 600,
+        "HeightLimit": 6
+      }
+    },
+    "CastleLimit": 3
+  },
+  "PlayerInteractionSettings": {
+    "VSPlayerWeekdayTime": {},
+    "VSPlayerWeekendTime": {},
+    "VSCastleWeekdayTime": {},
+    "VSCastleWeekendTime": {}
+  },
+  "TraderModifiers": {
+    "StockModifier": 2.0
+  }
+}

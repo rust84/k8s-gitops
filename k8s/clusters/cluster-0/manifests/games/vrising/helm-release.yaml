@@ -74,5 +74,12 @@ spec:
         enabled: true
         type: emptyDir
         mountPath: /mnt/vrising/server
+      config-json:
+        enabled: true
+        type: configMap
+        name: vrising
+        subPath: ServerGameSettings.json
+        mountPath: /mnt/vrising/persistentdata/Saves/v2/world1/ServerGameSettings.json
+        readOnly: true
     podAnnotations:
       secret.reloader.stakater.com/reload: "vrising"
