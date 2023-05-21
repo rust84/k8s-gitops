@@ -61,10 +61,10 @@ spec:
         enabled: false
     resources:
       requests:
-        memory: 2000Mi
-        cpu: 100m
+        memory: 3000Mi
+        cpu: 1
       limits:
-        memory: 3500Mi
+        memory: 6000Mi
     persistence:
       config:
         enabled: true
