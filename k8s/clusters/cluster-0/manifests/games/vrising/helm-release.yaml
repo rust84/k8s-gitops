@@ -15,6 +15,9 @@ spec:
         name: bjw-s-charts
         namespace: flux-system
   values:
+    controller:
+      annotations:
+        reloader.stakater.com/auto: "true"
     image:
       repository: solareon/vrising-svr
       tag: latest
@@ -81,5 +84,3 @@ spec:
         subPath: ServerGameSettings.json
         mountPath: /mnt/vrising/persistentdata/Saves/v2/world1/ServerGameSettings.json
         readOnly: true
-    podAnnotations:
-      secret.reloader.stakater.com/reload: "vrising"
