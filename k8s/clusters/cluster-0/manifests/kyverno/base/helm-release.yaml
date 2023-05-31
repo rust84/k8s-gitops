@@ -27,9 +27,8 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    upgrade:
-      fromV2: true
-    installCRDs: false
+    crds:
+      install: true
     grafana:
       enabled: true
       annotations:
