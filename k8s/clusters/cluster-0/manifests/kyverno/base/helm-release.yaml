@@ -27,28 +27,40 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    installCRDs: false
+    crds:
+      install: true
     grafana:
       enabled: true
-      annotations:
-        grafana_folder: System
     backgroundController:
       serviceMonitor:
         enabled: true
+      rbac:
+        clusterRole:
+          extraResources:
+            - apiGroups:
+                - ""
+              resources:
+                - ingresses
+                - pods
     cleanupController:
       serviceMonitor:
         enabled: true
     reportsController:
       serviceMonitor:
         enabled: true
-    resources:
-      requests:
-        cpu: 48m
-        memory: 204M
-      limits:
-        memory: 314M
     admissionController:
       replicas: 3
+      rbac:
+        clusterRole:
+          extraResources:
+            - apiGroups:
+                - ""
+              resources:
+                - pods
+              verbs:
+                - create
+                - update
+                - delete
       serviceMonitor:
         enabled: true
       topologySpreadConstraints:
