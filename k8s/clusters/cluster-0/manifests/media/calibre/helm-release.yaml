@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: ghcr.io/linuxserver/calibre
-      tag: version-v6.19.1
+      tag: version-v6.20.0
 
     env:
       TZ: "${TZ}"
