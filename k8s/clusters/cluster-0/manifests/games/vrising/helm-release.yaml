@@ -19,18 +19,18 @@ spec:
       annotations:
         reloader.stakater.com/auto: "true"
     image:
-      repository: solareon/vrising-svr
-      tag: latest
+      repository: trueosiris/vrising
+      tag: "2.0"
     nameOverride: *app
     env:
       TZ: "Europe/London"
-      GAME_PORT: &server 27015
-      QUERY_PORT: &query 27016
-      MAX_USERS: 10
-      MAX_ADMIN: 4
-      STEAM_LIST: true
-      AUTOSAVE_NUM: 10
-      AUTOSAVE_INT: 300
+      GAMEPORT: &server 27015
+      QUERYPORT: &query 27016
+      # MAX_USERS: 10
+      # MAX_ADMIN: 4
+      # STEAM_LIST: true
+      # AUTOSAVE_NUM: 10
+      # AUTOSAVE_INT: 300
     envFrom:
       - secretRef:
           name: *app
@@ -82,5 +82,5 @@ spec:
         type: configMap
         name: vrising
         subPath: ServerGameSettings.json
-        mountPath: /mnt/vrising/persistentdata/Saves/v2/world1/ServerGameSettings.json
+        mountPath: /mnt/vrising/persistentdata/Settings/ServerGameSettings.json
         readOnly: true
