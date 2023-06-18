@@ -1,0 +1,19 @@
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: Postgres
+metadata:
+  name: db
+  namespace: collab
+spec:
+  database: fireflyiii
+---
+apiVersion: db.movetokube.com/v1alpha1
+kind: PostgresUser
+metadata:
+  name: user
+  namespace: collab
+spec:
+  role: fireflyiii
+  database: fireflyiii-db
+  secretName: database
+  privileges: OWNER

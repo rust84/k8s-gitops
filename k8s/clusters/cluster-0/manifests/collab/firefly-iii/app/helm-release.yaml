@@ -1,0 +1,81 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: &app fireflyiii
+  namespace: collab
+spec:
+  interval: 15m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      interval: 15m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  values:
+    controller:
+      annotations:
+        reloader.stakater.com/auto: 'true'
+
+    image:
+      repository: fireflyiii/core
+      tag: version-6.0.5
+
+    env:
+      TZ: ${TZ}
+      APP_URL: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+      TRUSTED_PROXIES: "**" #TODO: Change this
+      DB_CONNECTION: pgsql
+      DB_HOST: 10.20.0.144
+      DB_PORT: 5432
+      DB_DATABASE: fireflyiii
+      DB_USERNAME:
+        valueFrom:
+          secretKeyRef:
+            name: database-fireflyiii-user
+            key: LOGIN
+      DB_PASSWORD:
+        valueFrom:
+          secretKeyRef:
+            name: database-fireflyiii-user
+            key: PASSWORD
+      APP_KEY:
+        valueFrom:
+          secretKeyRef:
+            name: *app
+            key: APP_KEY
+
+    service:
+      main:
+        ports:
+          http:
+            port: 8080
+
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: "traefik"
+        annotations:
+          kubernetes.io/tls-acme: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          traefik.ingress.kubernetes.io/router.middlewares: "network-rfc1918@kubernetescrd"
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "simple-icons:money"
+        hosts:
+          - host: *host
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+
+    persistence:
+      config:
+        enabled: true
+        existingClaim: fireflyiii-config-v1
+        mountPath: /var/www/html/firefly-iii/storage/upload

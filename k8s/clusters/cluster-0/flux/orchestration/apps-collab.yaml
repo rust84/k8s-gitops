@@ -56,3 +56,27 @@ spec:
     - name: rook-ceph-cluster
   path: "./k8s/clusters/cluster-0/manifests/collab/actual"
   prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-collab-firefly-iii-database
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: apps-collab-paperless-database
+  path: "./k8s/clusters/cluster-0/manifests/collab/firefly-iii/database"
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+kind: Kustomization
+metadata:
+  name: apps-collab-firefly-iii
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: rook-ceph-cluster
+  path: "./k8s/clusters/cluster-0/manifests/collab/firefly-iii/app"
+  prune: true
