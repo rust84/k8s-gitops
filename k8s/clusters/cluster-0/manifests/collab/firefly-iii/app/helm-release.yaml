@@ -22,7 +22,7 @@ spec:
 
     image:
       repository: fireflyiii/core
-      tag: version-6.0.5
+      tag: version-6.0.13
 
     env:
       TZ: ${TZ}
