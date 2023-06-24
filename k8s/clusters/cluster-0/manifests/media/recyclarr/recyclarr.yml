@@ -3,7 +3,7 @@
 sonarr:
   sonarr-hd:
     base_url: http://sonarr:8989
-    api_key: ${SONARR_API_KEY}
+    api_key: !env_var SONARR_API_KEY
     delete_old_custom_formats: true
     quality_definition:
       type: series
@@ -63,7 +63,7 @@ sonarr:
 
   sonarr-uhd:
     base_url: http://sonarr-uhd:8989
-    api_key: ${SONARR_UHD_API_KEY}
+    api_key: !env_var SONARR_UHD_API_KEY
     delete_old_custom_formats: true
     quality_definition:
       type: series
@@ -122,7 +122,7 @@ sonarr:
 radarr:
   radarr-hd:
     base_url: http://radarr:7878
-    api_key: ${RADARR_API_KEY}
+    api_key: !env_var RADARR_API_KEY
     delete_old_custom_formats: true
     quality_definition:
       type: movie
@@ -204,7 +204,7 @@ radarr:
 
   radarr-uhd:
     base_url: http://radarr-uhd:7878
-    api_key: ${RADARR_UHD_API_KEY}
+    api_key: !env_var RADARR_UHD_API_KEY
     delete_old_custom_formats: true
     quality_definition:
       type: movie
