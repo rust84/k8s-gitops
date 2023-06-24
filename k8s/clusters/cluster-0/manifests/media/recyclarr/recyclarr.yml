@@ -12,8 +12,6 @@ sonarr:
         reset_unmatched_scores: true
       - name: SD
         reset_unmatched_scores: true
-    # Instruct recyclarr to replace custom formats (old behavior)
-    replace_existing_custom_formats: true
     custom_formats:
       - trash_ids:
           # Streaming Services
@@ -72,8 +70,6 @@ sonarr:
     quality_profiles:
       - name: UHD
         reset_unmatched_scores: true
-    # Instruct recyclarr to replace custom formats (old behavior)
-    replace_existing_custom_formats: true
     custom_formats:
       - trash_ids:
           # Streaming Services
@@ -135,8 +131,6 @@ radarr:
         reset_unmatched_scores: true
       - name: SD
         reset_unmatched_scores: true
-    # Instruct recyclarr to replace custom formats (old behavior)
-    replace_existing_custom_formats: true
     custom_formats:
       - trash_ids:
           - ff5bc9e8ce91d46c997ca3ac6994d6f8 # UHD FraMeSToR (set to 0, 1 or 3200)
@@ -217,8 +211,6 @@ radarr:
     quality_profiles:
       - name: UHD
         reset_unmatched_scores: true
-    # Instruct recyclarr to replace custom formats (old behavior)
-    replace_existing_custom_formats: true
     custom_formats:
       - trash_ids:
           - ff5bc9e8ce91d46c997ca3ac6994d6f8 # UHD FraMeSToR (set to 0, 1 or 3200)
