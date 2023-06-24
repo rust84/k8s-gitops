@@ -1,84 +1,45 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.trux.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta1.json
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: &app recyclarr
-  namespace: &namespace media
+  namespace: media
 spec:
   interval: 15m
   chart:
     spec:
-      chart: raw
-      version: v0.3.2
+      chart: app-template
+      version: 1.5.1
+      interval: 15m
       sourceRef:
         kind: HelmRepository
-        name: dysnix-charts
+        name: bjw-s-charts
         namespace: flux-system
-  install:
-    createNamespace: true
-    remediation:
-      retries: 5
-  upgrade:
-    remediation:
-      retries: 5
   values:
-    resources:
-      - apiVersion: batch/v1
-        kind: CronJob
-        metadata:
+    controller:
+      type: cronjob
+      cronjob:
+        schedule: '@daily'
+        ttlSecondsAfterFinished: 86400
+    restartPolicy: OnFailure
+    image:
+      repository: ghcr.io/recyclarr/recyclarr
+      tag: edge@sha256:c12d7d209f804b61030cae96b7a5c7e9e976525113f23412ac5bae614fbc4aef
+    command: ['/app/recyclarr/recyclarr']
+    args: ['sync']
+    envFrom:
+      - secretRef:
           name: *app
-          namespace: *namespace
-        spec:
-          schedule: "@daily"
-          jobTemplate:
-            spec:
-              ttlSecondsAfterFinished: 86400
-              template:
-                spec:
-                  automountServiceAccountToken: false
-                  restartPolicy: OnFailure
-                  initContainers:
-                    - name: render-configs
-                      image: ghcr.io/onedr0p/alpine:3.18.2
-                      envFrom:
-                        - secretRef:
-                            name: *app
-                      command:
-                        - "/bin/bash"
-                        - -c
-                      args:
-                        - "envsubst < /config/recyclarr.yml > /shared/recyclarr.yml"
-                      volumeMounts:
-                        - name: config
-                          mountPath: /config
-                        - name: shared
-                          mountPath: /shared
-                  containers:
-                    - name: sonarr
-                      image: ghcr.io/recyclarr/recyclarr:5.0.1
-                      command:
-                        - /app/recyclarr/recyclarr
-                      args:
-                        - sonarr
-                      volumeMounts:
-                        - name: shared
-                          mountPath: /config/recyclarr.yml
-                          subPath: recyclarr.yml
-                          readOnly: true
-                    - name: radarr
-                      image: ghcr.io/recyclarr/recyclarr:5.0.1
-                      command:
-                        - /app/recyclarr/recyclarr
-                      args:
-                        - radarr
-                      volumeMounts:
-                        - name: shared
-                          mountPath: /config/recyclarr.yml
-                          subPath: recyclarr.yml
-                          readOnly: true
-                  volumes:
-                    - name: config
-                      configMap:
-                        name: *app
-                    - name: shared
-                      emptyDir: {}
+    service:
+      main:
+        enabled: false
+    persistence:
+      config:
+        enabled: true
+        type: configMap
+        name: *app
+        subPath: recyclarr.yml
+        mountPath: /config/recyclarr.yml
+        defaultMode: 0775
+        readOnly: true
