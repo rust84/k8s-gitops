@@ -120,7 +120,7 @@ cameras:
       height: 360
       fps: 7
 
-  office:
+  lounge:
     ffmpeg:
       inputs:
         - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.30.0.244:554/h264Preview_01_sub
@@ -141,13 +141,3 @@ cameras:
           default: 3000
           objects:
             person: 1000
-    snapshots:
-      enabled: false
-    record:
-      enabled: false
-    mqtt:
-      timestamp: false
-      bounding_box: false
-      crop: true
-      quality: 100
-      height: 500
