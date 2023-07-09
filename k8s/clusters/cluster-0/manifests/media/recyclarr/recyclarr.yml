@@ -62,6 +62,9 @@ sonarr:
           - e1a997ddb54e3ecbfe06341ad323c458 # Obfuscated
           - 06d66ab109d4d2eddb2794d21526d140 # Retags
           - 47435ece6b99a0b477caf360e79ba0bb # x265 (HD)
+        quality_profiles:
+          - name: HD
+          - name: SD
 
   sonarr-uhd:
     base_url: http://sonarr-uhd:8989
@@ -122,6 +125,8 @@ sonarr:
           - e1a997ddb54e3ecbfe06341ad323c458 # Obfuscated
           - 06d66ab109d4d2eddb2794d21526d140 # Retags
           - 47435ece6b99a0b477caf360e79ba0bb # x265 (HD)
+        quality_profiles:
+          - name: UHD
 
 radarr:
   radarr-hd:
@@ -199,6 +204,9 @@ radarr:
           - ed38b889b31be83fda192888e2286d83 # BR-DISK
           - 90a6f9a284dff5103f6346090e6280c8 # LQ
           - dc98083864ea246d05a42df0d05f81cc # x265 (HD)
+        quality_profiles:
+          - name: HD
+          - name: SD
       - trash_ids:
           - 4b900e171accbfb172729b63323ea8ca # Optional: Multi
           - 923b6abef9b17f937fab56cfcf89e1f1 # Optional: DV (WEBDL) without fallback to HDR, set to manual score 0 or -10000
@@ -279,6 +287,8 @@ radarr:
           - ed38b889b31be83fda192888e2286d83 # BR-DISK
           - 90a6f9a284dff5103f6346090e6280c8 # LQ
           - dc98083864ea246d05a42df0d05f81cc # x265 (HD)
+        quality_profiles:
+          - name: UHD
       - trash_ids:
           - 4b900e171accbfb172729b63323ea8ca # Optional: Multi
           - 923b6abef9b17f937fab56cfcf89e1f1 # Optional: DV (WEBDL) without fallback to HDR, set to manual score 0 or -10000
