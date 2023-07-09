@@ -167,19 +167,6 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
 kind: Kustomization
 metadata:
-  name: apps-media-gaps
-  namespace: flux-system
-spec:
-  dependsOn:
-    - name: cluster-namespaces
-    - name: rook-ceph-cluster
-    - name: apps-media-plex
-  path: "./k8s/clusters/cluster-0/manifests/media/gaps"
-  prune: true
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
-kind: Kustomization
-metadata:
   name: apps-media-plex-trakt-sync
   namespace: flux-system
 spec:
