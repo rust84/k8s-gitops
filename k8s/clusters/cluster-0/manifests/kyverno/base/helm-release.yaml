@@ -42,6 +42,13 @@ spec:
               resources:
                 - ingresses
                 - pods
+              verbs:
+                - create
+                - update
+                - patch
+                - delete
+                - get
+                - list
     cleanupController:
       serviceMonitor:
         enabled: true
