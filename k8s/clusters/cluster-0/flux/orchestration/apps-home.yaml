@@ -1,5 +1,5 @@
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-home-zigbee2mqtt
@@ -13,7 +13,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/home/zigbee2mqtt"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-home-hass
@@ -27,7 +27,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/home/home-assistant"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-home-frigate
@@ -43,7 +43,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/home/frigate"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-home-esphome
@@ -56,7 +56,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/home/esphome"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-home-emqx
@@ -69,7 +69,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/home/emqx"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-home-hajimari
@@ -81,7 +81,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/home/hajimari"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-home-monica
@@ -94,7 +94,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/home/monica"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-home-node-red
@@ -107,7 +107,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/home/node-red"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-home-wyoming-piper
@@ -119,7 +119,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/home/wyoming-piper"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-home-wyoming-whisper

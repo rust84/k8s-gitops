@@ -1,5 +1,5 @@
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-network-unifi
@@ -13,7 +13,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/network/unifi"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-network-external-dns
@@ -25,7 +25,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/network/external-dns"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-error-pages
@@ -39,7 +39,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/network/error-pages"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-traefik
@@ -53,7 +53,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/network/traefik"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-k8s-gateway
@@ -65,7 +65,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/network/k8s-gateway"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-certificates
@@ -77,7 +77,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/network/certificates"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-ingress-nginx

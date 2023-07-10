@@ -1,5 +1,5 @@
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-monitoring-kube-prom-stack
@@ -12,7 +12,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/monitoring/kube-prometheus-stack"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-monitoring-thanos
@@ -25,7 +25,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/monitoring/thanos"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-monitoring-loki
@@ -38,7 +38,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/monitoring/loki"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-monitoring-vector-aggregator
@@ -52,7 +52,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/monitoring/vector/aggregator"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-monitoring-vector-agent
@@ -67,7 +67,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/monitoring/vector/agent"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-monitoring-grafana
@@ -82,7 +82,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/monitoring/grafana"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-monitoring-botkube
@@ -94,7 +94,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/monitoring/botkube"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-monitoring-unifi-poller
@@ -105,7 +105,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/monitoring/unifi-poller"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-monitoring-karma
@@ -117,7 +117,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/monitoring/karma"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-monitoring-speedtest-exporter
@@ -128,7 +128,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/monitoring/speedtest-exporter"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-monitoring-vpa
@@ -139,7 +139,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/monitoring/vpa"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-monitoring-goldilocks
@@ -151,7 +151,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/monitoring/goldilocks"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-monitoring-blackbox-exporter
@@ -171,7 +171,7 @@ spec:
     secretRef:
       name: sops-age
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-monitoring-miscellaneous
@@ -191,7 +191,7 @@ spec:
     secretRef:
       name: sops-age
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-monitoring-smartctl-exporter
@@ -211,7 +211,7 @@ spec:
     secretRef:
       name: sops-age
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: core-monitoring-nextdns-exporter

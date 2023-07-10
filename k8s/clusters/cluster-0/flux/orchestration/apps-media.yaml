@@ -1,5 +1,5 @@
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-media-plex
@@ -13,7 +13,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/media/plex"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-media-tautulli
@@ -27,7 +27,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/media/tautulli"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-media-prowlarr
@@ -40,7 +40,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/media/prowlarr"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-media-sabnzbd
@@ -53,7 +53,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/media/sabnzbd"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-media-sonarr
@@ -68,7 +68,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/media/sonarr"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-media-radarr
@@ -83,7 +83,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/media/radarr"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-media-overseerr
@@ -98,7 +98,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/media/overseerr"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-media-readarr
@@ -111,7 +111,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/media/readarr"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-media-calibre
@@ -124,7 +124,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/media/calibre"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-media-calibre-web
@@ -137,7 +137,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/media/calibre-web"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-media-jellyfin
@@ -151,7 +151,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/media/jellyfin"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-media-recyclarr
@@ -164,7 +164,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/media/recyclarr"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-media-plex-trakt-sync
@@ -177,7 +177,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/media/plex-trakt-sync"
   prune: true
 ---
-apiVersion: kustomize.toolkit.fluxcd.io/v1beta2
+apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
   name: apps-media-qbittorrent
