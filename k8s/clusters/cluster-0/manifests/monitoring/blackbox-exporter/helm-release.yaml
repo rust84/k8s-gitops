@@ -24,8 +24,8 @@ spec:
   values:
     fullnameOverride: *app
     image:
-      repository: quay.io/prometheus/blackbox-exporter
-
+      registry: quay.io
+      repository: prometheus/blackbox-exporter
     ingress:
       enabled: true
       className: traefik
