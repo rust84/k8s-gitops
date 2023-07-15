@@ -76,9 +76,21 @@ spec:
         # Ref: https://grafana.com/grafana/dashboards/2842-ceph-cluster/
         ceph-cluster:
           gnetId: 2842
-          revision: 16
+          revision: 17
           datasource: Prometheus
         # Ref: https://grafana.com/grafana/dashboards/1860-node-exporter-full/
+        cilium-dashboard:
+          url: https://raw.githubusercontent.com/cilium/cilium/v1.14.0-rc.0/examples/kubernetes/addons/prometheus/files/grafana-dashboards/cilium-dashboard.json
+          datasource: Prometheus
+        cilium-operator-dashboard:
+          url: https://raw.githubusercontent.com/cilium/cilium/v1.14.0-rc.0/examples/kubernetes/addons/prometheus/files/grafana-dashboards/cilium-operator-dashboard.json
+          datasource: Prometheus
+        hubble-dashboard:
+          url: https://raw.githubusercontent.com/cilium/cilium/v1.14.0-rc.0/examples/kubernetes/addons/prometheus/files/grafana-dashboards/hubble-dashboard.json
+          datasource: Prometheus
+        hubble-metrics:
+          url: https://raw.githubusercontent.com/cilium/cilium/v1.14.0-rc.0/examples/kubernetes/addons/prometheus/files/grafana-dashboards/hubble-l7-http-metrics-by-workload.json
+          datasource: Prometheus
         node-exporter-full:
           gnetId: 1860
           revision: 30
