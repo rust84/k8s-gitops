@@ -7,5 +7,16 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
-  path: "./k8s/clusters/cluster-0/manifests/kube-system/cilium"
+  path: "./k8s/clusters/cluster-0/manifests/kube-system/cilium/app"
   prune: true
+# ---
+# apiVersion: kustomize.toolkit.fluxcd.io/v1
+# kind: Kustomization
+# metadata:
+#   name: core-cilium
+#   namespace: flux-system
+# spec:
+#   dependsOn:
+#     - name: cluster-namespaces
+#   path: "./k8s/clusters/cluster-0/manifests/kube-system/cilium/config"
+#   prune: true

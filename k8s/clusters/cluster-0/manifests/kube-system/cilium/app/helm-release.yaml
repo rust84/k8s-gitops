@@ -85,8 +85,11 @@ spec:
               hosts:
                 - "hubble.${SECRET_DOMAIN}"
 
-    bgp:
+    bgpControlPlane:
       enabled: true
+
+    bgp:
+      enabled: false
       announce:
         loadbalancerIP: true
 

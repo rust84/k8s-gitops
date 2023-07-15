@@ -60,8 +60,9 @@ spec:
     service:
       main:
         type: LoadBalancer
-        loadBalancerIP: "${SVC_UNIFI_ADDRESS}"
-        externalTrafficPolicy: Local
+        externalTrafficPolicy: Cluster
+        annotations:
+          "io.cilium/lb-ipam-ips": "${SVC_UNIFI_ADDRESS}"
         ports:
           http:
             port: 8443

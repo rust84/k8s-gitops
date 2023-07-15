@@ -42,8 +42,9 @@ spec:
       server:
         enabled: true
         type: LoadBalancer
-        loadBalancerIP: ${SVC_VRISING_ADDRESS}
-        externalTrafficPolicy: Local
+        externalTrafficPolicy: Cluster
+        annotations:
+          "io.cilium/lb-ipam-ips": "${SVC_VRISING_ADDRESS}"
         ports:
           server:
             enabled: true

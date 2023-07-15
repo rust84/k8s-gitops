@@ -33,6 +33,9 @@ containerRuntime:
 # value corresponds to the configured cluster-cidr.
 ipv4NativeRoutingCIDR: 10.244.0.0/16
 
+bgpControlPlane:
+  enabled: true
+
 # Cilium leverages MetalLB's simplified BGP announcement system for service type: LoadBalancer
 bgp:
   enabled: false

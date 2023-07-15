@@ -33,11 +33,8 @@ spec:
         - 100
     service:
       main:
-        type: LoadBalancer
         annotations:
           traefik.ingress.kubernetes.io/service.serversscheme: https
-        loadBalancerIP: ${SVC_PLEX_ADDRESS}
-        externalTrafficPolicy: Local
         ports:
           http:
             port: 32400

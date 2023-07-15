@@ -27,10 +27,10 @@ spec:
       enabled: true
       type: LoadBalancer
       spec:
-        loadBalancerIP: ${SVC_TRAEFIK_ADDRESS}
-        externalTrafficPolicy: Local
+        externalTrafficPolicy: Cluster
       annotations:
         external-dns.alpha.kubernetes.io/hostname: "ipv4.${SECRET_DOMAIN}"
+        "io.cilium/lb-ipam-ips": "${SVC_TRAEFIK_ADDRESS}"
 
     logs:
       general:

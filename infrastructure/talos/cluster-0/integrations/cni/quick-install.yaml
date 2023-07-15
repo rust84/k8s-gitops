@@ -413,7 +413,7 @@ data:
   disable-cnp-status-updates: "true"
   disable-endpoint-crd: "false"
   enable-auto-protect-node-port-range: "true"
-  enable-bgp-control-plane: "false"
+  enable-bgp-control-plane: "true"
   enable-bpf-clock-probe: "true"
   enable-endpoint-health-checking: "true"
   enable-endpoint-routes: "true"
@@ -506,7 +506,7 @@ spec:
   template:
     metadata:
       annotations:
-        cilium.io/cilium-configmap-checksum: 5738bbd086547fb68c9f7ba2cd775c4f952932ad7cbdeb5b3f969bd819bb54e4
+        cilium.io/cilium-configmap-checksum: c379c11706902335bf5e9180f22102f557ff134943af16e2e85f9301fbe19de3
       labels:
         app.kubernetes.io/name: cilium-operator
         app.kubernetes.io/part-of: cilium
@@ -599,7 +599,7 @@ spec:
   template:
     metadata:
       annotations:
-        cilium.io/cilium-configmap-checksum: 5738bbd086547fb68c9f7ba2cd775c4f952932ad7cbdeb5b3f969bd819bb54e4
+        cilium.io/cilium-configmap-checksum: c379c11706902335bf5e9180f22102f557ff134943af16e2e85f9301fbe19de3
       labels:
         app.kubernetes.io/name: cilium-agent
         app.kubernetes.io/part-of: cilium

@@ -35,8 +35,9 @@ spec:
     service:
       main:
         type: LoadBalancer
-        loadBalancerIP: ${SVC_JELLYFIN_ADDRESS}
-        externalTrafficPolicy: Local
+        externalTrafficPolicy: Cluster
+        annotations:
+          "io.cilium/lb-ipam-ips": "${SVC_JELLYFIN_ADDRESS}"
         ports:
           http:
             port: 8096

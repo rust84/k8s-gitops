@@ -46,14 +46,15 @@ spec:
       bittorrent:
         enabled: true
         type: LoadBalancer
-        loadBalancerIP: ${SVC_QBITTORRENT_ADDR}
+        externalTrafficPolicy: Cluster
+        annotations:
+          "io.cilium/lb-ipam-ips": "${SVC_QBITTORRENT_ADDR}"
         ports:
           bittorrent:
             enabled: true
             port: *port-bt
             protocol: TCP
             targetPort: *port-bt
-        externalTrafficPolicy: Local
     ingress:
       main:
         annotations:

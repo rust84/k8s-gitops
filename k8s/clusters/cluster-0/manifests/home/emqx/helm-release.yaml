@@ -64,7 +64,9 @@ spec:
       size: 100Mi
     service:
       type: LoadBalancer
-      loadBalancerIP: ${SVC_MOSQUITTO_ADDRESS}
+      externalTrafficPolicy: Cluster
+      annotations:
+        "io.cilium/lb-ipam-ips": "${SVC_EMQX_ADDRESS}"
     affinity:
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:

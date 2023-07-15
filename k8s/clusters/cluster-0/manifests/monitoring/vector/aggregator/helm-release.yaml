@@ -50,8 +50,9 @@ spec:
     service:
       main:
         type: LoadBalancer
-        loadBalancerIP: '${SVC_VECTOR_AGGREGATOR}'
-        externalTrafficPolicy: Local
+        externalTrafficPolicy: Cluster
+        annotations:
+          "io.cilium/lb-ipam-ips": "${SVC_VECTOR_AGGREGATOR}"
         ports:
           http:
             port: 8686
