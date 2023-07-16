@@ -17,4 +17,4 @@ spec:
           expr: increase(catalog_actions_count{status="failed"}[10m]) > 0
           for: 1m
           labels:
-            severity: critical
+            severity: warning
