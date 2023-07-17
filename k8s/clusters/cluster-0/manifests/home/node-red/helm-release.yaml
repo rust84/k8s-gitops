@@ -22,22 +22,22 @@ spec:
     remediation:
       retries: 5
   values:
-    initContainers:
-      npm-update:
-        image: node:20-alpine
-        command:
-          - /bin/sh
-          - -c
-          - |
-            if [[ -f /data/package.json ]]; then
-                npm install --save $(npm outdated | cut -d' ' -f 1 | sed '1d' | xargs -I '$' echo '$@latest' | xargs echo);
-            else
-                echo "Skipping npm updates, no package.json found.";
-            fi
-        workingDir: /data
-        volumeMounts:
-          - name: config
-            mountPath: /data
+    # initContainers:
+    #   npm-update:
+    #     image: node:20-alpine
+    #     command:
+    #       - /bin/sh
+    #       - -c
+    #       - |
+    #         if [[ -f /data/package.json ]]; then
+    #             npm install --save $(npm outdated | cut -d' ' -f 1 | sed '1d' | xargs -I '$' echo '$@latest' | xargs echo);
+    #         else
+    #             echo "Skipping npm updates, no package.json found.";
+    #         fi
+    #     workingDir: /data
+    #     volumeMounts:
+    #       - name: config
+    #         mountPath: /data
     image:
       repository: nodered/node-red
       tag: 3.0.2
