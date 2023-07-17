@@ -104,6 +104,9 @@ rules:
   - ciliumnetworkpolicies
   - ciliumnodes
   - ciliumnodeconfigs
+  - ciliumcidrgroups
+  - ciliuml2announcementpolicies
+  - ciliumpodippools
   verbs:
   - list
   - watch
@@ -143,6 +146,7 @@ rules:
   - ciliumclusterwidenetworkpolicies/status
   - ciliumendpoints/status
   - ciliumendpoints
+  - ciliuml2announcementpolicies/status
   verbs:
   - patch
 ---
@@ -304,6 +308,9 @@ rules:
   - ciliumnetworkpolicies.cilium.io
   - ciliumnodes.cilium.io
   - ciliumnodeconfigs.cilium.io
+  - ciliumcidrgroups.cilium.io
+  - ciliuml2announcementpolicies.cilium.io
+  - ciliumpodippools.cilium.io
   resources:
   - customresourcedefinitions
   verbs:
@@ -312,10 +319,17 @@ rules:
   - cilium.io
   resources:
   - ciliumloadbalancerippools
+  - ciliumpodippools
   verbs:
   - get
   - list
   - watch
+- apiGroups:
+  - cilium.io
+  resources:
+  - ciliumpodippools
+  verbs:
+  - create
 - apiGroups:
   - cilium.io
   resources:
@@ -406,12 +420,13 @@ data:
   cilium-endpoint-gc-interval: 5m0s
   cluster-id: "1"
   cluster-name: cluster-0
-  cni-uninstall: "true"
+  cni-exclusive: "true"
+  cni-log-file: /var/run/cilium/cilium-cni.log
+  cnp-node-status-gc-interval: 0s
   custom-cni-conf: "false"
   debug: "false"
   debug-verbose: ""
   disable-cnp-status-updates: "true"
-  disable-endpoint-crd: "false"
   enable-auto-protect-node-port-range: "true"
   enable-bgp-control-plane: "true"
   enable-bpf-clock-probe: "true"
@@ -420,10 +435,12 @@ data:
   enable-health-check-nodeport: "true"
   enable-health-checking: "true"
   enable-ipv4: "true"
+  enable-ipv4-big-tcp: "false"
   enable-ipv4-masquerade: "true"
   enable-ipv6: "false"
   enable-ipv6-big-tcp: "false"
   enable-ipv6-masquerade: "true"
+  enable-k8s-networkpolicy: "true"
   enable-k8s-terminating-endpoint: "true"
   enable-l2-neigh-discovery: "true"
   enable-l7-proxy: "true"
@@ -435,14 +452,20 @@ data:
   enable-vtep: "false"
   enable-well-known-identities: "false"
   enable-xt-socket-fallback: "true"
+  external-envoy-proxy: "false"
   identity-allocation-mode: crd
   identity-gc-interval: 15m0s
   identity-heartbeat-timeout: 30m0s
   install-no-conntrack-iptables-rules: "false"
   ipam: kubernetes
+  ipam-cilium-node-update-rate: 15s
   ipv4-native-routing-cidr: 10.244.0.0/16
   kube-proxy-replacement: strict
   kube-proxy-replacement-healthz-bind-address: 0.0.0.0:10256
+  mesh-auth-enabled: "true"
+  mesh-auth-expired-gc-interval: 15m0s
+  mesh-auth-queue-size: "1024"
+  mesh-auth-rotated-identities-queue-size: "1024"
   monitor-aggregation: medium
   monitor-aggregation-flags: all
   monitor-aggregation-interval: 5s
@@ -450,8 +473,14 @@ data:
   nodes-gc-interval: 5m0s
   operator-api-serve-addr: 127.0.0.1:9234
   preallocate-bpf-maps: "false"
+  proxy-connect-timeout: "2"
+  proxy-max-connection-duration-seconds: "0"
+  proxy-max-requests-per-connection: "0"
+  proxy-prometheus-port: "9964"
   remove-cilium-node-taints: "true"
+  routing-mode: native
   set-cilium-is-up-condition: "true"
+  set-cilium-node-taints: "true"
   sidecar-istio-proxy-image: cilium/istio_proxy
   skip-cnp-status-startup-clean: "false"
   synchronize-k8s-nodes: "true"
@@ -460,14 +489,13 @@ data:
   tofqdns-endpoint-max-ip-per-hostname: "50"
   tofqdns-idle-connection-grace-period: 0s
   tofqdns-max-deferred-connection-deletes: "10000"
-  tofqdns-min-ttl: "3600"
   tofqdns-proxy-response-max-delay: 100ms
-  tunnel: disabled
   unmanaged-pod-watcher-interval: "15"
   vtep-cidr: ""
   vtep-endpoint: ""
   vtep-mac: ""
   vtep-mask: ""
+  write-cni-conf-when-ready: /host/etc/cni/net.d/05-cilium.conflist
 kind: ConfigMap
 metadata:
   annotations:
@@ -500,13 +528,13 @@ spec:
       name: cilium-operator
   strategy:
     rollingUpdate:
-      maxSurge: 1
-      maxUnavailable: 1
+      maxSurge: 25%
+      maxUnavailable: 50%
     type: RollingUpdate
   template:
     metadata:
       annotations:
-        cilium.io/cilium-configmap-checksum: c379c11706902335bf5e9180f22102f557ff134943af16e2e85f9301fbe19de3
+        cilium.io/cilium-configmap-checksum: f6ea65813e6bf7af38b8418e981976faafc7fd132d276e688e0fa9cd3645b6cd
       labels:
         app.kubernetes.io/name: cilium-operator
         app.kubernetes.io/part-of: cilium
@@ -548,7 +576,7 @@ spec:
           value: 10.20.0.250
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
-        image: quay.io/cilium/operator-generic:v1.13.2@sha256:a1982c0a22297aaac3563e428c330e17668305a41865a842dec53d241c5490ab
+        image: quay.io/cilium/operator-generic:v1.14.0-rc.0
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -560,6 +588,16 @@ spec:
           periodSeconds: 10
           timeoutSeconds: 3
         name: cilium-operator
+        readinessProbe:
+          failureThreshold: 5
+          httpGet:
+            host: 127.0.0.1
+            path: /healthz
+            port: 9234
+            scheme: HTTP
+          initialDelaySeconds: 0
+          periodSeconds: 5
+          timeoutSeconds: 3
         terminationMessagePolicy: FallbackToLogsOnError
         volumeMounts:
         - mountPath: /tmp/cilium/config-map
@@ -599,7 +637,7 @@ spec:
   template:
     metadata:
       annotations:
-        cilium.io/cilium-configmap-checksum: c379c11706902335bf5e9180f22102f557ff134943af16e2e85f9301fbe19de3
+        cilium.io/cilium-configmap-checksum: f6ea65813e6bf7af38b8418e981976faafc7fd132d276e688e0fa9cd3645b6cd
       labels:
         app.kubernetes.io/name: cilium-agent
         app.kubernetes.io/part-of: cilium
@@ -631,32 +669,13 @@ spec:
               fieldPath: metadata.namespace
         - name: CILIUM_CLUSTERMESH_CONFIG
           value: /var/lib/cilium/clustermesh/
-        - name: CILIUM_CNI_CHAINING_MODE
-          valueFrom:
-            configMapKeyRef:
-              key: cni-chaining-mode
-              name: cilium-config
-              optional: true
-        - name: CILIUM_CUSTOM_CNI_CONF
-          valueFrom:
-            configMapKeyRef:
-              key: custom-cni-conf
-              name: cilium-config
-              optional: true
         - name: KUBERNETES_SERVICE_HOST
           value: 10.20.0.250
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
-        image: quay.io/cilium/cilium:v1.13.2@sha256:85708b11d45647c35b9288e0de0706d24a5ce8a378166cadc700f756cc1a38d6
+        image: quay.io/cilium/cilium:v1.14.0-rc.0
         imagePullPolicy: IfNotPresent
         lifecycle:
-          postStart:
-            exec:
-              command:
-              - bash
-              - -c
-              - |
-                /cni-install.sh --enable-debug=false --cni-exclusive=true --log-file=/var/run/cilium/cilium-cni.log
           preStop:
             exec:
               command:
@@ -743,7 +762,7 @@ spec:
           value: 10.20.0.250
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
-        image: quay.io/cilium/cilium:v1.13.2@sha256:85708b11d45647c35b9288e0de0706d24a5ce8a378166cadc700f756cc1a38d6
+        image: quay.io/cilium/cilium:v1.14.0-rc.0
         imagePullPolicy: IfNotPresent
         name: config
         terminationMessagePolicy: FallbackToLogsOnError
@@ -769,7 +788,7 @@ spec:
           value: 10.20.0.250
         - name: KUBERNETES_SERVICE_PORT
           value: "6443"
-        image: quay.io/cilium/cilium:v1.13.2@sha256:85708b11d45647c35b9288e0de0706d24a5ce8a378166cadc700f756cc1a38d6
+        image: quay.io/cilium/cilium:v1.14.0-rc.0
         imagePullPolicy: IfNotPresent
         name: clean-cilium-state
         resources:
@@ -789,7 +808,7 @@ spec:
           name: cilium-run
       - command:
         - /install-plugin.sh
-        image: quay.io/cilium/cilium:v1.13.2@sha256:85708b11d45647c35b9288e0de0706d24a5ce8a378166cadc700f756cc1a38d6
+        image: quay.io/cilium/cilium:v1.14.0-rc.0
         imagePullPolicy: IfNotPresent
         name: install-cni-binaries
         resources:
@@ -800,6 +819,7 @@ spec:
           capabilities:
             drop:
             - ALL
+          privileged: true
         terminationMessagePolicy: FallbackToLogsOnError
         volumeMounts:
         - mountPath: /host/opt/cni/bin
@@ -844,10 +864,22 @@ spec:
           type: FileOrCreate
         name: xtables-lock
       - name: clustermesh-secrets
-        secret:
+        projected:
           defaultMode: 256
-          optional: true
-          secretName: cilium-clustermesh
+          sources:
+          - secret:
+              name: cilium-clustermesh
+              optional: true
+          - secret:
+              items:
+              - key: tls.key
+                path: common-etcd-client.key
+              - key: tls.crt
+                path: common-etcd-client.crt
+              - key: ca.crt
+                path: common-etcd-client-ca.crt
+              name: clustermesh-apiserver-remote-cert
+              optional: true
   updateStrategy:
     rollingUpdate:
       maxUnavailable: 2
