@@ -24,7 +24,7 @@ spec:
   values:
     image:
       repository: ghcr.io/unpoller/unpoller
-      tag: v2.7.14
+      tag: v2.7.20
     env:
       TZ: "Europe/London"
       UP_UNIFI_DEFAULT_ROLE: "homelab-controller"
