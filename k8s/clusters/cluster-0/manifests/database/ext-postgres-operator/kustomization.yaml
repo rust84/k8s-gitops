@@ -3,11 +3,11 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namespace: database
 resources:
-  - github.com/movetokube/postgres-operator/deploy?ref=1.2.2
+  - github.com/movetokube/postgres-operator/deploy?ref=1.2.3
   - secret.sops.yaml
 images:
   - name: movetokube/postgres-operator
-    newTag: 1.2.1
+    newTag: 1.2.3
 patchesJson6902:
   - target:
       group: apps
