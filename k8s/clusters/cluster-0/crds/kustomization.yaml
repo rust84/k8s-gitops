@@ -4,6 +4,5 @@ kind: Kustomization
 resources:
   - cert-manager
   - external-snapshotter
-  - kube-prometheus-stack
   - rook-ceph
   - traefik
