@@ -57,7 +57,7 @@ spec:
         storageClass: rook-ceph-block
     resources:
       requests:
-        memory: 250Mi
-        cpu: 500m
+        cpu: 15m
+        memory: 1311M
       limits:
-        memory: 2500Mi
+        memory: 3648M

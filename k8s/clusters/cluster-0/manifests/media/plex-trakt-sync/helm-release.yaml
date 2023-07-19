@@ -62,3 +62,10 @@ spec:
 
     args:
       - watch
+
+    resources:
+      requests:
+        cpu: 15m
+        memory: 64M
+      limits:
+        memory: 200M

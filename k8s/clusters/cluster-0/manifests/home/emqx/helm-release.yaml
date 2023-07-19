@@ -79,10 +79,10 @@ spec:
             topologyKey: "kubernetes.io/hostname"
     resources:
       requests:
-        cpu: 62m
+        cpu: 48m
         memory: 248M
       limits:
-        memory: 380M
+        memory: 518M
   valuesFrom:
     - targetPath: emqxConfig.EMQX_DASHBOARD__DEFAULT_PASSWORD
       kind: Secret
