@@ -94,6 +94,13 @@ spec:
         existingClaim: vaultwarden-config
         mountPath: /config
 
+    resources:
+      requests:
+        cpu: 15m
+        memory: 64M
+      limits:
+        memory: 180M
+
   valuesFrom:
     - kind: Secret
       name: database-vaultwarden-user

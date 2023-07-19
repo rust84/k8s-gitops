@@ -76,6 +76,13 @@ spec:
             hosts:
               - *host
 
+    resources:
+      requests:
+        cpu: 15m
+        memory: 183M
+      limits:
+        memory: 325M
+
   valuesFrom:
     - kind: Secret
       name: database-joplin-user

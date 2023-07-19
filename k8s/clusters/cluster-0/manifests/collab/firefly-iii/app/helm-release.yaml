@@ -78,3 +78,10 @@ spec:
         enabled: true
         existingClaim: fireflyiii-config-v1
         mountPath: /var/www/html/firefly-iii/storage/upload
+
+    resources:
+      requests:
+        cpu: 15m
+        memory: 145M
+      limits:
+        memory: 261M
