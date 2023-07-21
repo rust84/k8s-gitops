@@ -19,10 +19,8 @@ spec:
     deployment:
       enabled: true
       kind: Deployment
-      replicas: 2
-    rollingUpdate:
-      maxUnavailable: 0
-      maxSurge: 1
+      replicas: 3
+
     service:
       enabled: true
       type: LoadBalancer
