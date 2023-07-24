@@ -50,9 +50,9 @@ spec:
       rollOutPods: true
 
     prometheus:
-      enabled: true
+      enabled: false
       serviceMonitor:
-        enabled: true
+        enabled: false
 
     containerRuntime:
       integration: containerd
