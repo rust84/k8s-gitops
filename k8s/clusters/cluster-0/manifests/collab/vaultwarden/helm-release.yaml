@@ -23,7 +23,7 @@ spec:
   values:
     image:
       repository: vaultwarden/server
-      tag: 1.29.0-alpine
+      tag: 1.29.1-alpine
 
     env:
       TZ: "${TZ}"
