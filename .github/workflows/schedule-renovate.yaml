@@ -22,8 +22,10 @@ on:
       - ".github/renovate/**.json"
 
 env:
-  LOG_LEVEL: info
+  LOG_LEVEL: debug
   DRY_RUN: false
+  RENOVATE_AUTODISCOVER: true
+  RENOVATE_AUTODISCOVER_FILTER: "${{ github.repository }}"
 
 jobs:
   renovate:
