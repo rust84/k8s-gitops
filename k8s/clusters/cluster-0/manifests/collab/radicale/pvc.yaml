@@ -1,0 +1,17 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: radicale-data
+  namespace: collab
+  labels:
+    app.kubernetes.io/name: &app radicale
+    app.kubernetes.io/instance: *app
+    kasten.io/backup-volume: "enabled"
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: rook-ceph-block
