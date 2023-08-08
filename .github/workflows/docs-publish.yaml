@@ -17,7 +17,7 @@ env:
 jobs:
   markdownlint:
     name: Markdownlint
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - uses: actions/checkout@v3
@@ -32,7 +32,7 @@ jobs:
 
   markdown-link-check:
     name: Markdown link check
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
 
     steps:
       - uses: actions/checkout@v3
@@ -47,7 +47,7 @@ jobs:
   deploy:
     name: Deploy to GitHub Pages
     if: github.event.pull_request.head.repo.fork == false
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     needs:
       - markdownlint
       - markdown-link-check
