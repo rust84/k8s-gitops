@@ -28,8 +28,13 @@ spec:
     env:
       TZ: "${TZ}"
     podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
       supplementalGroups:
-        - 1001
+        - 44
+        - 109
         - 100
     service:
       main:
