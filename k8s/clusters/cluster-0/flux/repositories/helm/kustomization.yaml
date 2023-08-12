@@ -20,6 +20,7 @@ resources:
   - hashicorp-charts.yaml
   - infracloudio-charts.yaml
   - ingress-nginx-charts.yaml
+  - intel-charts.yaml
   - kasten-charts.yaml
   - kubernetes-sigs-descheduler-charts.yaml
   - kubernetes-stable-charts.yaml

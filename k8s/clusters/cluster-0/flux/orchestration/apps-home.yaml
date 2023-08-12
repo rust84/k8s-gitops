@@ -35,10 +35,9 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
-    - name: core-nfd
     - name: rook-ceph-cluster
     - name: apps-home-emqx
-    - name: core-intel-gpu-plugin
+    - name: core-intel-device-plugin-gpu
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/home/frigate"
   prune: true

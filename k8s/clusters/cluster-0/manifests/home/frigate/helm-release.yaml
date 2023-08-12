@@ -77,23 +77,6 @@ spec:
               - *host
     podAnnotations:
       configmap.reloader.stakater.com/reload: "frigate-config"
-    affinity:
-      nodeAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          nodeSelectorTerms:
-            - matchExpressions:
-                - key: feature.node.kubernetes.io/custom-coral-tpu
-                  operator: In
-                  values:
-                    - "true"
-    resources:
-      requests:
-        cpu: 270m
-        memory: 477M
-        gpu.intel.com/i915: 1
-      limits:
-        memory: 2000M
-        gpu.intel.com/i915: 1
     securityContext:
       privileged: true
     persistence:
@@ -126,3 +109,23 @@ spec:
         medium: Memory
         sizeLimit: 2Gi
         mountPath: /dev/shm
+    nodeSelector:
+      google.feature.node.kubernetes.io/coral: "true"
+      intel.feature.node.kubernetes.io/gpu: "true"
+    affinity:
+      podAntiAffinity:
+        requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values: ["plex"]
+            topologyKey: kubernetes.io/hostname
+    resources:
+      requests:
+        cpu: 270m
+        memory: 477M
+        gpu.intel.com/i915: 1
+      limits:
+        memory: 2000M
+        gpu.intel.com/i915: 1
