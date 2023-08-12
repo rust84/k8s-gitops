@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -11,6 +12,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/collab/vaultwarden"
   prune: true
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -22,6 +24,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/collab/joplin-server"
   prune: true
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -33,6 +36,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/collab/paperless/database"
   prune: true
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -45,6 +49,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/collab/paperless/application"
   prune: true
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -57,6 +62,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/collab/firefly-iii/database"
   prune: true
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -69,6 +75,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/collab/firefly-iii/app"
   prune: true
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -80,6 +87,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/collab/firefly-iii/importer"
   prune: true
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:

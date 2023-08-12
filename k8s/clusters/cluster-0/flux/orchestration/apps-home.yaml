@@ -1,4 +1,5 @@
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -13,6 +14,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/home/zigbee2mqtt"
   prune: true
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -27,6 +29,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/home/home-assistant"
   prune: true
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -42,6 +45,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/home/frigate"
   prune: true
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -55,6 +59,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/home/esphome"
   prune: true
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -68,6 +73,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/home/emqx"
   prune: true
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -80,6 +86,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/home/hajimari"
   prune: true
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -93,6 +100,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/home/monica"
   prune: true
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -106,6 +114,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/home/node-red"
   prune: true
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
@@ -118,6 +127,7 @@ spec:
   path: "./k8s/clusters/cluster-0/manifests/home/wyoming-piper"
   prune: true
 ---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
