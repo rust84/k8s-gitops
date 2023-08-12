@@ -82,7 +82,7 @@ spec:
   dependsOn:
     - name: cluster-namespaces
     - name: core-node-feature-discovery
-  path: "./k8s/clusters/cluster-0/manifests/kube-system/core-intel-device-plugin/app"
+  path: "./k8s/clusters/cluster-0/manifests/kube-system/intel-device-plugin/app"
   prune: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -95,7 +95,7 @@ spec:
   dependsOn:
     - name: cluster-namespaces
     - name: core-intel-device-plugin-operator
-  path: "./k8s/clusters/cluster-0/manifests/kube-system/core-intel-device-plugin/gpu"
+  path: "./k8s/clusters/cluster-0/manifests/kube-system/intel-device-plugin/gpu"
   prune: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -108,7 +108,7 @@ spec:
   dependsOn:
     - name: cluster-namespaces
     - name: core-intel-device-plugin-gpu
-  path: "./k8s/clusters/cluster-0/manifests/kube-system/core-intel-device-plugin/exporter"
+  path: "./k8s/clusters/cluster-0/manifests/kube-system/intel-device-plugin/exporter"
   prune: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
