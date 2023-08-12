@@ -46,7 +46,7 @@ spec:
           "io.cilium/lb-ipam-ips": "${SVC_JELLYFIN_ADDRESS}"
         ports:
           http:
-            port: 8096
+            port: &port 8096 
     probes:
       liveness: &probes
         enabled: true
