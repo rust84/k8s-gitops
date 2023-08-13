@@ -31,7 +31,7 @@ spec:
     ipv4NativeRoutingCIDR: ${NETWORK_K8S_POD_CIDR}
 
     k8sServiceHost: "localhost" # kubeprism load balancer
-    k8sServicePort: 7445 
+    k8sServicePort: 7445
 
     loadBalancer:
       algorithm: "maglev"

@@ -27,7 +27,7 @@ spec:
     env:
       TZ: ${TZ}
       APP_URL: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
-      TRUSTED_PROXIES: "**" #TODO: Change this
+      TRUSTED_PROXIES: "**"
       DB_CONNECTION: pgsql
       DB_HOST: 10.20.0.144
       DB_PORT: 5432

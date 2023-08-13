@@ -35,9 +35,9 @@ spec:
       fsGroup: 568
       fsGroupChangePolicy: OnRootMismatch
       supplementalGroups:
-          - 44
-          - 109
-          - 100
+        - 44
+        - 109
+        - 100
     service:
       main:
         type: LoadBalancer
@@ -46,7 +46,7 @@ spec:
           "io.cilium/lb-ipam-ips": "${SVC_JELLYFIN_ADDRESS}"
         ports:
           http:
-            port: &port 8096 
+            port: &port 8096
     probes:
       liveness: &probes
         enabled: true
