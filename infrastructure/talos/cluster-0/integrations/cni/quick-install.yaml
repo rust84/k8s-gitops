@@ -81,6 +81,16 @@ rules:
   - list
   - watch
 - apiGroups:
+  - coordination.k8s.io
+  resources:
+  - leases
+  verbs:
+  - create
+  - get
+  - update
+  - list
+  - delete
+- apiGroups:
   - apiextensions.k8s.io
   resources:
   - customresourcedefinitions
@@ -427,9 +437,12 @@ data:
   debug: "false"
   debug-verbose: ""
   disable-cnp-status-updates: "true"
+  egress-gateway-reconciliation-trigger-interval: 1s
   enable-auto-protect-node-port-range: "true"
   enable-bgp-control-plane: "true"
-  enable-bpf-clock-probe: "true"
+  enable-bpf-clock-probe: "false"
+  enable-bpf-masquerade: "true"
+  enable-bpf-tproxy: "true"
   enable-endpoint-health-checking: "true"
   enable-endpoint-routes: "true"
   enable-health-check-nodeport: "true"
@@ -442,6 +455,7 @@ data:
   enable-ipv6-masquerade: "true"
   enable-k8s-networkpolicy: "true"
   enable-k8s-terminating-endpoint: "true"
+  enable-l2-announcements: "true"
   enable-l2-neigh-discovery: "true"
   enable-l7-proxy: "true"
   enable-local-redirect-policy: "true"
@@ -460,10 +474,15 @@ data:
   ipam: kubernetes
   ipam-cilium-node-update-rate: 15s
   ipv4-native-routing-cidr: 10.244.0.0/16
+  k8s-client-burst: "10"
+  k8s-client-qps: "5"
   kube-proxy-replacement: strict
   kube-proxy-replacement-healthz-bind-address: 0.0.0.0:10256
+  l2-announcements-lease-duration: 120s
+  l2-announcements-renew-deadline: 60s
+  l2-announcements-retry-period: 1s
   mesh-auth-enabled: "true"
-  mesh-auth-expired-gc-interval: 15m0s
+  mesh-auth-gc-interval: 5m0s
   mesh-auth-queue-size: "1024"
   mesh-auth-rotated-identities-queue-size: "1024"
   monitor-aggregation: medium
@@ -534,7 +553,7 @@ spec:
   template:
     metadata:
       annotations:
-        cilium.io/cilium-configmap-checksum: f6ea65813e6bf7af38b8418e981976faafc7fd132d276e688e0fa9cd3645b6cd
+        cilium.io/cilium-configmap-checksum: 4f35d7e96dd0a92fcd8aea91dd555052e64959fa00edcec23959df690881bfa9
       labels:
         app.kubernetes.io/name: cilium-operator
         app.kubernetes.io/part-of: cilium
@@ -573,10 +592,10 @@ spec:
               name: cilium-config
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: 10.20.0.250
+          value: localhost
         - name: KUBERNETES_SERVICE_PORT
-          value: "6443"
-        image: quay.io/cilium/operator-generic:v1.14.0-rc.0
+          value: "7445"
+        image: quay.io/cilium/operator-generic:v1.14.1@sha256:e061de0a930534c7e3f8feda8330976367971238ccafff42659f104effd4b5f7
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -637,7 +656,7 @@ spec:
   template:
     metadata:
       annotations:
-        cilium.io/cilium-configmap-checksum: f6ea65813e6bf7af38b8418e981976faafc7fd132d276e688e0fa9cd3645b6cd
+        cilium.io/cilium-configmap-checksum: 4f35d7e96dd0a92fcd8aea91dd555052e64959fa00edcec23959df690881bfa9
       labels:
         app.kubernetes.io/name: cilium-agent
         app.kubernetes.io/part-of: cilium
@@ -670,10 +689,10 @@ spec:
         - name: CILIUM_CLUSTERMESH_CONFIG
           value: /var/lib/cilium/clustermesh/
         - name: KUBERNETES_SERVICE_HOST
-          value: 10.20.0.250
+          value: localhost
         - name: KUBERNETES_SERVICE_PORT
-          value: "6443"
-        image: quay.io/cilium/cilium:v1.14.0-rc.0
+          value: "7445"
+        image: quay.io/cilium/cilium:v1.14.1@sha256:edc1d05ea1365c4a8f6ac6982247d5c145181704894bb698619c3827b6963a72
         imagePullPolicy: IfNotPresent
         lifecycle:
           preStop:
@@ -759,10 +778,10 @@ spec:
               apiVersion: v1
               fieldPath: metadata.namespace
         - name: KUBERNETES_SERVICE_HOST
-          value: 10.20.0.250
+          value: localhost
         - name: KUBERNETES_SERVICE_PORT
-          value: "6443"
-        image: quay.io/cilium/cilium:v1.14.0-rc.0
+          value: "7445"
+        image: quay.io/cilium/cilium:v1.14.1@sha256:edc1d05ea1365c4a8f6ac6982247d5c145181704894bb698619c3827b6963a72
         imagePullPolicy: IfNotPresent
         name: config
         terminationMessagePolicy: FallbackToLogsOnError
@@ -785,10 +804,10 @@ spec:
               name: cilium-config
               optional: true
         - name: KUBERNETES_SERVICE_HOST
-          value: 10.20.0.250
+          value: localhost
         - name: KUBERNETES_SERVICE_PORT
-          value: "6443"
-        image: quay.io/cilium/cilium:v1.14.0-rc.0
+          value: "7445"
+        image: quay.io/cilium/cilium:v1.14.1@sha256:edc1d05ea1365c4a8f6ac6982247d5c145181704894bb698619c3827b6963a72
         imagePullPolicy: IfNotPresent
         name: clean-cilium-state
         resources:
@@ -808,7 +827,7 @@ spec:
           name: cilium-run
       - command:
         - /install-plugin.sh
-        image: quay.io/cilium/cilium:v1.14.0-rc.0
+        image: quay.io/cilium/cilium:v1.14.1@sha256:edc1d05ea1365c4a8f6ac6982247d5c145181704894bb698619c3827b6963a72
         imagePullPolicy: IfNotPresent
         name: install-cni-binaries
         resources:
