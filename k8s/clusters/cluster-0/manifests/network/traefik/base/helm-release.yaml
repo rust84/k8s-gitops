@@ -30,7 +30,8 @@ spec:
       annotations:
         external-dns.alpha.kubernetes.io/hostname: "ipv4.${SECRET_DOMAIN}"
         "io.cilium/lb-ipam-ips": "${SVC_TRAEFIK_ADDRESS}"
-
+      labels:
+        io.cilium/lb-ipam-layer2: "true"
     logs:
       general:
         format: json

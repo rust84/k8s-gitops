@@ -21,11 +21,3 @@ spec:
       neighbors:
         - peerAddress: "192.168.1.1/32" # unlike bgp-config ConfigMap, peerAddress needs to be in CIDR notation
           peerASN: 64512
----
-apiVersion: "cilium.io/v2alpha1"
-kind: CiliumLoadBalancerIPPool
-metadata:
-  name: cilium-cluster-0
-spec:
-  cidrs:
-    - cidr: ${NETWORK_BGP_SVC_CIDR}

@@ -1,0 +1,8 @@
+---
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: cilium-cluster-0
+spec:
+  cidrs:
+    - cidr: ${NETWORK_CILIUM_LB_CIDR}

@@ -44,6 +44,8 @@ spec:
         externalTrafficPolicy: Cluster
         annotations:
           "io.cilium/lb-ipam-ips": "${SVC_JELLYFIN_ADDRESS}"
+        labels:
+          io.cilium/lb-ipam-layer2: "true"
         ports:
           http:
             port: &port 8096

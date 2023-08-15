@@ -60,6 +60,8 @@ spec:
         externalTrafficPolicy: Cluster
         annotations:
           "io.cilium/lb-ipam-ips": "${SVC_K8S_GATEWAY_ADDR}"
+        labels:
+          io.cilium/lb-ipam-layer2: "true"
         ports:
           http:
             enabled: false

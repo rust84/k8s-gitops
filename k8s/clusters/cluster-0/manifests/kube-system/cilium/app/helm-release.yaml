@@ -6,7 +6,7 @@ metadata:
   name: cilium
   namespace: kube-system
 spec:
-  interval: 5m
+  interval: 15m
   chart:
     spec:
       chart: cilium
@@ -15,7 +15,17 @@ spec:
         kind: HelmRepository
         name: cilium-charts
         namespace: flux-system
-      interval: 5m
+      interval: 15m
+  maxHistory: 3
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     cluster:
       name: "${CLUSTER_NAME}"
@@ -48,12 +58,22 @@ spec:
       mode: "kubernetes"
 
     operator:
+      enabled: true
       rollOutPods: true
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+      dashboards:
+        enabled: true
+        annotations:
+          grafana_folder: Cilium
 
     prometheus:
-      enabled: false
+      enabled: true
       serviceMonitor:
-        enabled: false
+        enabled: true
+        trustCRDsExist: true
 
     containerRuntime:
       integration: containerd
@@ -99,8 +119,15 @@ spec:
       announce:
         loadbalancerIP: true
 
-    externalIPs:
+    bpf:
+      masquerade: true
+      tproxy: true
+
+    l2announcements:
       enabled: true
+      leaseDuration: 120s
+      leaseRenewDeadline: 60s
+      leaseRetryPeriod: 1s
 
     securityContext:
       privileged: true

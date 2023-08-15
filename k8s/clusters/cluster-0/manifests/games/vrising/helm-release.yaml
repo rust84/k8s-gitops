@@ -46,6 +46,8 @@ spec:
         externalTrafficPolicy: Cluster
         annotations:
           "io.cilium/lb-ipam-ips": "${SVC_VRISING_ADDRESS}"
+        labels:
+          io.cilium/lb-ipam-layer2: "true"
         ports:
           server:
             enabled: true
