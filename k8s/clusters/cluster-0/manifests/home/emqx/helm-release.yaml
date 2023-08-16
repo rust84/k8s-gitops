@@ -68,8 +68,6 @@ spec:
       externalTrafficPolicy: Cluster
       annotations:
         "io.cilium/lb-ipam-ips": "${SVC_EMQX_ADDRESS}"
-      labels:
-        io.cilium/lb-ipam-layer2: "true"
     affinity:
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:
@@ -99,3 +97,14 @@ spec:
       kind: Secret
       name: *app
       valuesKey: USER_1_PASSWORD
+  postRenderers:
+    - kustomize:
+        patchesJson6902:
+          - target:
+              kind: Service
+              name: emqx
+            patch:
+              - op: add
+                path: "/metadata/labels"
+                value:
+                  io.cilium/lb-ipam-layer2: "true"
