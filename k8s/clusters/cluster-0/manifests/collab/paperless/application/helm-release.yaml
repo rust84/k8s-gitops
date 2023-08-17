@@ -111,7 +111,7 @@ spec:
     sidecars:
       redis:
         name: redis
-        image: public.ecr.aws/docker/library/redis:7.2.0@sha256:e6f0c8f260efe938dc8a19f4a4a2dea350872f35c76e613e4ac63df5e1a2804e
+        image: public.ecr.aws/docker/library/redis:7.2.0@sha256:c45b9ac48fde5e7ffc59e785719165511b1327151c392c891c2f552a83446847
         imagePullPolicy: IfNotPresent
       gotenburg:
         name: gotenburg
