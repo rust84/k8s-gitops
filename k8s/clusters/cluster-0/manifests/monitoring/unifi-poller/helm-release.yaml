@@ -29,7 +29,7 @@ spec:
     env:
       TZ: "Europe/London"
       UP_UNIFI_DEFAULT_ROLE: "homelab-controller"
-      UP_UNIFI_DEFAULT_URL: "https://unifi.${SECRET_DOMAIN}"
+      UP_UNIFI_DEFAULT_URL: "https://nas.${SECRET_DOMAIN}:8443"
       UP_UNIFI_DEFAULT_VERIFY_SSL: false
       UP_UNIFI_DEFAULT_USER: "${SECRET_UP_USER}"
       UP_UNIFI_DEFAULT_PASS: "${SECRET_UP_PASSWORD}"
