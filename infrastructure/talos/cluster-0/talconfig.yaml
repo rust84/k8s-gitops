@@ -4,7 +4,7 @@ clusterPodNets:
   - 10.244.0.0/16
 clusterSvcNets:
   - 10.96.0.0/12
-talosVersion: v1.5.0-beta.1
+talosVersion: v1.5.0
 kubernetesVersion: v1.27.4
 endpoint: "https://cluster-0.${domainName}:6443"
 allowSchedulingOnMasters: true
@@ -81,6 +81,7 @@ controlPlane:
       kernel:
         modules:
           - name: usbserial
+          - name: r8153_ecm
       files:
         - content: |
             [plugins."io.containerd.grpc.v1.cri"]
@@ -101,9 +102,8 @@ controlPlane:
         extraKernelArgs:
           - "talos.logging.kernel=udp://vector.${ingressDomain}:6050/"
           - "net.ifnames=0"
-          - "ipv6.disable=1"
         extensions:
-          - image: ghcr.io/siderolabs/usb-modem-drivers:v1.5.0-beta.1
+          - image: ghcr.io/siderolabs/usb-modem-drivers:v1.5.0
           - image: ghcr.io/siderolabs/i915-ucode:20230804
           - image: ghcr.io/siderolabs/intel-ucode:20230808
       logging:
@@ -118,9 +118,6 @@ controlPlane:
       sysctls:
         fs.inotify.max_user_watches: "1048576"
         fs.inotify.max_user_instances: "8192"
-        net.ipv6.conf.all.disable_ipv6: "1"
-        net.ipv6.conf.default.disable_ipv6: "1"
-        net.ipv6.conf.lo.disable_ipv6: "1"
       time:
         disabled: true
       features:
