@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: loki
-      version: 5.13.0
+      version: 5.14.1
       sourceRef:
         kind: HelmRepository
         name: grafana-charts
@@ -142,7 +142,7 @@ spec:
               podAffinityTerm:
                 labelSelector:
                   matchLabels:
-                    {{- include "loki.gatewaySelectorLabels" . | nindent 12 }}
+                    {{- include "loki.writeSelectorLabels" . | nindent 12 }}
                 topologyKey: kubernetes.io/hostname
     backend:
       replicas: 3
@@ -167,7 +167,7 @@ spec:
               podAffinityTerm:
                 labelSelector:
                   matchLabels:
-                    {{- include "loki.gatewaySelectorLabels" . | nindent 12 }}
+                    {{- include "loki.backendSelectorLabels" . | nindent 12 }}
                 topologyKey: kubernetes.io/hostname
     read:
       replicas: 3
@@ -187,7 +187,7 @@ spec:
               podAffinityTerm:
                 labelSelector:
                   matchLabels:
-                    {{- include "loki.gatewaySelectorLabels" . | nindent 12 }}
+                    {{- include "loki.readSelectorLabels" . | nindent 12 }}
                 topologyKey: kubernetes.io/hostname
     monitoring:
       selfMonitoring:
