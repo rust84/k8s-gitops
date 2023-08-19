@@ -58,60 +58,13 @@ objects:
       threshold: 0.7
 
 cameras:
-  # lounge:
-  #   ffmpeg:
-  #     inputs:
-  #       - path: rtsp://rtsp:{FRIGATE_RTSP_PASSWORD}@10.30.0.111:554/av_stream/ch0
-  #         roles:
-  #           - detect
-  #           - rtmp
-  #           - record
-  #         input_args:
-  #           - "-avoid_negative_ts"
-  #           - make_zero
-  #           - "-fflags"
-  #           - nobuffer
-  #           - "-flags"
-  #           - low_delay
-  #           - "-strict"
-  #           - experimental
-  #           - "-fflags"
-  #           - +genpts+discardcorrupt
-  #           - "-use_wallclock_as_timestamps"
-  #           - "1"
-  #           - "-rtsp_transport"
-  #           - tcp
-  #   detect:
-  #     width: 1920
-  #     height: 1080
-  #     fps: 10
-  #   snapshots:
-  #     enabled: false
-  #     timestamp: false
-  #     bounding_box: true
-  #     crop: false
-  #     retain:
-  #       default: 14
-  #   record:
-  #     enabled: false
-  #     retain_days: 0
-  #     events:
-  #       retain:
-  #         default: 14
-  #   mqtt:
-  #     timestamp: false
-  #     bounding_box: false
-  #     crop: true
-  #     quality: 100
-  #     height: 500
-
   driveway:
     ffmpeg:
       inputs:
-        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.30.0.242:554/h264Preview_01_sub
+        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.20.2.51:554/h264Preview_01_sub
           roles:
             - detect
-        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.30.0.242:554/h264Preview_01_main
+        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.20.2.51:554/h264Preview_01_main
           roles:
             - rtmp
             - record
@@ -123,10 +76,10 @@ cameras:
   lounge:
     ffmpeg:
       inputs:
-        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.30.0.244:554/h264Preview_01_sub
+        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.20.2.52:554/h264Preview_01_sub
           roles:
             - detect
-        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.30.0.244:554/h264Preview_01_main
+        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.20.2.52:554/h264Preview_01_main
           roles:
             - rtmp
             - record
