@@ -1,0 +1,27 @@
+apiVersion: v1
+data:
+    dopplerToken: ENC[AES256_GCM,data:Kllas/rfCDOlBz7Zv3ZJpLE2wsvBlnCL7rBrVSsE97eAV9yF8FpIlIuD8VrhX13VQ0BLqguvy745KIZ8DrwKTeAWCdM=,iv:7h5dK7bp/aKRqTb8Tj3HWHVt+hwPEF2TnAFpZe6D61c=,tag:GVKnYSZJ0BCbf0iiOYP5Zg==,type:str]
+kind: Secret
+metadata:
+    name: doppler-token-auth-api
+    namespace: volsync
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1knsdzqjgfty7fghdvk8ayr4kmj9kre8nqcg5tvjpjfy6m7a5ap8srhjd6k
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBSTWxqdDVOQUJDVXp1cFN6
+            Y21ycHBiYVdhRHRHVDBvRk5sa00xbW80Um13Cm9yMHdYN2M2MEg0QS9DNDZFbDd6
+            U2puMEQ3UkR2S2VNYmFkVEVVVU5iSjgKLS0tIGthdDIxWGxEWkg2L0V1UkhvSG5O
+            OHBzYWxaZ0ZORU11cklVVHpIRkdHc0EK6ywU7TYISdMvQqOEFLSTe6rFH7ByYb8d
+            fHyzcbAy792/IsmCTGucAXH6ccExhxU0KHc7xGZsqKHP4A3zlvf4uA==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2023-08-20T22:58:19Z"
+    mac: ENC[AES256_GCM,data:5soNuo4fEW7xp2pAvTkoB7SJh0YkUrHs1rpvkkJZwh9YTRTE4ZF3uqTed99SrYc65Rmdzqcc8VEZMnXln62mEIo2TRp27+zVUpE6fvKj2TR6M1r0o/9s7OKxIxiXZM5yFZlIA5o1gWqh60SxTQQE72OKZkW/Zsln/+CxOFJo7C8=,iv:tMElQgzb8/MTNSo3gaz9bENqvNzU1QjiDZ9BLFvzvGI=,tag:NxFPZScPFco1FN06F2JwEg==,type:str]
+    pgp: []
+    encrypted_regex: ((?i)(pass|secret($|[^N])|key|token|^data$|^stringData))
+    version: 3.7.3
