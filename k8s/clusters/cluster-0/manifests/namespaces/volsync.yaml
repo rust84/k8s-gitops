@@ -2,9 +2,8 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: games
+  name: volsync
   labels:
-    goldilocks.fairwinds.com/enabled: "true"
     kustomize.toolkit.fluxcd.io/prune: disabled
   annotations:
     volsync.backube/privileged-movers: "true"

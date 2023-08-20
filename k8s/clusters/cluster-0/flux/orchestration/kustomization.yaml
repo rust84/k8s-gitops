@@ -10,6 +10,7 @@ resources:
   - apps-home.yaml
   - apps-media.yaml
   - apps-security.yaml
+  - apps-volsync.yaml
   - core-cert-manager.yaml
   - core-cilium.yaml
   - core-flux-system-add-ons.yaml
