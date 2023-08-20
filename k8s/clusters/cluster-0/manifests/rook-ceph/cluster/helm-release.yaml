@@ -130,10 +130,7 @@ spec:
               - "rook.${SECRET_DOMAIN}"
 
     cephBlockPoolsVolumeSnapshotClass:
-      enabled: true
-      name: csi-rbdplugin-snapclass
-      annotations:
-        k10.kasten.io/is-snapshot-class: "true"
+      enabled: false
     cephBlockPools:
       - name: ceph-blockpool
         spec:
