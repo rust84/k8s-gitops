@@ -24,3 +24,15 @@ spec:
     - name: apps-security-dex
   path: "./k8s/clusters/cluster-0/manifests/security/authentik"
   prune: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-security-external-secrets
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+  path: "./k8s/clusters/cluster-0/manifests/security/external-secrets"
+  prune: true

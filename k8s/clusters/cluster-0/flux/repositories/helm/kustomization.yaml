@@ -15,6 +15,7 @@ resources:
   - dex-charts.yaml
   - dysnix-charts.yaml
   - emqx-charts.yaml
+  - external-secrets.yaml
   - fairwinds-charts.yaml
   - grafana-charts.yaml
   - hajimari-charts.yaml
