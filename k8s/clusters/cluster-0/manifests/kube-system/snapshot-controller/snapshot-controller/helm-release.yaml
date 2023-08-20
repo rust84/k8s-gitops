@@ -29,7 +29,7 @@ spec:
     keepHistory: false
   values:
     volumeSnapshotClasses:
-      - name: csi-ceph-blockpool
+      - name: csi-rbdplugin-snapclass
         driver: rook-ceph.rbd.csi.ceph.com
         annotations:
           snapshot.storage.kubernetes.io/is-default-class: "true"
