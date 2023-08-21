@@ -5,6 +5,8 @@ metadata:
   name: zigbee2mqtt-data
   namespace: home
   labels:
+    app.kubernetes.io/name: &name zigbee2mqtt
+    app.kubernetes.io/instance: *name
     kasten.io/backup-volume: "enabled"
 spec:
   accessModes:

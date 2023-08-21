@@ -5,6 +5,8 @@ metadata:
   name: data-monica-mariadb-0
   namespace: home
   labels:
+    app.kubernetes.io/name: mariadb
+    app.kubernetes.io/instance: monica
     kasten.io/backup-volume: "enabled"
 spec:
   accessModes:

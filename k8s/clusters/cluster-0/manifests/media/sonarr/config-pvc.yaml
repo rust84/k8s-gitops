@@ -5,6 +5,8 @@ metadata:
   name: sonarr-config
   namespace: media
   labels:
+    app.kubernetes.io/name: &name sonarr
+    app.kubernetes.io/instance: *name
     kasten.io/backup-volume: "enabled"
 spec:
   accessModes:

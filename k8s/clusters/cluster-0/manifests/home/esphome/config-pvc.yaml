@@ -5,6 +5,8 @@ metadata:
   name: esphome-config
   namespace: home
   labels:
+    app.kubernetes.io/name: &name esphome
+    app.kubernetes.io/instance: *name
     kasten.io/backup-volume: "enabled"
 spec:
   accessModes:

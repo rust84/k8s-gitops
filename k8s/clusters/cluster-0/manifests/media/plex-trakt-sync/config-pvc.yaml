@@ -5,6 +5,8 @@ metadata:
   name: plex-trakt-sync-config
   namespace: media
   labels:
+    app.kubernetes.io/name: &name plex-trakt-sync
+    app.kubernetes.io/instance: *name
     kasten.io/backup-volume: "enabled"
 spec:
   accessModes:

@@ -5,6 +5,8 @@ metadata:
   name: node-red-data
   namespace: home
   labels:
+    app.kubernetes.io/name: &name node-red
+    app.kubernetes.io/instance: *name
     kasten.io/backup-volume: "enabled"
 spec:
   accessModes:
