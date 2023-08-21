@@ -1,0 +1,14 @@
+---
+version: "3"
+
+vars:
+  PROJECT_DIR:
+    sh: "git rev-parse --show-toplevel"
+
+includes:
+  volsync: .taskfiles/VolSync/Tasks.yaml
+
+tasks:
+  default:
+    silent: true
+    cmds: ["task -l"]
