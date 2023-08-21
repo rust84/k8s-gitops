@@ -7,6 +7,7 @@ resources:
   - config-pvc.yaml
   - secret.enc.yaml
   - helm-release.yaml
+  - volsync.yaml
 namespace: home
 configMapGenerator:
   - name: frigate-config

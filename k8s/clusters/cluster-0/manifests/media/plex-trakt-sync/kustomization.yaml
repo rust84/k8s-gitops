@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - helm-release.yaml
   - config-pvc.yaml
+  - volsync.yaml
 namespace: media
 configMapGenerator:
   - name: plex-tract-sync-config-yaml

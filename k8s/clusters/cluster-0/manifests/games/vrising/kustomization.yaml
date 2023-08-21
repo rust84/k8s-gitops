@@ -6,6 +6,7 @@ resources:
   - config-pvc.yaml
   - helm-release.yaml
   - secret.sops.yaml
+  - volsync.yaml
 namespace: games
 configMapGenerator:
   - name: vrising

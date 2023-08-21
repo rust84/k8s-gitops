@@ -2,8 +2,8 @@
 apiVersion: external-secrets.io/v1beta1
 kind: ClusterSecretStore
 metadata:
-  name: &name tautulli-restic
-  namespace: media
+  name: &name monica-restic
+  namespace: home
 spec:
   provider:
     doppler:
@@ -19,8 +19,8 @@ spec:
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: &name tautulli-restic
-  namespace: media
+  name: &name monica-restic
+  namespace: home
 spec:
   secretStoreRef:
     kind: ClusterSecretStore
@@ -30,7 +30,7 @@ spec:
     template:
       engineVersion: v2
       data:
-        RESTIC_REPOSITORY: "{{ .REPOSITORY_TEMPLATE }}/tautulli"
+        RESTIC_REPOSITORY: "{{ .REPOSITORY_TEMPLATE }}/monica"
         RESTIC_PASSWORD: "{{ .RESTIC_PASSWORD }}"
         AWS_ACCESS_KEY_ID: "{{ .AWS_ACCESS_KEY_ID }}"
         AWS_SECRET_ACCESS_KEY: "{{ .AWS_SECRET_ACCESS_KEY }}"
@@ -42,23 +42,23 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: tautulli
-  namespace: media
+  name: monica
+  namespace: home
 spec:
-  sourcePVC: tautulli-config
+  sourcePVC: monica-config
   trigger:
     schedule: "0 7 * * *"
   restic:
     copyMethod: Snapshot
     pruneIntervalDays: 10
-    repository: tautulli-restic
+    repository: monica-restic
     cacheCapacity: 2Gi
     volumeSnapshotClassName: csi-rbdplugin-snapclass
     storageClassName: rook-ceph-block
     moverSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
+      runAsUser: 0
+      runAsGroup: 0
+      fsGroup: 33
     retain:
       daily: 10
       within: 3d
