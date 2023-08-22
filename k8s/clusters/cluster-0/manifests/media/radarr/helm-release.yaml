@@ -84,8 +84,13 @@ spec:
           periodSeconds: 10
           successThreshold: 1
           timeoutSeconds: 10
-    podAnnotations:
-      backup.velero.io/backup-volumes: config
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
+      supplementalGroups:
+        - 100
     persistence:
       config:
         enabled: true
@@ -103,10 +108,6 @@ spec:
         server: "nas.${SECRET_DOMAIN}"
         path: /mnt/apps/backups/radarr
         mountPath: /config/Backups
-    podSecurityContext:
-      supplementalGroups:
-        - 1001
-        - 100
     resources:
       requests:
         cpu: 15m

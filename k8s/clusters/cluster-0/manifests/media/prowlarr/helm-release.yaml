@@ -52,6 +52,11 @@ spec:
           - secretName: "tls.{{ .Release.Name }}"
             hosts:
               - *host
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
     persistence:
       config:
         enabled: true
@@ -68,7 +73,3 @@ spec:
         memory: 380M
       limits:
         memory: 532M
-    podSecurityContext:
-      supplementalGroups:
-        - 1001
-        - 100

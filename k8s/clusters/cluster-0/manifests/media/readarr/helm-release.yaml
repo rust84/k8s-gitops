@@ -85,8 +85,11 @@ spec:
           successThreshold: 1
           timeoutSeconds: 10
     podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
       supplementalGroups:
-        - 1001
         - 100
     persistence:
       config:
