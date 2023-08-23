@@ -4,7 +4,7 @@ data:
 kind: Secret
 metadata:
     name: doppler-token-auth-api
-    namespace: volsync
+    namespace: flux-system
 sops:
     kms: []
     gcp_kms: []
@@ -20,8 +20,8 @@ sops:
             OHBzYWxaZ0ZORU11cklVVHpIRkdHc0EK6ywU7TYISdMvQqOEFLSTe6rFH7ByYb8d
             fHyzcbAy792/IsmCTGucAXH6ccExhxU0KHc7xGZsqKHP4A3zlvf4uA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-08-20T22:58:19Z"
-    mac: ENC[AES256_GCM,data:5soNuo4fEW7xp2pAvTkoB7SJh0YkUrHs1rpvkkJZwh9YTRTE4ZF3uqTed99SrYc65Rmdzqcc8VEZMnXln62mEIo2TRp27+zVUpE6fvKj2TR6M1r0o/9s7OKxIxiXZM5yFZlIA5o1gWqh60SxTQQE72OKZkW/Zsln/+CxOFJo7C8=,iv:tMElQgzb8/MTNSo3gaz9bENqvNzU1QjiDZ9BLFvzvGI=,tag:NxFPZScPFco1FN06F2JwEg==,type:str]
+    lastmodified: "2023-08-23T21:00:53Z"
+    mac: ENC[AES256_GCM,data:6uO0EfsxCQjqTEiRzVrzECSbpkA7IRAIUlqDDFQVEDdMJekejCpGlMirGG3lrcrEHcN5c1oZJ+IvfEVQIbxediB9SnzZ1h3LQ5TGxIWrN0q9JphEKQCFhEerRNGVQLeWsk4eosjM5pRMDQ07eQTpWAnoLvcCJeiPf2FX1QKgMQA=,iv:LH4z0B+DHobiT4fQH1aYA29MIWgQwZzToavzdGqnD68=,tag:tUnakYzsqS7+VuZfyDJ4sA==,type:str]
     pgp: []
     encrypted_regex: ((?i)(pass|secret($|[^N])|key|token|^data$|^stringData))
     version: 3.7.3
