@@ -4,6 +4,8 @@ kind: DNSEndpoint
 metadata:
   name: cloudflared
   namespace: network
+  annotations:
+    external-dns/is-public: "true"
 spec:
   endpoints:
     - dnsName: "external.${SECRET_DOMAIN}"

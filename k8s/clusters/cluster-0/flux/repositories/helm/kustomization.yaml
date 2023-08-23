@@ -17,6 +17,7 @@ resources:
   - dysnix-charts.yaml
   - emqx-charts.yaml
   - external-secrets.yaml
+  - external-dns-charts.yaml
   - fairwinds-charts.yaml
   - grafana-charts.yaml
   - hajimari-charts.yaml
