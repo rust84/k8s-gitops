@@ -50,7 +50,7 @@ spec:
         cert-manager.io/cluster-issuer: letsencrypt-prod
         traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
         external-dns/is-public: "false"
-        external-dns.alpha.kubernetes.io/target: "ipv4.${SECRET_DOMAIN}"
+        external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
       urlPath: k10
       hosts:
         - "k10.${SECRET_DOMAIN}"
