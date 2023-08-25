@@ -42,7 +42,7 @@ spec:
           kubernetes.io/tls-acme: "true"
           cert-manager.io/cluster-issuer: letsencrypt-prod
           auth.home.arpa/enabled: "true"
-          nginx.ingress.kubernetes.io/auth-signin: https://{{ .Release.Name }}.${SECRET_DOMAIN}/outpost.goauthentik.io/start?rd=$escaped_request_uri
+          nginx.ingress.kubernetes.io/auth-signin: https://tautulli.${SECRET_DOMAIN}/outpost.goauthentik.io/start?rd=$escaped_request_uri
           hajimari.io/enable: "true"
           hajimari.io/icon: "chart-bar"
         enabled: true

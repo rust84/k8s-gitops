@@ -27,9 +27,6 @@ spec:
       repository: ghcr.io/esphome/esphome
       tag: 2023.8.2
 
-    # podAnnotations:
-    #   k8s.v1.cni.cncf.io/networks: macvlan-static-iot-esphome
-
     env:
       TZ: "${TZ}"
       ESPHOME_DASHBOARD_USE_PING: true
@@ -48,7 +45,7 @@ spec:
           kubernetes.io/tls-acme: "true"
           cert-manager.io/cluster-issuer: letsencrypt-prod
           auth.home.arpa/enabled: "true"
-          nginx.ingress.kubernetes.io/auth-signin: https://{{ .Release.Name }}.${SECRET_DOMAIN}/outpost.goauthentik.io/start?rd=$escaped_request_uri
+          nginx.ingress.kubernetes.io/auth-signin: https://esphome.${SECRET_DOMAIN}/outpost.goauthentik.io/start?rd=$escaped_request_uri
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
