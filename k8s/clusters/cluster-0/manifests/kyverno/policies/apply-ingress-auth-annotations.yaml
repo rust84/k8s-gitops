@@ -11,6 +11,7 @@ metadata:
       the `auth.home.arpa/enabled` annotation is `true` it
       applies the nginx auth annotations for use with Authelia.
 spec:
+  mutateExistingOnPolicyUpdate: true
   generateExistingOnPolicyUpdate: true
   rules:
     - name: auth
@@ -21,6 +22,9 @@ spec:
               annotations:
                 auth.home.arpa/enabled: "true"
       mutate:
+        targets:
+          - apiVersion: networking.k8s.io/v1
+            kind: Ingress
         patchStrategicMerge:
           metadata:
             annotations:
