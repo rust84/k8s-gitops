@@ -4,7 +4,7 @@ clusterPodNets:
   - 10.244.0.0/16
 clusterSvcNets:
   - 10.96.0.0/12
-talosVersion: v1.5.0
+talosVersion: v1.5.1
 kubernetesVersion: v1.27.4
 endpoint: "https://cluster-0.${domainName}:6443"
 allowSchedulingOnMasters: true
@@ -103,7 +103,7 @@ controlPlane:
           - "talos.logging.kernel=udp://vector.${ingressDomain}:6050/"
           - "net.ifnames=0"
         extensions:
-          - image: ghcr.io/siderolabs/usb-modem-drivers:v1.5.0
+          - image: ghcr.io/siderolabs/usb-modem-drivers:v1.5.1
           - image: ghcr.io/siderolabs/i915-ucode:20230804
           - image: ghcr.io/siderolabs/intel-ucode:20230808
       logging:
