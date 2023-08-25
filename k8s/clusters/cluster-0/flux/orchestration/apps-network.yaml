@@ -62,6 +62,7 @@ spec:
     - name: cluster-namespaces
     - name: core-cilium
     - name: core-certificates
+    - name: core-kyverno-policies
   path: "./k8s/clusters/cluster-0/manifests/network/ingress-nginx/external"
   prune: true
 ---
@@ -74,6 +75,8 @@ spec:
   dependsOn:
     - name: cluster-namespaces
     - name: core-cilium
+    - name: core-certificates
+    - name: core-kyverno-policies
   path: "./k8s/clusters/cluster-0/manifests/network/ingress-nginx/internal"
   prune: true
 ---

@@ -99,11 +99,7 @@ spec:
         rollOutPods: true
         ingress:
           enabled: true
-          annotations:
-            cert-manager.io/cluster-issuer: letsencrypt-prod
-            kubernetes.io/ingress.class: internal
-            # traefik.ingress.kubernetes.io/router.entrypoints: websecure
-            # traefik.ingress.kubernetes.io/router.middlewares: network-rfc1918-ips@kubernetescrd
+          className: internal
           hosts:
             - "hubble.${SECRET_DOMAIN}"
           tls:

@@ -49,6 +49,7 @@ spec:
         ingressClassName: internal
         annotations:
           auth.home.arpa/enabled: "true"
+          nginx.ingress.kubernetes.io/auth-signin: https://{{ .Release.Name }}.${SECRET_DOMAIN}/outpost.goauthentik.io/start?rd=$escaped_request_uri
         tls: true
     queryFrontend:
       enabled: false
