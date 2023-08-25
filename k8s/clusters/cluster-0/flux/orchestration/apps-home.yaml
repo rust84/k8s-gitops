@@ -96,7 +96,6 @@ spec:
   dependsOn:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
-    - name: core-traefik
   path: "./k8s/clusters/cluster-0/manifests/home/monica"
   prune: true
 ---
@@ -110,7 +109,6 @@ spec:
   dependsOn:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
-    - name: core-traefik
   path: "./k8s/clusters/cluster-0/manifests/home/node-red"
   prune: true
 ---

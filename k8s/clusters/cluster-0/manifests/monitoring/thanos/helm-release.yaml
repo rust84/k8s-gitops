@@ -46,10 +46,9 @@ spec:
       ingress:
         enabled: true
         hostname: thanos.${SECRET_DOMAIN}
-        ingressClassName: "traefik"
+        ingressClassName: internal
         annotations:
-          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          traefik.ingress.kubernetes.io/router.middlewares: "network-internal-auth@kubernetescrd"
+          auth.home.arpa/enabled: "true"
         tls: true
     queryFrontend:
       enabled: false

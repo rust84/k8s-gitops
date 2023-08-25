@@ -53,9 +53,7 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: "traefik"
-        annotations:
-          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        ingressClassName: internal
         hosts: ["alertmanager.${SECRET_DOMAIN}"]
         tls:
           - hosts:
@@ -203,9 +201,7 @@ spec:
       ingress:
         enabled: true
         pathType: Prefix
-        ingressClassName: "traefik"
-        annotations:
-          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+        ingressClassName: internal
         hosts: ["prometheus.${SECRET_DOMAIN}"]
         tls:
           - hosts:

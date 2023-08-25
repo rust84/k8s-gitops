@@ -61,14 +61,13 @@ spec:
         annotations:
           kubernetes.io/tls-acme: "true"
           cert-manager.io/cluster-issuer: letsencrypt-prod
-          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          traefik.ingress.kubernetes.io/router.middlewares: "network-cloudflare-ips@kubernetescrd"
-          external-dns/is-public: "true"
+          # traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          # traefik.ingress.kubernetes.io/router.middlewares: "network-cloudflare-ips@kubernetescrd"
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
           hajimari.io/enable: "true"
           hajimari.io/icon: "shield-key"
         enabled: true
-        ingressClassName: traefik
+        ingressClassName: external
         hosts:
           - host: &host "warden.${SECRET_DOMAIN}"
             paths:

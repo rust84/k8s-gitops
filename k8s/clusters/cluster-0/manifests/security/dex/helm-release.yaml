@@ -25,12 +25,10 @@ spec:
       KUBERNETES_POD_NAMESPACE: security
     ingress:
       enabled: true
-      className: traefik
+      className: external
       annotations:
         kubernetes.io/tls-acme: "true"
         cert-manager.io/cluster-issuer: letsencrypt-prod
-        traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-        external-dns/is-public: "true"
         external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
       hosts:
         - host: "dex.${SECRET_DOMAIN}"

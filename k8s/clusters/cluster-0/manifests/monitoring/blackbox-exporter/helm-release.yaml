@@ -29,7 +29,7 @@ spec:
       repository: prometheus/blackbox-exporter
     ingress:
       enabled: true
-      className: traefik
+      className: internal
       hosts:
         - host: &host "blackbox.${SECRET_DOMAIN}"
           paths:

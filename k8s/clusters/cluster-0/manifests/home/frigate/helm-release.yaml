@@ -57,14 +57,13 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: "traefik"
+        ingressClassName: external
         annotations:
           kubernetes.io/tls-acme: "true"
           cert-manager.io/cluster-issuer: letsencrypt-prod
-          traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
-          traefik.ingress.kubernetes.io/router.middlewares: "network-external-auth@kubernetescrd"
+          # traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
+          # traefik.ingress.kubernetes.io/router.middlewares: "network-external-auth@kubernetescrd"
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_DOMAIN}"
-          external-dns/is-public: "true"
           hajimari.io/enable: "true"
           hajimari.io/icon: "cctv"
         hosts:

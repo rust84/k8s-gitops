@@ -23,23 +23,7 @@ spec:
     - name: cluster-namespaces
     - name: core-cilium
     - name: core-cert-manager
-    - name: core-traefik
   path: "./k8s/clusters/cluster-0/manifests/network/error-pages"
-  prune: true
----
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: core-traefik
-  namespace: flux-system
-spec:
-  dependsOn:
-    - name: cluster-namespaces
-    - name: traefik-crds
-    - name: core-cilium
-    - name: core-cert-manager
-  path: "./k8s/clusters/cluster-0/manifests/network/traefik"
   prune: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
@@ -67,19 +51,42 @@ spec:
     - name: core-cert-manager
   path: "./k8s/clusters/cluster-0/manifests/network/certificates"
   prune: true
-# ---
-# apiVersion: kustomize.toolkit.fluxcd.io/v1
-# kind: Kustomization
-# metadata:
-#   name: core-ingress-nginx
-#   namespace: flux-system
-# spec:
-#   dependsOn:
-#     - name: cluster-namespaces
-#     - name: core-cilium
-#     - name: core-certificates
-#   path: "./k8s/clusters/cluster-0/manifests/network/ingress-nginx"
-#   prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: core-ingress-nginx-external
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: core-cilium
+    - name: core-certificates
+  path: "./k8s/clusters/cluster-0/manifests/network/ingress-nginx/external"
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: core-ingress-nginx-internal
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: core-cilium
+  path: "./k8s/clusters/cluster-0/manifests/network/ingress-nginx/internal"
+  prune: true
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: core-ingress-nginx-dashboard
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+  path: "./k8s/clusters/cluster-0/manifests/network/ingress-nginx/dashboard"
+  prune: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -90,6 +97,5 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
-    - name: core-traefik
   path: "./k8s/clusters/cluster-0/manifests/network/cloudflared"
   prune: true
