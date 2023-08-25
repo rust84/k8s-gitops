@@ -42,8 +42,8 @@ spec:
         enabled: true
         ingressClassName: internal
         annotations:
-          kubernetes.io/tls-acme: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-prod
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "resistor-nodes"
           auth.home.arpa/enabled: "true"
           nginx.ingress.kubernetes.io/auth-signin: https://esphome.${SECRET_DOMAIN}/outpost.goauthentik.io/start?rd=$escaped_request_uri
         hosts:

@@ -59,8 +59,6 @@ spec:
         enabled: true
         ingressClassName: external
         annotations:
-          kubernetes.io/tls-acme: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-prod
           hajimari.io/enable: "true"
           hajimari.io/icon: notebook-multiple
         hosts:

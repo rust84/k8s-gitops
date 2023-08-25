@@ -42,8 +42,6 @@ spec:
         enabled: true
         ingressClassName: internal
         annotations:
-          kubernetes.io/tls-acme: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-prod
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:calendar-export-outline
         hosts:

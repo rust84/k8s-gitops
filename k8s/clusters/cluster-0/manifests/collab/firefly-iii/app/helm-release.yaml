@@ -59,10 +59,8 @@ spec:
         enabled: true
         ingressClassName: internal
         annotations:
-          kubernetes.io/tls-acme: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-prod
           hajimari.io/enable: "true"
-          hajimari.io/icon: "simple-icons:money"
+          hajimari.io/icon: "mdi:cash"
         hosts:
           - host: *host
             paths:

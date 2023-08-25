@@ -67,10 +67,6 @@ spec:
         enabled: true
         ingressClassName: internal
         annotations:
-          kubernetes.io/tls-acme: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-prod
-          # traefik.ingress.kubernetes.io/router.entrypoints: websecure
-          # traefik.ingress.kubernetes.io/router.middlewares: "network-rfc1918@kubernetescrd"
           hajimari.io/enable: "true"
           hajimari.io/icon: "book-open"
         hosts:

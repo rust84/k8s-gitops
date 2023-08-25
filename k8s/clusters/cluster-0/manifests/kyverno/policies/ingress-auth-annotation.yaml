@@ -12,7 +12,7 @@ metadata:
       the `auth.home.arpa/enabled` annotation is `true` it
       applies the nginx auth annotations for use with Authentik.
 spec:
-  generateExistingOnPolicyUpdate: true
+  generateExisting: true
   rules:
     - name: auth
       match:
