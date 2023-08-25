@@ -36,12 +36,12 @@ spec:
     ingress:
       main:
         enabled: true
+        ingressClassName: internal
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "cloud-search"
           kubernetes.io/tls-acme: "true"
           cert-manager.io/cluster-issuer: letsencrypt-prod
-          # traefik.ingress.kubernetes.io/router.entrypoints: "websecure"
           auth.home.arpa/enabled: "true"
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
