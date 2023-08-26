@@ -40,7 +40,7 @@ spec:
     ingress:
       main:
         enabled: true
-        ingressClassName: internal
+        ingressClassName: external
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: mdi:calendar-export-outline
