@@ -128,7 +128,7 @@ sonarr:
   token: {{ .SONARR_APIKEY }}
   add_missing: false
   add_existing: false
-  root_folder_path: /media/shows
+  root_folder_path: /media/tv
   monitor: all
   quality_profile: HD
   language_profile: English
