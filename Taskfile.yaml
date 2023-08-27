@@ -5,10 +5,19 @@ vars:
   PROJECT_DIR:
     sh: "git rev-parse --show-toplevel"
 
+env:
+  TALOSCONFIG: ./talos/clusterconfig/talosconfig
+
 includes:
-  volsync: .taskfiles/VolSync/Tasks.yaml
+  externalsecrets: .taskfiles/externalsecrets/tasks.yaml
+  flux: .taskfiles/flux/tasks.yaml
+  k8s: .taskfiles/k8s/tasks.yaml
+  rook: .taskfiles/rook/tasks.yaml
+  talos: .taskfiles/talos/tasks.yaml
+  volsync: .taskfiles/volsync/tasks.yaml
 
 tasks:
   default:
     silent: true
-    cmds: ["task -l"]
+    cmds:
+      - task -l

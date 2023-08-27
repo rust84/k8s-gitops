@@ -11,11 +11,11 @@ x-task-vars: &task-vars
   previous: '{{.previous}}'
 
 vars:
-  destinationTemplate: "{{.ROOT_DIR}}/.taskfiles/VolSync/ReplicationDestination.tmpl.yaml"
-  wipeJobTemplate: "{{.ROOT_DIR}}/.taskfiles/VolSync/WipeJob.tmpl.yaml"
-  waitForJobScript: "{{.ROOT_DIR}}/.taskfiles/VolSync/wait-for-job.sh"
-  listJobTemplate: "{{.ROOT_DIR}}/.taskfiles/VolSync/ListJob.tmpl.yaml"
-  unlockJobTemplate: "{{.ROOT_DIR}}/.taskfiles/VolSync/UnlockJob.tmpl.yaml"
+  destinationTemplate: "{{.ROOT_DIR}}/.taskfiles/volsync/ReplicationDestination.tmpl.yaml"
+  wipeJobTemplate: "{{.ROOT_DIR}}/.taskfiles/volsync/WipeJob.tmpl.yaml"
+  waitForJobScript: "{{.ROOT_DIR}}/.taskfiles/volsync/wait-for-job.sh"
+  listJobTemplate: "{{.ROOT_DIR}}/.taskfiles/volsync/ListJob.tmpl.yaml"
+  unlockJobTemplate: "{{.ROOT_DIR}}/.taskfiles/volsync/UnlockJob.tmpl.yaml"
   ts: '{{now | date "150405"}}'
 
 tasks:
