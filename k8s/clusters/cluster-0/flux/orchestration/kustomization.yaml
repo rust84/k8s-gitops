@@ -14,7 +14,6 @@ resources:
   - core-cert-manager.yaml
   - core-cilium.yaml
   - core-flux-system-add-ons.yaml
-  - core-kasten-io.yaml
   - core-kyverno.yaml
   - core-monitoring.yaml
   - core-rook-ceph.yaml
