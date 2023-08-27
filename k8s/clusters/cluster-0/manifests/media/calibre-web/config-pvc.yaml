@@ -7,7 +7,6 @@ metadata:
   labels:
     app.kubernetes.io/name: &name calibre-web
     app.kubernetes.io/instance: *name
-    kasten.io/backup-volume: "enabled"
 spec:
   accessModes:
     - ReadWriteOnce

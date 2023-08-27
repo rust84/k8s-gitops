@@ -31,7 +31,6 @@ spec:
         matchNames:
           - collab
           - home
-          - kasten-io
           - media
           - monitoring
           - network

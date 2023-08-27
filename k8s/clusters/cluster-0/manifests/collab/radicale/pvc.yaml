@@ -7,7 +7,6 @@ metadata:
   labels:
     app.kubernetes.io/name: &app radicale
     app.kubernetes.io/instance: *app
-    kasten.io/backup-volume: "enabled"
 spec:
   accessModes:
     - ReadWriteOnce
