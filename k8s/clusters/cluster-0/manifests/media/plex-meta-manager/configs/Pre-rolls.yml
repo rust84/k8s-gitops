@@ -6,7 +6,7 @@ collections:
 
   Regular:
     build_collection: false
-    server_preroll: /data/prerolls/Plexhub.mp4
+    server_preroll: /data/prerolls/Apex Lion Plex.mp4;/data/prerolls/Bird Plexus Plex.mp4;/data/prerolls/Dragon Plex.mp4;/data/prerolls/Light Speed Plex Pre-roll.mp4;/data/prerolls/Magical Trails Plex Original Colors.mp4;/data/prerolls/Particle Stream Plex Original Colors.mp4
     schedule:
       - range(01/01-01/31) # January
       - range(03/01-03/31) # March
@@ -52,10 +52,10 @@ collections:
   #   server_preroll: /media/prerolls/Thanksgiving/Happy Thanksgiving Plex Pre-roll.mp4
   #   schedule: yearly(11/23) # This changes yearly
 
-  # Christmas:
-  #   build_collection: false
-  #   server_preroll: /media/prerolls/Christmas/Magic Christmas Tree Plex Pre-roll.mp4
-  #   schedule: range(12/20-12/25)
+  Christmas:
+    build_collection: false
+    server_preroll: /media/prerolls/Christmas/Magic Christmas Tree Plex Pre-roll.mp4
+    schedule: range(12/20-12/25)
 
   # New Years:
   #   build_collection: false
