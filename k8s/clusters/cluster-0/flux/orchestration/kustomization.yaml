@@ -5,12 +5,14 @@ kind: Kustomization
 resources:
   - apps-collab.yaml
   - apps-database.yaml
+  - apps-downloads.yaml
   - apps-games.yaml
   - apps-network.yaml
   - apps-home.yaml
   - apps-media.yaml
   - apps-security.yaml
   - apps-volsync.yaml
+  - apps-vpn.yaml
   - core-cert-manager.yaml
   - core-cilium.yaml
   - core-flux-system-add-ons.yaml

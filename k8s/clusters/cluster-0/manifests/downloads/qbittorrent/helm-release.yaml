@@ -4,7 +4,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
   name: qbittorrent
-  namespace: media
+  namespace: downloads
 spec:
   interval: 15m
   chart:
@@ -45,17 +45,10 @@ spec:
             port: *port
       bittorrent:
         enabled: true
-        type: LoadBalancer
-        externalTrafficPolicy: Cluster
-        annotations:
-          "io.cilium/lb-ipam-ips": "${SVC_QBITTORRENT_ADDR}"
-        labels:
-          io.cilium/lb-ipam-layer2: "true"
         ports:
           bittorrent:
-            enabled: true
-            port: *port-bt
             protocol: TCP
+            port: *port-bt
             targetPort: *port-bt
     ingress:
       main:
@@ -73,12 +66,15 @@ spec:
           - secretName: "tls.{{ .Release.Name }}"
             hosts:
               - *host
+    podAnnotations:
+      setGateway: "true"
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
       fsGroup: 568
       fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: [10000]
+      supplementalGroups:
+        - 100
     volumeClaimTemplates:
       - name: config
         mountPath: /config
