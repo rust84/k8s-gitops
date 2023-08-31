@@ -28,7 +28,7 @@ spec:
 
     image:
       repository: ghcr.io/taxel/plextraktsync
-      tag: 0.27.0
+      tag: 0.27.1
 
     env:
       TZ: "Europe/London"
