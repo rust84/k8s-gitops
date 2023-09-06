@@ -41,7 +41,7 @@ spec:
             mountPath: /data
     image:
       repository: nodered/node-red
-      tag: 3.0.2
+      tag: 3.1.0
     env:
       TZ: "${TZ}"
       FLOWS: "flows.json"
