@@ -25,7 +25,7 @@ spec:
   values:
     image:
       repository: ghcr.io/esphome/esphome
-      tag: 2023.8.2
+      tag: 2023.8.3
 
     env:
       TZ: "${TZ}"
