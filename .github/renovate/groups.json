@@ -50,11 +50,12 @@
     {
       "description": "Cilium image and chart",
       "groupName": "Cilium",
-      "matchDatasources": ["helm", "docker"],
+      "matchDatasources": ["helm", "docker", "github-releases"],
       "matchPackageNames": [
         "quay.io/cilium/cilium",
         "quay.io/cilium/operator-generic",
-        "cilium"
+        "cilium",
+        "cilium/cilium"
       ],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
       "separateMinorPatch": true
