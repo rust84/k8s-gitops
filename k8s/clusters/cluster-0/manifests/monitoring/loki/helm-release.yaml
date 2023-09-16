@@ -6,7 +6,8 @@ metadata:
   name: loki
   namespace: monitoring
 spec:
-  interval: 15m
+  interval: 30m
+  timeout: 15m
   chart:
     spec:
       chart: loki
@@ -15,6 +16,7 @@ spec:
         kind: HelmRepository
         name: grafana-charts
         namespace: flux-system
+      interval: 30m
   install:
     createNamespace: true
     remediation:
@@ -39,8 +41,10 @@ spec:
           reject_old_samples_max_age: 168h
           max_cache_freshness_per_query: 10m
           split_queries_by_interval: 15m
-          ingestion_rate_mb: 16
-          ingestion_burst_size_mb: 32
+          per_stream_rate_limit: 64M
+          per_stream_rate_limit_burst: 128M
+          ingestion_rate_mb: 64
+          ingestion_burst_size_mb: 128
           shard_streams:
             enabled: true
         schema_config:
@@ -98,8 +102,6 @@ spec:
         secret.reloader.stakater.com/reload: loki-secret
     gateway:
       replicas: 3
-      deploymentStrategy:
-        type: Recreate
       image:
         registry: ghcr.io
         repository: nginxinc/nginx-unprivileged
@@ -185,6 +187,13 @@ spec:
                     {{- include "loki.readSelectorLabels" . | nindent 12 }}
                 topologyKey: kubernetes.io/hostname
     monitoring:
+      dashboards:
+        annotations:
+          grafana_folder: Loki
+      serviceMonitor:
+        enabled: false
+        metricsInstance:
+          enabled: false
       selfMonitoring:
         enabled: false
         grafanaAgent:
