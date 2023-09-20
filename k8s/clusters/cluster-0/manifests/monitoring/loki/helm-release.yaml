@@ -56,6 +56,27 @@ spec:
               index:
                 prefix: loki_index_
                 period: 24h
+            - from: "2023-09-21"
+              index:
+                period: 24h
+                prefix: loki_index_
+              object_store: s3
+              schema: v12
+              store: tsdb
+        storage_config:
+          boltdb_shipper:
+            active_index_directory: /var/loki/boltdb-index
+            build_per_tenant_index: true
+            cache_location: /var/loki/boltdb-cache
+            shared_store: s3
+          tsdb_shipper:
+            active_index_directory: /var/loki/tsdb-index
+            cache_location: /var/loki/tsdb-cache
+            shared_store:
+        query_scheduler:
+          max_outstanding_requests_per_tenant: 32768
+        querier:
+          max_concurrent: 16
         common:
           path_prefix: /var/loki
           replication_factor: 3
@@ -84,7 +105,7 @@ spec:
             kvstore:
               store: memberlist
         compactor:
-          working_directory: /var/loki/boltdb-shipper-compactor
+          working_directory: /var/loki/compactor
           shared_store: s3
           compaction_interval: 10m
           retention_enabled: true
