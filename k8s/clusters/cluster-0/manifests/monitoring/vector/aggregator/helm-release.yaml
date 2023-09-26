@@ -25,8 +25,7 @@ spec:
   values:
     initContainers:
       init-geoip:
-        # https://github.com/maxmind/geoipupdate/issues/202
-        image: ghcr.io/onedr0p/geoipupdate:v4.11
+        image: ghcr.io/maxmind/geoipupdate:v6.0.0@sha256:e0d5c1dee7379d360e0f355557542d9672c616215dfdd5aaf917382de84cb84c
         imagePullPolicy: IfNotPresent
         env:
           - { name: GEOIPUPDATE_EDITION_IDS, value: GeoLite2-City }
