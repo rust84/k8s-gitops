@@ -125,7 +125,7 @@ spec:
         cpu: 10m
         memory: 1312M
       limits:
-        memory: 1835M
+        memory: 3000M
 
   valuesFrom:
     - kind: Secret
