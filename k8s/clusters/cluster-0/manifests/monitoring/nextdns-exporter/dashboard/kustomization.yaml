@@ -6,7 +6,7 @@ namespace: monitoring
 configMapGenerator:
   - name: nextdns-dashboard
     files:
-      - https://raw.githubusercontent.com/raylas/nextdns-exporter/0.5.1/grafana/dashboards/nextdns.json
+      - https://raw.githubusercontent.com/raylas/nextdns-exporter/0.5.2/grafana/dashboards/nextdns.json
 generatorOptions:
   disableNameSuffixHash: true
   annotations:
