@@ -50,7 +50,7 @@ spec:
       PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
       PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
       USERMAP_GID: 65543
-      PAPERLESS_DEBUG: "true"
+      PAPERLESS_DEBUG: "false"
 
     envFrom:
       - secretRef:
@@ -69,6 +69,7 @@ spec:
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: file-outline
+          nginx.ingress.kubernetes.io/proxy-body-size: 4G
         hosts:
           - host: paperless.${SECRET_DOMAIN}
             paths:
