@@ -50,6 +50,7 @@ spec:
       PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
       PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
       USERMAP_GID: 65543
+      PAPERLESS_DEBUG: "true"
 
     envFrom:
       - secretRef:
