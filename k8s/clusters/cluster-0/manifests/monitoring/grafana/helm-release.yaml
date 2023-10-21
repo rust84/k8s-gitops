@@ -78,16 +78,16 @@ spec:
           datasource: Prometheus
         # Ref: https://grafana.com/grafana/dashboards/1860-node-exporter-full/
         cilium-dashboard:
-          url: https://raw.githubusercontent.com/cilium/cilium/v1.14.2/examples/kubernetes/addons/prometheus/files/grafana-dashboards/cilium-dashboard.json
+          url: https://raw.githubusercontent.com/cilium/cilium/v1.14.3/examples/kubernetes/addons/prometheus/files/grafana-dashboards/cilium-dashboard.json
           datasource: Prometheus
         cilium-operator-dashboard:
-          url: https://raw.githubusercontent.com/cilium/cilium/v1.14.2/examples/kubernetes/addons/prometheus/files/grafana-dashboards/cilium-operator-dashboard.json
+          url: https://raw.githubusercontent.com/cilium/cilium/v1.14.3/examples/kubernetes/addons/prometheus/files/grafana-dashboards/cilium-operator-dashboard.json
           datasource: Prometheus
         hubble-dashboard:
-          url: https://raw.githubusercontent.com/cilium/cilium/v1.14.2/examples/kubernetes/addons/prometheus/files/grafana-dashboards/hubble-dashboard.json
+          url: https://raw.githubusercontent.com/cilium/cilium/v1.14.3/examples/kubernetes/addons/prometheus/files/grafana-dashboards/hubble-dashboard.json
           datasource: Prometheus
         hubble-metrics:
-          url: https://raw.githubusercontent.com/cilium/cilium/v1.14.2/examples/kubernetes/addons/prometheus/files/grafana-dashboards/hubble-l7-http-metrics-by-workload.json
+          url: https://raw.githubusercontent.com/cilium/cilium/v1.14.3/examples/kubernetes/addons/prometheus/files/grafana-dashboards/hubble-l7-http-metrics-by-workload.json
           datasource: Prometheus
         node-exporter-full:
           gnetId: 1860
