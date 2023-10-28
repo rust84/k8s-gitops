@@ -84,13 +84,8 @@ cameras:
             - rtmp
             - record
     detect:
-      width: 640
-      height: 360
-      fps: 7
-      stationary:
-        interval: 10
-        threshold: 70
-        max_frames:
-          default: 3000
-          objects:
-            person: 1000
+      enabled: false
+    record:
+      enabled: false
+    snapshots:
+      enabled: false
