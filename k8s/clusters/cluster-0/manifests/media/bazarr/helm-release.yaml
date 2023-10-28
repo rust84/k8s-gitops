@@ -47,6 +47,7 @@ spec:
         annotations:
           auth.home.arpa/enabled: "true"
           nginx.ingress.kubernetes.io/auth-signin: https://bazarr.${SECRET_DOMAIN}/outpost.goauthentik.io/start?rd=$escaped_request_uri
+          hajimari.io/enable: "true"
           hajimari.io/icon: mdi:subtitles-outline
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
