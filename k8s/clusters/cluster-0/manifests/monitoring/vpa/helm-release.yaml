@@ -39,6 +39,12 @@ spec:
         pod-recommendation-min-cpu-millicores: 15
         pod-recommendation-min-memory-mb: 61
         storage: prometheus
+        container-pod-name-label: pod
+        container-name-label: container
+        metric_for_pod_labels: kube_pod_labels{job="kube-state-metrics"}[8d]
+        pod_name_label: pod
+        pod_namespace_label: namespace
+        prometheus-cadvisor-job-name: kubelet
         prometheus-address: |-
           http://thanos-query.monitoring.svc.cluster.local:9090
 
