@@ -47,6 +47,8 @@ spec:
         prometheus-cadvisor-job-name: kubelet
         prometheus-address: |-
           http://thanos-query.monitoring.svc.cluster.local:9090
+        recommender-name: performance
+        target-cpu-percentile: 0.99
 
     updater:
       enabled: false
