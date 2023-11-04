@@ -4,7 +4,7 @@ clusterPodNets:
   - 10.244.0.0/16
 clusterSvcNets:
   - 10.96.0.0/12
-talosVersion: v1.5.1
+talosVersion: v1.5.4
 kubernetesVersion: v1.27.4
 endpoint: "https://cluster-0.${domainName}:6443"
 allowSchedulingOnMasters: true
@@ -83,12 +83,18 @@ controlPlane:
           - name: usbserial
           - name: r8153_ecm
       files:
-        - content: |
+        - path: /var/cri/conf.d/allow-unpriv-ports.toml
+          op: create
+          content: |
             [plugins."io.containerd.grpc.v1.cri"]
               enable_unprivileged_ports = true
               enable_unprivileged_icmp = true
-          path: /var/cri/conf.d/allow-unpriv-ports.toml
+        - path: /var/etc/nut/upsmon.conf
+          permissions: 0o600
           op: create
+          content: |-
+            MONITOR ${upsmonHost} 1 monuser ${upsmonPasswd} slave
+            SHUTDOWNCMD "/sbin/poweroff"
       kubelet:
         nodeIP:
           validSubnets:
@@ -103,9 +109,10 @@ controlPlane:
           - "talos.logging.kernel=udp://vector.${ingressDomain}:6050/"
           - "net.ifnames=0"
         extensions:
-          - image: ghcr.io/siderolabs/usb-modem-drivers:v1.5.1
+          - image: ghcr.io/siderolabs/usb-modem-drivers:v1.5.4
           - image: ghcr.io/siderolabs/i915-ucode:20230804
           - image: ghcr.io/siderolabs/intel-ucode:20230808
+          - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.4
       logging:
         destinations:
           - endpoint: "udp://vector.${ingressDomain}:6051/"
