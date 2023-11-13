@@ -32,7 +32,7 @@ spec:
   values:
     fullnameOverride: nginx-external
     controller:
-      replicaCount: 1
+      replicaCount: 2
       extraEnvs:
         - name: TZ
           value: ${TZ}
