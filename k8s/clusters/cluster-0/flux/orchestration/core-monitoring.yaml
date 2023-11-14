@@ -172,17 +172,10 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
+    - name: core-monitoring-kube-prom-stack
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/monitoring/blackbox-exporter"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -193,17 +186,10 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
+    - name: core-monitoring-kube-prom-stack
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/monitoring/miscellaneous"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -214,17 +200,10 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
+    - name: core-monitoring-kube-prom-stack
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/monitoring/smartctl-exporter"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -235,14 +214,21 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
+    - name: core-monitoring-kube-prom-stack
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/monitoring/nextdns-exporter"
   prune: true
-  wait: true
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: core-monitoring-snmp-exporter
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+    - name: core-monitoring-kube-prom-stack
+  interval: 5m
+  path: "./k8s/clusters/cluster-0/manifests/monitoring/snmp-exporter/apc-ups"
+  prune: true
