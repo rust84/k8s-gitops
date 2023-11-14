@@ -42,6 +42,7 @@ spec:
           module:
             - apcups
           target: apc-ups.russhome.xyz
+          interval: 120s
       path: /snmp
       scrapeTimeout: 10s
       relabelings:
