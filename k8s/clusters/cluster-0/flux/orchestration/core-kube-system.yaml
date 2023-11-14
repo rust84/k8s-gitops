@@ -140,5 +140,9 @@ metadata:
   labels:
     substitution.flux.home.arpa/disabled: "true"
 spec:
+  interval: 5m0s
+  sourceRef:
+    kind: GitRepository
+    name: k8s-gitops
   path: "./k8s/clusters/cluster-0/manifests/kube-system/local-path-provisioner"
   prune: true

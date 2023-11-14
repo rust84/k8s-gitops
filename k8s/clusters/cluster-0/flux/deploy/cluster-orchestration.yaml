@@ -66,3 +66,4 @@ spec:
         kind: Kustomization
         group: kustomize.toolkit.fluxcd.io
         version: v1
+        labelSelector: substitution.flux.home.arpa/disabled notin (true)
