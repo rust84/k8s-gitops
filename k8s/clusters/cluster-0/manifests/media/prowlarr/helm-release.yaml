@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: prowlarr
+  name: &app prowlarr
   namespace: media
 spec:
   interval: 15m
@@ -23,16 +23,46 @@ spec:
     remediation:
       retries: 5
   values:
+    annotations:
+      reloader.stakater.com/auto: "true"
+    initContainers:
+      init-db:
+        image: ghcr.io/onedr0p/postgres-init:14.9@sha256:170970a909f892149cbf99be8d86c26f0090bc7d2fbd1c34dd770b4bf7e08458
+        imagePullPolicy: IfNotPresent
+        envFrom: &envFrom
+          - secretRef:
+              name: *app
     image:
       repository: ghcr.io/onedr0p/prowlarr-nightly
       tag: 1.10.4.4078@sha256:b5020f69ee4f8ebfe53e7aa1d507231e103d953256c05cdbea75dbf4b4d81d0d
     env:
       TZ: "${TZ}"
+      PROWLARR__INSTANCE_NAME: Prowlarr
+      PROWLARR__PORT: &port 9696
+      PROWLARR__LOG_LEVEL: info
+      PROWLARR__AUTHENTICATION_METHOD: External
+      PROWLARR__THEME: dark
+    envFrom: *envFrom
+    probes:
+      liveness: &probes
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /ping
+            port: *port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      readiness: *probes
+      startup:
+        enabled: false
     service:
       main:
         ports:
           http:
-            port: 9696
+            port: *port
     ingress:
       main:
         enabled: true
