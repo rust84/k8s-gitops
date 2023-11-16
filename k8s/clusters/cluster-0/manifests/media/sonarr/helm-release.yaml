@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: sonarr
+  name: &app sonarr
   namespace: media
 spec:
   interval: 15m
@@ -23,16 +23,46 @@ spec:
     remediation:
       retries: 5
   values:
+    annotations:
+      reloader.stakater.com/auto: "true"
+    initContainers:
+      init-db:
+        image: ghcr.io/onedr0p/postgres-init:14.9@sha256:170970a909f892149cbf99be8d86c26f0090bc7d2fbd1c34dd770b4bf7e08458
+        imagePullPolicy: IfNotPresent
+        envFrom: &envFrom
+          - secretRef:
+              name: *app
     image:
       repository: ghcr.io/onedr0p/sonarr-develop
       tag: 4.0.0.720@sha256:f97d7435ebf86a41d0ddc3e300779745e52c89444d2e4465a6d55fb2a1bccece
     env:
       TZ: "${TZ}"
+      SONARR__INSTANCE_NAME: Sonarr
+      SONARR__PORT: &port 8989
+      SONARR__LOG_LEVEL: info
+      SONARR__AUTHENTICATION_METHOD: External
+      SONARR__THEME: dark
+    envFrom: *envFrom
+    probes:
+      liveness: &probes
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /ping
+            port: *port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      readiness: *probes
+      startup:
+        enabled: false
     service:
       main:
         ports:
           http:
-            port: 8989
+            port: *port
     ingress:
       main:
         enabled: true
@@ -63,23 +93,6 @@ spec:
           - secretName: *tls
             hosts:
               - *host
-    probes:
-      liveness:
-        enabled: true
-        custom: true
-        spec:
-          exec:
-            command:
-              - /usr/bin/env
-              - bash
-              - -c
-              - curl --fail localhost:8989/api/v3/system/status?apiKey=`IFS=\> && while
-                read -d \< E C; do if [[ $E = "ApiKey" ]]; then echo $C; fi; done < /config/config.xml`
-          failureThreshold: 5
-          initialDelaySeconds: 60
-          periodSeconds: 10
-          successThreshold: 1
-          timeoutSeconds: 10
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568
