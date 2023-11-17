@@ -211,21 +211,27 @@ spec:
         enabled: true
       prometheusSpec:
         replicas: 1
-        replicaExternalLabelName: "replica"
+        replicaExternalLabelName: __replica__
         ruleSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
         podMonitorSelectorNilUsesHelmValues: false
         probeSelectorNilUsesHelmValues: false
-        retention: 6h
+        scrapeConfigSelectorNilUsesHelmValues: false
+        retention: 2d
+        retentionSize: 15GB
         enableAdminAPI: true
         walCompression: true
+        enableFeatures:
+          - auto-gomaxprocs
+          - memory-snapshot-on-shutdown
+          - new-service-discovery-manager
         storageSpec:
           volumeClaimTemplate:
             spec:
               storageClassName: rook-ceph-block
               resources:
                 requests:
-                  storage: 10Gi
+                  storage: 20Gi
         thanos:
           image: quay.io/thanos/thanos:v0.32.5
           # renovate: datasource=docker depName=quay.io/thanos/thanos
