@@ -41,7 +41,7 @@ spec:
       READARR__INSTANCE_NAME: Readarr
       READARR__PORT: &port 7878
       READARR__LOG_LEVEL: info
-      READARR__AUTHENTICATION_METHOD: External
+      READARR__AUTHENTICATION_METHOD: None
       READARR__THEME: dark
     envFrom: *envFrom
     probes:
