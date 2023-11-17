@@ -23,8 +23,9 @@ spec:
     remediation:
       retries: 5
   values:
-    annotations:
-      reloader.stakater.com/auto: "true"
+    controller:
+      annotations:
+        reloader.stakater.com/auto: "true"
     initContainers:
       init-db:
         image: ghcr.io/onedr0p/postgres-init:14.9@sha256:170970a909f892149cbf99be8d86c26f0090bc7d2fbd1c34dd770b4bf7e08458
