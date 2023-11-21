@@ -28,7 +28,7 @@ spec:
         reloader.stakater.com/auto: "true"
     initContainers:
       init-db:
-        image: ghcr.io/onedr0p/postgres-init:14.10@sha256:71ddc70edccf201d6a521fe6216bc58d8c7c856a1ef96c4d4fbe9f548818ea4d
+        image: ghcr.io/onedr0p/postgres-init:15.5@sha256:18560dc4098004b6486a81c92d575a7f9d636c5ede997c515f15b52e130bd827
         imagePullPolicy: IfNotPresent
         envFrom: &envFrom
           - secretRef:
