@@ -105,7 +105,7 @@ spec:
         nodes:
           - name: "node-0"
             devices:
-              - name: "/dev/disk/by-id/nvme-PNY_CS3030_250GB_SSD_PNY2619002035030049D"
+              - name: "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_500GB_S466NX0K514891T"
           - name: "node-1"
             devices:
               - name: "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_500GB_S46BNX0KB01668N"
