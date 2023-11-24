@@ -1,0 +1,70 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: postgres-backup
+  namespace: database
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 1.5.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s-charts
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    enableServiceLinks: false
+    automountServiceAccountToken: false
+    controller:
+      type: cronjob
+      cronjob:
+        concurrencyPolicy: Forbid
+        schedule: 0 17 * * *
+    image:
+      repository: docker.io/prodrigestivill/postgres-backup-local
+      tag: 16@sha256:62660b05433c607f19d1c263b6548dacafc8a6dcdee738dfae054edd949fc1f5
+    env:
+      POSTGRES_HOST: postgres-ro.database.svc.cluster.local
+      POSTGRES_USER:
+        valueFrom:
+          secretKeyRef:
+            name: cloudnative-pg-secret
+            key: username
+      POSTGRES_PASSWORD:
+        valueFrom:
+          secretKeyRef:
+            name: cloudnative-pg-secret
+            key: password
+      POSTGRES_DB: "bazarr,prowlarr_log,prowlarr_main,radarr_log,radarr_main,readarr_cache,readarr_log,readarr_main,sonarr_log,sonarr_main"
+    command:
+      - "/backup.sh"
+    podSecurityContext:
+      runAsUser: 1031
+      runAsGroup: 1031
+      fsGroup: 1031
+      fsGroupChangePolicy: "OnRootMismatch"
+      supplementalGroups:
+        - 65541
+    service:
+      main:
+        enabled: false
+    persistence:
+      nas-backups:
+        enabled: true
+        type: nfs
+        server: "nas.${SECRET_DOMAIN}"
+        path: /mnt/apps/backups/postgres
+        mountPath: /backups
+        readOnly: false
