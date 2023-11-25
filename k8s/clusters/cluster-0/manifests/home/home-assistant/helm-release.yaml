@@ -6,7 +6,7 @@ metadata:
   name: &app home-assistant
   namespace: home
 spec:
-  interval: 15m
+  interval: 30m
   timeout: 15m
   chart:
     spec:
@@ -16,25 +16,35 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
+    controller:
+      annotations:
+        reloader.stakater.com/auto: "true"
+    initContainers:
+      init-db:
+        image: ghcr.io/onedr0p/postgres-init:15.5@sha256:18560dc4098004b6486a81c92d575a7f9d636c5ede997c515f15b52e130bd827
+        imagePullPolicy: IfNotPresent
+        envFrom: &envFrom
+          - secretRef:
+              name: *app
     image:
       repository: ghcr.io/onedr0p/home-assistant
       tag: 2023.11.3@sha256:a24bb33c22c67e1e89a0cace283af24315ccbedd859199b2048f2fc97bbd1139
-    # podAnnotations:
-    #   k8s.v1.cni.cncf.io/networks: macvlan-static-iot-hass
     env:
       TZ: "${TZ}"
       PYTHONUSERBASE: /config/deps
-    # envFrom:
-    #   - secretRef:
-    #       name: *app TODO: move secrets to !env_var SECRET
+    envFrom: *envFrom
     service:
       main:
         ports:
@@ -88,8 +98,6 @@ spec:
           repository: codercom/code-server
           tag: 4.19.0
         workingDir: "/config"
-        git:
-          deployKeySecret: home-assistant-code-server-secret
         args:
           - --user-data-dir
           - "/config/.vscode"
