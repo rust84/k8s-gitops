@@ -47,7 +47,7 @@ spec:
           secretKeyRef:
             name: cloudnative-pg-secret
             key: password
-      POSTGRES_DB: "bazarr,prowlarr_log,prowlarr_main,radarr_log,radarr_main,readarr_cache,readarr_log,readarr_main,sonarr_log,sonarr_main"
+      POSTGRES_DB: "authentik,home_assistant,fireflyiii,bazarr,prowlarr_log,prowlarr_main,radarr_log,radarr_main,readarr_cache,readarr_log,readarr_main,sonarr_log,sonarr_main"
     command:
       - "/backup.sh"
     podSecurityContext:
