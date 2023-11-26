@@ -69,6 +69,9 @@ spec:
         custom: true
         spec:
           httpGet:
+            httpHeaders:
+              - name: Host
+                value: joplin.${SECRET_DOMAIN}
             path: /api/ping
             port: *port
           initialDelaySeconds: 0
