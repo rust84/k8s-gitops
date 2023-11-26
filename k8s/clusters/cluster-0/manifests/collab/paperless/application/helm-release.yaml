@@ -6,7 +6,7 @@ metadata:
   name: paperless
   namespace: collab
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       chart: app-template
@@ -15,24 +15,33 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
-      interval: 5m
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
       retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
       retries: 3
-      remediateLastFailure: true
-    cleanupOnFail: true
+  uninstall:
+    keepHistory: false
   values:
+    controller:
+      annotations:
+        reloader.stakater.com/auto: 'true'
     global:
       nameOverride: paperless
-
+    initContainers:
+      init-db:
+        image: ghcr.io/onedr0p/postgres-init:15.5@sha256:18560dc4098004b6486a81c92d575a7f9d636c5ede997c515f15b52e130bd827
+        imagePullPolicy: IfNotPresent
+        envFrom: &envFrom
+          - secretRef:
+              name: paperless-secret
     image:
       repository: ghcr.io/paperless-ngx/paperless-ngx
       tag: 1.17.4
-
     env:
       COMPOSE_PROJECT_NAME: paperless
       PAPERLESS_PORT: &port 8000
@@ -40,8 +49,6 @@ spec:
       PAPERLESS_CONSUMER_RECURSIVE: "true"
       PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
       PAPERLESS_CONSUMER_ENABLE_BARCODES: "true"
-      PAPERLESS_DBHOST: 10.20.0.144
-      PAPERLESS_DBNAME: paperless
       PAPERLESS_REDIS: redis://localhost:6379
       PAPERLESS_TASK_WORKERS: 2
       PAPERLESS_TIME_ZONE: "${TZ}"
@@ -51,17 +58,12 @@ spec:
       PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
       USERMAP_GID: 65543
       PAPERLESS_DEBUG: "false"
-
-    envFrom:
-      - secretRef:
-          name: paperless-secrets
-
+    envFrom: *envFrom
     service:
       main:
         ports:
           http:
             port: *port
-
     ingress:
       main:
         enabled: true
@@ -79,7 +81,6 @@ spec:
           - hosts:
               - "paperless.${SECRET_DOMAIN}"
             secretName: tls.paperless
-
     persistence:
       data:
         enabled: true
@@ -105,7 +106,6 @@ spec:
         server: "nas.${SECRET_DOMAIN}"
         path: /mnt/borg/documents/paperless/export
         mountPath: /usr/src/paperless/export
-
     sidecars:
       redis:
         name: redis
@@ -121,22 +121,9 @@ spec:
         image: ghcr.io/paperless-ngx/tika:2.9.0-full@sha256:7b05dc240a56f3ab487a5f955ae5b5e88eaaaaf5189fcb653f4e21b0347d9d5c
         name: tika
         imagePullPolicy: Always
-
     resources:
       requests:
         cpu: 10m
         memory: 1312M
       limits:
         memory: 3000M
-
-  valuesFrom:
-    - kind: Secret
-      name: database-paperless-user
-      valuesKey: PASSWORD
-      targetPath: env.PAPERLESS_DBPASS
-      optional: false
-    - kind: Secret
-      name: database-paperless-user
-      valuesKey: LOGIN
-      targetPath: env.PAPERLESS_DBUSER
-      optional: false
