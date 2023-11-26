@@ -6,7 +6,7 @@ metadata:
   name: joplin
   namespace: collab
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
@@ -15,19 +15,32 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
+    controller:
+      annotations:
+        reloader.stakater.com/auto: 'true'
+    initContainers:
+      init-db:
+        image: ghcr.io/onedr0p/postgres-init:15.5@sha256:18560dc4098004b6486a81c92d575a7f9d636c5ede997c515f15b52e130bd827
+        imagePullPolicy: IfNotPresent
+        envFrom: &envFrom
+          - secretRef:
+              name: joplin-secret
     image:
       repository: joplin/server
       tag: 2.13.5-beta
       pullPolicy: IfNotPresent
-
     service:
       main:
         annotations:
@@ -35,25 +48,21 @@ spec:
           prometheus.io/protocol: tcp
         ports:
           http:
-            port: 22300
-
+            port: &port 22300
     env:
       TZ: "${TZ}"
       APP_BASE_URL: https://joplin.${SECRET_DOMAIN}
-      APP_PORT: 22300
+      APP_PORT: *port
       DB_CLIENT: pg
-      POSTGRES_HOST: 10.20.0.144
-      POSTGRES_PORT: 5432
-      POSTGRES_DATABASE: joplin
       MAILER_ENABLED: 1
       MAILER_HOST: email-smtp.eu-west-1.amazonaws.com
       MAILER_PORT: 465
       MAILER_SECURE: 1
-      MAILER_AUTH_USER: ${SECRET_JOPLIN_USERNAME}
-      MAILER_AUTH_PASSWORD: ${SECRET_JOPLIN_PASSWORD}
+      MAILER_AUTH_USER: ${JOPLIN_SMTP_USERNAME}
+      MAILER_AUTH_PASSWORD: ${JOPLIN_SMTP_PASSWORD}
       MAILER_NOREPLY_NAME: Joplin
-      MAILER_NOREPLY_EMAIL: ${SECRET_JOPLIN_FROM}
-
+      MAILER_NOREPLY_EMAIL: ${JOPLIN_SMTP_FROM}
+    envFrom: *envFrom
     ingress:
       main:
         enabled: true
@@ -70,22 +79,9 @@ spec:
           - secretName: "tls.{{ .Release.Name }}"
             hosts:
               - *host
-
     resources:
       requests:
         cpu: 15m
         memory: 183M
       limits:
         memory: 325M
-
-  valuesFrom:
-    - kind: Secret
-      name: database-joplin-user
-      valuesKey: PASSWORD
-      targetPath: env.POSTGRES_PASSWORD
-      optional: false
-    - kind: Secret
-      name: database-joplin-user
-      valuesKey: LOGIN
-      targetPath: env.POSTGRES_USER
-      optional: false
