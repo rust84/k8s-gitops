@@ -32,7 +32,7 @@ spec:
 
     envFrom:
       - secretRef:
-          name: fireflyiii
+          name: fireflyiii-secret
 
     env:
       TRUSTED_PROXIES: "**"
@@ -43,7 +43,7 @@ spec:
       FIREFLY_III_ACCESS_TOKEN:
         valueFrom:
           secretKeyRef:
-            name: fireflyiii
+            name: fireflyiii-secret
             key: IMPORTER_PAT
 
     service:
@@ -54,7 +54,7 @@ spec:
       import:
         enabled: true
         type: secret
-        name: fireflyiii
+        name: fireflyiii-secret
         subPath: IMPORT_SA
         mountPath: /import/import_sa.json
         defaultMode: 0775
