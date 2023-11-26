@@ -63,6 +63,21 @@ spec:
       MAILER_NOREPLY_NAME: Joplin
       MAILER_NOREPLY_EMAIL: ${JOPLIN_SMTP_FROM}
     envFrom: *envFrom
+    probes:
+      liveness: &probes
+        enabled: true
+        custom: true
+        spec:
+          httpGet:
+            path: /api/ping
+            port: *port
+          initialDelaySeconds: 0
+          periodSeconds: 10
+          timeoutSeconds: 1
+          failureThreshold: 3
+      readiness: *probes
+      startup:
+        enabled: false
     ingress:
       main:
         enabled: true
