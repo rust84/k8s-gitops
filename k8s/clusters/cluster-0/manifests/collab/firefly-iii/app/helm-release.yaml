@@ -3,10 +3,10 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta1
 kind: HelmRelease
 metadata:
-  name: &app fireflyiii
+  name: fireflyiii
   namespace: collab
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
@@ -15,45 +15,42 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     controller:
       annotations:
         reloader.stakater.com/auto: 'true'
-
+    initContainers:
+      init-db:
+        image: ghcr.io/onedr0p/postgres-init:15.5@sha256:18560dc4098004b6486a81c92d575a7f9d636c5ede997c515f15b52e130bd827
+        imagePullPolicy: IfNotPresent
+        envFrom: &envFrom
+          - secretRef:
+              name: fireflyiii-secret
     image:
       repository: fireflyiii/core
       tag: version-6.0.13
-
     env:
       TZ: ${TZ}
       APP_URL: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
       TRUSTED_PROXIES: "**"
       DB_CONNECTION: pgsql
-      DB_HOST: 10.20.0.144
-      DB_PORT: 5432
-      DB_DATABASE: fireflyiii
-      DB_USERNAME:
-        valueFrom:
-          secretKeyRef:
-            name: database-fireflyiii-user
-            key: LOGIN
-      DB_PASSWORD:
-        valueFrom:
-          secretKeyRef:
-            name: database-fireflyiii-user
-            key: PASSWORD
-      APP_KEY:
-        valueFrom:
-          secretKeyRef:
-            name: *app
-            key: APP_KEY
-
+    envFrom: *envFrom
     service:
       main:
         ports:
           http:
             port: 8080
-
     ingress:
       main:
         enabled: true
@@ -69,13 +66,11 @@ spec:
         tls:
           - hosts:
               - *host
-
     persistence:
       config:
         enabled: true
         existingClaim: fireflyiii-config-v1
         mountPath: /var/www/html/firefly-iii/storage/upload
-
     resources:
       requests:
         cpu: 15m

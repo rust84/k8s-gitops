@@ -25,6 +25,7 @@ spec:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
     - name: apps-home-emqx
+    - name: apps-database-cloudnative-pg-cluster
   interval: 5m
   path: "./k8s/clusters/cluster-0/manifests/home/home-assistant"
   prune: true

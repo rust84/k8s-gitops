@@ -8,6 +8,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
+    - name: apps-database-cloudnative-pg-cluster
   path: "./k8s/clusters/cluster-0/manifests/collab/joplin-server"
   prune: true
 ---
@@ -32,7 +33,7 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
-    - name: apps-collab-paperless-database
+    - name: apps-database-cloudnative-pg-cluster
   path: "./k8s/clusters/cluster-0/manifests/collab/paperless/application"
   prune: true
 ---
@@ -45,7 +46,6 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
-    - name: apps-collab-paperless-database
   path: "./k8s/clusters/cluster-0/manifests/collab/firefly-iii/database"
   prune: true
 ---
@@ -59,6 +59,7 @@ spec:
   dependsOn:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
+    - name: apps-database-cloudnative-pg-cluster
   path: "./k8s/clusters/cluster-0/manifests/collab/firefly-iii/app"
   prune: true
 ---
