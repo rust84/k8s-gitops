@@ -16,18 +16,6 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-collab-paperless-database
-  namespace: flux-system
-spec:
-  dependsOn:
-    - name: cluster-namespaces
-  path: "./k8s/clusters/cluster-0/manifests/collab/paperless/database"
-  prune: true
----
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: apps-collab-paperless
   namespace: flux-system
 spec:
@@ -35,18 +23,6 @@ spec:
     - name: cluster-namespaces
     - name: apps-database-cloudnative-pg-cluster
   path: "./k8s/clusters/cluster-0/manifests/collab/paperless/application"
-  prune: true
----
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: apps-collab-firefly-iii-database
-  namespace: flux-system
-spec:
-  dependsOn:
-    - name: cluster-namespaces
-  path: "./k8s/clusters/cluster-0/manifests/collab/firefly-iii/database"
   prune: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
