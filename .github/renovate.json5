@@ -1,14 +1,14 @@
 {
   // General RenovateBot configuration
   "extends": [
-    "config:base",
+    "config:recommended",
     "docker:enableMajor",
     ":disableRateLimiting",
     ":dependencyDashboard",
     ":semanticCommits",
     ":enablePreCommit",
     ":automergeDigest",
-    ":automergeBranchPush",
+    ":automergeBranch",
     "github>rust84/k8s-gitops//.github/renovate/commitMessage",
     "github>rust84/k8s-gitops//.github/renovate/labels",
     "github>rust84/k8s-gitops//.github/renovate/semanticCommits",
@@ -20,13 +20,12 @@
   "username": "rust84-bot[bot]",
   "repositories": ["rust84/k8s-gitops"],
   "onboarding": false,
-  "requireConfig": false,
+  "requireConfig": "optional",
   "gitAuthor": "rust84-bot <103048774+rust84-bot[bot]@users.noreply.github.com>",
   "timezone": "Europe/London",
   "dependencyDashboardTitle": "Renovate Dashboard",
   "suppressNotifications": ["prIgnoreNotification"],
   "rebaseWhen": "conflicted",
-  // Set up Renovate Managers
   "helm-values": {
     "fileMatch": [
       "k8s/clusters/.+/helm-release\\.yaml$",
@@ -36,11 +35,10 @@
   "kubernetes": {
     "fileMatch": ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"]
   },
-  "flux": {
-    "fileMatch": ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"]
-  },
-  "regexManagers": [
+  "flux": {"fileMatch": ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"]},
+  "customManagers": [
     {
+      "customType": "regex",
       "description": "Regex manager to read and process GitHub release artifacts",
       "fileMatch": ["k8s/.+\\.ya?ml$"],
       "matchStrings": [
@@ -50,6 +48,7 @@
       "depNameTemplate": "{{org}}/{{repo}}"
     },
     {
+      "customType": "regex",
       "description": "Process CRD dependencies",
       "fileMatch": ["k8s/clusters/cluster-0/crds/.+\\.ya?ml$"],
       "matchStrings": [
@@ -61,6 +60,7 @@
       "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}helm{{/if}}"
     },
     {
+      "customType": "regex",
       "description": "Process various other dependencies",
       "fileMatch": ["k8s/.+\\.ya?ml$"],
       "matchStrings": [
@@ -70,6 +70,7 @@
       "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
     },
     {
+      "customType": "regex",
       "description": "Generic Docker image Regex manager",
       "fileMatch": ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"],
       "matchStrings": [
@@ -80,6 +81,7 @@
       "registryUrlTemplate": "{{#if registryUrl}}{{{registryUrl}}}{{else}}{{/if}}"
     },
     {
+      "customType": "regex",
       "description": "regexManager to read and process Traefik CRD's",
       "fileMatch": ["k8s/clusters/cluster-0/crds/traefik/.+\\.ya?ml$"],
       "matchStrings": [
@@ -88,6 +90,7 @@
       "datasourceTemplate": "helm"
     },
     {
+      "customType": "regex",
       "description": "Raw GitHub URL Regex manager",
       "fileMatch": ["k8s/.+\\.ya?ml$"],
       "matchStrings": [
@@ -99,14 +102,8 @@
   ],
   "packageRules": [
     // Setup datasources
-    {
-      "matchDatasources": ["helm"],
-      "ignoreDeprecated": true
-    },
-    {
-      "matchDatasources": ["docker"],
-      "commitMessageExtra": "to {{newVersion}}"
-    },
+    {"matchDatasources": ["helm"], "ignoreDeprecated": true},
+    {"matchDatasources": ["docker"], "commitMessageExtra": "to {{newVersion}}"},
     // Custom version schemes
     {
       "matchDatasources": ["docker"],
@@ -128,13 +125,6 @@
       "versioning": "loose"
     },
     // Fly.io
-    {
-      "packagePatterns": [
-        "fly\\.toml$"
-      ],
-      "updateTypes": [
-        "docker"
-      ]
-    }
+    {"matchPackagePatterns": ["fly\\.toml$"], "matchUpdateTypes": ["docker"]}
   ]
 }
