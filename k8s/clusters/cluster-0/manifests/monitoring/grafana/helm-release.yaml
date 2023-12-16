@@ -21,6 +21,14 @@ spec:
       type: Recreate
     rbac:
       pspEnabled: false
+    resources:
+      requests:
+        cpu: 63m
+        memory: 184M
+      limits:
+        memory: 184M
+    serviceMonitor:
+      enabled: true
     persistence:
       enabled: true
       existingClaim: grafana-config-pvc

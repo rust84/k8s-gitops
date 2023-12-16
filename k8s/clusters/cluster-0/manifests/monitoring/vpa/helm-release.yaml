@@ -30,13 +30,6 @@ spec:
     keepHistory: false
   values:
     recommender:
-      enabled: true
-      resources:
-        requests:
-          cpu: 15m
-          memory: 145M
-        limits:
-          memory: 300M
       extraArgs:
         pod-recommendation-min-cpu-millicores: 15
         pod-recommendation-min-memory-mb: 61

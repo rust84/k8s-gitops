@@ -248,3 +248,9 @@ spec:
             - create
             - delete
             - error
+    resources:
+      requests:
+        cpu: 11m
+        memory: 168Mi
+      limits:
+        memory: 168Mi

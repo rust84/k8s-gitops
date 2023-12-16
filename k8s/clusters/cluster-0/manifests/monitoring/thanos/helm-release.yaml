@@ -38,6 +38,12 @@ spec:
       enabled: true
       replicaCount: 2
       replicaLabels: ["__replica__"]
+      resources:
+        requests:
+          cpu: 15m
+          memory: 298M
+      # limits:
+      #   memory: 298M
       dnsDiscovery:
         sidecarsService: prometheus-thanos-discovery
         sidecarsNamespace: monitoring
@@ -56,6 +62,12 @@ spec:
       enabled: false
     bucketweb:
       enabled: true
+      resources:
+        requests:
+          cpu: 15m
+          memory: 100Mi
+      # limits:
+      #   memory: 100Mi
     compactor:
       enabled: true
       extraFlags:
@@ -68,12 +80,24 @@ spec:
         enabled: true
         storageClass: rook-ceph-block
         size: 20Gi
+      resources:
+        requests:
+          cpu: 15m
+          memory: 64Mi
+      # limits:
+      #   memory: 270M
     storegateway:
       enabled: true
       persistence:
         enabled: true
         storageClass: rook-ceph-block
         size: 20Gi
+      resources:
+        requests:
+          cpu: 23m
+          memory: 204M
+      # limits:
+      #   memory: 226M
     ruler:
       enabled: false
       replicaLabel: __replica__
@@ -94,6 +118,12 @@ spec:
         enabled: true
         storageClass: rook-ceph-block
         size: 20Gi
+      resources:
+        requests:
+          cpu: 23m
+          memory: 128M
+        limits:
+          memory: 256M
     metrics:
       enabled: true
       serviceMonitor:

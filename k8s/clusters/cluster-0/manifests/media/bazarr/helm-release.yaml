@@ -83,3 +83,9 @@ spec:
         server: "nas.${SECRET_DOMAIN}"
         path: /mnt/borg/share
         mountPath: /media
+    resources:
+      requests:
+        cpu: 146m
+        memory: 244Mi
+      limits:
+        memory: 244Mi

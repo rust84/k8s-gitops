@@ -121,3 +121,10 @@ spec:
         - module: icmp
           name: nas-icmp
           url: "nas.${SECRET_DOMAIN}"
+
+    resources:
+      requests:
+        cpu: 10m
+        memory: 100Mi
+      limits:
+        memory: 100Mi

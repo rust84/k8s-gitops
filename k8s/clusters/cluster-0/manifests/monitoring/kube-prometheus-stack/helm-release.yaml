@@ -31,26 +31,24 @@ spec:
     crds:
       enabled: true
     fullnameOverride: prometheus
-    server:
-      resources:
-        requests:
-          memory: 1000Mi
-          cpu: 25m
-        limits:
-          memory: 2000Mi
-    prometheusConfigReloader:
-      resources:
-        requests:
-          cpu: 100m
-          memory: 50Mi
-        limits:
-          cpu: 200m
-          memory: 50Mi
     prometheusOperator:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 100Mi
+        limits:
+          memory: 100Mi
       tls:
         enabled: false
       admissionWebhooks:
         enabled: false
+      prometheusConfigReloader:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 100Mi
+          limits:
+            memory: 100Mi
     alertmanager:
       enabled: true
       alertmanagerSpec:
@@ -236,6 +234,12 @@ spec:
           - auto-gomaxprocs
           - memory-snapshot-on-shutdown
           - new-service-discovery-manager
+        resources:
+          requests:
+            cpu: 455m
+            memory: 2718Mi
+          limits:
+            memory: 2718Mi
         storageSpec:
           volumeClaimTemplate:
             spec:

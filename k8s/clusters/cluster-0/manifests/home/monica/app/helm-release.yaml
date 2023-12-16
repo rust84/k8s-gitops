@@ -46,6 +46,12 @@ spec:
             envFrom:
               - secretRef:
                   name: monica-secret
+            resources:
+              requests:
+                cpu: 10m
+                memory: 105Mi
+              limits:
+                memory: 105Mi
     service:
       main:
         enabled: true
@@ -72,9 +78,3 @@ spec:
       config:
         enabled: true
         existingClaim: monica-config
-    resources:
-      requests:
-        cpu: 15m
-        memory: 79M
-      limits:
-        memory: 284M

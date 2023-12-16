@@ -33,3 +33,9 @@ spec:
       persistence:
         enabled: true
         existingClaim: data-monica-mariadb-0
+    resources:
+      requests:
+        cpu: 19m
+        memory: 143Mi
+      limits:
+        memory: 143Mi

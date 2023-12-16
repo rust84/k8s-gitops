@@ -125,9 +125,9 @@ spec:
             topologyKey: kubernetes.io/hostname
     resources:
       requests:
-        cpu: 270m
-        memory: 477M
+        cpu: 341m
+        memory: 2193Mi
         gpu.intel.com/i915: 1
       limits:
-        memory: 2000M
+        memory: 2193Mi
         gpu.intel.com/i915: 1

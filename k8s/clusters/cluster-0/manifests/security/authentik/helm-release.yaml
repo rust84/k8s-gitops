@@ -80,6 +80,19 @@ spec:
       enabled: true
       auth:
         enabled: true
+    resources:
+      server:
+        requests:
+          cpu: 48m
+          memory: 528Mi
+        limits:
+          memory: 528Mi
+      worker:
+        requests:
+          cpu: 27m
+          memory: 490Mi
+        limits:
+          memory: 490Mi
   valuesFrom:
     - kind: Secret
       name: authentik-secret

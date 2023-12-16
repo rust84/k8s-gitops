@@ -35,6 +35,12 @@ spec:
             enabled: true
             protocol: TCP
             port: 9798
+    resources:
+      requests:
+        cpu: 10m
+        memory: 100Mi
+      limits:
+        memory: 100Mi
     serviceMonitor:
       main:
         enabled: true
