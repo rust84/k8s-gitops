@@ -43,13 +43,9 @@ spec:
               MAIL_HOST:
               MAIL_PORT: 25
               MAIL_ENCRYPTION: tls
-<<<<<<< HEAD
             envFrom:
               - secretRef:
                   name: monica-secret
-=======
-            envFrom: monica-secret
->>>>>>> 9cafb1460 (feat(home): migrate monica to app-template)
     service:
       main:
         enabled: true
