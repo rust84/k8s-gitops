@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: rook-ceph
-      version: v1.12.9
+      version: v1.13.0
       sourceRef:
         kind: HelmRepository
         name: rook-ceph-charts
@@ -19,8 +19,6 @@ spec:
   values:
     crds:
       enabled: false
-
-    disableAdmissionController: true # https://github.com/rook/rook/issues/10719
 
     hostpathRequiresPrivileged: true
     enableDiscoveryDaemon: true
