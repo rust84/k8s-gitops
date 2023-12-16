@@ -20,8 +20,6 @@ spec:
     crds:
       enabled: false
 
-    disableAdmissionController: true # https://github.com/rook/rook/issues/10719
-
     hostpathRequiresPrivileged: true
     enableDiscoveryDaemon: true
 
