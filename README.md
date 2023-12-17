@@ -1,28 +1,169 @@
-# Gitops + Kubernetes
+<div align="center">
 
-<p align="center"><img src="https://i.imgur.com/p1RzXjQ.png"><br></p>
+<img src="https://raw.githubusercontent.com/LilDrunkenSmurf/k3s-home-cluster/main/icons/logo.png" align="center" width="144px" height="144px"/>
 
-[![Discord](https://img.shields.io/discord/673534664354430999?color=7289da&label=DISCORD&style=for-the-badge)](https://discord.gg/sTMX7Vh "k8s at home Discord Community")
-[![GitHub stars](https://img.shields.io/github/stars/rust84/k8s-gitops?color=green&style=for-the-badge)](https://github.com/rust84/k8s-gitops/stargazers "This repo star count")
-[![GitHub last commit](https://img.shields.io/github/last-commit/rust84/k8s-gitops?color=purple&style=for-the-badge)](https://github.com/rust84/k8s-gitops/commits/main "Commit History")
-[![Talos](https://img.shields.io/badge/OS-Talos-success?style=for-the-badge)](https://talos.dev "Talos OS")
-[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white&style=for-the-badge)](https://github.com/pre-commit/pre-commit "Precommit status")
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/rust84/k8s-gitops/schedule-renovate.yaml?branch=main&label=renovate&logo=renovatebot&style=for-the-badge)](https://github.com/rust84/k8s-gitops/actions/workflows/schedule-renovate.yaml)
+### My Homelab Repository :octocat:
 
-[![Home Internet](https://kuma.microserver.space/api/badge/7/status?label=home%20internet&style=for-the-badge)](https://kuma.microserver.space/status/home-cluster)
-[![Plex](https://kuma.microserver.space/api/badge/4/status?label=plex&logo=Plex&style=for-the-badge)](https://plex.tv)
-[![Home-Assistant](https://kuma.microserver.space/api/badge/1/status?label=home%20assistant&logo=homeassistant&style=for-the-badge)](https://www.home-assistant.io/)
-[![Vaultwarden](https://kuma.microserver.space/api/badge/2/status?label=vaultwarden&logo=bitwarden&style=for-the-badge)](https://bitwarden.com/)
-[![Joplin](https://kuma.microserver.space/api/badge/5/status?label=Joplin&logo=joplin&style=for-the-badge)](https://joplinapp.org/)
+_... automated via [Flux](https://fluxcd.io), [Renovate](https://github.com/renovatebot/renovate) and [GitHub Actions](https://github.com/features/actions)_ 🤖
 
-## Overview
+</div>
 
-Leveraging [Sidero](https://github.com/siderolabs/sidero), [Flux](https://toolkit.fluxcd.io/) and [Renovate](https://github.com/renovatebot/renovate) to automate my home clusters state using GitOps principles.
+<div align="center">
 
-This repo is constantly evolving and the [documentation](https://rust84.github.io/k8s-gitops/) is currently a WIP.
+[![Discord](https://img.shields.io/discord/673534664354430999?style=for-the-badge&label&logo=discord&logoColor=white&color=blue)](https://discord.gg/home-operations)&nbsp;&nbsp;
+[![Kubernetes](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Frust84%2Fk8s-gitops%2Fmain%2Finfrastructure%2Ftalos%2Fcluster-0%2Ftalconfig.yaml&query=%24.kubernetesVersion&style=for-the-badge&logo=kubernetes&logoColor=white&label=%20)](https://kubernetes.io/)&nbsp;&nbsp;
+[![Renovate](https://img.shields.io/github/actions/workflow/status/rust84/k8s-gitops/schedule-renovate.yaml?branch=main&label=&logo=renovatebot&style=for-the-badge&color=blue)](https://github.com/rust84/k8s-gitops/actions/workflows/schedule-renovate.yaml)
 
-## Thanks
+</div>
 
-The original inspiration for this repo came from [Jeff Billimek](https://github.com/billimek), and the awesome [k8s-at-home](https://discord.gg/sTMX7Vh) community.
+<div align="center">
 
-You can find us on [Discord](https://discord.gg/sTMX7Vh) and a number of the members have shared their repos [here](https://github.com/k8s-at-home/awesome-home-kubernetes)
+[![Home Internet](https://kuma.microserver.space/api/badge/7/status?label=home%20internet&style=for-the-badge)](https://kuma.microserver.space/status/home-cluster)&nbsp;&nbsp;
+[![Home-Assistant](https://kuma.microserver.space/api/badge/1/status?label=home%20assistant&logo=homeassistant&style=for-the-badge)](https://kuma.microserver.space/status/home-cluster)&nbsp;&nbsp;
+[![Plex](https://kuma.microserver.space/api/badge/4/status?label=plex&logo=Plex&style=for-the-badge)](https://kuma.microserver.space/status/home-cluster)
+
+</div>
+
+<div align="center">
+
+[![Age-Days](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.microserver.space%2Fquery%3Fformat%3Dendpoint%26metric%3Dcluster_age_days&style=flat-square&label=Age)](https://github.com/kashalls/kromgo/)&nbsp;&nbsp;
+[![Uptime-Days](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.microserver.space%2Fquery%3Fformat%3Dendpoint%26metric%3Dcluster_uptime_days&style=flat-square&label=Uptime)](https://github.com/kashalls/kromgo/)&nbsp;&nbsp;
+[![Node-Count](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.microserver.space%2Fquery%3Fformat%3Dendpoint%26metric%3Dcluster_node_count&style=flat-square&label=Nodes)](https://github.com/kashalls/kromgo/)&nbsp;&nbsp;
+[![Pod-Count](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.microserver.space%2Fquery%3Fformat%3Dendpoint%26metric%3Dcluster_pod_count&style=flat-square&label=Pods)](https://github.com/kashalls/kromgo/)&nbsp;&nbsp;
+[![CPU-Usage](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.microserver.space%2Fquery%3Fformat%3Dendpoint%26metric%3Dcluster_cpu_usage&style=flat-square&label=CPU)](https://github.com/kashalls/kromgo/)&nbsp;&nbsp;
+[![Memory-Usage](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.microserver.space%2Fquery%3Fformat%3Dendpoint%26metric%3Dcluster_memory_usage&style=flat-square&label=Memory)](https://github.com/kashalls/kromgo/)&nbsp;&nbsp;
+[![Power-Usage](https://img.shields.io/endpoint?url=https%3A%2F%2Fkromgo.microserver.space%2Fquery%3Fformat%3Dendpoint%26metric%3Dcluster_power_usage&style=flat-square&label=Power)](https://github.com/kashalls/kromgo/)
+
+</div>
+
+---
+
+## 📖 Overview
+
+This is a repository for my home infrastructure and Kubernetes cluster. I try to adhere to Infrastructure as Code (IaC) and GitOps practices using tools like [Terraform](https://www.terraform.io), [Kubernetes](https://kubernetes.io), [Flux](https://fluxcd.io), [Renovate](https://github.com/renovatebot/renovate) and [GitHub Actions](https://github.com/features/actions).
+
+---
+
+## ⛵ Kubernetes
+
+There is a template over at [onedr0p/flux-cluster-template](https://github.com/onedr0p/flux-cluster-template) if you wanted to try and follow along with some of the practices I use here.
+
+### Installation
+
+This semi hyper-converged cluster runs [Talos Linux](https://talos.dev), an immutable and ephemeral Linux distribution built for [Kubernetes](https://kubernetes.io), deployed on bare-metal Intel NUCs. [Rook](https://rook.io) then provides my workloads with persistent block, object, and file storage; while a seperate server provides file storage for my media.
+
+🔸 _[Click here](./infrastructure/talos/cluster-0/talconfig.yaml) to see my Talos configuration._
+
+### Core Components
+
+- [cilium](https://cilium.io): Internal Kubernetes networking plugin.
+- [cert-manager](https://cert-manager.io): Creates SSL certificates for services in my Kubernetes cluster.
+- [external-dns](https://github.com/kubernetes-sigs/external-dns): Automatically manages DNS records from my cluster in a cloud DNS provider.
+- [external-secrets](https://external-secrets.io): Managed Kubernetes secrets using [Doppler](https://www.doppler.com/).
+- [ingress-nginx](https://github.com/kubernetes/ingress-nginx): Ingress controller for Kubernetes using NGINX as a reverse proxy and load balancer.
+- [rook](https://rook.io): Distributed block storage for peristent storage.
+- [sops](https://github.com/getsops/sops): Managed secrets for Kubernetes and Terraform which are commited to Git.
+- [volsync](https://github.com/backube/volsync): Backup and recovery of persistent volume claims.
+
+### GitOps
+
+[Flux](https://github.com/fluxcd/flux2) watches the clusters in my [kubernetes](./k8s/) folder (see Directories below) and makes the changes to my clusters based on the state of my Git repository.
+
+The way Flux works for me here is it will recursively search the `k8s/clusters/${cluster}` folder until it finds the most top level `kustomization.yaml` per directory and then apply all the resources listed in it. That aforementioned `kustomization.yaml` will generally only have a namespace resource and one or many Flux kustomizations. Those Flux kustomizations will generally have a `HelmRelease` or other resources related to the application underneath it which will be applied.
+
+[Renovate](https://github.com/renovatebot/renovate) watches my **entire** repository looking for dependency updates, when they are found a PR is automatically created. When some PRs are merged Flux applies the changes to my cluster.
+
+### Directories
+
+This Git repository contains the following directories under [Kubernetes](./kubernetes/).
+
+```sh
+📁 k8s
+├── 📁 cluster/cluster-0  # main cluster
+│   ├── 📁 crds         # applications
+│   ├── 📁 flux           # core flux configuration
+│   └── 📁 manifests      # re-useable components
+└── 📁 global/flux      # shared resources
+    ├── 📁 repositories   # helm and git repositories
+    ├── 📁 vars           # common variables
+    └── 📁 flux           # core flux configuration
+```
+
+### Flux Workflow
+
+This is a high-level look how Flux deploys my applications with dependencies. Below there are 3 apps `postgres`, `authentik` and `weave-gitops`. `postgres` is the first app that needs to be running and healthy before `authentik` and `weave-gitops`. Once `postgres` is healthy `authentik` will be deployed and after that is healthy `weave-gitops` will be deployed.
+
+```mermaid
+graph TD;
+  id1>Kustomization: cluster] -->|Creates| id2>Kustomization: cluster-apps];
+  id2>Kustomization: cluster-apps] -->|Creates| id3>Kustomization: postgres];
+  id2>Kustomization: cluster-apps] -->|Creates| id6>Kustomization: authentik]
+  id2>Kustomization: cluster-apps] -->|Creates| id8>Kustomization: weave-gitops]
+  id2>Kustomization: cluster-apps] -->|Creates| id5>Kustomization: postgres-cluster]
+  id3>Kustomization: postgres] -->|Creates| id4[HelmRelease: postgres];
+  id5>Kustomization: postgres-cluster] -->|Depends on| id3>Kustomization: postgres];
+  id5>Kustomization: postgres-cluster] -->|Creates| id10[Postgres Cluster];
+  id6>Kustomization: authentik] -->|Creates| id7(HelmRelease: authentik);
+  id6>Kustomization: authentik] -->|Depends on| id5>Kustomization: postgres-cluster];
+  id8>Kustomization: weave-gitops] -->|Creates| id9(HelmRelease: weave-gitops);
+  id8>Kustomization: weave-gitops] -->|Depends on| id5>Kustomization: postgres-cluster];
+  id9(HelmRelease: weave-gitops) -->|Depends on| id7(HelmRelease: authentik);
+```
+
+---
+
+## ☁️ Cloud Dependencies
+
+While most of my infrastructure and workloads are self-hosted I do rely upon the cloud for certain key parts of my setup. This saves me from having to worry about two things. (1) Dealing with chicken/egg scenarios and (2) services I critically need whether my cluster is online or not.
+
+The alternative solution to these two problems would be to host a Kubernetes cluster in the cloud and deploy applications like [Vaultwarden](https://github.com/dani-garcia/vaultwarden)and [Uptime Kuma](https://github.com/louislam/uptime-kuma/). However, maintaining another cluster and monitoring another group of workloads is a lot more time and effort than I am willing to put in.
+
+| Service                                         | Use                                                               | Cost           |
+|-------------------------------------------------|-------------------------------------------------------------------|----------------|
+| [Cloudflare](https://www.cloudflare.com/)       | Domain and S3                                                     | ~$30/yr        |
+| [GitHub](https://github.com/)                   | Hosting this repository and continuous integration/deployments    | Free           |
+| [NextDNS](https://nextdns.io/)                  | My router DNS server which includes AdBlocking                    | ~$20/yr        |
+| [Fly.io](https://fly.io/)         | I have two small machines running here which host my password manager and Uptime Kuma | Free (total spend is below $5)           |
+
+---
+
+## 🔧 Hardware
+
+| Device                      | Count | OS Disk Size | Data Disk Size              | Ram  | Operating System | Purpose             |
+|-----------------------------|-------|--------------|-----------------------------|------|------------------|---------------------|
+| Intel NUC8i3BEH             | 1     | 500GB SSD      | 500GB SSD NVMe (rook-ceph)        | 64GB | Talos OS           | Kubernetes Masters  |
+| Intel NUC8i5BEH             | 2     | 500GB SSD      | 500GB SSD NVMe (rook-ceph)        | 64GB | Talos OS           | Kubernetes Workers  |
+| PowerEdge R720              | 1     | 256GB SSD      | 3x18TB ZFS (borg pool) 2x2TB Mirror (apps) | 64GB | TrueNAS           | NFS + Backup Server |
+ PiKVM (Arch)     | Network KVM         |
+| TESmart 8 Port KVM Switch   | 1     | -            | -                           | -    | -                | Network KVM (PiKVM) |
+| AliExpress Topton J6413     | 1     | 128GB NVMe   | -                           | 8GB  | OPNsense    | Router              |
+| Unifi USW-24-Pro | 1     | -            | -                           | -    | -                | Core Switch    |
+| APC SMT2200RM2U w/ NIC      | 1     | -            | -                           | -    | -                | UPS                 |
+
+---
+
+## ⭐ Stargazers
+
+<div align="center">
+
+[![Star History Chart](https://api.star-history.com/svg?repos=rust84/k8s-gitops&type=Date)](https://star-history.com/#rust84/k8s-gitops&Date)
+
+</div>
+
+---
+
+## 🤝 Gratitude and Thanks
+
+Thanks to all the people who donate their time to the [Home Operations](https://discord.gg/home-operations) Discord community. Be sure to check out [kubesearch.dev](https://kubesearch.dev/) for ideas on how to deploy applications or get ideas on what you may deploy.
+
+---
+
+## 📜 Changelog
+
+See my _awful_ [commit history](https://github.com/rust84/k8s-gitops/commits/main)
+
+---
+
+## 🔏 License
+
+See [LICENSE](./LICENSE)
