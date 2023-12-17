@@ -80,9 +80,9 @@ This Git repository contains the following directories under [Kubernetes](./kube
 ```sh
 📁 k8s
 ├── 📁 cluster/cluster-0  # main cluster
-│   ├── 📁 crds         # applications
+│   ├── 📁 crds         # custom resources
 │   ├── 📁 flux           # core flux configuration
-│   └── 📁 manifests      # re-useable components
+│   └── 📁 manifests      # applications
 └── 📁 global/flux      # shared resources
     ├── 📁 repositories   # helm and git repositories
     ├── 📁 vars           # common variables
