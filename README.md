@@ -131,8 +131,8 @@ The alternative solution to these two problems would be to host a Kubernetes clu
 
 | Device                      | Count | OS Disk Size | Data Disk Size              | Ram  | Operating System | Purpose             |
 |-----------------------------|-------|--------------|-----------------------------|------|------------------|---------------------|
-| Intel NUC8i3BEH             | 1     | 500GB SSD      | 500GB SSD NVMe (rook-ceph)        | 64GB | Talos OS           | Kubernetes Masters  |
-| Intel NUC8i5BEH             | 2     | 500GB SSD      | 500GB SSD NVMe (rook-ceph)        | 64GB | Talos OS           | Kubernetes Workers  |
+| Intel NUC8i3BEH             | 1     | 500GB SSD      | 500GB SSD NVMe (rook-ceph)        | 64GB | Talos OS           | Control-plane/Worker  |
+| Intel NUC8i5BEH             | 2     | 500GB SSD      | 500GB SSD NVMe (rook-ceph)        | 64GB | Talos OS           | Control-plane/Workers  |
 | PowerEdge R720              | 1     | 256GB SSD      | 3x18TB ZFS (borg pool) 2x2TB Mirror (apps) | 64GB | TrueNAS           | NFS + Backup Server |
  PiKVM (Arch)     | Network KVM         |
 | TESmart 8 Port KVM Switch   | 1     | -            | -                           | -    | -                | Network KVM (PiKVM) |

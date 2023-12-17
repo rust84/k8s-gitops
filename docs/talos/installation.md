@@ -1,1 +1,0 @@
-# Bootstrapping the cluster
