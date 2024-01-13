@@ -35,7 +35,7 @@ spec:
               name: *app
     image:
       repository: ghcr.io/onedr0p/readarr-nightly
-      tag: 0.3.15.2361@sha256:5b120104c5a3bc828e4361d0186cc98c0882c290dcf97d552780951f6bc7ed9c
+      tag: 0.3.15.2376@sha256:b4d2f0bfd9bdc32e88a99aa16816be8f6a6dd449a809fe8876df6e62d2ea4cdf
     env:
       TZ: "${TZ}"
       READARR__INSTANCE_NAME: Readarr
