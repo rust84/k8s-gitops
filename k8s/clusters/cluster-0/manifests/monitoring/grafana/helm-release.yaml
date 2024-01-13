@@ -173,6 +173,7 @@ spec:
         defaultMode: 0440
         mountPath: /etc/secrets/auth_generic_oauth
         readOnly: true
+    assertNoLeakedSecrets: false # BUG https://github.com/grafana/helm-charts/issues/2899
     grafana.ini:
       server:
         root_url: https://grafana.${SECRET_DOMAIN}
