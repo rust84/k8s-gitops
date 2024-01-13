@@ -6,7 +6,7 @@ metadata:
   name: grafana
   namespace: monitoring
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       chart: grafana
@@ -15,7 +15,15 @@ spec:
         kind: HelmRepository
         name: grafana-charts
         namespace: flux-system
-      interval: 5m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     deploymentStrategy:
       type: Recreate
@@ -159,6 +167,12 @@ spec:
             type: loki
             access: proxy
             url: http://loki-gateway.monitoring.svc.cluster.local:80
+    extraSecretMounts:
+      - name: grafana-oauth-secret
+        secretName: grafana-oauth-secret
+        defaultMode: 0440
+        mountPath: /etc/secrets/auth_generic_oauth
+        readOnly: true
     grafana.ini:
       server:
         root_url: https://grafana.${SECRET_DOMAIN}
@@ -172,8 +186,8 @@ spec:
         enabled: true
         allow_sign_up: true
         name: Dex
-        client_id: grafana
-        client_secret: ${DEX_GRAFANA_AUTHENTICATOR_CLIENT_SECRET}
+        client_id: $__file{/etc/secrets/auth_generic_oauth/client_id}
+        client_secret: $__file{/etc/secrets/auth_generic_oauth/client_secret}
         scopes: openid profile email groups
         auth_url: https://dex.${SECRET_DOMAIN}/auth
         token_url: https://dex.${SECRET_DOMAIN}/token
