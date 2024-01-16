@@ -1,8 +1,11 @@
 ---
-area/ci:
+area/github:
   - changed-files:
-      - any-glob-to-any-file: ".github/**/*"
+      - any-glob-to-any-file: .github/**/*
 area/kubernetes:
   - changed-files:
-      - any-glob-to-any-file: "k8s/global/**/*"
-      - any-glob-to-any-file: "k8s/clusters/**/*"
+      - any-glob-to-any-file: k8s/**/*
+area/taskfile:
+  - changed-files:
+      - any-glob-to-any-file: .taskfiles/**/*
+      - any-glob-to-any-file: Taskfile*
