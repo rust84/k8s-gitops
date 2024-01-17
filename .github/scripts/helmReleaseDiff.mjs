@@ -23,7 +23,7 @@ async function helmRelease(releaseFile) {
   const doc = YAML.parseAllDocuments(helmRelease).map((item) => item.toJS())
   const release = doc.filter(
     (item) =>
-      item.apiVersion === "helm.toolkit.fluxcd.io/v2beta1" &&
+      item.apiVersion === "helm.toolkit.fluxcd.io/v2beta2" &&
       item.kind === "HelmRelease"
   )
   return release[0]
@@ -60,7 +60,7 @@ async function kustomizeBuild(releaseBaseDir, releaseName) {
   const docs = YAML.parseAllDocuments(build.stdout).map((item) => item.toJS())
   const release = docs.filter(
     (item) =>
-      item.apiVersion === "helm.toolkit.fluxcd.io/v2beta1" &&
+      item.apiVersion === "helm.toolkit.fluxcd.io/v2beta2" &&
       item.kind === "HelmRelease" &&
       item.metadata.name === releaseName
   )
