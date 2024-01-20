@@ -39,7 +39,7 @@ spec:
               name: joplin-secret
     image:
       repository: joplin/server
-      tag: 2.14.1-beta
+      tag: 2.14.2-beta
       pullPolicy: IfNotPresent
     service:
       main:
