@@ -437,6 +437,7 @@ data:
   debug: "false"
   debug-verbose: ""
   disable-cnp-status-updates: "true"
+  dnsproxy-enable-transparent-mode: "true"
   egress-gateway-reconciliation-trigger-interval: 1s
   enable-auto-protect-node-port-range: "true"
   enable-bgp-control-plane: "true"
@@ -553,7 +554,7 @@ spec:
   template:
     metadata:
       annotations:
-        cilium.io/cilium-configmap-checksum: 4f35d7e96dd0a92fcd8aea91dd555052e64959fa00edcec23959df690881bfa9
+        cilium.io/cilium-configmap-checksum: 5f9da0cf55a3d4ee688afbbcf755a29bf1ccda9cd7049f8170d2d6533aec545a
       labels:
         app.kubernetes.io/name: cilium-operator
         app.kubernetes.io/part-of: cilium
@@ -595,7 +596,7 @@ spec:
           value: localhost
         - name: KUBERNETES_SERVICE_PORT
           value: "7445"
-        image: quay.io/cilium/operator-generic:v1.14.4@sha256:f0f05e4ba3bb1fe0e4b91144fa4fea637701aba02e6c00b23bd03b4a7e1dfd55
+        image: quay.io/cilium/operator-generic:v1.14.6@sha256:2f0bf8fb8362c7379f3bf95036b90ad5b67378ed05cd8eb0410c1afc13423848
         imagePullPolicy: IfNotPresent
         livenessProbe:
           httpGet:
@@ -656,7 +657,7 @@ spec:
   template:
     metadata:
       annotations:
-        cilium.io/cilium-configmap-checksum: 4f35d7e96dd0a92fcd8aea91dd555052e64959fa00edcec23959df690881bfa9
+        cilium.io/cilium-configmap-checksum: 5f9da0cf55a3d4ee688afbbcf755a29bf1ccda9cd7049f8170d2d6533aec545a
       labels:
         app.kubernetes.io/name: cilium-agent
         app.kubernetes.io/part-of: cilium
@@ -692,7 +693,7 @@ spec:
           value: localhost
         - name: KUBERNETES_SERVICE_PORT
           value: "7445"
-        image: quay.io/cilium/cilium:v1.14.4@sha256:4981767b787c69126e190e33aee93d5a076639083c21f0e7c29596a519c64a2e
+        image: quay.io/cilium/cilium:v1.14.6@sha256:37a49f1abb333279a9b802ee8a21c61cde9dd9138b5ac55f77bdfca733ba852a
         imagePullPolicy: IfNotPresent
         lifecycle:
           postStart:
@@ -714,10 +715,10 @@ spec:
                 # dependencies on anything that is part of the startup script
                 # itself, and can be safely run multiple times per node (e.g. in
                 # case of a restart).
-                if [[ "$(iptables-save | grep -c 'AWS-SNAT-CHAIN|AWS-CONNMARK-CHAIN')" != "0" ]];
+                if [[ "$(iptables-save | grep -E -c 'AWS-SNAT-CHAIN|AWS-CONNMARK-CHAIN')" != "0" ]];
                 then
                     echo 'Deleting iptables rules created by the AWS CNI VPC plugin'
-                    iptables-save | grep -v 'AWS-SNAT-CHAIN|AWS-CONNMARK-CHAIN' | iptables-restore
+                    iptables-save | grep -E -v 'AWS-SNAT-CHAIN|AWS-CONNMARK-CHAIN' | iptables-restore
                 fi
                 echo 'Done!'
           preStop:
@@ -806,7 +807,7 @@ spec:
           value: localhost
         - name: KUBERNETES_SERVICE_PORT
           value: "7445"
-        image: quay.io/cilium/cilium:v1.14.4@sha256:4981767b787c69126e190e33aee93d5a076639083c21f0e7c29596a519c64a2e
+        image: quay.io/cilium/cilium:v1.14.6@sha256:37a49f1abb333279a9b802ee8a21c61cde9dd9138b5ac55f77bdfca733ba852a
         imagePullPolicy: IfNotPresent
         name: config
         terminationMessagePolicy: FallbackToLogsOnError
@@ -832,13 +833,9 @@ spec:
           value: localhost
         - name: KUBERNETES_SERVICE_PORT
           value: "7445"
-        image: quay.io/cilium/cilium:v1.14.4@sha256:4981767b787c69126e190e33aee93d5a076639083c21f0e7c29596a519c64a2e
+        image: quay.io/cilium/cilium:v1.14.6@sha256:37a49f1abb333279a9b802ee8a21c61cde9dd9138b5ac55f77bdfca733ba852a
         imagePullPolicy: IfNotPresent
         name: clean-cilium-state
-        resources:
-          requests:
-            cpu: 100m
-            memory: 100Mi
         securityContext:
           privileged: true
         terminationMessagePolicy: FallbackToLogsOnError
@@ -852,7 +849,7 @@ spec:
           name: cilium-run
       - command:
         - /install-plugin.sh
-        image: quay.io/cilium/cilium:v1.14.4@sha256:4981767b787c69126e190e33aee93d5a076639083c21f0e7c29596a519c64a2e
+        image: quay.io/cilium/cilium:v1.14.6@sha256:37a49f1abb333279a9b802ee8a21c61cde9dd9138b5ac55f77bdfca733ba852a
         imagePullPolicy: IfNotPresent
         name: install-cni-binaries
         resources:
