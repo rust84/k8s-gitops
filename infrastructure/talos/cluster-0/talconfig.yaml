@@ -4,7 +4,9 @@ clusterPodNets:
   - 10.244.0.0/16
 clusterSvcNets:
   - 10.96.0.0/12
-talosVersion: v1.5.5
+# renovate: depName=ghcr.io/siderolabs/installer datasource=docker extractVersion=^(?<version>.*)$
+talosVersion: v1.6.2
+# renovate: depName=kubernetes/kubernetes datasource=github-releases extractVersion=^v(?<version>.*)$
 kubernetesVersion: v1.27.7
 endpoint: "https://cluster-0.${domainName}:6443"
 allowSchedulingOnMasters: true
@@ -13,10 +15,8 @@ additionalMachineCertSans:
   - cluster-0.${domainName}
 additionalApiServerCertSans:
   - ${clusterEndpointIP}
-
 cniConfig:
   name: none
-
 nodes:
   - hostname: node-0.${domainName}
     ipAddress: 10.20.0.128
@@ -27,6 +27,9 @@ nodes:
       - interface: eth0
         mtu: 0
         dhcp: true
+    kernelModules:
+      - name: usbserial
+      - name: r8153_ecm
   - hostname: node-1.${domainName}
     ipAddress: 10.20.0.125
     controlPlane: true
@@ -36,6 +39,9 @@ nodes:
       - interface: eth0
         mtu: 0
         dhcp: true
+    kernelModules:
+      - name: usbserial
+      - name: r8153_ecm
   - hostname: node-2.${domainName}
     ipAddress: 10.20.0.127
     controlPlane: true
@@ -45,88 +51,109 @@ nodes:
       - interface: eth0
         mtu: 0
         dhcp: true
-
+    kernelModules:
+      - name: usbserial
+      - name: r8153_ecm
 controlPlane:
-  inlinePatch:
-    cluster:
-      allowSchedulingOnMasters: true
-      apiServer:
-        admissionControl: []
-        extraArgs:
-          feature-gates: MixedProtocolLBService=true
-      controllerManager:
-        extraArgs:
-          feature-gates: MixedProtocolLBService=true
+  schematic:
+    customization:
+      extraKernelArgs:
+        - net.ifnames=0
+        - talos.logging.kernel=udp://vector.${ingressDomain}:6050/
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/intel-ucode
+          - siderolabs/i915-ucode
+          - siderolabs/nut-client
+          - siderolabs/usb-modem-drivers
+  patches:
+    - |-
+      machine:
+        network:
+          disableSearchDomain: true
+    - |-
+      machine:
+        network:
+          nameservers:
+            - 10.20.0.2
+    - |-
+      machine:
+        time:
+          disabled: true
+          servers:
+            - 10.20.0.2
+    - |-
+      machine:
+        features:
+          kubePrism:
+            enabled: true
+            port: 7445
+    - |-
+      machine:
+        network:
+          extraHostEntries:
+            - ip: ${clusterEndpointIP}
+              aliases:
+                - cluster-0.${domainName}
+    - |-
+      - op: add
+        path: /cluster/controllerManager/extraArgs
+        value:
           bind-address: 0.0.0.0
-      discovery:
-        registries:
-          service:
-            disabled: true
-      proxy:
-        disabled: true
-        extraArgs:
-          feature-gates: MixedProtocolLBService=true
-      scheduler:
-        extraArgs:
-          feature-gates: MixedProtocolLBService=true
+    - |-
+      - op: add
+        path: /cluster/scheduler/extraArgs
+        value:
           bind-address: 0.0.0.0
-      extraManifests:
-        - "https://raw.githubusercontent.com/rust84/k8s-gitops/main/infrastructure/talos/cluster-0/integrations/kubelet-csr-approver/kubelet-csr-approver.yaml"
-      etcd:
-        extraArgs:
-          listen-metrics-urls: http://0.0.0.0:2381
-          election-timeout: 5000
-          heartbeat-interval: 250
-    machine:
-      kernel:
-        modules:
-          - name: usbserial
-          - name: r8153_ecm
-      files:
-        - path: /var/cri/conf.d/allow-unpriv-ports.toml
-          op: create
-          content: |
-            [plugins."io.containerd.grpc.v1.cri"]
-              enable_unprivileged_ports = true
-              enable_unprivileged_icmp = true
-        - path: /var/etc/nut/upsmon.conf
-          permissions: 0o600
-          op: create
-          content: |-
-            MONITOR ${upsmonHost} 1 monuser ${upsmonPasswd} slave
-            SHUTDOWNCMD "/sbin/poweroff"
-      kubelet:
-        nodeIP:
-          validSubnets:
-            - 10.20.0.1/24
-        extraArgs:
-          feature-gates: GracefulNodeShutdown=true,MixedProtocolLBService=true
-          rotate-server-certificates: "true"
-        extraConfig:
-          maxPods: 150
-      install:
-        extraKernelArgs:
-          - "talos.logging.kernel=udp://vector.${ingressDomain}:6050/"
-          - "net.ifnames=0"
-        extensions:
-          - image: ghcr.io/siderolabs/usb-modem-drivers:v1.5.5
-          - image: ghcr.io/siderolabs/i915-ucode:20230804
-          - image: ghcr.io/siderolabs/intel-ucode:20230808
-          - image: ghcr.io/siderolabs/nut-client:2.8.0-v1.5.5
-      logging:
-        destinations:
-          - endpoint: "udp://vector.${ingressDomain}:6051/"
-            format: json_lines
-      network:
-        extraHostEntries:
-          - ip: ${clusterEndpointIP}
-            aliases:
-              - cluster-0.${domainName}
-      sysctls:
-        fs.inotify.max_user_watches: "1048576"
-        fs.inotify.max_user_instances: "8192"
-      time:
-        disabled: true
-      features:
-        kubePrism:
-          enabled: true
+    - |-
+      - op: add
+        path: /cluster/discovery/registries/service
+        value:
+          disabled: true
+    - |-
+      cluster:
+        allowSchedulingOnMasters: true
+        proxy:
+          disabled: true
+    - |-
+      cluster:
+        etcd:
+          extraArgs:
+            listen-metrics-urls: http://0.0.0.0:2381
+            election-timeout: 5000
+            heartbeat-interval: 250
+    - |-
+      machine:
+        files:
+          - op: create
+            path: /etc/cri/conf.d/20-customization.part
+            content: |
+              [plugins]
+                [plugins."io.containerd.grpc.v1.cri"]
+                  enable_unprivileged_ports = true
+                  enable_unprivileged_icmp = true
+          - op: create
+            path: /var/etc/nut/upsmon.conf
+            permissions: 0o644
+            content: |
+              MONITOR ${upsmonHost} 1 monuser ${upsmonPasswd} slave
+              SHUTDOWNCMD "/sbin/poweroff"
+    - |-
+      - op: remove
+        path: /cluster/apiServer/admissionControl
+    - |-
+      machine:
+        kubelet:
+          extraArgs:
+            feature-gates: GracefulNodeShutdown=true
+            rotate-server-certificates: "true"
+          extraConfig:
+            maxPods: 150
+          nodeIP:
+            validSubnets:
+                - 10.20.0.1/24
+    - |-
+      machine:
+        sysctls:
+          fs.inotify.max_user_watches: "1048576"
+          fs.inotify.max_user_instances: "8192"
