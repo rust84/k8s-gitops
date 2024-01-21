@@ -10,11 +10,12 @@ talosVersion: v1.6.2
 kubernetesVersion: v1.27.7
 endpoint: "https://cluster-0.${domainName}:6443"
 allowSchedulingOnMasters: true
-additionalMachineCertSans:
+additionalMachineCertSans: &san
   - ${clusterEndpointIP}
   - cluster-0.${domainName}
+  - "127.0.0.1" # KubePrism
 additionalApiServerCertSans:
-  - ${clusterEndpointIP}
+  *san
 cniConfig:
   name: none
 nodes:
