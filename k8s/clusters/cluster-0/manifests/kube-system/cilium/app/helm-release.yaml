@@ -47,7 +47,7 @@ spec:
       algorithm: "maglev"
       mode: "dsr"
 
-    tunnel: "disabled"
+    routingMode: native
 
     autoDirectNodeRoutes: true
 
