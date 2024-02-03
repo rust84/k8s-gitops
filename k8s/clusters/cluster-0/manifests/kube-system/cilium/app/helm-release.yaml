@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: cilium
-      version: 1.14.6
+      version: 1.15.0
       sourceRef:
         kind: HelmRepository
         name: cilium-charts
@@ -47,7 +47,7 @@ spec:
       algorithm: "maglev"
       mode: "dsr"
 
-    tunnel: "disabled"
+    routingMode: native
 
     autoDirectNodeRoutes: true
 
