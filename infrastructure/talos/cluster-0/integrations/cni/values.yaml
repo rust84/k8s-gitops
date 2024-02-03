@@ -60,7 +60,7 @@ ipv6:
   # -- Enable IPv6 support.
   enabled: false
 
-tunnel: disabled
+routingMode: native
 
 # loadBalancer is the general configuration for service load balancing
 loadBalancer:
