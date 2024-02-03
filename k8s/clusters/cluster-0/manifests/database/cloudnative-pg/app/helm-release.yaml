@@ -4,7 +4,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
   name: cloudnative-pg
-  namespace: database
+  namespace: &ns database
 spec:
   interval: 30m
   chart:
@@ -34,3 +34,10 @@ spec:
     config:
       data:
         INHERITED_ANNOTATIONS: kyverno.io/ignore
+    # # uncomment when chart 0.20.1 is released
+    # monitoring:
+    #   grafanaDashboard:
+    #     create: true
+    #     namespace: *ns
+    #     sidecarLabel: "grafana_dashboard"
+    #     sidecarLabelValue: ""
