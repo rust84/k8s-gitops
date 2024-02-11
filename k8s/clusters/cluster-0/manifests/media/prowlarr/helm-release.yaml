@@ -54,8 +54,8 @@ spec:
             port: *port
           initialDelaySeconds: 0
           periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
+          timeoutSeconds: 3
+          failureThreshold: 5
       readiness: *probes
       startup:
         enabled: false
