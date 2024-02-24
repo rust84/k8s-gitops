@@ -91,6 +91,10 @@ spec:
           - port-distribution
           - icmp
           - http
+        dashboards:
+          enabled: true
+          annotations:
+            grafana_folder: Cilium
       relay:
         enabled: true
         rollOutPods: true
