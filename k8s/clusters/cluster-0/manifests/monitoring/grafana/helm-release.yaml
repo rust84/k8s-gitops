@@ -79,12 +79,6 @@ spec:
               path: /var/lib/grafana/dashboards/default
     dashboards:
       default:
-        hubble-dashboard:
-          url: https://raw.githubusercontent.com/cilium/cilium/v1.15.1/examples/kubernetes/addons/prometheus/files/grafana-dashboards/hubble-dashboard.json
-          datasource: Prometheus
-        hubble-metrics:
-          url: https://raw.githubusercontent.com/cilium/cilium/v1.15.1/examples/kubernetes/addons/prometheus/files/grafana-dashboards/hubble-l7-http-metrics-by-workload.json
-          datasource: Prometheus
         node-exporter-full:
           gnetId: 1860
           revision: 30
