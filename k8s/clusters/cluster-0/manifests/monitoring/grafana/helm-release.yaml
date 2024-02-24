@@ -77,12 +77,6 @@ spec:
               path: /var/lib/grafana/dashboards/default
     dashboards:
       default:
-        cilium-dashboard:
-          url: https://raw.githubusercontent.com/cilium/cilium/v1.15.1/examples/kubernetes/addons/prometheus/files/grafana-dashboards/cilium-dashboard.json
-          datasource: Prometheus
-        cilium-operator-dashboard:
-          url: https://raw.githubusercontent.com/cilium/cilium/v1.15.1/examples/kubernetes/addons/prometheus/files/grafana-dashboards/cilium-operator-dashboard.json
-          datasource: Prometheus
         hubble-dashboard:
           url: https://raw.githubusercontent.com/cilium/cilium/v1.15.1/examples/kubernetes/addons/prometheus/files/grafana-dashboards/hubble-dashboard.json
           datasource: Prometheus

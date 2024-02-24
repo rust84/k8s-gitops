@@ -34,10 +34,9 @@ spec:
     config:
       data:
         INHERITED_ANNOTATIONS: kyverno.io/ignore
-    # # uncomment when chart 0.20.1 is released
-    # monitoring:
-    #   grafanaDashboard:
-    #     create: true
-    #     namespace: *ns
-    #     sidecarLabel: "grafana_dashboard"
-    #     sidecarLabelValue: ""
+    monitoring:
+      grafanaDashboard:
+        create: true
+        namespace: *ns
+        sidecarLabel: "grafana_dashboard"
+        sidecarLabelValue: ""
