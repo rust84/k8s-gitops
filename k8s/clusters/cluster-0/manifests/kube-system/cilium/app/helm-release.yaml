@@ -92,7 +92,7 @@ spec:
           - icmp
           - http
         dashboards:
-          enabled: true
+          enabled: false
           annotations:
             grafana_folder: Cilium
       relay:
