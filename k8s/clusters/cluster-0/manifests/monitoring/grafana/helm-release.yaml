@@ -29,6 +29,8 @@ spec:
       type: Recreate
     rbac:
       pspEnabled: false
+    serviceAccount:
+      autoMount: true
     resources:
       requests:
         cpu: 63m
