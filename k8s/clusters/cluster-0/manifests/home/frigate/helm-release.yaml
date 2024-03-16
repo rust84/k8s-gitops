@@ -6,58 +6,90 @@ metadata:
   name: &app frigate
   namespace: home
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 2.6.0
       sourceRef:
         kind: HelmRepository
-        name: bjw-s-charts
+        name: bjw-s
         namespace: flux-system
+  maxHistory: 2
   install:
-    createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
-    image:
-      repository: ghcr.io/blakeblackshear/frigate
-      tag: 0.13.2@sha256:2906991ccad85035b176941f9dedfd35088ff710c39d45ef1baa9a49f2b16734
-    env:
-      TZ: "${TZ}"
-    envFrom:
-      - secretRef:
-          name: *app
+    controllers:
+      main:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: ghcr.io/blakeblackshear/frigate
+              tag: 0.13.2@sha256:2906991ccad85035b176941f9dedfd35088ff710c39d45ef1baa9a49f2b16734
+            env:
+              TZ: "${TZ}"
+              LIBVA_DRIVER_NAME: i965
+            envFrom:
+              - secretRef:
+                  name: *app
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/version
+                    port: &port 5000
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+            securityContext:
+              privileged: true
+        pod:
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values: ["plex"]
+                  topologyKey: kubernetes.io/hostname
+          nodeSelector:
+            google.feature.node.kubernetes.io/coral: "true"
+            intel.feature.node.kubernetes.io/gpu: "true"
+          resources:
+            requests:
+              cpu: 334m
+              memory: 2437Mi
+              gpu.intel.com/i915: 1
+            limits:
+              memory: 2437Mi
+              gpu.intel.com/i915: 1
     service:
       main:
         ports:
           http:
-            port: &port 5000
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /api/version
             port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
-      startup:
-        enabled: false
-    configmap:
-      config:
-        enabled: false
+          rtsp:
+            port: 8554
     ingress:
       main:
         enabled: true
-        ingressClassName: external
+        className: external
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "cctv"
@@ -72,26 +104,25 @@ spec:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  name: main
+                  port: http
         tls:
           - secretName: "tls.{{ .Release.Name }}"
             hosts:
               - *host
-    podAnnotations:
-      configmap.reloader.stakater.com/reload: "frigate-config"
-    securityContext:
-      privileged: true
     persistence:
-      data:
-        enabled: true
-        existingClaim: frigate-data
       config:
         enabled: true
         type: configMap
         name: frigate-config
-        subPath: config.yaml
-        mountPath: /config/config.yml
-        readOnly: true
+        globalMounts:
+          - path: /config/config.yml
+            subPath: config.yml
+            readOnly: true
+      data:
+        enabled: true
+        existingClaim: frigate-data
       media:
         enabled: true
         type: nfs
@@ -104,30 +135,11 @@ spec:
         type: hostPath
         hostPath: /dev/bus/usb
         hostPathType: Directory
-        mountPath: /dev/bus/usb
+        globalMounts:
+          - path: /dev/bus/usb
       cache:
         enabled: true
         type: emptyDir
         medium: Memory
         sizeLimit: 2Gi
         mountPath: /dev/shm
-    nodeSelector:
-      google.feature.node.kubernetes.io/coral: "true"
-      intel.feature.node.kubernetes.io/gpu: "true"
-    affinity:
-      podAntiAffinity:
-        requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-                - key: app.kubernetes.io/name
-                  operator: In
-                  values: ["plex"]
-            topologyKey: kubernetes.io/hostname
-    resources:
-      requests:
-        cpu: 334m
-        memory: 2437Mi
-        gpu.intel.com/i915: 1
-      limits:
-        memory: 2437Mi
-        gpu.intel.com/i915: 1
