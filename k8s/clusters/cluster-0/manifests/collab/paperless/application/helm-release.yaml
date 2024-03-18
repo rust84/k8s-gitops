@@ -41,7 +41,7 @@ spec:
               name: paperless-secret
     image:
       repository: ghcr.io/paperless-ngx/paperless-ngx
-      tag: 2.6.2
+      tag: 2.6.3
     env:
       COMPOSE_PROJECT_NAME: paperless
       PAPERLESS_PORT: &port 8000
