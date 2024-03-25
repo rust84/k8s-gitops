@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/LilDrunkenSmurf/k3s-home-cluster/main/icons/logo.png" align="center" width="144px" height="144px"/>
+<img src="https://raw.githubusercontent.com/joryirving/home-ops/main/.docs/icons/logo.png" align="center" width="144px" height="144px"/>
 
 ### My Homelab Repository :octocat:
 
