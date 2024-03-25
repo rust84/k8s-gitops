@@ -97,7 +97,7 @@ spec:
         enabled: true
         port: 8080
         ssl: false
-        prometheusEndpoint: http://thanos-query.svc.monitoring.cluster.local:9090/
+        prometheusEndpoint: http://thanos-query.monitoring.svc.cluster.local:9090/
 
       storage:
         useAllNodes: false
