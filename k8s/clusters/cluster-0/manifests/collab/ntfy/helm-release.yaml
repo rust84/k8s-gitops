@@ -29,7 +29,7 @@ spec:
   values:
     image:
       repository: docker.io/binwiederhier/ntfy
-      tag: v2.9.0@sha256:d15610ccb13671bd687734375351fca5be138fce1eceac3a567ecefeedff3523
+      tag: v2.10.0@sha256:09a18464b852dee70025fcc78d38dfc5c0e58f13a7585536a8e79cd02c2aec3d
     args: [serve]
     env:
       TZ: "${TZ}"
