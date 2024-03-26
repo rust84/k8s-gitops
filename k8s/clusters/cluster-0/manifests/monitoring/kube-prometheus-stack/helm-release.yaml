@@ -272,7 +272,7 @@ spec:
             metrics_path: "/api/export/prometheus/metrics"
             basic_auth:
               username: admin
-              password: s3cr3t
+              password: "${SECRET_KVM_PROMETHEUS_PASS}"
             honor_timestamps: true
             static_configs:
               - targets: ["kvm.${SECRET_DOMAIN}"]
