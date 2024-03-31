@@ -88,3 +88,27 @@ spec:
     - name: cluster-namespaces
   path: "./k8s/clusters/cluster-0/manifests/network/cloudflared"
   prune: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-network-multus-app
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+  path: "./k8s/clusters/cluster-0/manifests/network/multus/app"
+  prune: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-network-multus-config
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: apps-network-multus-app
+  path: "./k8s/clusters/cluster-0/manifests/network/multus/config"
+  prune: true

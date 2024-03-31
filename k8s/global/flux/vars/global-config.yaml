@@ -5,4 +5,7 @@ metadata:
   name: global-config
   namespace: flux-system
 data:
-  CLUSTER_NAME: sidero
+  LAN_TRUSTED_IP_CIDR: "10.20.1.0/24"
+  LAN_SERVER_IP_CIDR: "10.20.0.0/24"
+  LAN_IOT_IP_CIDR: "10.30.0.0/24"
+  LAN_IOT_GATEWAY_IP: "10.30.0.1"
