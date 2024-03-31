@@ -26,8 +26,23 @@ nodes:
     disableSearchDomain: true
     networkInterfaces:
       - interface: eth0
-        mtu: 0
-        dhcp: true
+        mtu: 1500
+        dhcp: false
+        vlans:
+          - vlanId: 20
+            dhcp: false
+            addresses:
+              - 10.20.0.128/24
+            mtu: 1500
+            routes:
+              - network: 0.0.0.0/0
+                gateway: 10.20.0.1
+          - vlanId: 30
+            dhcp: false
+            addresses:
+              - 10.30.0.10/24
+            mtu: 1500
+            routes: []
     kernelModules:
       - name: usbserial
       - name: r8153_ecm
@@ -38,8 +53,23 @@ nodes:
     disableSearchDomain: true
     networkInterfaces:
       - interface: eth0
-        mtu: 0
-        dhcp: true
+        mtu: 1500
+        dhcp: false
+        vlans:
+          - vlanId: 20
+            dhcp: false
+            addresses:
+              - 10.20.0.125/24
+            mtu: 1500
+            routes:
+              - network: 0.0.0.0/0
+                gateway: 10.20.0.1
+          - vlanId: 30
+            dhcp: false
+            addresses:
+              - 10.30.0.11/24
+            mtu: 1500
+            routes: []
     kernelModules:
       - name: usbserial
       - name: r8153_ecm
@@ -50,8 +80,23 @@ nodes:
     disableSearchDomain: true
     networkInterfaces:
       - interface: eth0
-        mtu: 0
-        dhcp: true
+        mtu: 1500
+        dhcp: false
+        vlans:
+          - vlanId: 20
+            dhcp: false
+            addresses:
+              - 10.20.0.127/24
+            mtu: 1500
+            routes:
+              - network: 0.0.0.0/0
+                gateway: 10.20.0.1
+          - vlanId: 30
+            dhcp: false
+            addresses:
+              - 10.30.0.12/24
+            mtu: 1500
+            routes: []
     kernelModules:
       - name: usbserial
       - name: r8153_ecm
