@@ -20,8 +20,6 @@ spec:
           "ipam": {
             "type": "static",
             "routes": [
-              { "dst": "${LAN_TRUSTED_IP_CIDR}", "gw": "${LAN_IOT_GATEWAY_IP}" },
-              { "dst": "${LAN_SERVER_IP_CIDR}", "gw": "${LAN_IOT_GATEWAY_IP}" },
               { "dst": "${LAN_IOT_IP_CIDR}", "gw": "${LAN_IOT_GATEWAY_IP}" }
             ]
           }
