@@ -84,6 +84,13 @@ spec:
         enabled: false
       startup:
         enabled: false
+    podAnnotations:
+      k8s.v1.cni.cncf.io/networks: |
+        [{
+          "name": "multus-iot",
+          "namespace": "network",
+          "ips": ["10.30.0.13/24"]
+        }]
     podSecurityContext:
       runAsUser: 568
       runAsGroup: 568

@@ -31,6 +31,14 @@ spec:
       TZ: "${TZ}"
       ESPHOME_DASHBOARD_USE_PING: true
 
+    podAnnotations:
+      k8s.v1.cni.cncf.io/networks: |
+        [{
+          "name": "multus-iot",
+          "namespace": "network",
+          "ips": ["10.30.0.14/24"]
+        }]
+
     service:
       main:
         ports:
