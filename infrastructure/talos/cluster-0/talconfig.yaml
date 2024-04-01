@@ -121,13 +121,13 @@ controlPlane:
       machine:
         network:
           nameservers:
-            - 10.20.0.2
+            - 10.20.0.1
     - |-
       machine:
         time:
           disabled: true
           servers:
-            - 10.20.0.2
+            - 10.20.0.1
     - |-
       machine:
         features:
