@@ -127,18 +127,12 @@ spec:
             - secretName: tls.hass-vscode
               hosts:
                 - hass-vscode.${SECRET_DOMAIN}
-        resources:
-          requests:
-            cpu: 10m
-            memory: 284Mi
-          limits:
-            memory: 284Mi
         volumeMounts:
           - name: config
             mountPath: /config
     resources:
       requests:
-        cpu: 45m
-        memory: 545Mi
+        cpu: 10m
+        memory: 2Gi
       limits:
-        memory: 545Mi
+        memory: 2Gi
