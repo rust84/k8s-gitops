@@ -125,7 +125,7 @@ controlPlane:
     - |-
       machine:
         time:
-          disabled: true
+          disabled: false
           servers:
             - 10.20.0.1
     - |-
