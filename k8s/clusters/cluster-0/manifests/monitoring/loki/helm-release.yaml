@@ -16,14 +16,17 @@ spec:
         kind: HelmRepository
         name: grafana-charts
         namespace: flux-system
-      interval: 30m
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     loki:
       structuredConfig:
@@ -32,6 +35,8 @@ spec:
           log_level: info
           http_listen_port: 3100
           grpc_listen_port: 9095
+          grpc_server_max_recv_msg_size: 8388608
+          grpc_server_max_send_msg_size: 8388608
         memberlist:
           join_members: ["loki-memberlist"]
         limits_config:
@@ -40,22 +45,19 @@ spec:
           reject_old_samples: true
           reject_old_samples_max_age: 168h
           max_cache_freshness_per_query: 10m
-          split_queries_by_interval: 15m
+          split_queries_by_interval: 1h
           per_stream_rate_limit: 64M
           per_stream_rate_limit_burst: 128M
           ingestion_rate_mb: 64
           ingestion_burst_size_mb: 128
           shard_streams:
             enabled: true
+        query_scheduler:
+          max_outstanding_requests_per_tenant: 4096
+        frontend:
+          max_outstanding_per_tenant: 4096
         schema_config:
           configs:
-            - from: "2021-08-01"
-              store: boltdb-shipper
-              object_store: s3
-              schema: v11
-              index:
-                prefix: loki_index_
-                period: 24h
             - from: "2023-09-21"
               index:
                 period: 24h
@@ -63,20 +65,13 @@ spec:
               object_store: s3
               schema: v12
               store: tsdb
-        storage_config:
-          boltdb_shipper:
-            active_index_directory: /var/loki/boltdb-index
-            build_per_tenant_index: true
-            cache_location: /var/loki/boltdb-cache
-            shared_store: s3
-          tsdb_shipper:
-            active_index_directory: /var/loki/tsdb-index
-            cache_location: /var/loki/tsdb-cache
-            shared_store:
-        query_scheduler:
-          max_outstanding_requests_per_tenant: 32768
-        querier:
-          max_concurrent: 16
+            - from: "2024-04-01"
+              store: tsdb
+              object_store: s3
+              schema: v13
+              index:
+                prefix: loki_index_
+                period: 24h
         common:
           path_prefix: /var/loki
           replication_factor: 3
@@ -123,10 +118,24 @@ spec:
         secret.reloader.stakater.com/reload: loki-secret
     gateway:
       replicas: 3
+      enabled: true
       image:
         registry: ghcr.io
         repository: nginxinc/nginx-unprivileged
-        tag: 1.25-alpine
+        tag: 1.25-alpine@sha256:5b49ce26ad8555b649a5a5ea8ccdfabc742a284ab58cb7b7d7a56f178c5dd351
+      deploymentStrategy:
+        type: RollingUpdate
+        rollingUpdate:
+          maxUnavailable: 50%
+          maxSurge: 50%
+      topologySpreadConstraints:
+        - maxSkew: 2
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: DoNotSchedule
+          labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: loki
+              app.kubernetes.io/component: gateway
       ingress:
         enabled: true
         ingressClassName: internal
@@ -139,29 +148,11 @@ spec:
           - secretName: "tls.loki"
             hosts:
               - *host
-      affinity: |
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    {{- include "loki.gatewaySelectorLabels" . | nindent 12 }}
-                topologyKey: kubernetes.io/hostname
     write:
       replicas: 3
       persistence:
         size: 10Gi
         storageClass: rook-ceph-block
-      affinity: |
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    {{- include "loki.writeSelectorLabels" . | nindent 12 }}
-                topologyKey: kubernetes.io/hostname
     backend:
       replicas: 3
       persistence:
@@ -178,15 +169,6 @@ spec:
             name: loki-alerting-rules
         - name: scratch
           emptyDir: {}
-      affinity: |
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    {{- include "loki.backendSelectorLabels" . | nindent 12 }}
-                topologyKey: kubernetes.io/hostname
     read:
       replicas: 3
       persistence:
@@ -198,19 +180,12 @@ spec:
       extraVolumes:
         - name: rules
           emptyDir: {}
-      affinity: |
-        podAntiAffinity:
-          preferredDuringSchedulingIgnoredDuringExecution:
-            - weight: 1
-              podAffinityTerm:
-                labelSelector:
-                  matchLabels:
-                    {{- include "loki.readSelectorLabels" . | nindent 12 }}
-                topologyKey: kubernetes.io/hostname
     monitoring:
       dashboards:
         annotations:
           grafana_folder: Loki
+      rules:
+        enabled: false
       serviceMonitor:
         enabled: false
         metricsInstance:
@@ -219,8 +194,8 @@ spec:
         enabled: false
         grafanaAgent:
           installOperator: false
-        lokiCanary:
-          enabled: false
+    lokiCanary:
+      enabled: false
     test:
       enabled: false
   valuesFrom:
