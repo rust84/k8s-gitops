@@ -30,7 +30,7 @@ spec:
         env:
           - { name: GEOIPUPDATE_EDITION_IDS, value: GeoLite2-City }
           - { name: GEOIPUPDATE_FREQUENCY, value: "0" }
-          - { name: GEOIPUPDATE_VERBOSE, value: "true" }
+          - { name: GEOIPUPDATE_VERBOSE, value: "1" }
         envFrom:
           - secretRef:
               name: vector-aggregator-secret
