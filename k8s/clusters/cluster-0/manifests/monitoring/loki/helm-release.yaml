@@ -29,6 +29,31 @@ spec:
     keepHistory: false
   values:
     loki:
+      podAnnotations:
+        secret.reloader.stakater.com/reload: loki-secret
+      ingester:
+        chunk_encoding: snappy
+      storage:
+        type: s3
+        s3:
+          s3ForcePathStyle: true
+          insecure: true
+      schemaConfig:
+        configs:
+          - from: "2023-09-21"
+            store: tsdb
+            object_store: s3
+            schema: v12
+            index:
+              prefix: loki_index_
+              period: 24h
+          - from: "2024-04-01"
+            store: tsdb
+            object_store: s3
+            schema: v13
+            index:
+              prefix: loki_index_
+              period: 24h
       structuredConfig:
         auth_enabled: false
         server:
@@ -56,33 +81,6 @@ spec:
           max_outstanding_requests_per_tenant: 4096
         frontend:
           max_outstanding_per_tenant: 4096
-        schema_config:
-          configs:
-            - from: "2023-09-21"
-              index:
-                period: 24h
-                prefix: loki_index_
-              object_store: s3
-              schema: v12
-              store: tsdb
-            - from: "2024-04-01"
-              store: tsdb
-              object_store: s3
-              schema: v13
-              index:
-                prefix: loki_index_
-                period: 24h
-        common:
-          path_prefix: /var/loki
-          replication_factor: 3
-          storage:
-            s3:
-              s3: null
-              insecure: true
-              s3forcepathstyle: true
-          ring:
-            kvstore:
-              store: memberlist
         ruler:
           enable_api: true
           enable_alertmanager_v2: true
@@ -106,16 +104,8 @@ spec:
           retention_enabled: true
           retention_delete_delay: 2h
           retention_delete_worker_count: 150
-        ingester:
-          max_chunk_age: 1h
-          lifecycler:
-            ring:
-              kvstore:
-                store: memberlist
         analytics:
           reporting_enabled: false
-      podAnnotations:
-        secret.reloader.stakater.com/reload: loki-secret
     gateway:
       replicas: 3
       enabled: true
@@ -199,19 +189,27 @@ spec:
     test:
       enabled: false
   valuesFrom:
-    - targetPath: loki.structuredConfig.common.storage.s3.bucketnames
+    - targetPath: loki.storage.bucketNames.chunks
       kind: ConfigMap
       name: loki-chunks-bucket-v1
       valuesKey: BUCKET_NAME
-    - targetPath: loki.structuredConfig.common.storage.s3.endpoint
+    - targetPath: loki.storage.bucketNames.ruler
+      kind: ConfigMap
+      name: loki-chunks-bucket-v1
+      valuesKey: BUCKET_NAME
+    - targetPath: loki.storage.bucketNames.admin
+      kind: ConfigMap
+      name: loki-chunks-bucket-v1
+      valuesKey: BUCKET_NAME
+    - targetPath: loki.storage.s3.endpoint
       kind: ConfigMap
       name: loki-chunks-bucket-v1
       valuesKey: BUCKET_HOST
-    - targetPath: loki.structuredConfig.common.storage.s3.access_key_id
+    - targetPath: loki.storage.s3.accessKeyId
       kind: Secret
       name: loki-chunks-bucket-v1
       valuesKey: AWS_ACCESS_KEY_ID
-    - targetPath: loki.structuredConfig.common.storage.s3.secret_access_key
+    - targetPath: loki.storage.s3.secretAccessKey
       kind: Secret
       name: loki-chunks-bucket-v1
       valuesKey: AWS_SECRET_ACCESS_KEY
