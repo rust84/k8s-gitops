@@ -62,8 +62,6 @@ spec:
           grpc_listen_port: 9095
           grpc_server_max_recv_msg_size: 8388608
           grpc_server_max_send_msg_size: 8388608
-        memberlist:
-          join_members: ["loki-memberlist"]
         limits_config:
           retention_period: 14d
           enforce_metric_name: false
@@ -90,13 +88,6 @@ spec:
             local:
               directory: /rules
           rule_path: /tmp/scratch
-          ring:
-            kvstore:
-              store: memberlist
-        distributor:
-          ring:
-            kvstore:
-              store: memberlist
         compactor:
           working_directory: /var/loki/compactor
           delete_request_store: s3
