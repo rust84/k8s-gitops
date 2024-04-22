@@ -112,10 +112,6 @@ spec:
             hosts:
               - *host
     persistence:
-      config:
-        existingClaim: frigate-data
-        globalMounts:
-          - path: /data
       config-file:
         enabled: true
         type: configMap
@@ -124,6 +120,9 @@ spec:
           - path: /config/config.yml
             subPath: config.yml
             readOnly: true
+      data:
+        enabled: true
+        existingClaim: frigate-data
       media:
         enabled: true
         type: nfs
