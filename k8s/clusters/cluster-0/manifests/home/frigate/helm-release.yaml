@@ -118,7 +118,7 @@ spec:
         name: frigate-config
         globalMounts:
           - path: /config/config.yml
-            subPath: config.yml
+            subPath: config.yaml
             readOnly: true
       data:
         enabled: true
