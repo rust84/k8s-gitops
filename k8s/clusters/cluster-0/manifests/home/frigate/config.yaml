@@ -61,31 +61,31 @@ cameras:
   driveway:
     ffmpeg:
       inputs:
-        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.20.2.51:554/h264Preview_01_sub
+        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.30.0.79:554/h264Preview_01_sub
           roles:
             - detect
-        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.20.2.51:554/h264Preview_01_main
+        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.30.0.79:554/h264Preview_01_main
           roles:
             - rtmp
             - record
     detect:
       width: 640
-      height: 360
-      fps: 7
+      height: 480
+      fps: 10
 
-  lounge:
-    ffmpeg:
-      inputs:
-        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.20.2.52:554/h264Preview_01_sub
-          roles:
-            - detect
-        - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.20.2.52:554/h264Preview_01_main
-          roles:
-            - rtmp
-            - record
-    detect:
-      enabled: false
-    record:
-      enabled: false
-    snapshots:
-      enabled: false
+  # lounge:
+  #   ffmpeg:
+  #     inputs:
+  #       - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.20.2.52:554/h264Preview_01_sub
+  #         roles:
+  #           - detect
+  #       - path: rtsp://frigate:{FRIGATE_RTSP_PASSWORD}@10.20.2.52:554/h264Preview_01_main
+  #         roles:
+  #           - rtmp
+  #           - record
+  #   detect:
+  #     enabled: false
+  #   record:
+  #     enabled: false
+  #   snapshots:
+  #     enabled: false
