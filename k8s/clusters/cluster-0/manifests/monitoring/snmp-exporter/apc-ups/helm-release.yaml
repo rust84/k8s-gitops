@@ -6,7 +6,7 @@ metadata:
   name: &app snmp-exporter-apc-ups
   namespace: monitoring
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: prometheus-snmp-exporter
@@ -15,13 +15,15 @@ spec:
         kind: HelmRepository
         name: prometheus-community-charts
         namespace: flux-system
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
   values:
     fullnameOverride: *app
     image:
@@ -29,10 +31,10 @@ spec:
     extraArgs:
       - "--config.file=/config/snmp.yaml"
     extraConfigmapMounts:
-      - name: *app
+      - name: &name apc-ups-snmp-configmap
         mountPath: /config/snmp.yaml
         subPath: snmp.yaml
-        configMap: *app
+        configMap: *name
         readOnly: true
         defaultMode: 420
     resources:
@@ -46,12 +48,11 @@ spec:
       namespace: monitoring
       params:
         - name: apc-ups
-          module:
-            - apcups
+          module: [apcups]
           target: apc-ups.russhome.xyz
           interval: 120s
+          auth: ["public_v1"]
       path: /snmp
       scrapeTimeout: 10s
       relabelings:
-        - sourceLabels: [__param_target]
-          targetLabel: instance
+        - { sourceLabels: ["__param_target"], targetLabel: instance }
