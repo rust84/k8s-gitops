@@ -1952,4 +1952,3 @@ modules:
       indexes:
       - labelname: rPDU2BankStatusIndex
         type: gauge
-    version: 1
