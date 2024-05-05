@@ -1,0 +1,42 @@
+#!/bin/sh
+
+# PROVIDE: dnsdist
+# REQUIRE: DAEMON NETWORKING
+# KEYWORD: shutdown
+#
+# Add the following to /etc/rc.conf[.local] to enable this service
+#
+# dnsdist_enable  (bool):        Set to NO by default.
+#                                Set it to YES to enable dnsdist.
+# dnsdist_config  (str):         Set to /usr/local/etc/dnsdist/Corefile by default.
+#
+# dnsdist_logfile (str):         Set to /var/log/dnsdist/dnsdist.log by default.
+#
+
+. /etc/rc.subr
+
+name=dnsdist
+rcvar=dnsdist_enable
+
+load_rc_config ${name}
+
+: ${dnsdist_enable:=NO}
+: ${dnsdist_config:="/etc/dnsdist/dnsdist.conf"}
+: ${dnsdist_flags:=}
+: ${dnsdist_logfile:="/var/log/dnsdist/dnsdist.log"}
+
+pidfile=/var/run/dnsdist.pid
+command="/usr/local/sbin/dnsdist"
+
+start_cmd="${name}_start"
+
+dnsdist_start()
+{
+    echo -n "Starting ${name}."
+    /usr/sbin/daemon -p ${pidfile} -H -m 3 -f -o ${dnsdist_logfile} \
+        ${command} \
+            -C ${dnsdist_config} \
+            ${dnsdist_flags}
+}
+
+run_rc_command "$1"

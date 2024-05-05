@@ -6,9 +6,12 @@
   gather_facts: false
   any_errors_fatal: true
   roles:
-    - name: Deploy k8s_gateway
-      role: "k8s_gateway.router"
-      tags: [k8s_gateway]
+    # - name: Deploy k8s_gateway
+    #   role: "k8s_gateway.router"
+    #   tags: [k8s_gateway]
+    - name: Deploy dnsdist
+      role: "dnsdist.router"
+      tags: [dnsdist]
     - name: Deploy FRR Exporter
       role: "frr_exporter.router"
       tags: [frr_exporter]
