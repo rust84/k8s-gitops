@@ -1,4 +1,0 @@
----
-- name: Restart dnsdist
-  ansible.builtin.shell: |
-    /usr/local/etc/rc.d/dnsdist restart
