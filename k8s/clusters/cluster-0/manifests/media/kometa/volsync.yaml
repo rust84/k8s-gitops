@@ -2,7 +2,7 @@
 apiVersion: external-secrets.io/v1beta1
 kind: ClusterSecretStore
 metadata:
-  name: &name plex-meta-manager-restic
+  name: &name kometa-restic
   namespace: media
 spec:
   provider:
@@ -19,7 +19,7 @@ spec:
 apiVersion: external-secrets.io/v1beta1
 kind: ExternalSecret
 metadata:
-  name: &name plex-meta-manager-restic
+  name: &name kometa-restic
   namespace: media
 spec:
   secretStoreRef:
@@ -30,7 +30,7 @@ spec:
     template:
       engineVersion: v2
       data:
-        RESTIC_REPOSITORY: "{{ .REPOSITORY_TEMPLATE }}/plex-meta-manager"
+        RESTIC_REPOSITORY: "{{ .REPOSITORY_TEMPLATE }}/kometa"
         RESTIC_PASSWORD: "{{ .RESTIC_PASSWORD }}"
         AWS_ACCESS_KEY_ID: "{{ .AWS_ACCESS_KEY_ID }}"
         AWS_SECRET_ACCESS_KEY: "{{ .AWS_SECRET_ACCESS_KEY }}"
@@ -42,16 +42,16 @@ spec:
 apiVersion: volsync.backube/v1alpha1
 kind: ReplicationSource
 metadata:
-  name: plex-meta-manager
+  name: kometa
   namespace: media
 spec:
-  sourcePVC: plex-meta-manager-config-v1
+  sourcePVC: kometa-config-v1
   trigger:
     schedule: "7 0 * * *"
   restic:
     copyMethod: Snapshot
     pruneIntervalDays: 10
-    repository: plex-meta-manager-restic
+    repository: kometa-restic
     cacheCapacity: 5Gi
     volumeSnapshotClassName: csi-rbdplugin-snapclass
     storageClassName: rook-ceph-block

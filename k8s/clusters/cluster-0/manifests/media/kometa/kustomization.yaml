@@ -14,12 +14,9 @@ configMapGenerator:
   - name: pmm-prerolls
     files:
       - ./configs/Pre-rolls.yml
-  - name: pmm-scripts
-    files:
-      - ./scripts/run.sh
 generatorOptions:
   disableNameSuffixHash: true
 labels:
   - pairs:
-      app.kubernetes.io/name: plex-meta-manager
-      app.kubernetes.io/instance: plex-meta-manager
+      app.kubernetes.io/name: kometa
+      app.kubernetes.io/instance: kometa

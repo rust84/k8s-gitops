@@ -18,7 +18,7 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-media-plex-meta-manager
+  name: apps-media-kometa
   namespace: flux-system
 spec:
   dependsOn:
@@ -26,7 +26,7 @@ spec:
     - name: rook-ceph-cluster
     - name: apps-media-plex
   interval: 5m
-  path: "./k8s/clusters/cluster-0/manifests/media/plex-meta-manager"
+  path: "./k8s/clusters/cluster-0/manifests/media/kometa"
   prune: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json

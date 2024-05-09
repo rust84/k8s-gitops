@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2beta2
 kind: HelmRelease
 metadata:
-  name: &app plex-meta-manager
+  name: &app kometa
   namespace: media
 spec:
   interval: 30m
@@ -33,21 +33,24 @@ spec:
       cronjob:
         schedule: 0 6 * * *
     image:
-      repository: docker.io/meisnate12/plex-meta-manager
-      tag: v1.19.0
+      repository: docker.io/kometateam/kometa
+      tag: v2.0.1@sha256:c1f9d1ef49f976377a4bbbe9018bfed9a7057ccf427d10759a8ad975d4505300
     env:
       TZ: ${TZ}
-      PUID: 1000
-      PGID: 1000
     command:
-      - /scripts/run.sh
+      - /bin/sh
+      - -c
+    args:
+      - |
+        python3 kometa.py --run --read-only-config --run-libraries "Movies";
+        python3 kometa.py --run --read-only-config --run-libraries "TV Shows";
     service:
       main:
         enabled: false
     persistence:
       config:
         enabled: true
-        existingClaim: plex-meta-manager-config-v1
+        existingClaim: kometa-config-v1
       config-file:
         enabled: true
         type: secret
@@ -62,9 +65,11 @@ spec:
         mountPath: /config/Pre-rolls.yml
         subPath: Pre-rolls.yml
         readOnly: true
-      scripts:
-        enabled: true
-        type: configMap
-        name: pmm-scripts
-        mountPath: /scripts
-        defaultMode: 511
+      logs:
+        type: emptyDir
+        mountPath: /config/logs
+    podSecurityContext:
+      runAsUser: 568
+      runAsGroup: 568
+      fsGroup: 568
+      fsGroupChangePolicy: "OnRootMismatch"
