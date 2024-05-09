@@ -34,7 +34,7 @@ spec:
           main:
             image:
               repository: monica
-              tag: 4.0.0-apache
+              tag: 4.1.2-apache
             env:
               APP_ENV: production
               DEFAULT_MAX_STORAGE_SIZE: 4096
