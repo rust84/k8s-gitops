@@ -50,7 +50,7 @@ spec:
     persistence:
       config:
         enabled: true
-        existingClaim: kometa-config-v1
+        existingClaim: plex-meta-manager-config-v1
       config-file:
         enabled: true
         type: secret
