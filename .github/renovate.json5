@@ -4,6 +4,7 @@
   "extends": [
     "config:recommended",
     "docker:enableMajor",
+    "docker:pinDigests",
     ":disableRateLimiting",
     ":dependencyDashboard",
     ":semanticCommits",
@@ -41,11 +42,7 @@
     {
       "customType": "regex",
       "description": ["Process custom dependencies"],
-      "fileMatch": [
-        "(^|/).taskfiles/.+\\.ya?ml(?:\\.j2)?$",
-        "(^|/)infrastructure/.+\\.ya?ml(?:\\.j2)?$",
-        "(^|/)k8s/.+\\.ya?ml(?:\\.j2)?$"
-      ],
+      "fileMatch": [".*"], // process regex from everywhere
       "matchStrings": [
         // # renovate: datasource=github-releases depName=k3s-io/k3s
         // k3s_release_version: &version v1.29.0+k3s1
