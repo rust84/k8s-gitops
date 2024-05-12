@@ -24,7 +24,6 @@ spec:
     secretRef:
       name: sops-age
   postBuild:
-    substitute: {}
     substituteFrom:
       - kind: ConfigMap
         name: global-config

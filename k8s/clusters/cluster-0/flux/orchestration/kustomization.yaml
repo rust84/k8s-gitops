@@ -20,3 +20,4 @@ resources:
   - core-monitoring.yaml
   - core-rook-ceph.yaml
   - core-kube-system.yaml
+  - core-system-upgrade.yaml

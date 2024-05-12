@@ -32,3 +32,8 @@ data:
   SVC_NGINX_EXTERNAL_CIDR: "10.1.0.160"
   SVC_NGINX_INTERNAL_CIDR: "10.1.0.161"
   SVC_QBITTORRENT_ADDR: "10.1.0.159"
+
+  # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
+  TALOS_VERSION: v1.6.4
+  # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+  KUBERNETES_VERSION: 1.29.1

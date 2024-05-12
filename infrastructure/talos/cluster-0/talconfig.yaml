@@ -4,10 +4,10 @@ clusterPodNets:
   - 10.244.0.0/16
 clusterSvcNets:
   - 10.96.0.0/12
-# renovate: depName=ghcr.io/siderolabs/installer datasource=docker extractVersion=^(?<version>.*)$
+# renovate: datasource=docker depName=ghcr.io/siderolabs/installer
 talosVersion: v1.6.4
-# renovate: depName=kubernetes/kubernetes datasource=github-releases extractVersion=^v(?<version>.*)$
-kubernetesVersion: v1.29.1
+# renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+kubernetesVersion: 1.29.1
 endpoint: "https://cluster-0.${domainName}:6443"
 allowSchedulingOnMasters: true
 additionalMachineCertSans: &san
@@ -113,27 +113,33 @@ controlPlane:
           - siderolabs/nut-client
           - siderolabs/usb-modem-drivers
   patches:
+    # Disable search domain everywhere
     - |-
       machine:
         network:
           disableSearchDomain: true
+    
+    # Force nameserver
     - |-
       machine:
         network:
           nameservers:
             - 10.20.0.1
+    # Configure NTP
     - |-
       machine:
         time:
           disabled: false
           servers:
             - 10.20.0.1
+    # Enable KubePrism
     - |-
       machine:
         features:
           kubePrism:
             enabled: true
             port: 7445
+    # Add cluster endpoint host entry
     - |-
       machine:
         network:
@@ -141,26 +147,31 @@ controlPlane:
             - ip: ${clusterEndpointIP}
               aliases:
                 - cluster-0.${domainName}
+    # Configure Controller Manager
     - |-
       - op: add
         path: /cluster/controllerManager/extraArgs
         value:
           bind-address: 0.0.0.0
+    # Configure Scheduler
     - |-
       - op: add
         path: /cluster/scheduler/extraArgs
         value:
           bind-address: 0.0.0.0
+    # Disable service discovery
     - |-
       - op: add
         path: /cluster/discovery/registries/service
         value:
           disabled: true
+    # Cluster configuration
     - |-
       cluster:
         allowSchedulingOnMasters: true
         proxy:
           disabled: true
+    # ETCD configuration
     - |-
       cluster:
         etcd:
@@ -168,6 +179,7 @@ controlPlane:
             listen-metrics-urls: http://0.0.0.0:2381
             election-timeout: 5000
             heartbeat-interval: 250
+    # Configure containerd
     - |-
       machine:
         files:
@@ -184,9 +196,21 @@ controlPlane:
             content: |
               MONITOR ${upsmonHost} 1 monuser ${upsmonPasswd} slave
               SHUTDOWNCMD "/sbin/poweroff"
+    # Disable default API server admission plugins.
     - |-
       - op: remove
         path: /cluster/apiServer/admissionControl
+    # Enable K8s Talos API access
+    - |-
+      machine:
+        features:
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+              - os:admin
+            allowedKubernetesNamespaces:
+              - system-upgrade
+    # Kubelet configuration
     - |-
       machine:
         kubelet:
@@ -198,6 +222,7 @@ controlPlane:
           nodeIP:
             validSubnets:
                 - 10.20.0.1/24
+    # Custom sysctls
     - |-
       machine:
         sysctls:

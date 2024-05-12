@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: core-system-upgrade-controller-app
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+  path: "./k8s/clusters/cluster-0/manifests/system-upgrade/system-upgrade-controller/app"
+  prune: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: core-system-upgrade-controller-plans
+  namespace: flux-system
+  labels:
+    substitution.flux.home.arpa/disabled: "true"
+spec:
+  interval: 5m0s
+  sourceRef:
+    kind: GitRepository
+    name: k8s-gitops
+  dependsOn:
+    - name: cluster-namespaces
+    - name: core-system-upgrade-controller-app
+  path: "./k8s/clusters/cluster-0/manifests/system-upgrade/system-upgrade-controller/plans"
+  prune: true
