@@ -103,7 +103,7 @@ spec:
         enabled: true
         image:
           repository: codercom/code-server
-          tag: 4.89.0
+          tag: 4.89.0@sha256:19d4480011242bcad63e84dd2408ccbf834ce48a9d34381dcc22bf126daf6873
         workingDir: "/config"
         args:
           - --user-data-dir
