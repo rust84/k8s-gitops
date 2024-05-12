@@ -26,14 +26,14 @@ nodes:
     disableSearchDomain: true
     networkInterfaces:
       - interface: eth0
-        mtu: 1500
+        mtu: 9000
         dhcp: false
         vlans:
           - vlanId: 20
             dhcp: false
             addresses:
               - 10.20.0.128/24
-            mtu: 1500
+            mtu: 9000
             routes:
               - network: 0.0.0.0/0
                 gateway: 10.20.0.1
@@ -53,14 +53,14 @@ nodes:
     disableSearchDomain: true
     networkInterfaces:
       - interface: eth0
-        mtu: 1500
+        mtu: 9000
         dhcp: false
         vlans:
           - vlanId: 20
             dhcp: false
             addresses:
               - 10.20.0.125/24
-            mtu: 1500
+            mtu: 9000
             routes:
               - network: 0.0.0.0/0
                 gateway: 10.20.0.1
@@ -80,14 +80,14 @@ nodes:
     disableSearchDomain: true
     networkInterfaces:
       - interface: eth0
-        mtu: 1500
+        mtu: 9000
         dhcp: false
         vlans:
           - vlanId: 20
             dhcp: false
             addresses:
               - 10.20.0.127/24
-            mtu: 1500
+            mtu: 9000
             routes:
               - network: 0.0.0.0/0
                 gateway: 10.20.0.1
