@@ -117,6 +117,7 @@ spec:
     bgpControlPlane:
       enabled: true
 
+    # Legacy MetalLB based control plane
     bgp:
       enabled: false
       announce:
