@@ -20,12 +20,7 @@ metadata:
   labels:
     substitution.flux.home.arpa/disabled: "true"
 spec:
-  interval: 5m0s
-  sourceRef:
-    kind: GitRepository
-    name: k8s-gitops
   dependsOn:
-    - name: cluster-namespaces
     - name: core-system-upgrade-controller-app
   path: "./k8s/clusters/cluster-0/manifests/system-upgrade/system-upgrade-controller/plans"
   prune: true
