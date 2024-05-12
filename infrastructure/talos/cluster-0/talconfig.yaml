@@ -46,6 +46,13 @@ nodes:
     kernelModules:
       - name: usbserial
       - name: r8153_ecm
+    extensionServices: &nut
+      - name: nut-client
+        configFiles:
+          - content: |-
+              MONITOR ${upsmonHost} 1 monuser ${upsmonPasswd} slave
+              SHUTDOWNCMD "/sbin/poweroff"
+            mountPath: /usr/local/etc/nut/upsmon.conf
   - hostname: node-1.${domainName}
     ipAddress: 10.20.0.125
     controlPlane: true
@@ -73,6 +80,8 @@ nodes:
     kernelModules:
       - name: usbserial
       - name: r8153_ecm
+    extensionServices: 
+      *nut
   - hostname: node-2.${domainName}
     ipAddress: 10.20.0.127
     controlPlane: true
@@ -100,6 +109,8 @@ nodes:
     kernelModules:
       - name: usbserial
       - name: r8153_ecm
+    extensionServices: 
+      *nut
 controlPlane:
   schematic:
     customization:
@@ -192,12 +203,6 @@ controlPlane:
                 [plugins."io.containerd.grpc.v1.cri"]
                   enable_unprivileged_ports = true
                   enable_unprivileged_icmp = true
-          - op: create
-            path: /var/etc/nut/upsmon.conf
-            permissions: 0o644
-            content: |
-              MONITOR ${upsmonHost} 1 monuser ${upsmonPasswd} slave
-              SHUTDOWNCMD "/sbin/poweroff"
     # Disable default API server admission plugins.
     - |-
       - op: remove
@@ -217,13 +222,12 @@ controlPlane:
       machine:
         kubelet:
           extraArgs:
-            feature-gates: GracefulNodeShutdown=true
             rotate-server-certificates: "true"
           extraConfig:
             maxPods: 150
           nodeIP:
             validSubnets:
-                - 10.20.0.1/24
+                - 10.20.0.0/24
     # Custom sysctls
     - |-
       machine:
