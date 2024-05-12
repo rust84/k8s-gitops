@@ -1,4 +1,5 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   // General RenovateBot configuration
   "extends": [
     "config:recommended",
@@ -39,13 +40,35 @@
   "customManagers": [
     {
       "customType": "regex",
-      "description": "Regex manager to read and process GitHub release artifacts",
-      "fileMatch": ["k8s/.+\\.ya?ml$"],
-      "matchStrings": [
-        "https://github.com/(?<org>.*=?)/(?<repo>.*=?)/releases/download/(?<currentValue>.*=?)/.*"
+      "description": ["Process custom dependencies"],
+      "fileMatch": [
+        "(^|/).taskfiles/.+\\.ya?ml(?:\\.j2)?$",
+        "(^|/)infrastructure/.+\\.ya?ml(?:\\.j2)?$",
+        "(^|/)k8s/.+\\.ya?ml(?:\\.j2)?$"
       ],
-      "datasourceTemplate": "github-releases",
-      "depNameTemplate": "{{org}}/{{repo}}"
+      "matchStrings": [
+        // # renovate: datasource=github-releases depName=k3s-io/k3s
+        // k3s_release_version: &version v1.29.0+k3s1
+        // # renovate: datasource=helm depName=cilium repository=https://helm.cilium.io
+        // version: 1.15.1
+        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( repository=(?<registryUrl>\\S+))?\\n.+: (&\\S+\\s)?(?<currentValue>\\S+)",
+        // # renovate: datasource=github-releases depName=rancher/system-upgrade-controller
+        // https://github.com/rancher/system-upgrade-controller/releases/download/v0.13.2/crd.yaml
+        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\n.+/(?<currentValue>(v|\\d)[^/]+)"
+      ],
+      "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}"
+    },
+    {
+      "customType": "regex",
+      "description": ["Process CloudnativePG Postgresql version"],
+      "fileMatch": [
+        "(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"
+      ],
+      "matchStrings": [
+        "imageName: (?<depName>\\S+):(?<currentValue>.*\\-.*)"
+      ],
+      "datasourceTemplate": "docker",
+      "versioningTemplate": "redhat"
     },
     {
       "customType": "regex",
@@ -58,46 +81,6 @@
         "datasource=(?<datasource>\\S+) image=(?<depName>\\S+)\n.*?-\\s(.*?)/(?<currentValue>[^/]+)/[^/]+\n"
       ],
       "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}helm{{/if}}"
-    },
-    {
-      "customType": "regex",
-      "description": "Process various other dependencies",
-      "fileMatch": ["k8s/.+\\.ya?ml$"],
-      "matchStrings": [
-        "datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)( versioning=(?<versioning>\\S+))?\n.*?\"(?<currentValue>.*)\"\n"
-      ],
-      "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}",
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}semver{{/if}}"
-    },
-    {
-      "customType": "regex",
-      "description": "Generic Docker image Regex manager",
-      "fileMatch": ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"],
-      "matchStrings": [
-        "docker-image( registryUrl=(?<registryUrl>.*?))?( versioning=(?<versioning>.*=?))?\n.*: (?<depName>.*?):(?<currentValue>.*=?)"
-      ],
-      "datasourceTemplate": "docker",
-      "versioningTemplate": "{{#if versioning}}{{{versioning}}}{{else}}docker{{/if}}",
-      "registryUrlTemplate": "{{#if registryUrl}}{{{registryUrl}}}{{else}}{{/if}}"
-    },
-    {
-      "customType": "regex",
-      "description": "regexManager to read and process Traefik CRD's",
-      "fileMatch": ["k8s/clusters/cluster-0/crds/traefik/.+\\.ya?ml$"],
-      "matchStrings": [
-        "registryUrl=(?<registryUrl>.*?) chart=(?<depName>.*?)\n *tag: v(?<currentValue>.*)\n"
-      ],
-      "datasourceTemplate": "helm"
-    },
-    {
-      "customType": "regex",
-      "description": "Raw GitHub URL Regex manager",
-      "fileMatch": ["k8s/.+\\.ya?ml$"],
-      "matchStrings": [
-        "https:\\/\\/raw.githubusercontent.com\\/(?<depName>[\\w\\d\\-_]+\\/[\\w\\d\\-_]+)\\/(?<currentValue>[\\w\\d\\.\\-_]+)\\/.*"
-      ],
-      "datasourceTemplate": "github-releases",
-      "versioningTemplate": "semver"
     }
   ],
   "packageRules": [
@@ -106,25 +89,17 @@
     {"matchDatasources": ["docker"], "commitMessageExtra": "to {{newVersion}}"},
     // Custom version schemes
     {
+      "description": ["Custom versioning for frigate"],
       "matchDatasources": ["docker"],
-      "matchPackageNames": ["blakeblackshear/frigate"],
-      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)-(?<compatibility>.*)$"
-    },
-    {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": [
-        "ghcr.io/linuxserver/calibre",
-        "ghcr.io/linuxserver/calibre-web"
-      ],
-      "versioning": "regex:^version-v?(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$"
+      "versioning": "regex:^(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)(-(?<compatibility>beta)(?<build>\\d+))?$",
+      "matchPackagePatterns": ["frigate"]
     },
     // Version strategies
     {
+      "description": ["Loose versioning for non-semver packages"],
       "matchDatasources": ["docker"],
-      "matchPackageNames": ["ghcr.io/onedr0p/plex"],
+      "matchPackagePatterns": ["plex","qbittorrent"],
       "versioning": "loose"
-    },
-    // Fly.io
-    {"matchPackagePatterns": ["fly\\.toml$"], "matchUpdateTypes": ["docker"]}
+    }
   ]
 }
