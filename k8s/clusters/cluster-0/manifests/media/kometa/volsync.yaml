@@ -45,7 +45,7 @@ metadata:
   name: kometa
   namespace: media
 spec:
-  sourcePVC: kometa-config-v1
+  sourcePVC: plex-meta-manager-config-v1
   trigger:
     schedule: "7 0 * * *"
   restic:
