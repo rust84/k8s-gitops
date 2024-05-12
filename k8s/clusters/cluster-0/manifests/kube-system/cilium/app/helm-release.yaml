@@ -128,7 +128,7 @@ spec:
       tproxy: true
 
     l2announcements:
-      enabled: true
+      enabled: false
       leaseDuration: 120s
       leaseRenewDeadline: 60s
       leaseRetryPeriod: 1s
