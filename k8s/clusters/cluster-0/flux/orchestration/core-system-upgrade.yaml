@@ -17,8 +17,6 @@ kind: Kustomization
 metadata:
   name: core-system-upgrade-controller-plans
   namespace: flux-system
-  labels:
-    substitution.flux.home.arpa/disabled: "true"
 spec:
   dependsOn:
     - name: core-system-upgrade-controller-app
