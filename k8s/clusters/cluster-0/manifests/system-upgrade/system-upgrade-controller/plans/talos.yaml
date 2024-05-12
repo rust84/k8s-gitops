@@ -6,7 +6,7 @@ metadata:
   name: talos
   namespace: system-upgrade
 spec:
-  version: ${TALOS_VERSION}
+  version: "${TALOS_VERSION}"
   serviceAccountName: system-upgrade
   secrets:
     - name: talos
@@ -28,22 +28,36 @@ spec:
     - key: node-role.kubernetes.io/control-plane
       operator: Exists
       effect: NoSchedule
-  prepare: &prepare
-    image: ghcr.io/siderolabs/talosctl:${TALOS_VERSION}
+  prepare:
+    image: "registry.k8s.io/kubectl:v1.29.2@sha256:ac66c804f411269a1caa8cc907447fcd00a4476cfb627a4756845c85e685a671"
+    args:
+      - "wait"
+      - "--timeout=3600s"
+      - |
+        --for=jsonpath=.status.ceph.health=HEALTH_OK
+      - "cephcluster"
+      - "--all"
+      - "--all-namespaces"
+    # image: ghcr.io/siderolabs/talosctl:${TALOS_VERSION}
+    # envs:
+    #   - name: NODE_IP
+    #     valueFrom:
+    #       fieldRef:
+    #         fieldPath: status.hostIP
+    # args:
+    #   - --nodes=$(NODE_IP)
+    #   - health
+    #   - --server=false
+  upgrade:
+    image: "ghcr.io/siderolabs/talosctl:${TALOS_VERSION}"
     envs:
       - name: NODE_IP
         valueFrom:
           fieldRef:
             fieldPath: status.hostIP
     args:
-      - --nodes=$(NODE_IP)
-      - health
-      - --server=false
-  upgrade:
-    <<: *prepare
-    args:
-      - --nodes=$(NODE_IP)
-      - upgrade
-      - --image=factory.talos.dev/installer/33d587693ede0aaa88613fdb080fa52c18f26f68ed8e143139f583eb2cb3e4e1:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)
-      - --preserve=true
-      - --wait=false
+      - "--nodes=$(NODE_IP)"
+      - "upgrade"
+      - "--image=${TALOS_IMAGE}:$(SYSTEM_UPGRADE_PLAN_LATEST_VERSION)"
+      - "--preserve=true"
+      - "--wait=false"
