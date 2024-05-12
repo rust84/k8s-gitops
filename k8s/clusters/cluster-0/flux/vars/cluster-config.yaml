@@ -34,6 +34,6 @@ data:
   SVC_QBITTORRENT_ADDR: "10.1.0.159"
 
   # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-  TALOS_VERSION: v1.6.4
+  TALOS_VERSION: v1.7.1
   # renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
   KUBERNETES_VERSION: 1.29.1
