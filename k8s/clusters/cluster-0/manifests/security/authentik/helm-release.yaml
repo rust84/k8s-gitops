@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: *app
-      version: 2023.10.7
+      version: 2024.4.2
       sourceRef:
         kind: HelmRepository
         name: authentik-charts
@@ -38,7 +38,7 @@ spec:
               name: authentik-secret
     image:
       repository: ghcr.io/goauthentik/server
-      tag: 2023.10.7@sha256:8ebdd51a95d3efdcb0cf3b26ed849cc0f9a8c032adb8cd595cabb59a1f321161
+      tag: 2024.4.2@sha256:a2e592a08eb3c9e3435aa4e6585d60cc1eb54850da9d1498d56a131bbfbe03ff
     envFrom: *envFrom
     ingress:
       enabled: true
