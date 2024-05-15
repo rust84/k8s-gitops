@@ -15,6 +15,7 @@ sonarr:
       - name: Web 1080p
         reset_unmatched_scores:
           enabled: true
+          except: ["Language: Not English"]
         upgrade:
           allowed: true
           until_quality: Web-1080p
