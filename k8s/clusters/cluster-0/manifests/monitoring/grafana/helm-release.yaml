@@ -80,30 +80,30 @@ spec:
     dashboards:
       default:
         node-exporter-full:
+          # renovate: depName="Node Exporter Full with Node Name"
           gnetId: 1860
           revision: 30
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/11315-unifi-poller-client-insights-prometheus
         unifi-client-insights:
+          # renovate: depName="UniFi-Poller: Network Sites - Prometheus"
           gnetId: 11315
           revision: 9
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/11311-unifi-poller-network-sites-prometheus
         unifi-network-sites:
+          # renovate: depName="UniFi-Poller: Network Sites - Prometheus"
           gnetId: 11311
           revision: 5
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/11314-unifi-poller-uap-insights-prometheus
         unifi-uap-insights:
+          # renovate: depName="UniFi-Poller: UAP Insights - Prometheus"
           gnetId: 11314
           revision: 10
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/11312-unifi-poller-usw-insights-prometheus
         unifi-usw-insights:
+          # renovate: depName="UniFi-Poller: USW Insights - Prometheus"
           gnetId: 11312
           revision: 9
           datasource: Prometheus
-        # Ref: https://grafana.com/grafana/dashboards/7845-zfs/
         zfs:
           gnetId: 7845
           revision: 4
