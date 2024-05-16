@@ -4,8 +4,7 @@
     {
       "description": "Rook-Ceph image and chart and CRDs",
       "groupName": "Rook Ceph",
-      "matchPackagePatterns": ["rook"],
-      "matchDatasources": ["docker", "github-releases", "helm"],
+      "matchPackagePatterns": ["rook.ceph"],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
       "separateMinorPatch": true
     },
