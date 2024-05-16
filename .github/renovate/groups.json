@@ -4,16 +4,8 @@
     {
       "description": "Rook-Ceph image and chart and CRDs",
       "groupName": "Rook Ceph",
-      "matchPackagePatterns": ["rook.ceph"],
+      "matchPackagePatterns": ["rook"],
       "matchDatasources": ["docker", "github-releases", "helm"],
-      "group": { "commitMessageTopic": "{{{groupName}}} group" },
-      "separateMinorPatch": true
-    },
-    {
-      "description": "External Snapshotter image and kustomization",
-      "groupName": "External Snapshotter",
-      "matchPackagePatterns": ["external-snapshotter", "snapshot-controller"],
-      "matchDatasources": ["docker", "github-tags"],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
       "separateMinorPatch": true
     },
@@ -36,19 +28,6 @@
       "separateMinorPatch": false
     },
     {
-      "description": "Kubernetes images",
-      "groupName": "Kubernetes",
-      "matchDatasources": ["docker"],
-      "matchPackageNames": [
-        "k8s.gcr.io/kube-apiserver",
-        "k8s.gcr.io/kube-controller-manager",
-        "k8s.gcr.io/kube-scheduler",
-        "ghcr.io/siderolabs/kubelet"
-      ],
-      "group": { "commitMessageTopic": "{{{groupName}}} group" },
-      "separateMinorPatch": true
-    },
-    {
       "description": "Cilium image and chart",
       "groupName": "Cilium",
       "matchDatasources": ["helm", "docker", "github-releases"],
@@ -58,14 +37,6 @@
         "cilium",
         "cilium/cilium"
       ],
-      "group": { "commitMessageTopic": "{{{groupName}}} group" },
-      "separateMinorPatch": true
-    },
-    {
-      "description": "Authentik image and chart",
-      "groupName": "Authentik",
-      "matchDatasources": ["helm", "docker"],
-      "matchPackageNames": ["ghcr.io/goauthentik/server", "authentik"],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
       "separateMinorPatch": true
     },
@@ -85,13 +56,6 @@
         "ghcr.io/onedr0p/home-assistant",
         "codercom/code-server"
       ],
-      "group": { "commitMessageTopic": "{{{groupName}}} group" },
-      "separateMinorPatch": true
-    },
-    {
-      "description": "Traefik CRDs and chart",
-      "groupName": "Traefik",
-      "matchPackageNames": ["traefik", "traefik-crd-source"],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
       "separateMinorPatch": true
     }
