@@ -5,16 +5,6 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": ["ghcr.io/linuxserver/calibre-web"],
       "allowedVersions": "<1"
-    },
-    {
-      "matchDatasources": ["docker"],
-      "matchPackageNames": [
-        "k8s.gcr.io/kube-apiserver",
-        "k8s.gcr.io/kube-controller-manager",
-        "k8s.gcr.io/kube-scheduler",
-        "ghcr.io/siderolabs/kubelet"
-      ],
-      "allowedVersions": "~1.25.2"
     }
   ]
 }
