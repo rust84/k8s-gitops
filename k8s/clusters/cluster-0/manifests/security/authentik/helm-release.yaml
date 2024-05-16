@@ -54,6 +54,9 @@ spec:
           password: ""
       postgresql:
         enabled: false
+    prometheus:
+      rules:
+        enabled: true
     redis:
       enabled: true
       persistence:
@@ -68,6 +71,10 @@ spec:
         save ""
         maxmemory 94371840
         maxmemory-policy allkeys-lru
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
     server:
       replicas: 1
       initContainers:
@@ -89,6 +96,10 @@ spec:
           - hosts:
               - id.${SECRET_DOMAIN}
             secretName: tls.authentik
+      metrics:
+        enabled: true
+        serviceMonitor:
+          enabled: true
     worker:
       replicas: 2
   valuesFrom:
