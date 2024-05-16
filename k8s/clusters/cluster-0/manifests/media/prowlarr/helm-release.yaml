@@ -34,15 +34,18 @@ spec:
           - secretRef:
               name: *app
     image:
-      repository: ghcr.io/onedr0p/prowlarr-nightly
-      tag: 1.18.0.4513@sha256:9c18e6c34bf604f0bb610498960e9ac1305b7ee150f4085f242473a4f42d50d9
+      repository: ghcr.io/onedr0p/prowlarr-develop
+      tag: 1.17.2.4511@sha256:01dce2a9c0e29a2a5338a9457698ea3e027727bed6b9f0ab7ac4a259cafb991b
     env:
       TZ: "${TZ}"
-      PROWLARR__INSTANCE_NAME: Prowlarr
+      PROWLARR__APP__INSTANCENAME: Prowlarr
+      PROWLARR__APP__THEME: dark
+      PROWLARR__AUTH__METHOD: External
+      PROWLARR__LOG__DBENABLED: "False"
+      PROWLARR__LOG__LEVEL: info
       PROWLARR__PORT: &port 9696
-      PROWLARR__LOG_LEVEL: info
-      PROWLARR__AUTHENTICATION_METHOD: External
-      PROWLARR__THEME: dark
+      PROWLARR__ANALYTICSENABLED: "False"
+      PROWLARR__UPDATE__BRANCH: develop
     envFrom: *envFrom
     probes:
       liveness: &probes
@@ -99,7 +102,6 @@ spec:
         mountPath: /config/Backups
     resources:
       requests:
-        cpu: 44m
-        memory: 141Mi
+        cpu: 10m
       limits:
-        memory: 141Mi
+        memory: 1Gi

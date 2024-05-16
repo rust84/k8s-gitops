@@ -42,14 +42,17 @@ spec:
           main:
             image:
               repository: ghcr.io/onedr0p/radarr-develop
-              tag: 5.5.2.8781@sha256:4b7de43df00613272532de7ecfc6a3207cb0a74fdcb2b05dd110ec2ebb493352
+              tag: 5.6.0.8846@sha256:b3137a2b451683d834627bf6997460f26eb864757b1ffb5eb6544a8ba6d432ef
             env:
               TZ: "${TZ}"
-              RADARR__INSTANCE_NAME: Radarr
+              RADARR__APP__INSTANCENAME: ${APP}
+              RADARR__APP__THEME: dark
+              RADARR__AUTH__METHOD: External
+              RADARR__AUTH__REQUIRED: DisabledForLocalAddresses
+              RADARR__LOG__DBENABLED: "False"
+              RADARR__LOG__LEVEL: info
               RADARR__PORT: &port 7878
-              RADARR__LOG_LEVEL: info
-              RADARR__AUTHENTICATION_METHOD: External
-              RADARR__THEME: dark
+              RADARR__UPDATE__BRANCH: develop
             envFrom: *envFrom
             probes:
               liveness: &probes
