@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: *app
-      version: 2023.10.7
+      version: "2024.4"
       sourceRef:
         kind: HelmRepository
         name: authentik-charts
@@ -27,72 +27,62 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    annotations:
-      reloader.stakater.com/auto: 'true'
-    initContainers:
-      init-db:
-        image: ghcr.io/onedr0p/postgres-init:16.2@sha256:3436dfbbc2799332a01361e007e3b408d016cfc235261e1caccc65e6edadf516
-        imagePullPolicy: IfNotPresent
-        envFrom: &envFrom
-          - secretRef:
-              name: authentik-secret
-    image:
-      repository: ghcr.io/goauthentik/server
-      tag: 2023.10.7@sha256:8ebdd51a95d3efdcb0cf3b26ed849cc0f9a8c032adb8cd595cabb59a1f321161
-    envFrom: *envFrom
-    ingress:
-      enabled: true
-      ingressClassName: external
-      annotations:
-        cert-manager.io/cluster-issuer: letsencrypt-prod
-        kubernetes.io/tls-acme: "true"
-      hosts:
-        - host: id.${SECRET_DOMAIN}
-          paths:
-            - path: /
-      tls:
-        - secretName: tls.authentik
-          hosts:
-            - id.${SECRET_DOMAIN}
-    authentik:
-      email:
-        host: email-smtp.eu-west-1.amazonaws.com
-        port: 465
-        username: ${SECRET_EMAIL_USERNAME}
-        password: ${SECRET_EMAIL_PASSWORD}
-        use_ssl: true
-        from: ${AUTHENTIK_SMTP_FROM}
-      secret_key: ${AUTHENTIK_SECRET_KEY}
-      log_level: debug
-      outposts:
-        docker_image_base: ghcr.io/goauthentik/%(type)s:%(version)s
+    global:
+      podAnnotations:
+        reloader.stakater.com/auto: "true"
+      deploymentStrategy:
+        type: RollingUpdate
+      envFrom: &envFrom
+        - secretRef:
+            name: authentik-secret
+      authentik:
+        email:
+          host: email-smtp.eu-west-1.amazonaws.com
+          port: 465
+          username: ${SECRET_EMAIL_USERNAME}
+          password: ${SECRET_EMAIL_PASSWORD}
+          use_ssl: true
+          from: ${AUTHENTIK_SMTP_FROM}
+        log_level: info
+        postgresql:
+          port: 5432
+          name: ""
+          user: ""
+          password: ""
+        redis:
+          host: "{{ .Release.Name }}-redis-master"
+          password: ""
       postgresql:
-        port: 5432
-        name: ""
-        user: ""
-        password: ""
-      redis:
-        host: "{{ .Release.Name }}-redis-master"
-        password: ""
-    postgresql:
-      enabled: false
+        enabled: false
     redis:
       enabled: true
+      persistence:
+        enabled: false
       auth:
         enabled: true
-    resources:
-      server:
-        requests:
-          cpu: 48m
-          memory: 528Mi
-        limits:
-          memory: 528Mi
-      worker:
-        requests:
-          cpu: 27m
-          memory: 490Mi
-        limits:
-          memory: 490Mi
+    server:
+      replicas: 1
+      initContainers:
+        - name: init-db
+          image: ghcr.io/onedr0p/postgres-init:16.2@sha256:3436dfbbc2799332a01361e007e3b408d016cfc235261e1caccc65e6edadf516
+          imagePullPolicy: IfNotPresent
+          envFrom: *envFrom
+      ingress:
+        enabled: true
+        ingressClassName: external
+        annotations:
+          cert-manager.io/cluster-issuer: letsencrypt-prod
+          kubernetes.io/tls-acme: "true"
+        hosts:
+          - id.${SECRET_DOMAIN}
+        paths:
+          - "/"
+        tls:
+          - hosts:
+              - id.${SECRET_DOMAIN}
+            secretName: tls.authentik
+    worker:
+      replicas: 2
   valuesFrom:
     - kind: Secret
       name: authentik-secret

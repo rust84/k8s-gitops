@@ -20,7 +20,6 @@ metadata:
 spec:
   dependsOn:
     - name: cluster-namespaces
-    - name: rook-ceph-cluster
     - name: apps-security-dex
     - name: apps-database-cloudnative-pg-cluster
   path: "./k8s/clusters/cluster-0/manifests/security/authentik"
