@@ -58,8 +58,16 @@ spec:
       enabled: true
       persistence:
         enabled: false
+        size: 1Gi
       auth:
         enabled: true
+      commonConfiguration: |-
+        # Enable AOF https://redis.io/topics/persistence#append-only-file
+        appendonly yes
+        # Disable RDB persistence, AOF persistence already enabled.
+        save ""
+        maxmemory 94371840
+        maxmemory-policy allkeys-lru
     server:
       replicas: 1
       initContainers:
