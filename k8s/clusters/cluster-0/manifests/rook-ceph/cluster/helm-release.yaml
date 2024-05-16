@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -181,11 +181,11 @@ spec:
 
   postRenderers:
     - kustomize:
-        patchesJson6902:
+        patches:
           - target:
               kind: PrometheusRule
               name: prometheus-ceph-rules
-            patch:
+            patch: |
               - op: remove
                 path: /spec/groups/6/rules/1
               - op: remove

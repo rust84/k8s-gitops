@@ -1,5 +1,5 @@
 ---
-# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2beta2.json
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
@@ -94,11 +94,11 @@ spec:
       valuesKey: USER_1_PASSWORD
   postRenderers:
     - kustomize:
-        patchesJson6902:
+        patches:
           - target:
               kind: Service
               name: emqx
-            patch:
+            patch: |
               - op: add
                 path: "/metadata/labels"
                 value:
