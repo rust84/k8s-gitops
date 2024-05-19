@@ -97,7 +97,7 @@
     {
       "description": ["Loose versioning for non-semver packages"],
       "matchDatasources": ["docker"],
-      "matchPackagePatterns": ["plex","qbittorrent"],
+      "matchPackagePatterns": ["plex","qbittorrent", "fireflyiii"],
       "versioning": "loose"
     }
   ]
