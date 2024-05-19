@@ -39,7 +39,7 @@ spec:
               name: fireflyiii-secret
     image:
       repository: fireflyiii/core
-      tag: version-6.0.13
+      tag: version-6.1.16
     env:
       TZ: ${TZ}
       APP_URL: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
