@@ -6,7 +6,7 @@ metadata:
   name: &app external-dns
   namespace: network
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: external-dns
@@ -15,8 +15,7 @@ spec:
         kind: HelmRepository
         name: external-dns-charts
         namespace: flux-system
-      interval: 15m
-  maxHistory: 3
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
@@ -25,8 +24,6 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     nameOverride: external-dns
     interval: 2m
