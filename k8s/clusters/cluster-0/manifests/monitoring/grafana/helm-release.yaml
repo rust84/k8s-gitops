@@ -79,6 +79,24 @@ spec:
               path: /var/lib/grafana/dashboards/default
     dashboards:
       default:
+        blocky:
+          # renovate: depName="blocky"
+          gnetId: 13768
+          revision: 3
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
+            - { name: VAR_BLOCKY_URL, value: 'http:\/\/blocky.russhome.xyz' }
+        cloudflared:
+          # renovate: depName="Cloudflare Tunnels (cloudflared)"
+          gnetId: 17457
+          revision: 6
+          datasource:
+            - { name: DS_PROMETHEUS, value: Prometheus }
+        external-dns:
+          # renovate: depName="External-dns"
+          gnetId: 15038
+          revision: 3
+          datasource: Prometheus
         node-exporter-full:
           # renovate: depName="Node Exporter Full with Node Name"
           gnetId: 1860
