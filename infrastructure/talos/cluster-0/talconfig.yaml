@@ -28,6 +28,8 @@ nodes:
       - interface: eth0
         mtu: 1500
         dhcp: false
+        vip:
+          ip: ${clusterEndpointIP}
         vlans:
           - vlanId: 20
             dhcp: false
@@ -62,6 +64,8 @@ nodes:
       - interface: eth0
         mtu: 1500
         dhcp: false
+        vip:
+          ip: ${clusterEndpointIP}
         vlans:
           - vlanId: 20
             dhcp: false
@@ -91,6 +95,8 @@ nodes:
       - interface: eth0
         mtu: 1500
         dhcp: false
+        vip:
+          ip: ${clusterEndpointIP}
         vlans:
           - vlanId: 20
             dhcp: false
@@ -135,14 +141,14 @@ controlPlane:
       machine:
         network:
           nameservers:
-            - 10.20.0.1
+            - 192.168.1.121
     # Configure NTP
     - |-
       machine:
         time:
           disabled: false
           servers:
-            - 10.20.0.1
+            - 192.168.1.50
     # Enable KubePrism
     - |-
       machine:
