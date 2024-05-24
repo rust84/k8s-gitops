@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/joryirving/home-ops/main/.docs/icons/logo.png" align="center" width="144px" height="144px"/>
+<img src="https://camo.githubusercontent.com/0b88a728a74d44cb11f842cbed1cacb61f4d67f09b3dcf5926ac4767a1bb1c27/68747470733a2f2f692e696d6775722e636f6d2f7031527a586a512e706e67" align="center" width="144px" height="144px"/>
 
 ### My Homelab Repository :octocat:
 
