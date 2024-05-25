@@ -29,7 +29,7 @@ spec:
 
     env:
       TZ: "${TZ}"
-      ESPHOME_DASHBOARD_USE_PING: true
+      ESPHOME_DASHBOARD_USE_PING: false
 
     podAnnotations:
       k8s.v1.cni.cncf.io/networks: |
