@@ -5,11 +5,17 @@ metadata:
   name: l2-policy
 spec:
   loadBalancerIPs: true
-  interfaces:
-    - eth0.20
+  interfaces: ["^eth.*"]
   nodeSelector:
     matchLabels:
       kubernetes.io/os: linux
-  serviceSelector:
-    matchLabels:
-      io.cilium/lb-ipam-layer2: "true"
+---
+apiVersion: "cilium.io/v2alpha1"
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: cilium-cluster-0
+spec:
+  allowFirstLastIPs: "Yes"
+  blocks:
+    start: 10.20.0.130
+    stop: 10.20.0.149

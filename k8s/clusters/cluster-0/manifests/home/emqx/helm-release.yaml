@@ -62,7 +62,7 @@ spec:
       type: LoadBalancer
       externalTrafficPolicy: Cluster
       annotations:
-        "io.cilium/lb-ipam-ips": "${SVC_EMQX_ADDRESS}"
+        "io.cilium/lb-ipam-ips": 10.20.0.132
     affinity:
       podAntiAffinity:
         requiredDuringSchedulingIgnoredDuringExecution:

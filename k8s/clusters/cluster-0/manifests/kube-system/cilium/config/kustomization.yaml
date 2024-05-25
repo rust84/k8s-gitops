@@ -5,4 +5,3 @@ kind: Kustomization
 resources:
   - bgppeeringpolicy.yaml
   - l2announcementpolicy.yaml
-  - loadbalancerippool.yaml
