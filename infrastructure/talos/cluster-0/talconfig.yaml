@@ -142,13 +142,6 @@ controlPlane:
         network:
           nameservers:
             - 192.168.1.121
-    # Configure NTP
-    - |-
-      machine:
-        time:
-          disabled: false
-          servers:
-            - 192.168.1.50
     # Enable KubePrism
     - |-
       machine:
