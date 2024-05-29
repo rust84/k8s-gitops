@@ -89,7 +89,8 @@ spec:
         [{
           "name": "multus-iot",
           "namespace": "network",
-          "ips": ["10.30.0.13/24"]
+          "ips": ["10.30.0.13/24"],
+          "mac": "5e:35:59:8d:25:4e"
         }]
     podSecurityContext:
       runAsUser: 568

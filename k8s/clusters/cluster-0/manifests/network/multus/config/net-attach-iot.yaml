@@ -23,6 +23,10 @@ spec:
               { "dst": "${LAN_IOT_IP_CIDR}", "gw": "${LAN_IOT_GATEWAY_IP}" }
             ]
           }
+        },
+        {
+          "capabilities": { "mac": true },
+          "type": "tuning"
         }
       ]
     }
