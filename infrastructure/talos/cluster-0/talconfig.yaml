@@ -121,6 +121,8 @@ controlPlane:
   schematic:
     customization:
       extraKernelArgs:
+        - mitigations=off
+        - module_blacklist=e1000e
         - net.ifnames=0
         - talos.logging.kernel=udp://vector.${ingressDomain}:6050/
       systemExtensions:
