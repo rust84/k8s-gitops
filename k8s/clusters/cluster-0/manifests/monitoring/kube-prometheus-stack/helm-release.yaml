@@ -255,24 +255,3 @@ spec:
             existingSecret:
               name: thanos-objstore-secret
               key: objstore.yml
-        additionalScrapeConfigs:
-          - job_name: "home-assistant"
-            scrape_interval: 1m
-            scrape_timeout: 10s
-            metrics_path: "/api/prometheus"
-            bearer_token: "${SECRET_HASS_PROMETHEUS_TOKEN}"
-            scheme: http
-            honor_timestamps: true
-            static_configs:
-              - targets:
-                  - home-assistant.home.svc:8123
-          - job_name: "pikvm"
-            scrape_interval: 1m
-            scrape_timeout: 10s
-            metrics_path: "/api/export/prometheus/metrics"
-            basic_auth:
-              username: admin
-              password: "${SECRET_KVM_PROMETHEUS_PASS}"
-            honor_timestamps: true
-            static_configs:
-              - targets: ["kvm.${SECRET_DOMAIN}"]
