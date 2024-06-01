@@ -29,25 +29,17 @@ spec:
       operator: Exists
       effect: NoSchedule
   prepare:
-    image: "registry.k8s.io/kubectl:v1.30.1@sha256:0d615ea4861f59c0bc6576476462ec8e153e1712fda0f15afa87fe304db7d16b"
+    image: ghcr.io/siderolabs/talosctl:${TALOS_VERSION}
+    envs:
+      - name: NODE_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.hostIP
     args:
-      - "wait"
-      - "--timeout=3600s"
-      - |
-        --for=jsonpath=.status.ceph.health=HEALTH_OK
-      - "cephcluster"
-      - "--all"
-      - "--all-namespaces"
-    # image: ghcr.io/siderolabs/talosctl:${TALOS_VERSION}
-    # envs:
-    #   - name: NODE_IP
-    #     valueFrom:
-    #       fieldRef:
-    #         fieldPath: status.hostIP
-    # args:
-    #   - --nodes=$(NODE_IP)
-    #   - health
-    #   - --server=false
+      - "--nodes=$(NODE_IP)"
+      - "health"
+      - "--server=false"
+      - "--control-plane-nodes=10.20.0.125,10.20.0.127,10.20.0.128"
   upgrade:
     image: "ghcr.io/siderolabs/talosctl:${TALOS_VERSION}"
     envs:
