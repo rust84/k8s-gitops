@@ -1,8 +1,8 @@
 domainName: microserver.space
 clusterEndpointIP: 10.20.0.250
 ingressDomain: microserver.space
-upsmonHost: rack@192.168.1.1:3493
-upsmonPasswd: ENC[AES256_GCM,data:jAVku0nhzpc=,iv:S4ZhVBsOXSc1B7ZHRyYZF1Ar5gAtKtWuZO+XZpMEHBo=,tag:dtafSXOCrbX83kKLp8o+pw==,type:str]
+upsmonHost: rack@10.20.0.136:3493
+upsmonPasswd: ENC[AES256_GCM,data:jOYysrx6w9e9,iv:TsAlS2JTBB9sjZ15dTpLC0KvNkpRK0qcsqY8wKGKPXk=,tag:XJXoG3bzf/Q8qlq/N/rmFw==,type:str]
 sops:
     kms: []
     gcp_kms: []
@@ -18,8 +18,8 @@ sops:
             WUQzQkFCZTZTaHFLdHZFVWNPWS9PdDAKBA0DBh5BNd3Z8kmCZ5o3mAmJ8q4zcsNq
             PRQEaR5bB9f5vhVbTV1wnhOdFAV9cR2nFP7+59hYARtYC75q99SsyA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2023-11-04T15:55:17Z"
-    mac: ENC[AES256_GCM,data:28srz6SOdAhhNWNVLx05xnfA2SqWog6ey0Iecahw1a4YPKxiGZWntoN3hBbBZDs9E3Xt+9sg02Eiu/sGj7XRH/jIlb8s46DI9rgj28YxHD+xbkLu3w9UW7E5iYASU3G85i8rPHnmDPhuWqSZzed1ODmJBEvi52vNK6UauQu49Uc=,iv:1BDSOEbPWLSMO9N76en0VPSKCDm26D6vcZIqjuiu8UY=,tag:yYHNChk0sEO/5fD8MRPZRQ==,type:str]
+    lastmodified: "2024-06-01T01:45:34Z"
+    mac: ENC[AES256_GCM,data:v+PbFWwCItclEHaDvU2TZ8pr+C34CzGhtHN9i1Yew9sNRQIWNtJWkccP4FqXZGK+L3Q+vQqKML5TbW/eCsNhwaNAi8WERUfwpzBzq9CaewOaFgXg0e5wG9IKJcoa288M/LfIUrrXSbenwp8TEft1KMcSEm/HpM6l0atKXhOdluA=,iv:4m4M1pVGwzhMUedSOSQ3IHhaUBGWHH4p4gPxHv1E8E0=,tag:nsh2MgnlwlaieJ4ZOJ0cuw==,type:str]
     pgp: []
     encrypted_regex: ((?i)(pass|secret($|[^N])|key|token|^data$|^stringData))
     version: 3.8.1
