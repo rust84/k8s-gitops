@@ -8,6 +8,7 @@ spec:
   staticConfigs:
     - targets:
         - "nas.${SECRET_DOMAIN}:9100"
+        - wolf.russhome.xyz:9100
   metricsPath: /metrics
   relabelings:
     - action: replace
