@@ -7,8 +7,8 @@ metadata:
 spec:
   staticConfigs:
     - targets:
+        - "andariel.russhome.xyz:9100"
         - "nas.${SECRET_DOMAIN}:9100"
-        - wolf.russhome.xyz:9100
   metricsPath: /metrics
   relabelings:
     - action: replace
@@ -38,6 +38,7 @@ metadata:
 spec:
   staticConfigs:
     - targets:
+        - "andariel.russhome.xyz:9633"
         - "nas.${SECRET_DOMAIN}:9633"
   metricsPath: /metrics
   relabelings:
