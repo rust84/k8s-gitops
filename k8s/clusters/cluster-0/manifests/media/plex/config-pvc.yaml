@@ -14,3 +14,19 @@ spec:
     requests:
       storage: 20Gi
   storageClassName: rook-ceph-block
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: plex-cache
+  namespace: media
+  labels:
+    app.kubernetes.io/name: &name plex
+    app.kubernetes.io/instance: *name
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: rook-ceph-block

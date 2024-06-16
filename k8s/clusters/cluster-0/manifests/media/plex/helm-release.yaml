@@ -6,7 +6,7 @@ metadata:
   name: plex
   namespace: media
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
@@ -15,13 +15,17 @@ spec:
         kind: HelmRepository
         name: bjw-s-charts
         namespace: flux-system
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     image:
       repository: ghcr.io/onedr0p/plex
@@ -36,7 +40,7 @@ spec:
       supplementalGroups:
         - 44
         - 109
-        - 100
+        - 65542
     service:
       main:
         annotations:
@@ -65,6 +69,24 @@ spec:
       config:
         enabled: true
         existingClaim: plex-kube-plex-config
+        # TODO: If setting up Plex for the first time, you'll want to add the globalMounts section
+        # globalMounts:
+        #   - path: /config/Library/Application Support/Plex Media Server
+      # Separate PVC for cache to avoid backing up cache files
+      cache:
+        enabled: true
+        existingClaim: plex-cache
+        mountPath: /config/Library/Application Support/Plex Media Server/Cache
+      logs:
+        enabled: true
+        type: emptyDir
+        mountPath: /config/Library/Application Support/Plex Media Server/Logs
+      tmp:
+        enabled: true
+        type: emptyDir
+      transcode:
+        enabled: true
+        type: emptyDir
       media:
         enabled: true
         type: nfs
@@ -79,9 +101,6 @@ spec:
         path: /mnt/apps/backups/plex
         mountPath: /config/Backups
         readOnly: false
-      transcode:
-        enabled: true
-        type: emptyDir
     nodeSelector:
       intel.feature.node.kubernetes.io/gpu: "true"
     affinity:
