@@ -56,8 +56,8 @@ spec:
       runAsGroup: 1031
       fsGroup: 1031
       fsGroupChangePolicy: "OnRootMismatch"
-      supplementalGroups:
-        - 65541
+      supplementalGroups: 
+        - 65542
     service:
       main:
         enabled: false

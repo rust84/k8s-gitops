@@ -67,9 +67,8 @@ spec:
         mountPath: /config/backups
 
     podSecurityContext:
-      supplementalGroups:
-        - 1000
-
+      supplementalGroups: 
+        - 65542
     resources:
       requests:
         cpu: 20m

@@ -81,7 +81,8 @@ spec:
             runAsGroup: 568
             fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups: [100]
+            supplementalGroups: 
+              - 65542
     service:
       main:
         ports:
