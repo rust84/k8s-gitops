@@ -65,7 +65,7 @@ spec:
       nas-backups:
         enabled: true
         type: nfs
-        server: "nas.${SECRET_DOMAIN}"
-        path: /mnt/apps/backups/postgres
+        server: "duriel.internal"
+        path: /tank/Apps/backups/postgres
         mountPath: /backups
         readOnly: false

@@ -8,7 +8,6 @@ spec:
   staticConfigs:
     - targets:
         - "duriel.internal:9100"
-        - "nas.${SECRET_DOMAIN}:9100"
   metricsPath: /metrics
   relabelings:
     - action: replace
@@ -39,7 +38,6 @@ spec:
   staticConfigs:
     - targets:
         - "duriel.internal:9633"
-        - "nas.${SECRET_DOMAIN}:9633"
   metricsPath: /metrics
   relabelings:
     - action: replace

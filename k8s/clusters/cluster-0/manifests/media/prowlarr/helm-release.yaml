@@ -97,8 +97,8 @@ spec:
       backup:
         enabled: true
         type: nfs
-        server: "nas.${SECRET_DOMAIN}"
-        path: /mnt/apps/backups/prowlarr
+        server: "duriel.internal"
+        path: /tank/Apps/backups/prowlarr
         mountPath: /config/Backups
     resources:
       requests:

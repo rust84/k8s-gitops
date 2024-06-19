@@ -54,8 +54,8 @@ spec:
       nfs-nas-media:
         enabled: true
         type: nfs
-        server: "nas.${SECRET_DOMAIN}"
-        path: /mnt/borg/share
+        server: "duriel.internal"
+        path: /tank/Media
         mountPath: /data/ebooks
       cache:
         enabled: true

@@ -114,13 +114,10 @@ spec:
           name: pikvm-icmp
           url: "kvm.${SECRET_DOMAIN}"
 
-        # TrueNAS
-        - module: http_2xx
-          name: nas-http
-          url: "https://nas.${SECRET_DOMAIN}"
+        # NAS
         - module: icmp
           name: nas-icmp
-          url: "nas.${SECRET_DOMAIN}"
+          url: "duriel.internal"
 
     resources:
       requests:

@@ -128,13 +128,13 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: "nas.${SECRET_DOMAIN}"
-        path: /mnt/borg/share
+        server: "duriel.internal"
+        path: /tank/Media
         mountPath: /media
         readOnly: false
       backup:
         enabled: true
         type: nfs
-        server: "nas.${SECRET_DOMAIN}"
-        path: /mnt/apps/backups/radarr
+        server: "duriel.internal"
+        path: /tank/Apps/backups/radarr
         mountPath: /config/Backups

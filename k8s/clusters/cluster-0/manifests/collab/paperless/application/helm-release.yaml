@@ -85,26 +85,26 @@ spec:
       data:
         enabled: true
         type: nfs
-        server: "nas.${SECRET_DOMAIN}"
-        path: /mnt/borg/documents/paperless/data
+        server: "duriel.internal"
+        path: /tank/Apps/paperless/data
         mountPath: /usr/src/paperless/data
       media:
         enabled: true
         type: nfs
-        server: "nas.${SECRET_DOMAIN}"
-        path: /mnt/borg/documents/paperless/media
+        server: "duriel.internal"
+        path: /tank/Apps/paperless/media
         mountPath: /usr/src/paperless/media
       consume:
         enabled: true
         type: nfs
-        server: "nas.${SECRET_DOMAIN}"
-        path: /mnt/borg/documents/paperless/incoming
+        server: "duriel.internal"
+        path: /tank/Apps/paperless/incoming
         mountPath: /usr/src/paperless/consume
       export:
         enabled: true
         type: nfs
-        server: "nas.${SECRET_DOMAIN}"
-        path: /mnt/borg/documents/paperless/export
+        server: "duriel.internal"
+        path: /tank/Apps/paperless/export
         mountPath: /usr/src/paperless/export
     sidecars:
       redis:

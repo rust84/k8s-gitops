@@ -133,7 +133,7 @@ The alternative solution to these two problems would be to host a Kubernetes clu
 |-----------------------------|-------|--------------|-----------------------------|------|------------------|---------------------|
 | Intel NUC8i3BEH             | 1     | 500GB SSD      | 500GB SSD NVMe (rook-ceph)        | 64GB | Talos OS           | Control-plane/Worker  |
 | Intel NUC8i5BEH             | 2     | 500GB SSD      | 500GB SSD NVMe (rook-ceph)        | 64GB | Talos OS           | Control-plane/Workers  |
-| PowerEdge R720              | 1     | 256GB SSD      | 3x18TB ZFS (borg pool) 2x2TB Mirror (apps) | 64GB | TrueNAS           | NFS + Backup Server |
+| Jonsbo N3 custom build      | 1     | 256GB SSD      | 4x18TB ZFS Mirror (tank) | 32GB | NixOS           | NFS + Backup Server |
  PiKVM (Arch)     | Network KVM         |
 | TESmart 8 Port KVM Switch   | 1     | -            | -                           | -    | -                | Network KVM (PiKVM) |
 | AliExpress Topton J6413     | 1     | 128GB NVMe   | -                           | 8GB  | OPNsense    | Router              |

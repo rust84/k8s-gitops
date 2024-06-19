@@ -90,15 +90,15 @@ spec:
       media:
         enabled: true
         type: nfs
-        server: "nas.${SECRET_DOMAIN}"
-        path: /mnt/borg/share
+        server: "duriel.internal"
+        path: /tank/Media
         mountPath: /data
         readOnly: true
       backup:
         enabled: true
         type: nfs
-        server: "nas.${SECRET_DOMAIN}"
-        path: /mnt/apps/backups/plex
+        server: "duriel.internal"
+        path: /tank/Apps/backups/plex
         mountPath: /config/Backups
         readOnly: false
     nodeSelector:

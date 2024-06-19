@@ -62,8 +62,8 @@ spec:
       backup:
         enabled: true
         type: nfs
-        server: "nas.${SECRET_DOMAIN}"
-        path: /mnt/apps/backups/tautulli
+        server: "duriel.internal"
+        path: /tank/Apps/backups/tautulli
         mountPath: /config/backups
 
     podSecurityContext:
