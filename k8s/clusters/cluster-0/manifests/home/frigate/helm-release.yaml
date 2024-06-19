@@ -26,6 +26,9 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    securityContext:
+      supplementalGroups:
+        - 65542
     controllers:
       main:
         annotations:
