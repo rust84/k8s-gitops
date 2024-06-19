@@ -26,9 +26,6 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    securityContext:
-      supplementalGroups:
-        - 65542
     controllers:
       main:
         annotations:
@@ -62,6 +59,9 @@ spec:
             securityContext:
               privileged: true
         pod:
+          securityContext:
+            supplementalGroups: 
+              - 65542
           affinity:
             podAntiAffinity:
               requiredDuringSchedulingIgnoredDuringExecution:
