@@ -130,7 +130,7 @@ spec:
         enabled: true
         type: nfs
         server: "duriel.internal"
-        path: /tank/Media
+        path: /tank/Apps/frigate
         mountPath: /media
         readOnly: false
       usb:
