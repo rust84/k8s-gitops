@@ -131,11 +131,14 @@ spec:
         type: nfs
         server: "duriel.internal"
         path: /tank/Media
-        mountPath: /media
-        readOnly: false
+        globalMounts:
+          - path: /media
+            readOnly: false
       backup:
         enabled: true
         type: nfs
         server: "duriel.internal"
         path: /tank/Apps/backups/radarr
-        mountPath: /config/Backups
+        globalMounts:
+          - path: /config/Backups
+            readOnly: false
