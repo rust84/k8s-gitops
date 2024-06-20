@@ -110,13 +110,15 @@ spec:
         type: nfs
         server: "duriel.internal"
         path: /tank/Media
-        mountPath: /media
+        globalMounts:
+          - path: /media
       backup:
         enabled: true
         type: nfs
         server: "duriel.internal"
         path: /tank/Apps/backups/readarr
-        mountPath: /config/Backups
+        globalMounts:
+          - path: /config/Backups
     resources:
       requests:
         cpu: 39m

@@ -83,6 +83,12 @@ spec:
         server: "duriel.internal"
         path: /tank/Media
         mountPath: /media
+      backup:
+        enabled: true
+        type: nfs
+        server: "duriel.internal"
+        path: /tank/Apps/backups/bazarr
+        mountPath: /config/backup
     resources:
       requests:
         cpu: 146m

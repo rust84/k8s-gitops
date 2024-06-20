@@ -133,7 +133,6 @@ spec:
         path: /tank/Media
         globalMounts:
           - path: /media
-            readOnly: false
       backup:
         enabled: true
         type: nfs
@@ -141,4 +140,3 @@ spec:
         path: /tank/Apps/backups/radarr
         globalMounts:
           - path: /config/Backups
-            readOnly: false

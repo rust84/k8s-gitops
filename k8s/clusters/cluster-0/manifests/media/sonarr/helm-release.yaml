@@ -128,11 +128,12 @@ spec:
         type: nfs
         server: "duriel.internal"
         path: /tank/Media
-        mountPath: /media
-        readOnly: false
+        globalMounts:
+          - path: /media
       backup:
         enabled: true
         type: nfs
         server: "duriel.internal"
         path: /tank/Apps/backups/sonarr
-        mountPath: /config/Backups
+        globalMounts:
+          - path: /config/Backups
