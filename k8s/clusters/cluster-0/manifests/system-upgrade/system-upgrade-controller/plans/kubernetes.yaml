@@ -7,7 +7,7 @@ metadata:
   namespace: system-upgrade
 spec:
   # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
-  version: v1.30.1
+  version: v1.30.2
   serviceAccountName: system-upgrade
   secrets:
     - name: talos
@@ -30,14 +30,16 @@ spec:
       effect: NoSchedule
   prepare: &prepare
     image: "registry.k8s.io/kubectl:v1.30.2@sha256:8603c05f0fea1723aa4256074468b430d10e1512f4d55299a4c82707c1c68eb0"
+    envs:
+      - name: NODE_IP
+        valueFrom:
+          fieldRef:
+            fieldPath: status.hostIP
     args:
-      - "wait"
-      - "--timeout=3600s"
-      - |
-        --for=jsonpath=.status.ceph.health=HEALTH_OK
-      - "cephcluster"
-      - "--all"
-      - "--all-namespaces"
+      - "--nodes=$(NODE_IP)"
+      - "health"
+      - "--server=false"
+      - "--control-plane-nodes=10.20.0.125,10.20.0.127,10.20.0.128"
   upgrade:
     image: "ghcr.io/siderolabs/talosctl:${TALOS_VERSION}"
     envs:
