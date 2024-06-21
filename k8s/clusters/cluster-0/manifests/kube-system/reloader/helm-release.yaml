@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: reloader
-      version: 1.0.110
+      version: 1.0.108
       sourceRef:
         kind: HelmRepository
         name: stakater-charts
@@ -26,3 +26,5 @@ spec:
       retries: 3
   uninstall:
     keepHistory: false
+  values:
+    fullnameOverride: reloader
