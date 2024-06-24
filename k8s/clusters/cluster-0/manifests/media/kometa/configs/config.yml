@@ -15,11 +15,16 @@ libraries:
       - file: config/Movies - Overlays - Studios.yml
       - file: config/Movies - Overlays - Audio.yml
       - file: config/Movies - Overlays - Runtimes.yml
+    operations:
+      mass_genre_update: imdb
+      mass_content_rating_update: omdb
+      mass_audience_rating_update: mdb_tomatoesaudience
+      mass_critic_rating_update: mdb_metacritic
+      mass_user_rating_update: imdb
 
   TV Shows:
     collection_files:
       - file: config/TV Shows.yml
-      - file: config/TV-Shows-returning-soon-metadata.yml 
     overlay_files:
       - file: config/Overlays - Ratings.yml
       - file: config/TV Shows - Overlays - Charts.yml
@@ -27,21 +32,12 @@ libraries:
       - file: config/TV Shows - Overlays - Statuses.yml
       - file: config/TV Shows - Overlays - Streaming Services.yml
       - file: config/TV Shows - Overlays - Studios.yml
-
-  Movie Operations:
-    library_name: Movies
-    schedule: weekly(monday)
     operations:
-      mass_user_rating_update: imdb
+      mass_genre_update: tmdb
+      mass_content_rating_update: omdb
       mass_audience_rating_update: mdb_tomatoesaudience
-      mass_critic_rating_update: mdb
-  TV Show Operations:
-    library_name: TV Shows
-    schedule: weekly(wednesday)
-    operations:
+      mass_critic_rating_update: mdb_metacritic
       mass_user_rating_update: imdb
-      mass_audience_rating_update: mdb_tomatoesaudience
-      mass_critic_rating_update: mdb
 
 settings:
   cache: true
