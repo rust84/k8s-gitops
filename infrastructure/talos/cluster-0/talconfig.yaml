@@ -151,6 +151,15 @@ controlPlane:
           kubePrism:
             enabled: true
             port: 7445
+
+    # Disable DNS resolver cache
+    - |-
+      machine:
+        features:
+          hostDNS:
+            enabled: false
+            forwardKubeDNSToHost: true
+
     # Add cluster endpoint host entry
     - |-
       machine:
