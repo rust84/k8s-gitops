@@ -1,4 +1,6 @@
 #!/usr/bin/env zx
+import YAML from 'yaml';
+
 $.verbose = false
 
 /**
