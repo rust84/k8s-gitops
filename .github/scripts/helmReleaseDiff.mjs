@@ -1,4 +1,6 @@
 #!/usr/bin/env zx
+import YAML from 'yaml';
+
 $.verbose = false
 
 /**
@@ -17,11 +19,10 @@ const KubernetesDir = argv["kubernetes-dir"]
 const dyff = await which("dyff")
 const helm = await which("helm")
 const kustomize = await which("kustomize")
-const yaml = require("yaml");
 
 async function helmRelease(releaseFile) {
   const helmRelease = await fs.readFile(releaseFile, "utf8")
-  const doc = yaml.parseAllDocuments(helmRelease).map((item) => item.toJS())
+  const doc = YAML.parseAllDocuments(helmRelease).map((item) => item.toJS())
   const release = doc.filter(
     (item) =>
       item.apiVersion === "helm.toolkit.fluxcd.io/v2" &&
@@ -34,7 +35,7 @@ async function helmRepositoryUrl(kubernetesDir, releaseName) {
   const files = await globby([`${kubernetesDir}/**/*.yaml`])
   for await (const file of files) {
     const contents = await fs.readFile(file, "utf8")
-    const doc = yaml.parseAllDocuments(contents).map((item) => item.toJS())
+    const doc = YAML.parseAllDocuments(contents).map((item) => item.toJS())
     try {
       if (
         doc[0] &&
@@ -58,7 +59,7 @@ async function kustomizeBuild(releaseBaseDir, releaseName) {
 
   const build =
     await $`${kustomize} build --load-restrictor=LoadRestrictionsNone ${releaseBaseDir}`
-  const docs = yaml.parseAllDocuments(build.stdout).map((item) => item.toJS())
+  const docs = YAML.parseAllDocuments(build.stdout).map((item) => item.toJS())
   const release = docs.filter(
     (item) =>
       item.apiVersion === "helm.toolkit.fluxcd.io/v2" &&
@@ -79,7 +80,7 @@ async function helmTemplate(
   chartVersion,
   chartValues
 ) {
-  const values = new yaml.Document()
+  const values = new YAML.Document()
   values.contents = chartValues
   const valuesFile = await $`mktemp`
   await fs.writeFile(valuesFile.stdout.trim(), values.toString())
@@ -89,7 +90,7 @@ async function helmTemplate(
     await $`${helm} template --kube-version 1.29.0 --release-name ${releaseName} --include-crds=false ${registryName}/${chartName} --version ${chartVersion} --values ${valuesFile.stdout.trim()}`
 
   // Remove docs that are CustomResourceDefinition and keys which contain generated fields
-  let documents = yaml.parseAllDocuments(manifests.stdout.trim())
+  let documents = YAML.parseAllDocuments(manifests.stdout.trim())
   documents = documents.filter(
     (doc) => doc.get("kind") !== "CustomResourceDefinition"
   )
