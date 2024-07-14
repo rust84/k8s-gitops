@@ -75,8 +75,8 @@ jobs:
       - name: Diff
         id: diff
         run: |
-          npm install zx@8.1.4
-          diff=$(npx zx ./.github/scripts/helmReleaseDiff.mjs \
+          npm install zx@8.1.4 yaml
+          diff=$(npx zx@8.1.4 ./.github/scripts/helmReleaseDiff.mjs \
             --current-release "default/${{ matrix.file }}" \
             --incoming-release "${{ matrix.file }}" \
             --kubernetes-dir ${{ env.KUBERNETES_DIR }})

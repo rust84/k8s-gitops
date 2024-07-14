@@ -1,5 +1,11 @@
 #!/usr/bin/env zx
 $.verbose = false
+import { parseAllDocuments, Document } from 'yaml'
+
+export const YAML = {
+  parseAllDocuments,
+  Document
+}
 
 /**
  * * helmReleaseDiff.mjs
