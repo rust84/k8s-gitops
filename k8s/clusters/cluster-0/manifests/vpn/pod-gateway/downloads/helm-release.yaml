@@ -57,7 +57,7 @@ spec:
         - name:  DOT
           value: "off"
         - name: FIREWALL_VPN_INPUT_PORTS
-          value: 1637,22737
+          value: 1637,24279
         - name:  SERVER_COUNTRIES
           value: Belgium
 
@@ -103,9 +103,9 @@ spec:
       - IP: 10
         hostname: qbittorrent
         ports:
-          - port: 22737
+          - port: 24279
             type: udp
-          - port: 22737
+          - port: 24279
             type: tcp
 
     routed_namespaces:

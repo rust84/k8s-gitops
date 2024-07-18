@@ -37,7 +37,7 @@ spec:
     env:
       TZ: Europe/London
       QBITTORRENT__PORT: &port 8080
-      QBITTORRENT__BT_PORT: &port-bt 22737
+      QBITTORRENT__BT_PORT: &port-bt 24279
     service:
       main:
         ports:
