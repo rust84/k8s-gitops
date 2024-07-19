@@ -118,7 +118,7 @@ spec:
 
     persistence:
       config:
-        existingClaim: config-qbittorrent-0
+        existingClaim: qbittorrent
       media:
         enabled: true
         type: nfs
