@@ -56,6 +56,8 @@ spec:
               QBT_BitTorrent__Session__Interface: vxlan0
               QBT_BitTorrent__Session__InterfaceAddress: "0.0.0.0"
               QBT_BitTorrent__Session__InterfaceName: vxlan0
+              QBT_Preferences__WebUI__AlternativeUIEnabled: true
+              QBT_Preferences__WebUI__RootFolder: /add-ons/VueTorrent
             probes:
               liveness: &probes
                 enabled: true
@@ -78,7 +80,22 @@ spec:
                 cpu: 100m
               limits:
                 memory: 4Gi
-
+          vuetorrent:
+            dependsOn: app
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.2.4
+            args:
+              - --repo=https://github.com/WDaan/VueTorrent
+              - --ref=latest-release
+              - --period=86400s
+              - --root=/add-ons
+            resources:
+              requests:
+                cpu: 10m
+                memory: 25Mi
+              limits:
+                memory: 50Mi
         pod:
           securityContext:
             runAsUser: 568
@@ -126,3 +143,8 @@ spec:
       incomplete:
         enabled: true
         type: emptyDir
+      add-ons:
+        enabled: true
+        type: emptyDir
+        globalMounts:
+          - path: /add-ons
