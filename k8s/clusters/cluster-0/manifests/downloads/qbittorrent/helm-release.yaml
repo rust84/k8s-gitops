@@ -6,14 +6,14 @@ metadata:
   name: qbittorrent
   namespace: downloads
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 3.2.1
       sourceRef:
         kind: HelmRepository
-        name: bjw-s-charts
+        name: bjw-s
         namespace: flux-system
   maxHistory: 2
   install:
@@ -27,75 +27,105 @@ spec:
   uninstall:
     keepHistory: false
   values:
-    controller:
-      type: statefulset
+    defaultPodOptions:
+      labels:
+        setGateway: "true"
       annotations:
-        reloader.stakater.com/auto: "true"
-    image:
-      repository: ghcr.io/onedr0p/qbittorrent
-      tag: 4.6.5@sha256:c019af23966ebafcaf1713d4553bc043246858b711a7d57d8bee358a89990a3e
-    env:
-      TZ: Europe/London
-      QBITTORRENT__PORT: &port 8080
-      QBITTORRENT__BT_PORT: &port-bt 24279
+        setGateway: "true"
+
+    controllers:
+      qbittorrent:
+        annotations:
+          reloader.stakater.com/auto: "true"
+          setGateway: "true"
+        labels:
+          setGateway: "true"
+
+        containers:
+          app:
+            image:
+              repository: ghcr.io/onedr0p/qbittorrent
+              tag: 4.6.5@sha256:c019af23966ebafcaf1713d4553bc043246858b711a7d57d8bee358a89990a3e
+            env:
+              TZ: ${TZ}
+              QBITTORRENT__PORT: &port 8080
+              QBITTORRENT__BT_PORT: &port-bt 24279
+              QBT_BitTorrent__Session__Interface: vxlan0
+              QBT_BitTorrent__Session__InterfaceAddress: "0.0.0.0"
+              QBT_BitTorrent__Session__InterfaceName: vxlan0
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v2/app/version
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 4Gi
+
+    pod:
+      SecurityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [65542]
+      hostname: qbittorrent
+
     service:
-      main:
+      app:
+        controller: qbittorrent
+        type: ClusterIP # LoadBalancer
+        # annotations:
+        #   io.cilium/lb-ipam-ips: # free ip
         ports:
           http:
             port: *port
-      bittorrent:
-        enabled: true
-        ports:
           bittorrent:
             protocol: TCP
             port: *port-bt
-            targetPort: *port-bt
+
     ingress:
-      main:
+      app:
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "download-box"
-        enabled: true
-        ingressClassName: internal
+        className: internal
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
         tls:
           - secretName: "tls.{{ .Release.Name }}"
             hosts:
               - *host
-    podAnnotations:
-      setGateway: "true"
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: OnRootMismatch
-      supplementalGroups: 
-        - 65542
-    volumeClaimTemplates:
-      - name: config
-        mountPath: /config
-        accessMode: ReadWriteOnce
-        size: 1Gi
-        storageClass: rook-ceph-block
-    # Note: If downloading very large torrents it might be worth using NFS for your download directory.
-    # Beware if you are downloading torrents directly to a ZFS dataset that dataset will accrue fragmentation.
+
     persistence:
+      config:
+        existingClaim: config-qbittorrent-0
       media:
         enabled: true
         type: nfs
         server: "duriel.internal"
         path: /tank/Media
-        mountPath: /media
+        globalMounts:
+          - path: /media
       incomplete:
         enabled: true
         type: emptyDir
-    resources:
-      requests:
-        cpu: 10m
-        memory: 250Mi
-      limits:
-        memory: 6000Mi
