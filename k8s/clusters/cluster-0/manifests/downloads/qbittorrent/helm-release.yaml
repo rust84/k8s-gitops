@@ -50,6 +50,9 @@ spec:
               TZ: ${TZ}
               QBITTORRENT__PORT: &port 8080
               QBITTORRENT__BT_PORT: &port-bt 24279
+              QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
+              QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
+                ${CLUSTER_CIDR}, ${NODE_CIDR}, 192.168.0.0/24
               QBT_BitTorrent__Session__Interface: vxlan0
               QBT_BitTorrent__Session__InterfaceAddress: "0.0.0.0"
               QBT_BitTorrent__Session__InterfaceName: vxlan0
