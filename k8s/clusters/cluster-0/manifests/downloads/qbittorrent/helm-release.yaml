@@ -76,14 +76,14 @@ spec:
               limits:
                 memory: 4Gi
 
-    pod:
-      SecurityContext:
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
-        supplementalGroups: [65542]
-      hostname: qbittorrent
+        pod:
+          securityContext:
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [65542]
+          hostname: qbittorrent
 
     service:
       app:
