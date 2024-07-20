@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.2.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -27,11 +27,11 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      frigate:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/blakeblackshear/frigate
               tag: 0.13.2@sha256:2906991ccad85035b176941f9dedfd35088ff710c39d45ef1baa9a49f2b16734
@@ -58,39 +58,42 @@ spec:
                 enabled: false
             securityContext:
               privileged: true
+            resources:
+              requests:
+                cpu: 334m
+                memory: 2437Mi
+                gpu.intel.com/i915: 1
+              limits:
+                memory: 2437Mi
+                gpu.intel.com/i915: 1
         pod:
           securityContext:
             supplementalGroups: 
               - 65542
-          affinity:
-            podAntiAffinity:
-              requiredDuringSchedulingIgnoredDuringExecution:
-                - labelSelector:
-                    matchExpressions:
-                      - key: app.kubernetes.io/name
-                        operator: In
-                        values: ["plex"]
-                  topologyKey: kubernetes.io/hostname
-          nodeSelector:
-            google.feature.node.kubernetes.io/coral: "true"
-            intel.feature.node.kubernetes.io/gpu: "true"
-          resources:
-            requests:
-              cpu: 334m
-              memory: 2437Mi
-              gpu.intel.com/i915: 1
-            limits:
-              memory: 2437Mi
-              gpu.intel.com/i915: 1
+    defaultPodOptions:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app.kubernetes.io/name
+                    operator: In
+                    values: ["plex"]
+              topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        google.feature.node.kubernetes.io/coral: "true"
+        intel.feature.node.kubernetes.io/gpu: "true"
+
     service:
-      main:
+      app:
+        controller: *app
         ports:
           http:
             port: *port
           rtsp:
             port: 8554
     ingress:
-      main:
+      app:
         enabled: true
         className: external
         annotations:
@@ -108,7 +111,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - secretName: "tls.{{ .Release.Name }}"
@@ -116,7 +119,6 @@ spec:
               - *host
     persistence:
       config-file:
-        enabled: true
         type: configMap
         name: frigate-config
         globalMounts:
@@ -124,15 +126,13 @@ spec:
             subPath: config.yaml
             readOnly: true
       data:
-        enabled: true
         existingClaim: frigate-data
       media:
-        enabled: true
         type: nfs
         server: "duriel.internal"
         path: /tank/Apps/frigate
-        mountPath: /media
-        readOnly: false
+        globalMounts: 
+          - path: /media
       usb:
         enabled: true
         type: hostPath
@@ -145,4 +145,5 @@ spec:
         type: emptyDir
         medium: Memory
         sizeLimit: 2Gi
-        mountPath: /dev/shm
+        globalMounts: 
+          - path: /dev/shm
