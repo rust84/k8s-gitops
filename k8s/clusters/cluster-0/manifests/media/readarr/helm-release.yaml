@@ -10,64 +10,89 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 3.2.1
       sourceRef:
         kind: HelmRepository
-        name: bjw-s-charts
+        name: bjw-s
         namespace: flux-system
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
-    controller:
-      annotations:
-        reloader.stakater.com/auto: "true"
-    initContainers:
-      init-db:
-        image: ghcr.io/onedr0p/postgres-init:16.3@sha256:8ba3204f6b293dd168766009aae2ce4fa986a29b931c2d30ac1b30238ac750b8
-        imagePullPolicy: IfNotPresent
-        envFrom: &envFrom
-          - secretRef:
-              name: *app
-    image:
-      repository: ghcr.io/onedr0p/readarr-nightly
-      tag: 0.3.32.2579@sha256:1f47163ba5779cb0ee2bfd8c12426a157a7796851583fb44808273ee736a5b9c
-    env:
-      TZ: "${TZ}"
-      READARR__INSTANCE_NAME: Readarr
-      READARR__PORT: &port 8787
-      READARR__LOG_LEVEL: info
-      READARR__AUTHENTICATION_METHOD: None
-      READARR__THEME: dark
-    envFrom: *envFrom
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /ping
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 1
-          failureThreshold: 3
-      readiness: *probes
-      startup:
-        enabled: false
+    controllers:
+      readarr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16
+            envFrom: &envFrom
+              - secretRef:
+                  name: *app
+        containers:
+          app:
+            image:
+              repository: ghcr.io/onedr0p/readarr-nightly
+              tag: 0.3.32.2579@sha256:1f47163ba5779cb0ee2bfd8c12426a157a7796851583fb44808273ee736a5b9c
+            env:
+              TZ: "${TZ}"
+              READARR__INSTANCE_NAME: Readarr
+              READARR__PORT: &port 8787
+              READARR__LOG_LEVEL: info
+              READARR__AUTH_METHOD: External
+              READARR__AUTH_REQUIRED: DisabledForLocalAddresses
+              READARR__THEME: dark
+            envFrom: *envFrom
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 39m
+                memory: 398Mi
+              limits:
+                memory: 398Mi
+
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: "OnRootMismatch"
+        supplementalGroups: 
+          - 65542
     service:
-      main:
+      app:
+        controller: *app
         ports:
           http:
             port: *port
     ingress:
-      main:
+      app:
         enabled: true
-        ingressClassName: internal
+        className: internal
         annotations:
           auth.home.arpa/enabled: "true"
           nginx.ingress.kubernetes.io/auth-signin: https://readarr.${SECRET_DOMAIN}/outpost.goauthentik.io/start?rd=$escaped_request_uri
@@ -78,32 +103,31 @@ spec:
             paths:
               - path: /
                 pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
         tls:
           - secretName: &tls "tls.{{ .Release.Name }}"
             hosts:
               - *host
       api:
         enabled: true
-        ingressClassName: internal
+        className: internal
         hosts:
           - host: *host
             paths:
               - path: /api
                 pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
         tls:
           - secretName: *tls
             hosts:
               - *host
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
-      supplementalGroups: 
-        - 65542
+
     persistence:
       config:
-        enabled: true
         existingClaim: readarr-config-pvc
       nfs-nas-media:
         enabled: true
@@ -119,9 +143,3 @@ spec:
         path: /tank/Apps/backups/readarr
         globalMounts:
           - path: /config/Backups
-    resources:
-      requests:
-        cpu: 39m
-        memory: 398Mi
-      limits:
-        memory: 398Mi
