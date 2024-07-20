@@ -38,7 +38,7 @@ spec:
     kubeProxyReplacement: true
     kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 
-    ipv4NativeRoutingCIDR: ${NETWORK_K8S_POD_CIDR}
+    ipv4NativeRoutingCIDR: ${POD_CIDR}
 
     k8sServiceHost: 127.0.0.1 # kubeprism load balancer
     k8sServicePort: 7445
