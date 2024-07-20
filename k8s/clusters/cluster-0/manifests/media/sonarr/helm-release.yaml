@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.2.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -27,7 +27,7 @@ spec:
     keepHistory: false
   values:
     controllers:
-      main:
+      sonarr:
         annotations:
           reloader.stakater.com/auto: "true"
         initContainers:
@@ -39,7 +39,7 @@ spec:
               - secretRef:
                   name: *app
         containers:
-          main:
+          app:
             image:
               repository: ghcr.io/onedr0p/sonarr-develop
               tag: 4.0.8.1893@sha256:8e0a9c46c61b72ca956ae57fd79577e992e5c3b2d5fbc35a39721a2d05ad5642
@@ -66,6 +66,10 @@ spec:
               readiness: *probes
               startup:
                 enabled: false
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
             resources:
               requests:
                 cpu: 300m
@@ -74,19 +78,20 @@ spec:
                 memory: 269Mi
         pod:
           securityContext:
+            runAsNonRoot: true
             runAsUser: 568
             runAsGroup: 568
             fsGroup: 568
             fsGroupChangePolicy: OnRootMismatch
-            supplementalGroups: 
-              - 65542
+            supplementalGroups: [65542]
     service:
-      main:
+      app:
+        controller: *app
         ports:
           http:
             port: *port
     ingress:
-      main:
+      app:
         enabled: true
         className: internal
         annotations:
@@ -99,7 +104,7 @@ spec:
             paths:
               - path: /
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - secretName: &tls "tls.{{ .Release.Name }}"
@@ -113,7 +118,7 @@ spec:
             paths:
               - path: /api
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - secretName: *tls

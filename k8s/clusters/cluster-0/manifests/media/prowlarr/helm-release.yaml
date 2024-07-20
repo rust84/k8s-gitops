@@ -6,71 +6,95 @@ metadata:
   name: &app prowlarr
   namespace: media
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 3.2.1
       sourceRef:
         kind: HelmRepository
-        name: bjw-s-charts
+        name: bjw-s
         namespace: flux-system
+  maxHistory: 2
   install:
-    createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
-    controller:
-      annotations:
-        reloader.stakater.com/auto: "true"
-    initContainers:
-      init-db:
-        image: ghcr.io/onedr0p/postgres-init:16.3@sha256:8ba3204f6b293dd168766009aae2ce4fa986a29b931c2d30ac1b30238ac750b8
-        imagePullPolicy: IfNotPresent
-        envFrom: &envFrom
-          - secretRef:
-              name: *app
-    image:
-      repository: ghcr.io/onedr0p/prowlarr-develop
-      tag: 1.21.0.4615@sha256:a2face5a50fb161ff24b9de419731a60ce0a8aae9bb7eb7189ed3627c9dd39cf
-    env:
-      TZ: "${TZ}"
-      PROWLARR__APP__INSTANCENAME: Prowlarr
-      PROWLARR__APP__THEME: dark
-      PROWLARR__AUTH__METHOD: External
-      PROWLARR__LOG__DBENABLED: "False"
-      PROWLARR__LOG__LEVEL: info
-      PROWLARR__PORT: &port 9696
-      PROWLARR__ANALYTICSENABLED: "False"
-      PROWLARR__UPDATE__BRANCH: develop
-    envFrom: *envFrom
-    probes:
-      liveness: &probes
-        enabled: true
-        custom: true
-        spec:
-          httpGet:
-            path: /ping
-            port: *port
-          initialDelaySeconds: 0
-          periodSeconds: 10
-          timeoutSeconds: 3
-          failureThreshold: 5
-      readiness: *probes
-      startup:
-        enabled: false
+    controllers:
+      prowlarr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16
+            envFrom: &envFrom
+              - secretRef:
+                  name: *app
+        containers:
+          app:
+            image:
+              repository: ghcr.io/onedr0p/prowlarr-develop
+              tag: 1.21.0.4615@sha256:a2face5a50fb161ff24b9de419731a60ce0a8aae9bb7eb7189ed3627c9dd39cf
+            env:
+              TZ: "${TZ}"
+              PROWLARR__APP__INSTANCENAME: Prowlarr
+              PROWLARR__APP__THEME: dark
+              PROWLARR__AUTH__METHOD: External
+              PROWLARR__LOG__DBENABLED: "False"
+              PROWLARR__LOG__LEVEL: info
+              PROWLARR__PORT: &port 9696
+              PROWLARR__ANALYTICSENABLED: "False"
+              PROWLARR__UPDATE__BRANCH: develop
+            envFrom: *envFrom
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 5
+              readiness: *probes
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [65542]
     service:
-      main:
+      app:
+        controller: *app
         ports:
           http:
             port: *port
     ingress:
-      main:
-        enabled: true
-        ingressClassName: internal
+      app:
+        className: internal
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "cloud-search"
@@ -80,28 +104,20 @@ spec:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
         tls:
           - secretName: "tls.{{ .Release.Name }}"
             hosts:
               - *host
-    podSecurityContext:
-      runAsUser: 568
-      runAsGroup: 568
-      fsGroup: 568
-      fsGroupChangePolicy: "OnRootMismatch"
     persistence:
       config:
-        enabled: true
         existingClaim: prowlarr-config
       backup:
         enabled: true
         type: nfs
         server: "duriel.internal"
         path: /tank/Apps/backups/prowlarr
-        mountPath: /config/Backups
-    resources:
-      requests:
-        cpu: 10m
-      limits:
-        memory: 1Gi
+        globalMounts:
+          - path: /config/Backups
