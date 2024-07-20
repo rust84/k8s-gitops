@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: monica
+  name: &app monica
   namespace: home
 spec:
   releaseName: monica
@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 2.6.0
+      version: 3.2.1
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -53,22 +53,21 @@ spec:
               limits:
                 memory: 117Mi
     service:
-      main:
-        enabled: true
+      app:
+        controller: *app
         ports:
           http:
             port: 80
     ingress:
-      main:
+      app:
         enabled: true
-        ingressClassName: internal
+        className: internal
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
               - path: /
-                pathType: Prefix
                 service:
-                  name: main
+                  identifier: app
                   port: http
         tls:
           - secretName: "tls.{{ .Release.Name }}"
