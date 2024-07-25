@@ -35,7 +35,7 @@ spec:
         schedule: 0 17 * * *
     image:
       repository: docker.io/prodrigestivill/postgres-backup-local
-      tag: 16@sha256:a3539593be3866e7abe0a8e8e12777cd85133a84df86a751515f00174becb58f
+      tag: 16@sha256:f873bbfb406db633ab879628b11ef8092279639c467a2ea5f5bfa08b776252fb
     env:
       POSTGRES_HOST: postgres-ro.database.svc.cluster.local
       POSTGRES_USER:
