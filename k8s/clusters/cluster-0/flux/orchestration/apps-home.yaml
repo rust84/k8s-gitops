@@ -95,7 +95,6 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: cluster-namespaces
     - name: rook-ceph-cluster
     - name: apps-home-monica-database
   path: "./k8s/clusters/cluster-0/manifests/home/monica/app"
@@ -113,6 +112,18 @@ spec:
     - name: apps-security-external-secrets
     - name: rook-ceph-cluster
   path: "./k8s/clusters/cluster-0/manifests/home/monica/database"
+  prune: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-home-monica-cron
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: apps-home-monica
+  path: "./k8s/clusters/cluster-0/manifests/home/monica/cron"
   prune: true
 ---
 # yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json

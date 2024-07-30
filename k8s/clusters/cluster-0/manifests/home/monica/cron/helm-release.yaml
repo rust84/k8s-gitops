@@ -3,10 +3,9 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app monica
+  name: monica-cron
   namespace: home
 spec:
-  releaseName: monica
   interval: 30m
   chart:
     spec:
@@ -25,16 +24,21 @@ spec:
     cleanupOnFail: true
     remediation:
       retries: 3
-  uninstall:
-    keepHistory: false
   values:
     controllers:
       monica:
+        type: cronjob
+        cronjob:
+          schedule: '@daily'
+          ttlSecondsAfterFinished: 86400
+        pod:
+          restartPolicy: OnFailure
         containers:
           app:
             image:
-              repository: monica
+              repository: docker.io/monica
               tag: 4.1.2-apache
+            command: ['cron.sh']
             env:
               TZ: "${TZ}"
               APP_ENV: production
@@ -46,34 +50,3 @@ spec:
             envFrom:
               - secretRef:
                   name: monica-secret
-            resources:
-              requests:
-                cpu: 10m
-                memory: 117Mi
-              limits:
-                memory: 250Mi
-    service:
-      app:
-        controller: *app
-        ports:
-          http:
-            port: 80
-    ingress:
-      app:
-        enabled: true
-        className: internal
-        hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - secretName: "tls.{{ .Release.Name }}"
-            hosts:
-              - *host
-    persistence:
-      config:
-        enabled: true
-        existingClaim: monica-config
