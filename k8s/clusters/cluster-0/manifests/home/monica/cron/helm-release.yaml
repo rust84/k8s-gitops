@@ -38,7 +38,10 @@ spec:
             image:
               repository: docker.io/monica
               tag: 4.1.2-apache
-            command: ['cron.sh']
+            command:
+              - php
+              - artisan
+              - schedule:run
             env:
               TZ: "${TZ}"
               APP_ENV: production
