@@ -77,3 +77,5 @@ spec:
       config:
         enabled: true
         existingClaim: monica-config
+        globalMounts:
+          - path: /var/www/html/storage
