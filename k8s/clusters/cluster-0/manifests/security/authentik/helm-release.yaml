@@ -32,27 +32,31 @@ spec:
         reloader.stakater.com/auto: "true"
       deploymentStrategy:
         type: RollingUpdate
+      env:
+        - name: AUTHENTIK_REDIS__DB
+          value: "1" # apply fix for multi-tenant redis db
       envFrom: &envFrom
         - secretRef:
             name: authentik-secret
-      authentik:
-        email:
-          host: email-smtp.eu-west-1.amazonaws.com
-          port: 465
-          username: ${SECRET_EMAIL_USERNAME}
-          password: ${SECRET_EMAIL_PASSWORD}
-          use_ssl: true
-          from: ${AUTHENTIK_SMTP_FROM}
-        log_level: info
-        postgresql:
-          port: 5432
-          name: ""
-          user: ""
-          password: ""
-        redis:
-          host: dragonfly.database.svc.cluster.local
+    authentik:
+      email:
+        host: email-smtp.eu-west-1.amazonaws.com
+        port: 465
+        username: ${SECRET_EMAIL_USERNAME}
+        password: ${SECRET_EMAIL_PASSWORD}
+        use_ssl: true
+        from: ${AUTHENTIK_SMTP_FROM}
+      log_level: info
       postgresql:
-        enabled: false
+        port: 5432
+        name: ""
+        user: ""
+        password: ""
+      redis:
+        host: dragonfly.database.svc.cluster.local
+        password: ""
+    postgresql:
+      enabled: false
     prometheus:
       rules:
         enabled: true
