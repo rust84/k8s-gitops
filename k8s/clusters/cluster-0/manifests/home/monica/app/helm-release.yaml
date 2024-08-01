@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app monica
+  name: monica
   namespace: home
 spec:
   releaseName: monica
@@ -31,7 +31,7 @@ spec:
     controllers:
       monica:
         containers:
-          app: &repo
+          app: &app
             image: 
               repository: docker.io/monica
               tag: 4.1.2-apache
@@ -50,17 +50,17 @@ spec:
               - secretRef:
                   name: monica-secret
           cron:
-            <<: *repo
+            <<: *app
             command:
               - cron.sh
           queue:
-            <<: *repo
+            <<: *app
             command:
               - queue.sh
 
     service:
       app:
-        controller: *app
+        controller: monica
         ports:
           http:
             port: 80
