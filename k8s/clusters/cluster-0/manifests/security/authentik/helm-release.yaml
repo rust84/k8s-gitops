@@ -50,32 +50,12 @@ spec:
           user: ""
           password: ""
         redis:
-          host: "{{ .Release.Name }}-redis-master"
-          password: ""
+          host: dragonfly.database.svc.cluster.local
       postgresql:
         enabled: false
     prometheus:
       rules:
         enabled: true
-    redis:
-      enabled: true
-      auth:
-        enabled: true
-      master:
-        persistence:
-          enabled: true
-          size: 1Gi
-      commonConfiguration: |-
-        # Enable AOF https://redis.io/topics/persistence#append-only-file
-        appendonly yes
-        # Disable RDB persistence, AOF persistence already enabled.
-        save ""
-        maxmemory 94371840
-        maxmemory-policy allkeys-lru
-      metrics:
-        enabled: true
-        serviceMonitor:
-          enabled: true
     server:
       replicas: 1
       initContainers:
@@ -103,9 +83,3 @@ spec:
           enabled: true
     worker:
       replicas: 2
-  valuesFrom:
-    - kind: Secret
-      name: authentik-secret
-      valuesKey: AUTHENTIK_REDIS__PASSWORD
-      targetPath: redis.auth.password
-      optional: false

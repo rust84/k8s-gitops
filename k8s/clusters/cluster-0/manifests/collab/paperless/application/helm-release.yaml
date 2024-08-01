@@ -52,7 +52,7 @@ spec:
       PAPERLESS_CONSUMER_RECURSIVE: "true"
       PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
       PAPERLESS_CONSUMER_ENABLE_BARCODES: "true"
-      PAPERLESS_REDIS: redis://localhost:6379
+      PAPERLESS_REDIS: redis://dragonfly.database.svc.cluster.local:6379
       PAPERLESS_TASK_WORKERS: 2
       PAPERLESS_TIME_ZONE: "${TZ}"
       PAPERLESS_URL: https://paperless.${SECRET_DOMAIN}
@@ -110,10 +110,6 @@ spec:
         path: /tank/Apps/paperless/export
         mountPath: /usr/src/paperless/export
     sidecars:
-      redis:
-        name: redis
-        image: public.ecr.aws/docker/library/redis:7.4.0@sha256:79676a8f74e4aed85b6d6a2f4e4e3e55d8a229baa7168362e592bbfdc67b0c9b
-        imagePullPolicy: IfNotPresent
       gotenburg:
         name: gotenburg
         image: thecodingmachine/gotenberg:8.9.0@sha256:3920a160332a90b2507f7830f02cade05ede880813c1b35108b0042d73e64d2e
