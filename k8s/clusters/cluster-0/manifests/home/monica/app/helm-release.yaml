@@ -31,8 +31,8 @@ spec:
     controllers:
       monica:
         containers:
-          app:
-            image: &repo
+          app: &repo
+            image: 
               repository: docker.io/monica
               tag: 4.1.2-apache
             env:
@@ -46,6 +46,9 @@ spec:
               MAIL_ENCRYPTION: tls
               QUEUE_CONNECTION: *redis
               REDIS_HOST: *redis
+            envFrom:
+              - secretRef:
+                  name: monica-secret
           cron:
             <<: *repo
             command:
@@ -54,15 +57,7 @@ spec:
             <<: *repo
             command:
               - queue.sh
-            envFrom:
-              - secretRef:
-                  name: monica-secret
-            resources:
-              requests:
-                cpu: 10m
-                memory: 117Mi
-              limits:
-                memory: 250Mi
+
     service:
       app:
         controller: *app
