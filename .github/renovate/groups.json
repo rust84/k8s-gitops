@@ -57,6 +57,17 @@
       ],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
       "separateMinorPatch": true
+    },
+    {
+      "description": "Dex image and chart",
+      "groupName": "Dex",
+      "matchDatasources": ["docker", "helm"],
+      "matchPackageNames": [
+        "dex",
+        "ghcr.io/dexidp/dex"
+      ],
+      "group": { "commitMessageTopic": "{{{groupName}}} group" },
+      "separateMinorPatch": true
     }
   ]
 }
