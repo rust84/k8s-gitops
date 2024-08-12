@@ -28,7 +28,7 @@ spec:
   values:
     image:
       repository: ghcr.io/k8snetworkplumbingwg/multus-cni
-      tag: v4.1.0-thick
+      tag: v4.0.2-thick
 
     cni:
       image:
@@ -48,3 +48,17 @@ spec:
 
     hostPaths:
       netns: /var/run/netns
+
+  postRenderers:
+    - kustomize:
+        patches:
+          - patch: |-
+              apiVersion: apps/v1
+              kind: DaemonSet
+              metadata:
+                name: multus
+              spec:
+                template:
+                  metadata:
+                    labels:
+                      webhooks.kyverno.io/exclude: "true"
