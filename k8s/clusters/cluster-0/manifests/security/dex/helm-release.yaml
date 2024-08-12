@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: dex
-      version: 0.19.0
+      version: 0.19.1
       sourceRef:
         kind: HelmRepository
         name: dex-charts
@@ -20,7 +20,7 @@ spec:
   values:
     image:
       repository: ghcr.io/dexidp/dex
-      tag: v2.41.0
+      tag: v2.41.1
     env:
       KUBERNETES_POD_NAMESPACE: security
     ingress:
