@@ -136,8 +136,9 @@ The alternative solution to these two problems would be to host a Kubernetes clu
 | Jonsbo N3 custom build      | 1     | 256GB SSD      | 4x18TB ZFS Mirror (tank) | 32GB | NixOS           | NFS + Backup Server |
  PiKVM (Arch)     | Network KVM         |
 | TESmart 8 Port KVM Switch   | 1     | -            | -                           | -    | -                | Network KVM (PiKVM) |
-| AliExpress Topton J6413     | 1     | 128GB NVMe   | -                           | 8GB  | OPNsense    | Router              |
-| Unifi USW-24-Pro | 1     | -            | -                           | -    | -                | Core Switch    |
+| UniFi UDM-Pro-SE     | 1     | -            | -                           | -    | -                | Routing/Firewall/IPS/DNS    |
+| UniFi USW-Pro-Max-24-PoE  | 1     | -            | -                           | -    | -                | Core Switch    |
+| USW-Enterprise-8-PoE | 1     | -            | -                           | -    | -                | Attic    | 
 | APC SMT2200RM2U w/ NIC      | 1     | -            | -                           | -    | -                | UPS                 |
 
 ---
