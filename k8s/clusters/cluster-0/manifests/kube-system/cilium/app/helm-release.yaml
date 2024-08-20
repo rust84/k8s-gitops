@@ -26,7 +26,7 @@ spec:
   values:
     cluster:
       name: "${CLUSTER_NAME}"
-      id: "${CLUSTER_ID}"
+      id: 1
 
     cni:
       exclusive: false   # Needed to allow Cillium to work properly with Multus

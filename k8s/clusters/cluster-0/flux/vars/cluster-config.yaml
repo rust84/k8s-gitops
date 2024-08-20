@@ -6,7 +6,6 @@ metadata:
   namespace: flux-system
 data:
   CLUSTER_NAME: cluster-0
-  CLUSTER_ID: "1"
 
   TZ: "Europe/London"
 

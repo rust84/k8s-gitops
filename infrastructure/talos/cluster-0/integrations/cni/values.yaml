@@ -6,7 +6,7 @@ rollOutCiliumPods: true
 localRedirectPolicy: true
 
 # kubeProxyReplacement enables kube-proxy replacement in Cilium BPF datapath
-kubeProxyReplacement: "true"
+kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 
 k8sServiceHost: localhost
