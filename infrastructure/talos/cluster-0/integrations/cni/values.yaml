@@ -1,12 +1,12 @@
 cluster:
   name: "cluster-0"
-  id: "1"
+  id: 1
 
 rollOutCiliumPods: true
 localRedirectPolicy: true
 
 # kubeProxyReplacement enables kube-proxy replacement in Cilium BPF datapath
-kubeProxyReplacement: "strict"
+kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
 
 k8sServiceHost: localhost
