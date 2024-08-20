@@ -68,6 +68,18 @@
       ],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
       "separateMinorPatch": true
+    },
+    {
+      "description": "Multus image and chart",
+      "groupName": "Multus",
+      "matchDatasources": ["docker", "helm"],
+      "matchPackageNames": [
+        "multus",
+        "ghcr.io/angelnu/cni-plugins",
+        "ghcr.io/k8snetworkplumbingwg/multus-cni"
+      ],
+      "group": { "commitMessageTopic": "{{{groupName}}} group" },
+      "separateMinorPatch": true
     }
   ]
 }
