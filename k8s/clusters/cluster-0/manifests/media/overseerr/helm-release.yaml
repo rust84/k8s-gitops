@@ -3,66 +3,110 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: overseerr
+  name: &app overseerr
   namespace: media
 spec:
-  interval: 15m
+  interval: 30m
   chart:
     spec:
       chart: app-template
-      version: 1.5.1
+      version: 3.3.2
       sourceRef:
         kind: HelmRepository
-        name: bjw-s-charts
+        name: bjw-s
         namespace: flux-system
+  maxHistory: 2
   install:
     createNamespace: true
     remediation:
-      retries: 5
+      retries: 3
   upgrade:
+    cleanupOnFail: true
     remediation:
-      retries: 5
+      retries: 3
   values:
-    image:
-      repository: sctx/overseerr
-      tag: 1.33.2
-
-    env:
-      LOG_LEVEL: "info"
-      PORT: 80
-
+    controllers:
+      overseerr:
+        containers:
+          app:
+            image:
+              repository: sctx/overseerr
+              tag: 1.33.2@sha256:714ea6db2bc007a2262d112bef7eec74972eb33d9c72bddb9cbd98b8742de950
+            env:
+              LOG_LEVEL: "info"
+              PORT: &port 80
+              TZ: ${TZ}
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v1/status
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 2Gi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
     service:
-      main:
+      app:
+        controller: *app
         ports:
           http:
-            port: 80
-
+            port: *port
     ingress:
-      main:
+      app:
+        enabled: true
+        className: external
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "eye-circle"
-        enabled: true
-        ingressClassName: external
+          hajimari.io/url: https://requests.${SECRET_DOMAIN}
         hosts:
-          - host: &host "requests.${SECRET_DOMAIN}"
-            paths:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths: &paths
               - path: /
-                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
+          - host: &customHost requests.${SECRET_DOMAIN}
+            paths: *paths
         tls:
           - secretName: "tls.{{ .Release.Name }}"
             hosts:
               - *host
-
+              - *customHost
     persistence:
+      cache:
+        existingClaim: overseerr-cache
+        globalMounts:
+          - path: /app/config/cache
       config:
-        enabled: true
         existingClaim: overseerr-config
-        mountPath: /app/config
-
-    resources:
-      requests:
-        cpu: 15m
-        memory: 290Mi
-      limits:
-        memory: 290Mi
+        globalMounts:
+          - path: /app/config
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /app/config/logs
+      tmp:
+        type: emptyDir
