@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: *app
-      version: "2024.6"
+      version: "2024.8"
       sourceRef:
         kind: HelmRepository
         name: authentik-charts
