@@ -29,18 +29,13 @@ spec:
   values:
     defaultPodOptions:
       labels:
-        setGateway: "true"
+        setGateway: "false"
       annotations:
-        setGateway: "true"
-
+        setGateway: "false"
     controllers:
       qbittorrent:
         annotations:
           reloader.stakater.com/auto: "true"
-          setGateway: "false"
-        labels:
-          setGateway: "false"
-
         containers:
           app:
             image:
@@ -104,7 +99,6 @@ spec:
             fsGroupChangePolicy: OnRootMismatch
             supplementalGroups: [65542]
           hostname: qbittorrent
-
     service:
       app:
         controller: *app
@@ -127,7 +121,6 @@ spec:
             enabled: true
             port: 9000
             protocol: TCP
-
     ingress:
       app:
         annotations:
@@ -145,7 +138,6 @@ spec:
           - secretName: "tls.{{ .Release.Name }}"
             hosts:
               - *host
-
     persistence:
       config:
         existingClaim: qbittorrent
