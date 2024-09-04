@@ -123,6 +123,10 @@ spec:
             enabled: true
             port: *port-bt
             protocol: TCP
+          tracker:
+            enabled: true
+            port: 9000
+            protocol: TCP
 
     ingress:
       app:
