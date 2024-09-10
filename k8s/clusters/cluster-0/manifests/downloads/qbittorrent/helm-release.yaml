@@ -29,9 +29,9 @@ spec:
   values:
     defaultPodOptions:
       labels:
-        setGateway: "false"
+        setGateway: "true"
       annotations:
-        setGateway: "false"
+        setGateway: "true"
     controllers:
       qbittorrent:
         annotations:
@@ -48,9 +48,9 @@ spec:
               QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
               QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
                 ${POD_CIDR}, ${NODE_CIDR}
-              #QBT_BitTorrent__Session__Interface: vxlan0
-              #QBT_BitTorrent__Session__InterfaceAddress: "0.0.0.0"
-              #QBT_BitTorrent__Session__InterfaceName: vxlan0
+              QBT_BitTorrent__Session__Interface: vxlan0
+              QBT_BitTorrent__Session__InterfaceAddress: "0.0.0.0"
+              QBT_BitTorrent__Session__InterfaceName: vxlan0
               QBT_Preferences__WebUI__AlternativeUIEnabled: true
               QBT_Preferences__WebUI__RootFolder: /add-ons/VueTorrent
             probes:
@@ -116,10 +116,6 @@ spec:
           bittorrent:
             enabled: true
             port: *port-bt
-            protocol: TCP
-          tracker:
-            enabled: true
-            port: 9000
             protocol: TCP
     ingress:
       app:
