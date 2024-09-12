@@ -22,6 +22,7 @@ spec:
   dependsOn:
     - name: cluster-namespaces
     - name: apps-database-cloudnative-pg-cluster
+    - name: apps-database-dragonfly-cluster
   path: "./k8s/clusters/cluster-0/manifests/collab/paperless/application"
   prune: true
 ---

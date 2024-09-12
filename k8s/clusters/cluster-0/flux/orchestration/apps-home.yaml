@@ -97,6 +97,7 @@ spec:
   dependsOn:
     - name: rook-ceph-cluster
     - name: apps-home-monica-database
+    - name: apps-database-dragonfly-cluster
   path: "./k8s/clusters/cluster-0/manifests/home/monica/app"
   prune: true
 ---

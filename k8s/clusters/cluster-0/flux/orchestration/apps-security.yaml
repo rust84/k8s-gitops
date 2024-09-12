@@ -22,6 +22,7 @@ spec:
     - name: cluster-namespaces
     - name: apps-security-dex
     - name: apps-database-cloudnative-pg-cluster
+    - name: apps-database-dragonfly-cluster
   path: "./k8s/clusters/cluster-0/manifests/security/authentik"
   prune: true
 ---
