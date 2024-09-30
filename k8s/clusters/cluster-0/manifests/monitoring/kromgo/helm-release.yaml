@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: app-template
-      version: 3.3.2
+      version: 3.4.0
       sourceRef:
         kind: HelmRepository
         name: bjw-s
@@ -38,36 +38,46 @@ spec:
               tag: v0.4.1@sha256:237e6ac3f3bc791343e1ee84122ce9b97abf7eed86cd522d8bf4cba10a041e9f
             env:
               PROMETHEUS_URL: http://thanos-query.monitoring.svc.cluster.local:9090
-              PORT: &port 8080
+              SERVER_HOST: 0.0.0.0
+              SERVER_PORT: &serverPort 80
+              HEALTH_HOST: 0.0.0.0
+              HEALTH_PORT: &healthPort 8888
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /readyz
+                    port: *healthPort
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
             resources:
               requests:
-                cpu: 5m
-                memory: 10M
+                cpu: 10m
               limits:
                 memory: 64M
-        pod:
-          securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            runAsNonRoot: true
     defaultPodOptions:
-      topologySpreadConstraints:
-        - maxSkew: 1
-          topologyKey: kubernetes.io/hostname
-          whenUnsatisfiable: DoNotSchedule
-          labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: *app
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65534
+        runAsGroup: 65534
+        seccompProfile: { type: RuntimeDefault }
     service:
       app:
         controller: *app
         ports:
           http:
-            port: *port
+            port: *serverPort
+          health:
+            port: *healthPort
     ingress:
       app:
         enabled: true
