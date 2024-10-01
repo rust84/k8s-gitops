@@ -25,7 +25,7 @@ spec:
   values:
     image:
       repository: ghcr.io/esphome/esphome
-      tag: 2024.9.0@sha256:c90aab590daead25ed0eff5f263b7de26a71e5c551c94af4da4a4746b163e681
+      tag: 2024.9.2@sha256:3d1a2a6ad618d8d146ab3731c432a788cb7cdb5ab07abe227bc9315d99cf2e34
 
     env:
       TZ: "${TZ}"
