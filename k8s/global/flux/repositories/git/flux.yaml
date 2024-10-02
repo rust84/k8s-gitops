@@ -9,7 +9,7 @@ spec:
   interval: 10m0s
   ref:
     # renovate: depName=fluxcd/flux2 datasource=github-releases
-    tag: "v2.4.0"
+    tag: "v2.3.0"
   url: https://github.com/fluxcd/flux2
   ignore: |
     # exclude all
