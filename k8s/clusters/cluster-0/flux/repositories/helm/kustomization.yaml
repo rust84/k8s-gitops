@@ -7,7 +7,6 @@ resources:
   - angelnu-charts.yaml
   - authentik-charts.yaml
   - backube-charts.yaml
-  - banzaicloud-charts.yaml
   - blakeshome-charts.yaml
   - cilium-charts.yaml
   - cloudnative-pg-charts.yaml
