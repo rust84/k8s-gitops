@@ -75,9 +75,6 @@ spec:
         enabled: true
         trustCRDsExist: true
 
-    containerRuntime:
-      integration: containerd
-
     hubble:
       enabled: true
       serviceMonitor:
