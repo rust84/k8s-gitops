@@ -26,9 +26,6 @@ autoDirectNodeRoutes: true
 endpointRoutes:
   enabled: true
 
-containerRuntime:
-  integration: containerd
-
 # nativeRoutingCIDR allows to explicitly specify the CIDR for native routing. This
 # value corresponds to the configured cluster-cidr.
 ipv4NativeRoutingCIDR: 10.244.0.0/16
