@@ -113,7 +113,7 @@ spec:
               - name: "/dev/disk/by-id/nvme-Samsung_SSD_970_EVO_500GB_S46BNX0KB01668N"
           - name: "node-2"
             devices:
-              - name: "/dev/disk/by-id/nvme-WDC_WDS500G2B0C-00PXH0_200965802897"
+              - name: "/dev/disk/by-id/nvme-Samsung_SSD_980_500GB_S64DNL1TA02576R"
 
     ingress:
       dashboard:
