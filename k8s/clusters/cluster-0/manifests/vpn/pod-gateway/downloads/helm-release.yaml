@@ -30,6 +30,9 @@ spec:
     image:
       repository: ghcr.io/angelnu/pod-gateway
       tag: v1.11.1@sha256:0617304f085bc98529f0c5cd0c40c63bb019380a026a277c812bd13f78b4bc5d
+    env:
+      - name: DNS_LOCAL_SERVER
+        value: "10.20.0.1"
     webhook:
       gatewayAnnotation: setGateway
       gatewayDefault: false
