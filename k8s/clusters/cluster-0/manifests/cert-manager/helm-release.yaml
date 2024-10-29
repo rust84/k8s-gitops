@@ -6,7 +6,7 @@ metadata:
   name: cert-manager
   namespace: cert-manager
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       chart: cert-manager
@@ -15,11 +15,19 @@ spec:
         kind: HelmRepository
         name: jetstack-charts
         namespace: flux-system
-      interval: 5m
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
   values:
     installCRDs: false
-    webhook:
-      enabled: true
     extraArgs:
       - --dns01-recursive-nameservers=1.1.1.1:53
       - --dns01-recursive-nameservers-only
