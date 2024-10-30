@@ -99,6 +99,13 @@
       "matchDatasources": ["docker"],
       "matchPackagePatterns": ["plex","qbittorrent"],
       "versioning": "loose"
+    },
+    // Custom schedules
+    {
+      "description": ["Custom schedule for frequently updated packages"],
+      "matchDataSources": ["docker", "helm"],
+      "matchPackagePatterns": ["minio", "postgresql", "reloader"],
+      "schedule": ["on the first day of the month"]
     }
   ]
 }
