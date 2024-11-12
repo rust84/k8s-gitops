@@ -103,7 +103,7 @@
     // Custom schedules
     {
       "description": ["Custom schedule for frequently updated packages"],
-      "matchDataSources": ["docker", "helm"],
+      "matchDatasources": ["docker", "helm"],
       "matchPackagePatterns": ["minio", "postgresql", "reloader"],
       "schedule": ["on the first day of the month"]
     }
