@@ -44,7 +44,7 @@ spec:
               name: paperless-secret
     image:
       repository: ghcr.io/paperless-ngx/paperless-ngx
-      tag: 2.12.1@sha256:217cec76128c2545872cf356694f2ffd4524cb84892d0333e654795dec255633
+      tag: 2.13.2@sha256:d440c8682b445fff3dccc538ab88c604e389d3221f9267352f15e7d1e551a98d
     env:
       COMPOSE_PROJECT_NAME: paperless
       PAPERLESS_PORT: &port 8000
@@ -112,7 +112,7 @@ spec:
     sidecars:
       gotenburg:
         name: gotenburg
-        image: thecodingmachine/gotenberg:8.12.0@sha256:8698da043ecc73a66376dd5d64d9ac9961f3ee23722839bb00a3b0fbf6251b26
+        image: thecodingmachine/gotenberg:8.13.0@sha256:c48d54d6a962a7ab6342ef64e8240551ee6b89f4813e15c8bb6b3b9f67b1fe27
         env:
           - name: DISABLE_GOOGLE_CHROME
             value: '1'
