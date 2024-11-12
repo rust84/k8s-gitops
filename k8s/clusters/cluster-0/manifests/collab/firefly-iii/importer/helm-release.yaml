@@ -24,7 +24,7 @@ spec:
       nameOverride: *app
     image:
       repository: fireflyiii/data-importer
-      tag: version-1.5.6
+      tag: version-1.5.7
     service:
       main:
         ports:
