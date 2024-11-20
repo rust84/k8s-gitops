@@ -112,7 +112,7 @@ spec:
     sidecars:
       gotenburg:
         name: gotenburg
-        image: thecodingmachine/gotenberg:8.13.0@sha256:c48d54d6a962a7ab6342ef64e8240551ee6b89f4813e15c8bb6b3b9f67b1fe27
+        image: thecodingmachine/gotenberg:8.14.0@sha256:71e8a5c257d746c85287b4041f7a39cd7fe62e10eab56e651fdc5e33913ec06f
         env:
           - name: DISABLE_GOOGLE_CHROME
             value: '1'
