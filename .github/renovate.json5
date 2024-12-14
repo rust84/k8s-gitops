@@ -1,111 +1,151 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  // General RenovateBot configuration
-  "extends": [
-    "config:recommended",
-    "docker:enableMajor",
-    //"docker:pinDigests",
-    ":disableRateLimiting",
-    ":dependencyDashboard",
-    ":semanticCommits",
-    ":enablePreCommit",
-    ":automergeDigest",
-    ":automergeBranch",
-    "github>rust84/k8s-gitops//.github/renovate/commitMessage",
-    "github>rust84/k8s-gitops//.github/renovate/labels",
-    "github>rust84/k8s-gitops//.github/renovate/semanticCommits",
-    "github>rust84/k8s-gitops//.github/renovate/allowedVersions",
-    "github>rust84/k8s-gitops//.github/renovate/autoMerge",
-    "github>rust84/k8s-gitops//.github/renovate/groups"
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
+  extends: [
+    'config:recommended',
+    'docker:enableMajor',
+    ':disableRateLimiting',
+    ':dependencyDashboard',
+    ':semanticCommits',
+    ':enablePreCommit',
+    ':automergeDigest',
+    ':automergeBranch',
+    'github>rust84/k8s-gitops//.github/renovate/commitMessage',
+    'github>rust84/k8s-gitops//.github/renovate/labels',
+    'github>rust84/k8s-gitops//.github/renovate/semanticCommits',
+    'github>rust84/k8s-gitops//.github/renovate/allowedVersions',
+    'github>rust84/k8s-gitops//.github/renovate/autoMerge',
+    'github>rust84/k8s-gitops//.github/renovate/groups',
   ],
-  "platform": "github",
-  "username": "rust84-bot[bot]",
-  "repositories": ["rust84/k8s-gitops"],
-  "onboarding": false,
-  "requireConfig": "optional",
-  "gitAuthor": "rust84-bot <103048774+rust84-bot[bot]@users.noreply.github.com>",
-  "timezone": "Europe/London",
-  "dependencyDashboardTitle": "Renovate Dashboard",
-  "suppressNotifications": ["prIgnoreNotification"],
-  "rebaseWhen": "conflicted",
-  "helm-values": {
-    "fileMatch": [
-      "k8s/clusters/.+/helm-release\\.yaml$",
-      "k8s/global/.+/helm-release\\.yaml$"
-    ]
-  },
-  "kubernetes": {
-    "fileMatch": ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"]
-  },
-  "flux": {"fileMatch": ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"]},
-  "customManagers": [
-    {
-      "customType": "regex",
-      "description": ["Process custom dependencies"],
-      "fileMatch": [
-        "(^|/).taskfiles/.+\\.ya?ml(?:\\.j2)?$",
-        "(^|/)infrastructure/.+\\.ya?ml(?:\\.j2)?$",
-        "(^|/)k8s/.+\\.ya?ml(?:\\.j2)?$"
-      ],
-      "matchStrings": [
-        // # renovate: depName=kubernetes/kubernetes datasource=github-releases
-        // version: 1.29.1
-        "depName=(?<depName>\\S+) datasource=(?<datasource>\\S+)\\n.+ (?<currentValue>(v|\\d)\\S+)",
-        // # renovate: depName=rancher/system-upgrade-controller datasource=github-releases
-        // https://github.com/rancher/system-upgrade-controller/releases/download/v0.13.2/crd.yaml
-        "depName=(?<depName>\\S+) datasource=(?<datasource>\\S+)\\n.+/(?<currentValue>(v|\\d)[^/]+)"
-      ],
-      "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}"
-    },
-    {
-      "customType": "regex",
-      "description": ["Process CloudnativePG Postgresql version"],
-      "fileMatch": [
-        "(^|/)k8s/.+\\.ya?ml(?:\\.j2)?$"
-      ],
-      "matchStrings": [
-        "imageName: (?<depName>\\S+):(?<currentValue>.*\\-.*)"
-      ],
-      "datasourceTemplate": "docker",
-      "versioningTemplate": "redhat"
-    },
-    {
-      "customType": "regex",
-      "description": "Process CRD dependencies",
-      "fileMatch": ["k8s/clusters/cluster-0/crds/.+\\.ya?ml$"],
-      "matchStrings": [
-        // GitRepository and Flux Kustomization where 'Git release/tag' matches 'Helm' version
-        "registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n.*?(?<currentValue>[^-\\s]*)\n",
-        // Kustomization where 'GitHub release artifact URL' matches 'Docker image' version
-        "datasource=(?<datasource>\\S+) image=(?<depName>\\S+)\n.*?-\\s(.*?)/(?<currentValue>[^/]+)/[^/]+\n"
-      ],
-      "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}helm{{/if}}"
-    }
+  platform: 'github',
+  username: 'rust84-bot[bot]',
+  repositories: [
+    'rust84/k8s-gitops',
   ],
-  "packageRules": [
-    // Setup datasources
-    {"matchDatasources": ["helm"], "ignoreDeprecated": true},
-    {"matchDatasources": ["docker"], "commitMessageExtra": "to {{newVersion}}"},
-    // Custom version schemes
+  onboarding: false,
+  requireConfig: 'optional',
+  gitAuthor: 'rust84-bot <103048774+rust84-bot[bot]@users.noreply.github.com>',
+  timezone: 'Europe/London',
+  dependencyDashboardTitle: 'Renovate Dashboard',
+  suppressNotifications: [
+    'prIgnoreNotification',
+  ],
+  rebaseWhen: 'conflicted',
+  'helm-values': {
+    fileMatch: [
+      'k8s/clusters/.+/helm-release\\.yaml$',
+      'k8s/global/.+/helm-release\\.yaml$',
+    ],
+  },
+  kubernetes: {
+    fileMatch: [
+      'k8s/clusters/.+\\.yaml$',
+      'k8s/global/.+\\.yaml$',
+    ],
+  },
+  flux: {
+    fileMatch: [
+      'k8s/clusters/.+\\.yaml$',
+      'k8s/global/.+\\.yaml$',
+    ],
+  },
+  customManagers: [
     {
-      "description": ["Custom versioning for fireflyiii"],
-      "matchDatasources": ["docker"],
-      "versioning": "regex:^version-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$",
-      "matchPackagePatterns": ["fireflyiii"]
+      customType: 'regex',
+      description: [
+        'Process custom dependencies',
+      ],
+      fileMatch: [
+        '(^|/).taskfiles/.+\\.ya?ml(?:\\.j2)?$',
+        '(^|/)infrastructure/.+\\.ya?ml(?:\\.j2)?$',
+        '(^|/)k8s/.+\\.ya?ml(?:\\.j2)?$',
+      ],
+      matchStrings: [
+        'depName=(?<depName>\\S+) datasource=(?<datasource>\\S+)\\n.+ (?<currentValue>(v|\\d)\\S+)',
+        'depName=(?<depName>\\S+) datasource=(?<datasource>\\S+)\\n.+/(?<currentValue>(v|\\d)[^/]+)',
+      ],
+      datasourceTemplate: '{{#if datasource}}{{{datasource}}}{{else}}github-releases{{/if}}',
     },
-    // Version strategies
     {
-      "description": ["Loose versioning for non-semver packages"],
-      "matchDatasources": ["docker"],
-      "matchPackagePatterns": ["plex","qbittorrent"],
-      "versioning": "loose"
+      customType: 'regex',
+      description: [
+        'Process CloudnativePG Postgresql version',
+      ],
+      fileMatch: [
+        '(^|/)k8s/.+\\.ya?ml(?:\\.j2)?$',
+      ],
+      matchStrings: [
+        'imageName: (?<depName>\\S+):(?<currentValue>.*\\-.*)',
+      ],
+      datasourceTemplate: 'docker',
+      versioningTemplate: 'redhat',
     },
-    // Custom schedules
     {
-      "description": ["Custom schedule for frequently updated packages"],
-      "matchDatasources": ["docker", "helm"],
-      "matchPackagePatterns": ["minio", "postgresql", "reloader"],
-      "schedule": ["on the first day of the month"]
-    }
-  ]
+      customType: 'regex',
+      description: 'Process CRD dependencies',
+      fileMatch: [
+        'k8s/clusters/cluster-0/crds/.+\\.ya?ml$',
+      ],
+      matchStrings: [
+        'registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n.*?(?<currentValue>[^-\\s]*)\n',
+        'datasource=(?<datasource>\\S+) image=(?<depName>\\S+)\n.*?-\\s(.*?)/(?<currentValue>[^/]+)/[^/]+\n',
+      ],
+      datasourceTemplate: '{{#if datasource}}{{{datasource}}}{{else}}helm{{/if}}',
+    },
+  ],
+  packageRules: [
+    {
+      matchDatasources: [
+        'helm',
+      ],
+      ignoreDeprecated: true,
+    },
+    {
+      matchDatasources: [
+        'docker',
+      ],
+      commitMessageExtra: 'to {{newVersion}}',
+    },
+    {
+      description: [
+        'Custom versioning for fireflyiii',
+      ],
+      matchDatasources: [
+        'docker',
+      ],
+      versioning: 'regex:^version-(?<major>\\d+)\\.(?<minor>\\d+)\\.(?<patch>\\d+)$',
+      matchPackageNames: [
+        '/fireflyiii/',
+      ],
+    },
+    {
+      description: [
+        'Loose versioning for non-semver packages',
+      ],
+      matchDatasources: [
+        'docker',
+      ],
+      versioning: 'loose',
+      matchPackageNames: [
+        '/plex/',
+        '/qbittorrent/',
+      ],
+    },
+    {
+      description: [
+        'Custom schedule for frequently updated packages',
+      ],
+      matchDatasources: [
+        'docker',
+        'helm',
+      ],
+      schedule: [
+        'on the first day of the month',
+      ],
+      matchPackageNames: [
+        '/minio/',
+        '/postgresql/',
+        '/reloader/',
+      ],
+    },
+  ],
 }
