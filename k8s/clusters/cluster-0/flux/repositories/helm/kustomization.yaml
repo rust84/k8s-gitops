@@ -32,4 +32,5 @@ resources:
   - piraeus-charts.yaml
   - postfinance-charts.yaml
   - rook-ceph-charts.yaml
+  - stevehipwell.yaml
   - vector-charts.yaml
