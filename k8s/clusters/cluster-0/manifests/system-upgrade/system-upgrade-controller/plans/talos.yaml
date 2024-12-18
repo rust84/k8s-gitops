@@ -38,7 +38,6 @@ spec:
     args:
       - "health"
       - "--nodes=$(NODE_IP)"
-      - "--server=false"
       - "--control-plane-nodes=10.20.0.125,10.20.0.127,10.20.0.128"
   upgrade:
     image: "ghcr.io/siderolabs/talosctl:${TALOS_VERSION}"
