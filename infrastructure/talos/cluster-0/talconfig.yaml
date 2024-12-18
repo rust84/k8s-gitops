@@ -121,14 +121,20 @@ controlPlane:
   schematic:
     customization:
       extraKernelArgs:
+        - apparmor=0
+        - init_on_alloc=0
+        - init_on_free=0
+        - intel_iommu=on
+        - iommu=pt
         - mitigations=off
         - module_blacklist=e1000e
         - net.ifnames=0
+        - security=none
         - talos.logging.kernel=udp://vector.${ingressDomain}:6050/
       systemExtensions:
         officialExtensions:
           - siderolabs/intel-ucode
-          - siderolabs/i915-ucode
+          - siderolabs/i915
           - siderolabs/nut-client
           - siderolabs/usb-modem-drivers
   patches:
@@ -144,6 +150,29 @@ controlPlane:
         network:
           nameservers:
             - 10.20.0.1
+
+    # Configure NFS mount options
+    - |
+      machine:
+        files:
+          - op: overwrite
+            path: /etc/nfsmount.conf
+            permissions: 0o644
+            content: |
+              [ NFSMount_Global_Options ]
+              nfsvers=4.1
+              hard=True
+              nconnect=16
+              noatime=True
+
+    # Configure NTP
+    - |-
+      machine:
+        time:
+          disabled: false
+          servers:
+            - time.cloudflare.com
+
     # Enable KubePrism
     - |-
       machine:
@@ -180,12 +209,15 @@ controlPlane:
         path: /cluster/scheduler/extraArgs
         value:
           bind-address: 0.0.0.0
-    # Disable service discovery
+    # Enable cluster discovery
     - |-
-      - op: add
-        path: /cluster/discovery/registries/service
-        value:
-          disabled: true
+      cluster:
+        discovery:
+          registries:
+            kubernetes:
+              disabled: true
+            service:
+              disabled: false
     # Cluster configuration
     - |-
       cluster:
