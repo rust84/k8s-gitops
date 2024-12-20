@@ -40,7 +40,7 @@ spec:
               name: *app
     image:
       repository: ghcr.io/onedr0p/home-assistant
-      tag: 2024.12.3@sha256:09bcc0786ef5a57af1e0fff16bebfd6bd0b969d2a07e06127e12b41ab740a3b4
+      tag: 2024.12.3@sha256:b997f3c5418273f3c2cbc7d6b6e612f0675b4f21ceec15f036814fb6449c63a3
     env:
       TZ: "${TZ}"
       PYTHONUSERBASE: /config/deps
@@ -104,7 +104,7 @@ spec:
         enabled: true
         image:
           repository: codercom/code-server
-          tag: 4.95.3@sha256:6d74583d68179cbb6ddadc2518b450d2ac3eaec2d342474fe1941e03371cd2cf
+          tag: 4.96.2@sha256:6b8c0e944caec80057e71d2c2f352cee38fe00ae4b7515fc4458eb300844f699
         workingDir: "/config"
         args:
           - --user-data-dir
