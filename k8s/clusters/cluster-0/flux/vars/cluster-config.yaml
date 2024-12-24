@@ -32,5 +32,5 @@ data:
   SVC_QBITTORRENT_ADDR: "10.1.0.159"
 
   # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
-  TALOS_VERSION: v1.8.3
+  TALOS_VERSION: v1.9.0
   TALOS_IMAGE: "factory.talos.dev/installer/33d587693ede0aaa88613fdb080fa52c18f26f68ed8e143139f583eb2cb3e4e1"
