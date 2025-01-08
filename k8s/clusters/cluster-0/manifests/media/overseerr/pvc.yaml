@@ -5,7 +5,7 @@ metadata:
   name: overseerr-config
   namespace: media
   labels:
-    app.kubernetes.io/name: &name overseer
+    app.kubernetes.io/name: &name overseerr
     app.kubernetes.io/instance: *name
 spec:
   accessModes:
@@ -21,7 +21,7 @@ metadata:
   name: overseerr-cache
   namespace: media
   labels:
-    app.kubernetes.io/name: &name overseer
+    app.kubernetes.io/name: &name overseerr
     app.kubernetes.io/instance: *name
 spec:
   accessModes:
