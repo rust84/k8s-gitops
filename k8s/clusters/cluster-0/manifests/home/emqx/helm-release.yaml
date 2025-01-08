@@ -6,7 +6,7 @@ metadata:
   name: &app emqx
   namespace: home
 spec:
-  interval: 5m
+  interval: 30m
   chart:
     spec:
       chart: emqx
@@ -15,7 +15,6 @@ spec:
         kind: HelmRepository
         name: emqx-charts
         namespace: flux-system
-      interval: 5m
   maxHistory: 3
   install:
     createNamespace: true
@@ -57,7 +56,7 @@ spec:
     persistence:
       enabled: true
       storageClass: rook-ceph-block
-      size: 250Mi
+      size: 1Gi
     service:
       type: LoadBalancer
       externalTrafficPolicy: Cluster
