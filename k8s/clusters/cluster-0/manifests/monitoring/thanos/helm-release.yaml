@@ -66,9 +66,9 @@ spec:
       extraArgs:
         - --compact.concurrency=4
         - --delete-delay=30m
-        - --retention.resolution-raw=14d
-        - --retention.resolution-5m=30d
-        - --retention.resolution-1h=60d
+        - --retention.resolution-raw=2d
+        - --retention.resolution-5m=7d
+        - --retention.resolution-1h=14d
       persistence: &persistence
         enabled: true
         storageClass: rook-ceph-block
