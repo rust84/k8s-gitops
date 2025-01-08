@@ -67,7 +67,7 @@ spec:
         - --compact.concurrency=4
         - --delete-delay=30m
         - --retention.resolution-raw=2d
-        - --retention.resolution-5m=7d
+        - --retention.resolution-5m=10d
         - --retention.resolution-1h=14d
       persistence: &persistence
         enabled: true
