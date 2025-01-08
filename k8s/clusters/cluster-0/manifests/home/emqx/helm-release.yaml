@@ -57,7 +57,7 @@ spec:
     persistence:
       enabled: true
       storageClass: rook-ceph-block
-      size: 100Mi
+      size: 250Mi
     service:
       type: LoadBalancer
       externalTrafficPolicy: Cluster
