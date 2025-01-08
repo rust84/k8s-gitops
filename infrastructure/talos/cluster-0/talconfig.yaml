@@ -5,7 +5,7 @@ clusterPodNets:
 clusterSvcNets:
   - 10.96.0.0/12
 # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
-talosVersion: v1.8.3
+talosVersion: v1.9.1
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
 kubernetesVersion: v1.31.3
 endpoint: "https://cluster-0.${domainName}:6443"
@@ -121,14 +121,20 @@ controlPlane:
   schematic:
     customization:
       extraKernelArgs:
+        - apparmor=0
+        - init_on_alloc=0
+        - init_on_free=0
+        - intel_iommu=on
+        - iommu=pt
         - mitigations=off
         - module_blacklist=e1000e
         - net.ifnames=0
+        - security=none
         - talos.logging.kernel=udp://vector.${ingressDomain}:6050/
       systemExtensions:
         officialExtensions:
           - siderolabs/intel-ucode
-          - siderolabs/i915-ucode
+          - siderolabs/i915
           - siderolabs/nut-client
           - siderolabs/usb-modem-drivers
   patches:
@@ -144,6 +150,21 @@ controlPlane:
         network:
           nameservers:
             - 10.20.0.1
+
+    # Configure NFS mount options
+    - |
+      machine:
+        files:
+          - op: overwrite
+            path: /etc/nfsmount.conf
+            permissions: 0o644
+            content: |
+              [ NFSMount_Global_Options ]
+              nfsvers=4.2
+              hard=True
+              noatime=True
+              nconnect=16
+
     # Enable KubePrism
     - |-
       machine:
@@ -157,8 +178,9 @@ controlPlane:
       machine:
         features:
           hostDNS:
-            enabled: false
-            forwardKubeDNSToHost: true
+            enabled: true
+            resolveMemberNames: true
+            forwardKubeDNSToHost: false
 
     # Add cluster endpoint host entry
     - |-
@@ -168,30 +190,57 @@ controlPlane:
             - ip: ${clusterEndpointIP}
               aliases:
                 - cluster-0.${domainName}
+
     # Configure Controller Manager
     - |-
       - op: add
         path: /cluster/controllerManager/extraArgs
         value:
           bind-address: 0.0.0.0
+
     # Configure Scheduler
     - |-
       - op: add
         path: /cluster/scheduler/extraArgs
         value:
           bind-address: 0.0.0.0
-    # Disable service discovery
+
+    # Enable cluster discovery
     - |-
-      - op: add
-        path: /cluster/discovery/registries/service
-        value:
-          disabled: true
+      cluster:
+        discovery:
+          registries:
+            kubernetes:
+              disabled: false
+            service:
+              disabled: true
+
     # Cluster configuration
     - |-
       cluster:
-        allowSchedulingOnMasters: true
+        allowSchedulingOnControlPlanes: true
+        apiServer:
+          extraArgs:
+            feature-gates: AuthorizeNodeWithSelectors=false
+        coreDNS:
+          disabled: true
         proxy:
           disabled: true
+        scheduler:
+          config:
+            apiVersion: kubescheduler.config.k8s.io/v1
+            kind: KubeSchedulerConfiguration
+            profiles:
+              - schedulerName: default-scheduler
+                pluginConfig:
+                  - name: PodTopologySpread
+                    args:
+                      defaultingType: List
+                      defaultConstraints:
+                        - maxSkew: 1
+                          topologyKey: kubernetes.io/hostname
+                          whenUnsatisfiable: ScheduleAnyway
+
     # ETCD configuration
     - |-
       cluster:
@@ -202,6 +251,7 @@ controlPlane:
             heartbeat-interval: 250
           advertisedSubnets:
             - 10.20.0.0/24
+
     # Configure containerd
     - |-
       machine:
@@ -213,10 +263,16 @@ controlPlane:
                 [plugins."io.containerd.grpc.v1.cri"]
                   enable_unprivileged_ports = true
                   enable_unprivileged_icmp = true
+              [plugins."io.containerd.grpc.v1.cri".containerd]
+                discard_unpacked_layers = false
+              [plugins."io.containerd.grpc.v1.cri".containerd.runtimes.runc]
+                discard_unpacked_layers = false
+
     # Disable default API server admission plugins.
     - |-
       - op: remove
         path: /cluster/apiServer/admissionControl
+
     # Enable K8s Talos API access
     - |-
       machine:
@@ -227,6 +283,7 @@ controlPlane:
               - os:admin
             allowedKubernetesNamespaces:
               - system-upgrade
+
     # Kubelet configuration
     - |-
       machine:
@@ -238,9 +295,17 @@ controlPlane:
           nodeIP:
             validSubnets:
                 - 10.20.0.0/24
+
     # Custom sysctls
     - |-
       machine:
         sysctls:
-          fs.inotify.max_user_watches: "1048576"
-          fs.inotify.max_user_instances: "8192"
+          fs.inotify.max_user_instances: 8192
+          fs.inotify.max_user_watches: 1048576
+          net.core.rmem_max: 67108864
+          net.core.wmem_max: 67108864
+          net.ipv4.tcp_rmem: 4096 87380 33554432
+          net.ipv4.tcp_wmem: 4096 65536 33554432
+          net.ipv4.tcp_tw_reuse: 1
+          net.ipv4.tcp_window_scaling: 1
+          net.ipv4.tcp_congestion_control: bbr
