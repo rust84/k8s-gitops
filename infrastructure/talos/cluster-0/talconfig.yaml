@@ -223,7 +223,7 @@ controlPlane:
           extraArgs:
             feature-gates: AuthorizeNodeWithSelectors=false
         coreDNS:
-          disabled: true
+          disabled: false
         proxy:
           disabled: true
         scheduler:
