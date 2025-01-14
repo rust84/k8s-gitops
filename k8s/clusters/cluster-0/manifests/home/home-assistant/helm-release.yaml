@@ -67,7 +67,7 @@ spec:
           #   proxy_set_header X-Forwarded-Host $http_host;
           # nginx.ingress.kubernetes.io/auth-signin: https://hass.${SECRET_DOMAIN}/outpost.goauthentik.io/start?rd=$escaped_request_uri
         enabled: true
-        ingressClassName: internal
+        ingressClassName: external
         hosts:
           - host: &host "hass.${SECRET_DOMAIN}"
             paths:
