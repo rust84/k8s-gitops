@@ -132,24 +132,11 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: apps-home-wyoming-piper
+  name: apps-home-wyoming-services
   namespace: flux-system
 spec:
   dependsOn:
     - name: cluster-namespaces
     - name: rook-ceph-cluster
-  path: "./k8s/clusters/cluster-0/manifests/home/wyoming-piper"
-  prune: true
----
-# yaml-language-server: $schema=https://kubernetes-schemas.devbu.io/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: apps-home-wyoming-whisper
-  namespace: flux-system
-spec:
-  dependsOn:
-    - name: cluster-namespaces
-    - name: rook-ceph-cluster
-  path: "./k8s/clusters/cluster-0/manifests/home/wyoming-whisper"
+  path: "./k8s/clusters/cluster-0/manifests/home/wyoming-services"
   prune: true

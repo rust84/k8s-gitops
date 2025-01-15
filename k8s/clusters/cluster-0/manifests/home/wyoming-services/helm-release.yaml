@@ -1,0 +1,168 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: wyoming-services
+  namespace: home
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  values:
+    controllers:
+      piper:
+        type: statefulset
+        annotations:
+          app.kubernetes.io/name: piper
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: rhasspy/wyoming-piper
+              tag: 1.5.0
+            args:
+              - --voice=en_US-hfc_female-medium
+            env:
+              TZ: ${TZ}
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 500m
+                memory: 250Mi
+              limits:
+                memory: 500Mi
+
+        statefulset:
+          volumeClaimTemplates:
+            - name: data
+              advancedMounts:
+                main:
+                  - path: /data
+              accessMode: ReadWriteOnce
+              size: 5Gi
+              storageClass: rook-ceph-block
+
+      whisper:
+        type: statefulset
+        annotations:
+          app.kubernetes.io/name: whisper
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: rhasspy/wyoming-whisper
+              tag: 2.4.0
+            args:
+              - --model=small
+              - --language=en
+            env:
+              TZ: ${TZ}
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 500m
+                memory: 250Mi
+              limits:
+                memory: 2500Mi
+
+        statefulset:
+          volumeClaimTemplates:
+            - name: data
+              globalMounts:
+                - path: /data
+              accessMode: ReadWriteOnce
+              size: 5Gi
+              storageClass: rook-ceph-block
+
+      openwakeword:
+        type: statefulset
+        annotations:
+          app.kubernetes.io/name: openwakeword
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: rhasspy/wyoming-openwakeword
+              tag: 1.10.0
+            args:
+              - --preload-model
+              - "ok_nabu"
+              - --custom-model-dir
+              - /custom
+            env:
+              TZ: ${TZ}
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+
+    service:
+      piper:
+        controller: piper
+        ports:
+          piper:
+            port: 10200
+
+      whisper:
+        controller: whisper
+        ports:
+          http:
+            port: 10300
+            protocol: TCP
+
+      openwakeword:
+        controller: openwakeword
+        ports:
+          http:
+            port: 10400
+
+    persistence:
+      openwakeword-config:
+        type: configMap
+        name: openwakeword-config
+        advancedMounts:
+          openwakeword:
+            main:
+              - path: /custom
+
+      pper-tmp:
+        type: emptyDir
+        advancedMounts:
+          piper:
+            main:
+              - path: /tmp
+
+      whisper-tmp:
+        type: emptyDir
+        advancedMounts:
+          whisper:
+            main:
+              - path: /tmp
+              
+      openwakeword-tmp:
+        type: emptyDir
+        advancedMounts:
+          openwakeword:
+            main:
+              - path: /tmp
