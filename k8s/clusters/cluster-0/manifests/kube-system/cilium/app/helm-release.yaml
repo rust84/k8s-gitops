@@ -109,7 +109,7 @@ spec:
                 - "hubble.${SECRET_DOMAIN}"
 
     bgpControlPlane:
-      enabled: false
+      enabled: true
 
     # Legacy MetalLB based control plane
     bgp:
