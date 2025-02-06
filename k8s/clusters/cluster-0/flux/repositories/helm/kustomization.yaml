@@ -33,4 +33,5 @@ resources:
   - postfinance-charts.yaml
   - rook-ceph-charts.yaml
   - stevehipwell.yaml
+  - spegel.yaml
   - vector-charts.yaml

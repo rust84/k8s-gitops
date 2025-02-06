@@ -134,3 +134,13 @@ spec:
     name: k8s-gitops
   path: "./k8s/clusters/cluster-0/manifests/kube-system/local-path-provisioner"
   prune: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: core-spegel
+  namespace: flux-system
+spec:
+  path: "./k8s/clusters/cluster-0/manifests/kube-system/spegel"
+  prune: true
