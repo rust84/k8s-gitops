@@ -1,0 +1,77 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: govee2mqtt
+  namespace: home
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.6.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      govee2mqtt:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name": "multus-iot",
+                "namespace": "network",
+                "ips": ["10.30.0.15/24"],
+                "mac": "f6:1d:fa:96:63:8f"
+              }]
+        containers:
+          app:
+            env:
+              TZ: ${TZ}
+              GOVEE_MQTT_HOST: emqx.home.svc.cluster.local
+              GOVEE_MQTT_PORT: 1883
+              GOVEE_TEMPERATURE_SCALE: C
+              GOVEE_LAN_BROADCAST_ALL: true
+            envFrom:
+              - secretRef:
+                  name: govee2mqtt-secret
+            image:
+              repository: ghcr.io/wez/govee2mqtt
+              tag: latest@sha256:af2ef02e9dfb84f5d30139d34758f64e8e109bccc8c01a466ba96940f541bf0a
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+    persistence:
+      data:
+        type: emptyDir
+        globalMounts:
+          - path: /data
