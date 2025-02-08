@@ -7,7 +7,7 @@ metadata:
   namespace: database
 spec:
   image: ghcr.io/dragonflydb/dragonfly:v1.26.2
-  replicas: 3 # set to the number of nodes in the cluster
+  replicas: 3
   env:
     - name: MAX_MEMORY
       valueFrom:
@@ -18,6 +18,8 @@ spec:
     - --maxmemory=$(MAX_MEMORY)Mi
     - --proactor_threads=2
     - --cluster_mode=emulated
+    - --lock_on_hashtags
+    - --default_lua_flags=allow-undeclared-keys
   topologySpreadConstraints:
     - maxSkew: 1
       topologyKey: kubernetes.io/hostname
