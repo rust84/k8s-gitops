@@ -77,3 +77,15 @@ spec:
     - name: rook-ceph-cluster
   path: "./k8s/clusters/cluster-0/manifests/collab/ntfy"
   prune: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: apps-collab-immich
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cluster-namespaces
+  path: "./k8s/clusters/cluster-0/manifests/collab/immich"
+  prune: true
