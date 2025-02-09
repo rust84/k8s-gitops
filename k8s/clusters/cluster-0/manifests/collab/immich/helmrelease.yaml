@@ -160,6 +160,7 @@ spec:
         annotations:
           hajimari.io/enable: "true"
           hajimari.io/icon: "camera"
+          nginx.ingress.kubernetes.io/proxy-body-size: "0"
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
@@ -221,7 +222,6 @@ spec:
         runAsUser: 568
         runAsGroup: 568
         fsGroup: 568
-        supplementalGroups: [65542]
         fsGroupChangePolicy: Always
         seccompProfile: { type: "RuntimeDefault" }
     serviceMonitor:
