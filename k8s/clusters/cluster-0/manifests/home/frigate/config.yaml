@@ -38,13 +38,17 @@ snapshots:
     default: 14
 
 record:
-  enabled: true
+  enabled: True
   retain:
     days: 3
-    mode: all
-  events:
+    mode: motion
+  alerts:
     retain:
-      default: 14
+      days: 14
+      mode: active_objects
+  detections:
+    retain:
+      days: 14
       mode: active_objects
 
 objects:
