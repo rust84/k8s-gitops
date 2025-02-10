@@ -47,13 +47,13 @@ spec:
               <<: &env-common
                 TZ: "${TZ}"
                 IMMICH_MEDIA_LOCATION: &pvc /data
-                IMMICH_METRICS: "true"
                 IMMICH_MACHINE_LEARNING_URL: http://immich-ml.collab.svc.cluster.local:3003
                 IMMICH_LOG_LEVEL: verbose
                 IMMICH_IGNORE_MOUNT_CHECK_ERRORS: "true"
                 REDIS_HOSTNAME: dragonfly.database.svc.cluster.local
                 REDIS_PORT: "6379"
                 REDIS_DBINDEX: 3
+              IMMICH_TELEMETRY_INCLUDE: all
               IMMICH_WORKERS_INCLUDE: &server-include 'api'
             envFrom: *ef
             securityContext: &sc
