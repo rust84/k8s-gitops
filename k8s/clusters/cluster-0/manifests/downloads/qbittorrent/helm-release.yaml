@@ -29,9 +29,9 @@ spec:
   values:
     defaultPodOptions:
       labels:
-        setGateway: "true"
+        setGateway: "false"
       annotations:
-        setGateway: "true"
+        setGateway: "false"
     controllers:
       qbittorrent:
         annotations:
