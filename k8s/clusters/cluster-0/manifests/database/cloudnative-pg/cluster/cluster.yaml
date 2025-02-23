@@ -30,6 +30,8 @@ spec:
       wal:
         compression: bzip2
         maxParallel: 8
+      data:
+        compression: bzip2
       destinationPath: s3://cloudnative-pg/
       endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
       serverName: &currentCluster postgres16-v1
@@ -56,13 +58,3 @@ spec:
   #         secretAccessKey:
   #           name: cloudnative-pg-secret
   #           key: aws-secret-access-key
-  # # use this to 'migrate' from an existing cnpg cluster (e.g. "cluster-pg14") to the new cluster
-  # initdb:
-  #   import:
-  #     type: monolith
-  #     databases:
-  #       - "*"
-  #     roles:
-  #       - "*"
-  #     source:
-  #       externalCluster: cluster-pg14
