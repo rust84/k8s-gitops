@@ -80,7 +80,7 @@ settings:
   playlist_exclude_users:
 
 plex:
-  url: http://plex.media.svc.cluster.local:32400
+  url: http://plex.roswellian.dev
   token: {{ .PLEX_APIKEY }}
   timeout: 60
   clean_bundles: false
@@ -88,7 +88,7 @@ plex:
   optimize: false
 
 tautulli:
-  url: http://tautulli.media.svc.cluster.local:8181
+  url: http://tautulli.roswellian.dev
   apikey: {{ .TAUTULLI_APIKEY }}
 
 tmdb:
@@ -106,7 +106,7 @@ mdblist:
   cache_expiration: 60
 
 radarr:
-  url: http://radarr.media.svc.cluster.local:7878
+  url: http://radarr.roswellian.dev
   token: {{ .RADARR_APIKEY }}
   add_missing: false
   add_existing: false
@@ -123,7 +123,7 @@ radarr:
   ignore_cache: false
 
 sonarr:
-  url: http://sonarr.media.svc.cluster.local:8989
+  url: http://sonarr.roswellian.dev
   token: {{ .SONARR_APIKEY }}
   add_missing: false
   add_existing: false
