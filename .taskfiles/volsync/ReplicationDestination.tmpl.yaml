@@ -11,7 +11,7 @@ spec:
     repository: "${rsrc}-restic"
     destinationPVC: "${claim}"
     copyMethod: Direct
-    storageClassName: rook-ceph-block
+    storageClassName: ceph-block
     # IMPORTANT NOTE:
     #   Set to the last X number of snapshots to restore from
     previous: ${previous}
