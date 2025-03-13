@@ -9,6 +9,6 @@ instance:
     - notification-controller
   sync:
     kind: GitRepository
-    url: "ssh://git@github.com/rust84/k8s-gitops.git"
+    url: "https://github.com/rust84/k8s-gitops.git"
     ref: "refs/heads/main"
     path: kubernetes/flux/cluster
