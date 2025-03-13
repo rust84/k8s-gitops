@@ -2,52 +2,6 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
-      "description": "Rook-Ceph image and chart and CRDs",
-      "groupName": "Rook Ceph",
-      "matchPackagePatterns": ["rook.ceph"],
-      "group": { "commitMessageTopic": "{{{groupName}}} group" },
-      "separateMinorPatch": true
-    },
-    {
-      "description": "Thanos image and chart - versions do not match",
-      "groupName": "Thanos",
-      "matchPackagePatterns": ["thanos"],
-      "matchDatasources": ["docker", "github-releases", "helm"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "group": { "commitMessageTopic": "{{{groupName}}} group" },
-      "separateMinorPatch": false
-    },
-    {
-      "description": "Vector image and chart - versions do not match",
-      "groupName": "Vector",
-      "matchPackagePatterns": ["vector"],
-      "matchDatasources": ["docker", "github-releases", "helm"],
-      "matchUpdateTypes": ["minor", "patch"],
-      "group": { "commitMessageTopic": "{{{groupName}}} group" },
-      "separateMinorPatch": false
-    },
-    {
-      "description": "Cilium image and chart",
-      "groupName": "Cilium",
-      "matchDatasources": ["helm", "docker", "github-releases"],
-      "matchPackageNames": [
-        "quay.io/cilium/cilium",
-        "quay.io/cilium/operator-generic",
-        "cilium",
-        "cilium/cilium"
-      ],
-      "group": { "commitMessageTopic": "{{{groupName}}} group" },
-      "separateMinorPatch": true
-    },
-    {
-      "description": "Cert-Manager CRDs and chart",
-      "groupName": "Cert-Manager",
-      "matchDatasources": ["helm", "github-releases", "docker"],
-      "matchPackagePatterns": ["cert-manager"],
-      "group": { "commitMessageTopic": "{{{groupName}}} group" },
-      "separateMinorPatch": true
-    },
-    {
       "description": "Home Assistant and Code Server",
       "groupName": "Home Assistant",
       "matchDatasources": ["docker"],
@@ -56,18 +10,18 @@
         "codercom/code-server"
       ],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
-      "separateMinorPatch": true
+      "separateMinorPatch": false
     },
     {
-      "description": "Dex image and chart",
-      "groupName": "Dex",
-      "matchDatasources": ["docker", "helm"],
+      "description": "Immich service images",
+      "groupName": "Immich",
+      "matchDatasources": ["docker"],
       "matchPackageNames": [
-        "dex",
-        "ghcr.io/dexidp/dex"
+        "ghcr.io/immich-app/immich-machine-learning",
+        "ghcr.io/immich-app/immich-server"
       ],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
-      "separateMinorPatch": true
+      "separateMinorPatch": false
     },
     {
       "description": "Multus image and chart",
@@ -79,7 +33,7 @@
         "ghcr.io/k8snetworkplumbingwg/multus-cni"
       ],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
-      "separateMinorPatch": true
+      "separateMinorPatch": false
     }
   ]
 }
