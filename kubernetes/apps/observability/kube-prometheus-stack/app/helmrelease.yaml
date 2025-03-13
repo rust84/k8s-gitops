@@ -245,7 +245,7 @@ spec:
             cpu: 455m
             memory: 2718Mi
           limits:
-            memory: 2718Mi
+            memory: 8Gi
         storageSpec:
           volumeClaimTemplate:
             spec:
