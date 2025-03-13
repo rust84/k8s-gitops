@@ -22,7 +22,7 @@ metadata:
 spec:
   staticConfigs:
     - targets:
-        - "kvm.${SECRET_DOMAIN}"
+        - "kvm.microserver.space"
   metricsPath: /api/export/prometheus/metrics
   relabelings:
     - action: replace
