@@ -36,6 +36,7 @@
   "kubernetes": {
     "fileMatch": ["kubernetes/.+\\.yaml$"]
   },
+  "flux": {"fileMatch": ["kubernetes/.+\\.yaml$"]},
   "customManagers": [
     {
       "customType": "regex",
