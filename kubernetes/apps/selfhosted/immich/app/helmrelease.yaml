@@ -41,7 +41,7 @@ spec:
           main:
             image: &img
               repository: ghcr.io/immich-app/immich-server
-              tag: v1.126.1
+              tag: v1.129.0
             env:
               <<: &env-common
                 TZ: "${TZ}"
