@@ -1,0 +1,97 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: postgres-backup
+  namespace: database
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      postgres-backup:
+        type: cronjob
+        cronjob:
+          concurrencyPolicy: Forbid
+          schedule: "0 17 * * *"
+          backoffLimit: 0
+          failedJobsHistory: 1
+          successfulJobsHistory: 1
+        pod:
+          restartPolicy: Never
+          securityContext:
+            runAsUser: 1031
+            runAsGroup: 1031
+            fsGroup: 1031
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups: 
+              - 65542 # external-services
+        containers:
+          postgres:
+            image:
+              repository: docker.io/prodrigestivill/postgres-backup-local
+              tag: 16@sha256:e7182c0dac78540405e954597fcb3f4cfa67955d5df008152ab41ce166fe6014
+            command:
+              - /bin/bash
+              - -x
+              - /backup.sh
+            env:
+              POSTGRES_HOST: postgres-ro.database.svc.cluster.local
+              POSTGRES_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: cloudnative-pg-secret
+                    key: username
+              POSTGRES_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: cloudnative-pg-secret
+                    key: password
+              POSTGRES_DB: "authentik,fireflyiii,home_assistant,joplin,paperless,bazarr,prowlarr_log,prowlarr_main,radarr_log,radarr_main,readarr_cache,readarr_log,readarr_main,sonarr_log,sonarr_main"
+          postgres-vector:
+            image:
+              repository: docker.io/prodrigestivill/postgres-backup-local
+              tag: 17@sha256:483fa15ecd998302bd312fc380cb1b3683a940881d9099d6dfe65bcc1e2714e8
+            command:
+              - /bin/bash
+              - -x
+              - /backup.sh
+            env:
+              POSTGRES_HOST: postgres-vector-ro.database.svc.cluster.local
+              POSTGRES_USER:
+                valueFrom:
+                  secretKeyRef:
+                    name: cloudnative-pg-secret
+                    key: username
+              POSTGRES_PASSWORD:
+                valueFrom:
+                  secretKeyRef:
+                    name: cloudnative-pg-secret
+                    key: password
+              POSTGRES_DB: "immich"
+    persistence:
+      nas-backups:
+        enabled: true
+        type: nfs
+        server: "duriel.internal"
+        path: /tank/Apps/backups/postgres
+        globalMounts:
+          - path: /backups

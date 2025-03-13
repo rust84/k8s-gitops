@@ -1,0 +1,130 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: sabnzbd
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      sabnzbd:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          app:
+            image:
+              repository: ghcr.io/onedr0p/sabnzbd
+              tag: 4.4.1@sha256:78368fe35996a3f08f98fadaf8d336a133fe77faa191c873fda0e7494d0ac7cb
+            env:
+              TZ: "${TZ}"
+              SABNZBD__PORT: &port 80
+              SABNZBD__HOST_WHITELIST_ENTRIES: >-
+                sabnzbd,
+                sabnzbd.media,
+                sabnzbd.media.svc,
+                sabnzbd.media.svc.cluster,
+                sabnzbd.media.svc.cluster.local,
+                sabnzbd.${SECRET_DOMAIN}
+            envFrom:
+              - secretRef:
+                  name: sabnzbd-secret
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api?mode=version
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 12Gi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      app:
+        controller: sabnzbd
+        ports:
+          http:
+            port: *port
+    ingress:
+      app:
+        className: internal
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:download
+          hajimari.io/info: Nzb Downloader
+          hajimari.io/group: media
+        hosts:
+          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+    persistence:
+      config:
+        existingClaim: sabnzbd
+      downloads:
+        type: nfs
+        server: duriel.internal
+        path: /tank/Media
+        globalMounts:
+          - path: /media/downloads/nzbs
+            subPath: downloads/nzbs
+      temp:
+        type: emptyDir
+        advancedMounts:
+          sabnzbd:
+            app:
+              - path: /tmp
+      ephemeral:
+        type: custom
+        volumeSpec:
+          ephemeral:
+            volumeClaimTemplate:
+              spec:
+                accessModes:
+                  - ReadWriteOnce
+                storageClassName: "openebs-hostpath"
+                resources:
+                  requests:
+                    storage: 100Gi
+        advancedMounts:
+          sabnzbd:
+            app:
+              - path: /incomplete
+                subPath: incomplete

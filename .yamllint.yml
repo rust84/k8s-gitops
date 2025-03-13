@@ -1,12 +1,10 @@
 ignore: |
   .yamllint.yml
   .github/
-  integrations/
   ignore/
   *-crds.yaml
   *.enc.*
   *.sops.*
-  gotk-components.yaml
 extends: default
 rules:
   truthy:

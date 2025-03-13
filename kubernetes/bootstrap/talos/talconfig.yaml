@@ -1,0 +1,124 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
+---
+# renovate: datasource=docker depName=ghcr.io/siderolabs/installer
+talosVersion: v1.9.4
+# renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+kubernetesVersion: v1.32.2
+
+clusterName: kubernetes
+endpoint: https://10.20.0.149:6443
+
+clusterPodNets:
+  - "10.42.0.0/16"
+clusterSvcNets:
+  - "10.43.0.0/16"
+
+additionalApiServerCertSans: &sans
+  - "10.20.0.149"
+  - "127.0.0.1"
+additionalMachineCertSans: *sans
+
+# Disable built-in Flannel to use Cilium
+cniConfig:
+  name: none
+
+nodes:
+  - hostname: "k8s-0"
+    ipAddress: "10.20.0.230"
+    installDisk: "/dev/sda"
+    machineSpec:
+      secureboot: false
+    talosImageURL: factory.talos.dev/installer/de3b865124c5616da8084826167f8c0b0fbc9b905b146290db797024e84097fc
+    controlPlane: true
+    networkInterfaces:
+      - interface: bond0
+        bond:
+          mode: active-backup
+          deviceSelectors:
+            - hardwareAddr: "88:ae:dd:66:*"
+              driver: igc
+        dhcp: true
+        mtu: 9000
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 10.20.0.1
+        vip:
+          ip: "10.20.0.149"   
+        vlans:
+          - vlanId: 30 
+            dhcp: false
+            addresses: [10.30.0.50/24]
+            mtu: 1500
+
+  - hostname: "k8s-1"
+    ipAddress: "10.20.0.229"
+    installDisk: "/dev/sda"
+    machineSpec:
+      secureboot: false
+    talosImageURL: factory.talos.dev/installer/de3b865124c5616da8084826167f8c0b0fbc9b905b146290db797024e84097fc
+    controlPlane: true
+    networkInterfaces:
+      - interface: bond0
+        bond:
+          mode: active-backup
+          deviceSelectors:
+            - hardwareAddr: "88:ae:dd:66:*"
+              driver: igc
+        dhcp: true
+        mtu: 9000
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 10.20.0.1
+        vip:
+          ip: "10.20.0.149"
+        vlans:
+          - vlanId: 30 
+            dhcp: false
+            addresses: [10.30.0.51/24]
+            mtu: 1500
+  - hostname: "k8s-2"
+    ipAddress: "10.20.0.244"
+    installDisk: "/dev/sda"
+    machineSpec:
+      secureboot: false
+    talosImageURL: factory.talos.dev/installer/de3b865124c5616da8084826167f8c0b0fbc9b905b146290db797024e84097fc
+    controlPlane: true
+    networkInterfaces:
+      - interface: bond0
+        bond:
+          mode: active-backup
+          deviceSelectors:
+            - hardwareAddr: "88:ae:dd:66:*"
+              driver: igc
+        dhcp: true
+        mtu: 9000
+        routes:
+          - network: 0.0.0.0/0
+            gateway: 10.20.0.1
+        vip:
+          ip: "10.20.0.149"
+        vlans:
+          - vlanId: 30 
+            dhcp: false
+            addresses: [10.30.0.52/24]
+            mtu: 1500
+
+# Global patches
+patches:
+  - "@./patches/global/machine-features.yaml"
+  - "@./patches/global/machine-files.yaml"
+  - "@./patches/global/machine-install.yaml"
+  - "@./patches/global/machine-kernel.yaml"
+  - "@./patches/global/machine-kubelet.yaml"
+  - "@./patches/global/machine-network.yaml"
+  - "@./patches/global/machine-sysctls.yaml"
+  - "@./patches/global/machine-sysfs.yaml"
+  - "@./patches/global/machine-time.yaml"
+  - "@./patches/global/machine-udev.yaml"
+
+# Controller patches
+controlPlane:
+  patches:
+    - "@./patches/controller/admission-controller-patch.yaml"
+    - "@./patches/controller/cluster.yaml"
+

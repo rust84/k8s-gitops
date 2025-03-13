@@ -1,0 +1,122 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app prowlarr
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      prowlarr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16
+            envFrom: &envFrom
+              - secretRef:
+                  name: *app
+        containers:
+          app:
+            image:
+              repository: ghcr.io/onedr0p/prowlarr-develop
+              tag: 1.31.1.4959@sha256:269667d4cc44f00371253f80a05dc6d3a733368c4b3d3e7ef72f8113cf7ab8b0
+            env:
+              TZ: "${TZ}"
+              PROWLARR__APP__INSTANCENAME: Prowlarr
+              PROWLARR__APP__THEME: dark
+              PROWLARR__AUTH__METHOD: External
+              PROWLARR__LOG__DBENABLED: "False"
+              PROWLARR__LOG__LEVEL: info
+              PROWLARR__PORT: &port 9696
+              PROWLARR__ANALYTICSENABLED: "False"
+              PROWLARR__UPDATE__BRANCH: develop
+            envFrom: *envFrom
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 3
+                  failureThreshold: 5
+              readiness: *probes
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
+        pod:
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 568
+            runAsGroup: 568
+            fsGroup: 568
+            fsGroupChangePolicy: OnRootMismatch
+            supplementalGroups: [65542]
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+    ingress:
+      app:
+        className: internal
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "cloud-search"
+          auth.home.arpa/enabled: "true"
+          nginx.ingress.kubernetes.io/auth-signin: https://prowlarr.${SECRET_DOMAIN}/outpost.goauthentik.io/start?rd=$escaped_request_uri
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - secretName: "tls.{{ .Release.Name }}"
+            hosts:
+              - *host
+    persistence:
+      config:
+        existingClaim: *app
+      backup:
+        enabled: true
+        type: nfs
+        server: "duriel.internal"
+        path: /tank/Apps/backups/prowlarr
+        globalMounts:
+          - path: /config/Backups

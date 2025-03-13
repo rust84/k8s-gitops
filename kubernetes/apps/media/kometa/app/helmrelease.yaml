@@ -1,0 +1,91 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app kometa
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      kometa:
+        type: cronjob
+        annotations:
+          reloader.stakater.com/auto: "true"
+        cronjob:
+          schedule: "@daily"
+          timeZone: &timeZone "${TZ}"
+          concurrencyPolicy: Forbid
+          successfulJobsHistory: 1
+          failedJobsHistory: 1
+        containers:
+          app:
+            image:
+              repository: kometateam/kometa
+              tag: v2.1.0@sha256:af441b1eeaa3be6a55820f16102d950d12fa52f3bb791b835a6a768385cd3a30
+            command:
+              - /bin/sh
+              - -c
+            args:
+              - |
+                python3 kometa.py --run --read-only-config --run-libraries "Movies";
+                python3 kometa.py --run --read-only-config --run-libraries "TV Shows";
+            env:
+              TZ: *timeZone
+            resources:
+              requests:
+                cpu: 10m
+                memory: 4096M
+              limits:
+                memory: 8192M
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: ["ALL"]
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: &uid 568
+        runAsGroup: *uid
+        fsGroup: *uid
+        fsGroupChangePolicy: OnRootMismatch
+    persistence:
+      config:
+        enabled: true
+        existingClaim: *app
+      config-file:
+        type: secret
+        name: pmm-config
+        globalMounts:
+          - path: /config/config.yml
+            subPath: config.yml
+            readOnly: true
+      config-prerolls:
+        enabled: true
+        type: configMap
+        name: pmm-prerolls
+        globalMounts:
+          - path: /config/Pre-rolls.yml
+            subPath: Pre-rolls.yml
+            readOnly: true
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/logs

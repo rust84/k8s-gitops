@@ -1,0 +1,102 @@
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: hajimari
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: hajimari
+      version: 2.0.2
+      sourceRef:
+        kind: HelmRepository
+        name: hajimari
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    image:
+      repository: ghcr.io/toboshii/hajimari
+      tag: v0.3.1
+    env:
+      TZ: "${TZ}"
+    hajimari:
+      defaultEnable: true
+      namespaceSelector:
+        matchNames:
+          - home
+          - media
+          - network
+          - observability
+          - security
+          - selfhosted
+      name: "russell"
+      customApps:
+        - group: Home
+          apps:
+            - name: Uptime
+              url: "https://kuma.microserver.space/status/home-cluster"
+              icon: arrow-up-bold
+              info: Uptime Kuma status page
+      globalBookmarks:
+        - group: Communicate
+          bookmarks:
+            - name: Discord
+              url: "https://discord.com"
+        - group: Cloud
+          bookmarks:
+            - name: AWS
+              url: "https://console.aws.amazon.com/console/home"
+            - name: Cloudflare
+              url: "https://dash.cloudflare.com"
+        - group: Dev
+          bookmarks:
+            - name: Github
+              url: "https://github.com/rust84"
+        - group: Media
+          bookmarks:
+            - name: YouTube
+              url: "https://youtube.com/feed/subscriptions"
+        - group: Reading
+          bookmarks:
+            - name: Medium
+              url: "http://medium.com"
+            - name: Reddit
+              url: "http://reddit.com"
+        - group: Tech
+          bookmarks:
+            - name: Hacker News
+              url: "https://news.ycombinator.com/"
+            - name: Tildes
+              url: "https://tildes.net/"
+    ingress:
+      main:
+        enabled: true
+        ingressClassName: internal
+        hosts:
+          - host: &host "hajimari.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+        tls:
+          - hosts:
+              - *host
+    podAnnotations:
+      configmap.reloader.stakater.com/reload: "hajimari-settings"
+    persistence:
+      data:
+        enabled: true
+        type: emptyDir
+    resources:
+      requests:
+        cpu: 10m
+        memory: 100Mi
+      limits:
+        memory: 100Mi

@@ -1,0 +1,97 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app esphome
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      esphome:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"multus-iot",
+                "namespace": "network",
+                "ips": ["10.30.0.53/24"],
+                "mac": "52:79:44:3a:2d:ed"
+              }]
+        containers:
+          app:
+            image:
+              repository: ghcr.io/bjw-s-labs/esphome
+              tag: 2025.2.1@sha256:bae818a514de097cecba94f1d6b0c9f038abcda63029818954b781ece5be9794
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 10m
+                memory: 512Mi
+              limits:
+                memory: 8Gi
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: "OnRootMismatch"
+    service:
+      app:
+        controller: esphome
+        ports:
+          http:
+            port: 6052
+    ingress:
+      main:
+        enabled: true
+        className: internal
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: simple-icons:esphome
+        hosts:
+          - host: &host "esphome.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+    persistence:
+      config:
+        existingClaim: *app
+        globalMounts:
+          - path: /config
+      cache:
+        type: emptyDir
+        advancedMounts:
+          esphome:
+            app:
+              - path: /cache

@@ -1,0 +1,91 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2beta2.schema.json
+---
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app ntfy
+spec:
+  interval: 30m
+  maxHistory: 3
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+    controllers:
+      ntfy:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        strategy: Recreate
+        pod:
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
+            fsGroupChangePolicy: OnRootMismatch
+        containers:
+          app:
+            args: ["serve"]
+            image:
+              repository: binwiederhier/ntfy
+              tag: v2.11.0
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+              limits:
+                memory: 256Mi
+    service:
+      app:
+        controller: ntfy
+        ports:
+          http:
+            port: 8080
+    ingress:
+      app:
+        className: "internal"
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+    persistence:
+      config:
+        type: configMap
+        name: ntfy-server-config
+        globalMounts:
+          - path: /etc/ntfy/server.yml
+            subPath: server.yml
+            readOnly: true
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /var/cache/ntfy
+      auth:
+        enabled: true
+        existingClaim: *app
+        advancedMounts:
+          ntfy:
+            app:
+              - path: /authfile

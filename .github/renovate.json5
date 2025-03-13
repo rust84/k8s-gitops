@@ -30,14 +30,14 @@
   "rebaseWhen": "conflicted",
   "helm-values": {
     "fileMatch": [
-      "k8s/clusters/.+/helm-release\\.yaml$",
-      "k8s/global/.+/helm-release\\.yaml$"
+      "kubernetes/.+/helmrelease\\.yaml$",
+      "kubernetes/.+/helmrelease\\.yaml$"
     ]
   },
   "kubernetes": {
-    "fileMatch": ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"]
+    "fileMatch": ["kubernetes/.+\\.yaml$", "kubernetes/.+\\.yaml$"]
   },
-  "flux": {"fileMatch": ["k8s/clusters/.+\\.yaml$", "k8s/global/.+\\.yaml$"]},
+  "flux": {"fileMatch": ["kubernetes/.+\\.yaml$", "kubernetes/.+\\.yaml$"]},
   "customManagers": [
     {
       "customType": "regex",
@@ -45,7 +45,7 @@
       "fileMatch": [
         "(^|/).taskfiles/.+\\.ya?ml(?:\\.j2)?$",
         "(^|/)infrastructure/.+\\.ya?ml(?:\\.j2)?$",
-        "(^|/)k8s/.+\\.ya?ml(?:\\.j2)?$"
+        "(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"
       ],
       "matchStrings": [
         // # renovate: depName=kubernetes/kubernetes datasource=github-releases
@@ -61,7 +61,7 @@
       "customType": "regex",
       "description": ["Process CloudnativePG Postgresql version"],
       "fileMatch": [
-        "(^|/)k8s/.+\\.ya?ml(?:\\.j2)?$"
+        "(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"
       ],
       "matchStrings": [
         "imageName: (?<depName>\\S+):(?<currentValue>.*\\-.*)"
@@ -72,7 +72,7 @@
     {
       "customType": "regex",
       "description": "Process CRD dependencies",
-      "fileMatch": ["k8s/clusters/cluster-0/crds/.+\\.ya?ml$"],
+      "fileMatch": ["kubernetes/clusters/cluster-0/crds/.+\\.ya?ml$"],
       "matchStrings": [
         // GitRepository and Flux Kustomization where 'Git release/tag' matches 'Helm' version
         "registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n.*?(?<currentValue>[^-\\s]*)\n",

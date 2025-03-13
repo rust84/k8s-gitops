@@ -1,0 +1,92 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres-vector
+spec:
+  instances: 3
+  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.2-v0.2.1
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 20Gi
+    storageClass: openebs-hostpath
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: cloudnative-pg-secret
+  resources:
+    requests:
+      memory: 1Gi
+    limits:
+      memory: 2Gi
+  affinity:
+    enablePodAntiAffinity: true
+    topologyKey: kubernetes.io/hostname
+    podAntiAffinityType: required
+    nodeSelector:
+      kubernetes.io/arch: amd64
+  postgresql:
+    shared_preload_libraries:
+      - "vectors.so"
+    enableAlterSystem: true
+    parameters:
+      max_connections: "600"
+      shared_buffers: 512MB
+  monitoring:
+    enablePodMonitor: true
+  backup:
+    retentionPolicy: 7d
+    barmanObjectStore:
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      data:
+        compression: bzip2
+      destinationPath: &dest s3://cloudnative-pg/
+      endpointURL: &s3 https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+      # Note: serverName version needs to be inclemented
+      # when recovering from an existing cnpg cluster
+      serverName: postgres-vector-v2
+      s3Credentials: &credentials
+        accessKeyId:
+          name: cloudnative-pg-secret
+          key: aws-access-key-id
+        secretAccessKey:
+          name: cloudnative-pg-secret
+          key: aws-secret-access-key
+  # Note: previousCluster needs to be set to the name of the previous
+  # cluster when recovering from an existing cnpg cluster
+  bootstrap:
+    recovery:
+      source: &previousCluster postgres-vector-v1
+  externalClusters:
+    - name: *previousCluster
+      barmanObjectStore:
+        wal:
+          compression: bzip2
+          maxParallel: 8
+        destinationPath: *dest
+        endpointURL: *s3
+        s3Credentials: *credentials
+
+  # Note: Enable when migrating from a different major version
+  # bootstrap:
+  #   initdb:
+  #     import:
+  #       type: monolith
+  #       databases:
+  #         - "*"
+  #       roles:
+  #         - "*"
+  #       source:
+  #         externalCluster: &previousCluster postgres
+  # externalClusters:
+  #   - name: *previousCluster
+  #     connectionParameters:
+  #       # Use the correct IP or host name for the source database
+  #       host: postgres-ro.database.svc
+  #       user: postgres
+  #       dbname: postgres
+  #       sslmode: require
+  #     password:
+  #       name: cloudnative-pg-secret
+  #       key: password

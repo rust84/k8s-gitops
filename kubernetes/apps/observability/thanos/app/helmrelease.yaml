@@ -1,0 +1,132 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: thanos
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: thanos
+      version: 1.19.2
+      sourceRef:
+        kind: HelmRepository
+        name: stevehipwell
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  rollback:
+    timeout: 10m
+    recreate: true
+    cleanupOnFail: true
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  valuesFrom:
+    - targetPath: objstoreConfig.value.config.bucket
+      kind: ConfigMap
+      name: thanos-ceph-bucket
+      valuesKey: BUCKET_NAME
+    - targetPath: objstoreConfig.value.config.endpoint
+      kind: ConfigMap
+      name: thanos-ceph-bucket
+      valuesKey: BUCKET_HOST
+    - targetPath: objstoreConfig.value.config.region
+      kind: ConfigMap
+      name: thanos-ceph-bucket
+      valuesKey: BUCKET_REGION
+    - targetPath: objstoreConfig.value.config.access_key
+      kind: Secret
+      name: thanos-ceph-bucket
+      valuesKey: AWS_ACCESS_KEY_ID
+    - targetPath: objstoreConfig.value.config.secret_key
+      kind: Secret
+      name: thanos-ceph-bucket
+      valuesKey: AWS_SECRET_ACCESS_KEY
+  values:
+    objstoreConfig:
+      value:
+        type: s3
+        config:
+          insecure: true
+    additionalEndpoints:
+      - dnssrv+_grpc._tcp.prometheus-thanos-discovery.observability.svc.cluster.local
+    additionalReplicaLabels: ["__replica__"]
+    serviceMonitor:
+      enabled: true
+    compact:
+      enabled: true
+      extraArgs:
+        - --compact.concurrency=4
+        - --delete-delay=30m
+        - --retention.resolution-raw=14d
+        - --retention.resolution-5m=30d
+        - --retention.resolution-1h=60d
+      persistence: &persistence
+        enabled: true
+        storageClass: ceph-block
+        size: 20Gi
+    query:
+      replicas: 3
+      extraArgs: ["--alert.query-url=http://thanos.${SECRET_DOMAIN}"]
+    queryFrontend:
+      enabled: true
+      replicas: 3
+      extraEnv: &extraEnv
+        - name: THANOS_CACHE_CONFIG
+          valueFrom:
+            configMapKeyRef:
+              name: &configMap thanos-cache-configmap
+              key: cache.yaml
+      extraArgs: ["--query-range.response-cache-config=$(THANOS_CACHE_CONFIG)"]
+      podAnnotations: &podAnnotations
+        configmap.reloader.stakater.com/reload: *configMap
+      ingress:
+        enabled: true
+        ingressClassName: internal
+        annotations:
+          auth.home.arpa/enabled: "true"
+          nginx.ingress.kubernetes.io/auth-signin: https://thanos.${SECRET_DOMAIN}/outpost.goauthentik.io/start?rd=$escaped_request_uri
+        hosts:
+          - &host thanos.${SECRET_DOMAIN}
+        tls:
+          - hosts:
+              - *host
+    rule:
+      enabled: true
+      replicas: 3
+      extraArgs: ["--web.prefix-header=X-Forwarded-Prefix"]
+      alertmanagersConfig:
+        value: |-
+          alertmanagers:
+            - api_version: v2
+              static_configs:
+                - dnssrv+_http-web._tcp.alertmanager-operated.monitoring.svc.cluster.local
+      rules:
+        value: |-
+          groups:
+            - name: PrometheusWatcher
+              rules:
+                - alert: PrometheusDown
+                  annotations:
+                    summary: A Prometheus has disappeared from Prometheus target discovery
+                  expr: absent(up{job="prometheus-prometheus"})
+                  for: 5m
+                  labels:
+                    severity: critical
+      persistence: *persistence
+    storeGateway:
+      replicas: 3
+      extraEnv: *extraEnv
+      extraArgs: ["--index-cache.config=$(THANOS_CACHE_CONFIG)"]
+      podAnnotations: *podAnnotations
+      persistence: *persistence

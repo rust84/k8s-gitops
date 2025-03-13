@@ -1,0 +1,11 @@
+base-url: https://ntfy.${SECRET_DOMAIN}
+listen-http: ":8080"
+behind-proxy: true
+cache-file: "/var/cache/ntfy/cache.db"
+attachment-cache-dir: "/var/cache/ntfy/attachments"
+attachment-total-size-limit: "5G"
+attachment-file-size-limit: "50M"
+attachment-expiry-duration: "6h"
+auth-file: "/authfile/user.db"
+auth-default-access: "deny-all"
+upstream-base-url: "https://ntfy.sh"

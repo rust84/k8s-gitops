@@ -1,0 +1,14 @@
+---
+instance:
+  cluster:
+    networkPolicy: false
+  components:
+    - source-controller
+    - kustomize-controller
+    - helm-controller
+    - notification-controller
+  sync:
+    kind: GitRepository
+    url: "ssh://git@github.com/rust84/k8s-gitops.git"
+    ref: "refs/heads/main"
+    path: kubernetes/flux/cluster

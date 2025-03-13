@@ -1,0 +1,203 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app qbittorrent
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.1
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  dependsOn:
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  values:
+    controllers:
+      qbittorrent:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            fsGroup: 568
+            fsGroupChangePolicy: "OnRootMismatch"
+            supplementalGroups: [65542] # external-services
+
+        initContainers:
+          coredns:
+            image:
+              repository: mirror.gcr.io/coredns/coredns
+              tag: 1.12.0
+            args:
+              - -conf
+              - /etc/coredns/Corefile
+            restartPolicy: Always
+
+          gluetun:
+            dependsOn:
+              - coredns
+            image:
+              repository: ghcr.io/qdm12/gluetun
+              tag: v3.40.0
+            env:
+              DOT: "off"
+              DNS_ADDRESS: "127.0.0.2"
+              VPN_SERVICE_PROVIDER: airvpn
+              VPN_TYPE: wireguard
+              VPN_INTERFACE: wg0
+              FIREWALL_INPUT_PORTS: "8080,9999"
+              FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16 # Allow access to k8s subnets
+              HEALTH_SERVER_ADDRESS: ":9999"
+              FIREWALL_VPN_INPUT_PORTS: &BT-port 21044
+              SERVER_COUNTRIES: Belgium
+            envFrom:
+              - secretRef:
+                  name: qbittorrent-secret
+            resources:
+              limits:
+                squat.ai/tun: "1"
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9999
+                  timeoutSeconds: 10
+                  periodSeconds: 30
+                  failureThreshold: 5
+              startup:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 9999
+                  initialDelaySeconds: 10
+                  periodSeconds: 10
+                  failureThreshold: 5
+            restartPolicy: Always
+            securityContext:
+              capabilities:
+                add:
+                  - NET_ADMIN
+              allowPrivilegeEscalation: false
+
+        containers:
+          app:
+            nameOverride: qbittorrent
+            image:
+              repository: ghcr.io/onedr0p/qbittorrent-beta
+              tag: 5.0.3@sha256:4b9de3356475bd97fda3fb4d98f213e8d139aef15e7bd20dab72973e661901dd
+            env:
+              UMASK: "022"
+              QBT_WEBUI_PORT: &port 8080
+              QBT_TORRENTING_PORT: *BT-port
+              QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
+              QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
+                10.42.0.0/16, 10.20.0.0/24
+              QBT_BitTorrent__Session__Interface: wg0
+              QBT_BitTorrent__Session__InterfaceAddress: "0.0.0.0"
+              QBT_BitTorrent__Session__InterfaceName: wg0
+              QBT_Preferences__WebUI__AlternativeUIEnabled: true
+              QBT_Preferences__WebUI__RootFolder: /add-ons/VueTorrent
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /api/v2/app/version
+                    port: *port
+                  initialDelaySeconds: 0
+                  timeoutSeconds: 10
+                  periodSeconds: 5
+                  failureThreshold: 5
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 150m
+                memory: 2048Mi
+              limits:
+                memory: 8192Mi
+            securityContext:
+              runAsUser: 568
+              runAsGroup: 568
+              runAsNonRoot: true
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+          vuetorrent:
+            dependsOn: app
+            image:
+              repository: registry.k8s.io/git-sync/git-sync
+              tag: v4.4.0
+            args:
+              - --repo=https://github.com/WDaan/VueTorrent
+              - --ref=latest-release
+              - --period=86400s
+              - --root=/add-ons
+            resources:
+              requests:
+                cpu: 10m
+                memory: 25Mi
+              limits:
+                memory: 50Mi
+
+    service:
+      app:
+        controller: qbittorrent
+        ports:
+          http:
+            port: *port
+
+    ingress:
+      app:
+        className: internal
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: cloud-download
+          hajimari.io/info: Torrent Downloader
+          hajimari.io/group: media
+        hosts:
+          - host: "qbittorrent.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+
+    persistence:
+      config:
+        existingClaim: *app
+      media:
+        type: nfs
+        server: "duriel.internal"
+        path: /tank/Media
+        globalMounts:
+          - path: /media/downloads/torrents
+            subPath: downloads/torrents
+      coredns:
+        type: configMap
+        name: qbittorrent-coredns
+        advancedMounts:
+          qbittorrent:
+            coredns:
+              - path: /etc/coredns/Corefile
+                subPath: Corefile
+                readOnly: true
+      add-ons:
+        type: emptyDir
+        globalMounts:
+          - path: /add-ons
+      tmp:
+        type: emptyDir

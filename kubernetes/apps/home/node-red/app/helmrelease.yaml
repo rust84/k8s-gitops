@@ -1,0 +1,99 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app node-red
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.2
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    defaultPodOptions:
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+        runAsUser: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+    controllers:
+      node-red:
+        initContainers:
+          npm-update:
+            image:
+              repository: docker.io/node
+              tag: 20-alpine
+            command:
+              - /bin/sh
+              - -c
+              - |
+                if [[ -f /data/package.json ]]; then
+                    npm install --save $(npm outdated | cut -d' ' -f 1 | sed '1d' | xargs -I '$' echo '$@latest' | xargs echo);
+                else
+                    echo "Skipping npm updates, no package.json found.";
+                fi
+            workingDir: /data
+        containers:
+          app:
+            image:
+              repository: docker.io/nodered/node-red
+              tag: 4.0.9
+            env:
+              TZ: "${TZ}"
+              NODE_RED_ENABLE_SAFE_MODE: "false"
+              NODE_RED_ENABLE_PROJECTS: "true"
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 15m
+                memory: 240Mi
+              limits:
+                memory: 240Mi
+    service:
+      app:
+        controller: node-red
+        ports:
+          http:
+            port: 1880
+    ingress:
+      app:
+        className: internal
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "resistor-nodes"
+        hosts:
+          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+    persistence:
+      data:
+        existingClaim: *app
+      tmp:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp

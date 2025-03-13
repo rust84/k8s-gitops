@@ -1,0 +1,150 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app paperless
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.2
+      interval: 30m
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      paperless:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            supplementalGroups:
+              - 65542
+              - 568
+              - 1000
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16
+            envFrom: &envFrom
+              - secretRef:
+                  name: paperless-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/paperless-ngx/paperless-ngx
+              tag: 2.14.7
+            env:
+              COMPOSE_PROJECT_NAME: paperless
+              PAPERLESS_PORT: &port 8000
+              PAPERLESS_CONSUMER_POLLING: "60"
+              PAPERLESS_CONSUMER_RECURSIVE: "true"
+              PAPERLESS_CONSUMER_SUBDIRS_AS_TAGS: "true"
+              PAPERLESS_CONSUMER_ENABLE_BARCODES: "true"
+              PAPERLESS_DBENGINE: postgresql
+              PAPERLESS_REDIS: redis://dragonfly.database.svc.cluster.local:6379
+              PAPERLESS_TASK_WORKERS: 2
+              PAPERLESS_TIME_ZONE: "${TZ}"
+              PAPERLESS_URL: https://{{ .Release.Name }}.${SECRET_DOMAIN}
+              PAPERLESS_TIKA_ENABLED: 1
+              PAPERLESS_TIKA_GOTENBERG_ENDPOINT: http://localhost:3000
+              PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
+              USERMAP_GID: 65542
+              PAPERLESS_DEBUG: "false"
+            envFrom: *envFrom
+            probes:
+              liveness:
+                enabled: true
+              readiness:
+                enabled: true
+              startup:
+                enabled: true
+                spec:
+                  failureThreshold: 30
+                  periodSeconds: 5
+            resources:
+              requests:
+                cpu: 25m
+                memory: 2Gi
+              limits:
+                memory: 6Gi
+          tika:
+            image:
+              repository: docker.io/apache/tika
+              tag: 3.1.0.0-full
+              pullPolicy: IfNotPresent
+            ports:
+              - containerPort: 9998
+          gotenberg:
+            image:
+              repository: gotenberg/gotenberg
+              tag: 8.17.3
+              pullPolicy: IfNotPresent
+            ports:
+              - containerPort: 3000
+            command:
+              - "gotenberg"
+              - "--chromium-disable-javascript=true"
+              - "--chromium-allow-list=file:///tmp/.*"
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+    ingress:
+      app:
+        className: "internal"
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: mdi:barcode-scan
+          hajimari.io/appName: "Paperless"
+          hajimari.io/group: "Home"
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+    persistence:
+      data:
+        type: nfs
+        server: duriel.internal
+        path: /tank/Apps/paperless/data
+        globalMounts:
+          - path: /usr/src/paperless/data
+      media:
+        type: nfs
+        server: duriel.internal
+        path: /tank/Apps/paperless/media
+        globalMounts:
+          - path: /usr/src/paperless/media
+      consume:
+        type: nfs
+        server: duriel.internal
+        path: /tank/Apps/paperless/incoming
+        globalMounts:
+          - path: /usr/src/paperless/consume
+      export:
+        type: nfs
+        server: duriel.internal
+        path: /tank/Apps/paperless/export
+        globalMounts:
+          - path: /usr/src/paperless/export

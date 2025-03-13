@@ -1,0 +1,32 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+
+tasks:
+
+  talos:
+    desc: Bootstrap the Talos cluster
+    dir: '{{.TALHELPER_DIR}}'
+    cmds:
+      - '[ -f talsecret.sops.yaml ] || talhelper gensecret | sops --filename-override talos/talsecret.sops.yaml --encrypt /dev/stdin > talsecret.sops.yaml'
+      - talhelper genconfig
+      - talhelper gencommand apply --extra-flags="--insecure" | bash
+      - until talhelper gencommand bootstrap | bash; do sleep 10; done
+      - until talhelper gencommand kubeconfig --extra-flags="{{.ROOT_DIR}} --force" | bash; do sleep 10; done
+    preconditions:
+      - test -f {{.ROOT_DIR}}/.sops.yaml
+      - test -f {{.SOPS_AGE_KEY_FILE}}
+      - test -f {{.TALHELPER_DIR}}/talconfig.yaml
+      - which talhelper sops
+
+  apps:
+    desc: Bootstrap apps into the Talos cluster
+    cmds:
+      - bash {{.KUBERNETES_DIR}}/bootstrap/apps/resources/prepare.sh
+      - helmfile --file {{.KUBERNETES_DIR}}/bootstrap/apps/helmfile.yaml apply --skip-diff-on-install --suppress-diff
+    preconditions:
+      - test -f {{.KUBECONFIG}}
+      - test -f {{.KUBERNETES_DIR}}/bootstrap/apps/helmfile.yaml
+      - test -f {{.KUBERNETES_DIR}}/bootstrap/apps/resources/prepare.sh
+      - test -f {{.SOPS_AGE_KEY_FILE}}
+      - which helmfile

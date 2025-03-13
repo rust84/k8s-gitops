@@ -1,0 +1,262 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: kube-prometheus-stack
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: kube-prometheus-stack
+      version: 69.3.2
+      sourceRef:
+        kind: HelmRepository
+        name: prometheus-community
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    crds: CreateReplace
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  dependsOn:
+    - name: thanos
+      namespace: observability
+    - name: rook-ceph-cluster
+      namespace: rook-ceph
+  values:
+    crds:
+      enabled: true
+    fullnameOverride: prometheus
+    prometheusOperator:
+      resources:
+        requests:
+          cpu: 10m
+          memory: 100Mi
+        limits:
+          memory: 100Mi
+      tls:
+        enabled: false
+      admissionWebhooks:
+        enabled: false
+      prometheusConfigReloader:
+        resources:
+          requests:
+            cpu: 10m
+            memory: 100Mi
+          limits:
+            memory: 100Mi
+    alertmanager:
+      enabled: false
+      alertmanagerSpec:
+        storage:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: ceph-block
+              resources:
+                requests:
+                  storage: 10Gi
+      ingress:
+        enabled: true
+        pathType: Prefix
+        ingressClassName: internal
+        hosts:
+          - &host alertmanager.${SECRET_DOMAIN}
+        tls:
+          - hosts: [*host]
+      # config:
+      #   global:
+      #     slack_api_url: "${DISCORD_WEBHOOK_URL}"
+      #   route:
+      #     group_by: ["job"]
+      #     group_wait: 30s
+      #     group_interval: 5m
+      #     repeat_interval: 12h
+      #     receiver: "discord"
+      #     routes:
+      #       - receiver: "null" # quote
+      #         matchers:
+      #           - alertname =~ "InfoInhibitor|Watchdog"
+      #       - receiver: "pagerduty"
+      #         match:
+      #           severity: critical
+      #         continue: true
+      #       - receiver: "discord"
+      #   inhibit_rules:
+      #     - source_matchers:
+      #         - severity = "critical"
+      #       target_matchers:
+      #         - severity = "warning"
+      #       equal: ["alertname", "namespace"]
+      #   receivers:
+      #     - name: "null"
+      #     - name: "discord"
+      #       slack_configs:
+      #         - channel: "#prometheus"
+      #           icon_url: https://avatars3.githubusercontent.com/u/3380462
+      #           username: "Prometheus"
+      #           send_resolved: true
+      #           title: |-
+      #             [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ if ne .CommonAnnotations.summary ""}}{{ .CommonAnnotations.summary }}{{ else }}{{ .CommonLabels.alertname }}{{ end }}
+      #           text: >-
+      #             {{ range .Alerts -}}
+      #               **Alert:** {{ .Annotations.title }}{{ if .Labels.severity }} - `{{ .Labels.severity }}`{{ end }}
+      #             **Description:** {{ if ne .Annotations.description ""}}{{ .Annotations.description }}{{else}}N/A{{ end }}
+      #             **Details:**
+      #               {{ range .Labels.SortedPairs }} • *{{ .Name }}:* `{{ .Value }}`
+      #               {{ end }}
+      #             {{ end }}
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
+              targetLabel: kubernetes_node
+
+    nodeExporter:
+      serviceMonitor:
+        relabelings:
+          - action: replace
+            regex: (.*)
+            replacement: $1
+            sourceLabels:
+              - __meta_kubernetes_pod_node_name
+            targetLabel: kubernetes_node
+    kube-state-metrics:
+      fullnameOverride: kube-state-metrics
+      metricLabelsAllowlist: "pods=[*]"
+    prometheus-node-exporter:
+      fullnameOverride: node-exporter
+      extraArgs:
+        - --collector.filesystem.ignored-mount-points=^/(dev|proc|sys|var)($|/)
+        - --collector.filesystem.ignored-fs-types=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs|tmpfs)$
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
+              targetLabel: kubernetes_node
+    grafana:
+      enabled: false
+      forceDeployDashboards: true
+      sidecar:
+        dashboards:
+          multicluster:
+            etcd:
+              enabled: true
+    kubelet:
+      enabled: true
+      serviceMonitor:
+        metricRelabelings:
+          - action: replace
+            sourceLabels:
+              - node
+            targetLabel: instance
+    coreDns:
+      enabled: true
+    kubeApiServer:
+      enabled: true
+    kubeControllerManager:
+      enabled: true
+      endpoints:
+        - 10.20.0.230
+        - 10.20.0.229
+        - 10.20.0.244
+    kubeScheduler:
+      enabled: true
+      endpoints:
+        - 10.20.0.230
+        - 10.20.0.229
+        - 10.20.0.244
+    kubeProxy:
+      enabled: false
+    kubeEtcd:
+      enabled: true
+      endpoints:
+        - 10.20.0.230
+        - 10.20.0.229
+        - 10.20.0.244
+      service:
+        enabled: true
+        port: 2381
+        targetPort: 2381
+    kubeStateMetrics:
+      metricLabelsAllowlist:
+        - "persistentvolumeclaims=[*]"
+      prometheus:
+        monitor:
+          enabled: true
+          relabelings:
+            - action: replace
+              regex: (.*)
+              replacement: $1
+              sourceLabels:
+                - __meta_kubernetes_pod_node_name
+              targetLabel: kubernetes_node
+    prometheus:
+      ingress:
+        enabled: true
+        pathType: Prefix
+        ingressClassName: internal
+        hosts:
+          - &host prometheus.${SECRET_DOMAIN}
+        tls:
+          - hosts: [*host]
+      thanosService:
+        enabled: true
+      thanosServiceMonitor:
+        enabled: true
+      prometheusSpec:
+        podMetadata:
+          annotations:
+            secret.reloader.stakater.com/reload: &secret thanos-objstore-config
+        replicas: 1
+        replicaExternalLabelName: __replica__
+        ruleSelectorNilUsesHelmValues: false
+        serviceMonitorSelectorNilUsesHelmValues: false
+        podMonitorSelectorNilUsesHelmValues: false
+        probeSelectorNilUsesHelmValues: false
+        scrapeConfigSelectorNilUsesHelmValues: false
+        retention: 2d
+        retentionSize: 15GB
+        enableAdminAPI: true
+        walCompression: true
+        enableFeatures:
+          - auto-gomaxprocs
+          - memory-snapshot-on-shutdown
+          - new-service-discovery-manager
+        resources:
+          requests:
+            cpu: 455m
+            memory: 2718Mi
+          limits:
+            memory: 2718Mi
+        storageSpec:
+          volumeClaimTemplate:
+            spec:
+              storageClassName: ceph-block
+              resources:
+                requests:
+                  storage: 20Gi
+        thanos:
+          image: quay.io/thanos/thanos:${THANOS_VERSION}
+          version: "${THANOS_VERSION#v}"
+          objectStorageConfig:
+            existingSecret:
+              name: *secret
+              key: config

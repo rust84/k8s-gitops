@@ -1,0 +1,68 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/helmrelease-helm-v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app internal-external-dns
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: external-dns
+      version: 1.15.2
+      sourceRef:
+        kind: HelmRepository
+        name: external-dns
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    fullnameOverride: *app
+    provider:
+      name: webhook
+      webhook:
+        image:
+          repository: ghcr.io/kashalls/external-dns-unifi-webhook
+          tag: v0.4.1@sha256:5c01923d9a2c050362335c1750c2361046c0d2caf1ab796661c215da47446aad
+        env:
+          - name: UNIFI_HOST
+            value: https://192.168.1.1
+          - name: UNIFI_USER
+            valueFrom:
+              secretKeyRef:
+                name: &secret internal-external-dns-secret
+                key: EXTERNAL_DNS_UNIFI_USER
+          - name: UNIFI_PASS
+            valueFrom:
+              secretKeyRef:
+                name: *secret
+                key: EXTERNAL_DNS_UNIFI_PASS
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: http-webhook
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: http-webhook
+          initialDelaySeconds: 10
+          timeoutSeconds: 5
+    extraArgs:
+      - --ignore-ingress-tls-spec
+    policy: sync
+    sources: ["ingress", "service"]
+    txtOwnerId: k8s
+    txtPrefix: k8s.main.
+    domainFilters: ["${SECRET_DOMAIN}"]
+    serviceMonitor:
+      enabled: true
+    podAnnotations:
+      secret.reloader.stakater.com/reload: *secret

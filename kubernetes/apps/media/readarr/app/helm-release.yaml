@@ -1,0 +1,128 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app readarr
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.1
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  maxHistory: 2
+  install:
+    createNamespace: true
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  uninstall:
+    keepHistory: false
+  values:
+    controllers:
+      readarr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/onedr0p/postgres-init
+              tag: 16
+            envFrom: &envFrom
+              - secretRef:
+                  name: readarr-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/joryirving/readarr-develop
+              tag: 0.4.11.2747@sha256:98ee0a3782ea2d183c243a6d93c24d8e94b80ddd90306eaa945233285fcf35a6
+            env:
+                READARR__APP__INSTANCE_NAME: Readarr
+                READARR__APP__THEME: dark
+                READARR__AUTH_METHOD: External
+                READARR__AUTH_REQUIRED: DisabledForLocalAddresses
+                READARR__LOG_LEVEL: info
+                READARR__SERVER__PORT: &port 80
+                READARR__UPDATE__BRANCH: develop
+                TZ: "${TZ}"    
+            envFrom: *envFrom
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 39m
+                memory: 398Mi
+              limits:
+                memory: 398Mi
+
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        supplementalGroups: [65542] # external-services
+        fsGroupChangePolicy: "OnRootMismatch"
+        seccompProfile: { type: RuntimeDefault } 
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+    ingress:
+      app:
+        enabled: true
+        className: internal
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "book-open"
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                pathType: Prefix
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - secretName: "tls.{{ .Release.Name }}"
+            hosts:
+              - *host
+
+    persistence:
+      config:
+        existingClaim: *app
+      nfs-nas-media:
+        enabled: true
+        type: nfs
+        server: "duriel.internal"
+        path: /tank/Media
+        globalMounts:
+          - path: /media
+      backup:
+        enabled: true
+        type: nfs
+        server: "duriel.internal"
+        path: /tank/Apps/backups/readarr
+        globalMounts:
+          - path: /config/Backups
