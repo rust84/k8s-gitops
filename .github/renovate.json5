@@ -30,7 +30,6 @@
   "rebaseWhen": "conflicted",
   "helm-values": {
     "fileMatch": [
-      "kubernetes/.+/helmrelease\\.yaml$",
       "kubernetes/.+/helmrelease\\.yaml$"
     ]
   },
