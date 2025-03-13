@@ -242,10 +242,9 @@ spec:
           - new-service-discovery-manager
         resources:
           requests:
-            cpu: 455m
-            memory: 2718Mi
+            cpu: 100m
           limits:
-            memory: 2718Mi
+            memory: 4Gi
         storageSpec:
           volumeClaimTemplate:
             spec:
