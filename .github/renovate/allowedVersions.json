@@ -10,6 +10,11 @@
       "matchDatasources": ["docker"],
       "matchPackagePatterns": ["postgresql"],
       "allowedVersions": "<17"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackagePatterns": ["node"],
+      "allowedVersions": "<20"
     }
   ]
 }
