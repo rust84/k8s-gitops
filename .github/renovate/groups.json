@@ -5,7 +5,7 @@
       "description": "Flux Operator and Instances",
       "groupName": "Home Assistant",
       "matchDatasources": ["helm"],
-      "matchPackageNames": ["flux"],
+      "matchPackagePatterns": ["flux"],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
       "separateMinorPatch": false
     },
@@ -15,7 +15,7 @@
       "matchDatasources": ["docker"],
       "matchPackageNames": [
         "ghcr.io/onedr0p/home-assistant",
-        "codercom/code-server"
+        "ghcr.io/coder/code-server"
       ],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
       "separateMinorPatch": false
