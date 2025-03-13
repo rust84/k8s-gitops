@@ -2,6 +2,14 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
+      "description": "Flux Operator and Instances",
+      "groupName": "Home Assistant",
+      "matchDatasources": ["helm"],
+      "matchPackageNames": ["flux"],
+      "group": { "commitMessageTopic": "{{{groupName}}} group" },
+      "separateMinorPatch": false
+    },
+    {
       "description": "Home Assistant and Code Server",
       "groupName": "Home Assistant",
       "matchDatasources": ["docker"],
