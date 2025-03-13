@@ -36,7 +36,7 @@ spec:
           npm-update:
             image:
               repository: docker.io/node
-              tag: 20-alpine
+              tag: 22-alpine
             command:
               - /bin/sh
               - -c
