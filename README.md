@@ -11,7 +11,7 @@ _... automated via [Flux](https://fluxcd.io), [Renovate](https://github.com/reno
 <div align="center">
 
 [![Discord](https://img.shields.io/discord/673534664354430999?style=for-the-badge&label&logo=discord&logoColor=white&color=blue)](https://discord.gg/home-operations)&nbsp;&nbsp;
-[![Kubernetes](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Frust84%2Fk8s-gitops%2Fmain%2Finfrastructure%2Ftalos%2Fcluster-0%2Ftalconfig.yaml&query=%24.kubernetesVersion&style=for-the-badge&logo=kubernetes&logoColor=white&label=%20)](https://kubernetes.io/)&nbsp;&nbsp;
+[![Kubernetes](https://img.shields.io/badge/dynamic/yaml?url=https%3A%2F%2Fraw.githubusercontent.com%2Frust84%2Fk8s-gitops%2Fmain%2Fkubernetes%2Fbootstrap%2Ftalos%2Ftalconfig.yaml&query=%24.kubernetesVersion&style=for-the-badge&logo=kubernetes&logoColor=white&label=%20)](https://kubernetes.io/)&nbsp;&nbsp;
 [![Renovate](https://img.shields.io/github/actions/workflow/status/rust84/k8s-gitops/schedule-renovate.yaml?branch=main&label=&logo=renovatebot&style=for-the-badge&color=blue)](https://github.com/rust84/k8s-gitops/actions/workflows/schedule-renovate.yaml)
 
 </div>
