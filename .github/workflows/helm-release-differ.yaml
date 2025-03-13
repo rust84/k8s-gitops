@@ -5,11 +5,11 @@ name: Helm Release Differ
 on:
   pull_request:
     branches: ["main"]
-    paths: ["k8s/**/helm-release.yaml"]
+    paths: ["kubernetes/**/helmrelease.yaml"]
 
 env:
   BOT_USERNAME: "rust84[bot]"
-  KUBERNETES_DIR: k8s/
+  KUBERNETES_DIR: kubernetes/
 
 jobs:
   changed-files:
@@ -34,7 +34,7 @@ jobs:
         with:
           json: true
           files: |
-            k8s/**/helm-release.yaml
+            kubernetes/**/helmrelease.yaml
 
       - id: set-matrix
         run: echo "matrix={\"file\":${{ steps.changed-files.outputs.all_changed_files }}}" >> "${GITHUB_OUTPUT}"

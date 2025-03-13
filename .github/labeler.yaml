@@ -4,7 +4,7 @@ area/github:
       - any-glob-to-any-file: .github/**/*
 area/kubernetes:
   - changed-files:
-      - any-glob-to-any-file: k8s/**/*
+      - any-glob-to-any-file: kubernetes/**/*
 area/taskfile:
   - changed-files:
       - any-glob-to-any-file: .taskfiles/**/*
