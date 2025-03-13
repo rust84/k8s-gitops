@@ -35,16 +35,14 @@
     ]
   },
   "kubernetes": {
-    "fileMatch": ["kubernetes/.+\\.yaml$", "kubernetes/.+\\.yaml$"]
+    "fileMatch": ["kubernetes/.+\\.yaml$"]
   },
-  "flux": {"fileMatch": ["kubernetes/.+\\.yaml$", "kubernetes/.+\\.yaml$"]},
   "customManagers": [
     {
       "customType": "regex",
       "description": ["Process custom dependencies"],
       "fileMatch": [
         "(^|/).taskfiles/.+\\.ya?ml(?:\\.j2)?$",
-        "(^|/)infrastructure/.+\\.ya?ml(?:\\.j2)?$",
         "(^|/)kubernetes/.+\\.ya?ml(?:\\.j2)?$"
       ],
       "matchStrings": [
@@ -68,18 +66,6 @@
       ],
       "datasourceTemplate": "docker",
       "versioningTemplate": "redhat"
-    },
-    {
-      "customType": "regex",
-      "description": "Process CRD dependencies",
-      "fileMatch": ["kubernetes/clusters/cluster-0/crds/.+\\.ya?ml$"],
-      "matchStrings": [
-        // GitRepository and Flux Kustomization where 'Git release/tag' matches 'Helm' version
-        "registryUrl=(?<registryUrl>\\S+) chart=(?<depName>\\S+)\n.*?(?<currentValue>[^-\\s]*)\n",
-        // Kustomization where 'GitHub release artifact URL' matches 'Docker image' version
-        "datasource=(?<datasource>\\S+) image=(?<depName>\\S+)\n.*?-\\s(.*?)/(?<currentValue>[^/]+)/[^/]+\n"
-      ],
-      "datasourceTemplate": "{{#if datasource}}{{{datasource}}}{{else}}helm{{/if}}"
     }
   ],
   "packageRules": [
