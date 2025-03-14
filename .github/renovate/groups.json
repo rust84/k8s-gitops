@@ -3,7 +3,7 @@
   "packageRules": [
     {
       "description": "Flux Operator and Instances",
-      "groupName": "Home Assistant",
+      "groupName": "Flux",
       "matchDatasources": ["docker", "helm"],
       "matchPackagePatterns": ["flux"],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
