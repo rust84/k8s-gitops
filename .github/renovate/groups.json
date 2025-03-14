@@ -2,12 +2,20 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
+      "description": "Flux Operator and Instances",
+      "groupName": "Home Assistant",
+      "matchDatasources": ["docker", "helm"],
+      "matchPackagePatterns": ["flux"],
+      "group": { "commitMessageTopic": "{{{groupName}}} group" },
+      "separateMinorPatch": false
+    },
+    {
       "description": "Home Assistant and Code Server",
       "groupName": "Home Assistant",
       "matchDatasources": ["docker"],
       "matchPackageNames": [
         "ghcr.io/onedr0p/home-assistant",
-        "codercom/code-server"
+        "ghcr.io/coder/code-server"
       ],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
       "separateMinorPatch": false
