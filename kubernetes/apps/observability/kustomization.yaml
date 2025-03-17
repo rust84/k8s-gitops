@@ -6,6 +6,7 @@ namespace: observability
 components:
   - ../../flux/components/common
 resources:
+  - ./alertmanager/ks.yaml
   - ./blackbox-exporter/ks.yaml
   - ./grafana/ks.yaml
   - ./kromgo/ks.yaml
