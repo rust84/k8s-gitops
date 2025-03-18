@@ -71,6 +71,7 @@ spec:
               sourceLabels: ["__meta_kubernetes_pod_node_name"]
               targetLabel: kubernetes_node
     prometheus-node-exporter:
+      fullnameOverride: node-exporter
       extraArgs:
         - --collector.filesystem.mount-points-exclude=^/(dev|proc|sys|var/lib/docker/.+|var/lib/kubelet/.+)($|/)
         - --collector.filesystem.fs-types-exclude=^(autofs|binfmt_misc|bpf|cgroup2?|configfs|debugfs|devpts|devtmpfs|fusectl|hugetlbfs|iso9660|mqueue|nsfs|overlay|proc|procfs|pstore|rpc_pipefs|securityfs|selinuxfs|squashfs|sysfs|tracefs)$
@@ -90,61 +91,44 @@ spec:
               regex: (pod)
     grafana:
       enabled: false
-      forceDeployDashboards: true
-      sidecar:
-        dashboards:
-          multicluster:
-            etcd:
-              enabled: true
     kubelet:
       enabled: true
       serviceMonitor:
         metricRelabelings:
-          - action: replace
-            sourceLabels:
-              - node
-            targetLabel: instance
-    coreDns:
-      enabled: true
+          # Drop high cardinality labels
+          - action: labeldrop
+            regex: (uid)
+          - action: labeldrop
+            regex: (id|name)
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (rest_client_request_duration_seconds_bucket|rest_client_request_duration_seconds_sum|rest_client_request_duration_seconds_count)
     kubeApiServer:
-      enabled: true
-    kubeControllerManager:
-      enabled: true
-      endpoints:
-        - 10.20.0.230
-        - 10.20.0.229
-        - 10.20.0.244
+      serviceMonitor:
+        selector:
+          k8s-app: kube-apiserver
+        metricRelabelings:
+          # Drop high cardinality labels
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (apiserver|etcd|rest_client)_request(|_sli|_slo)_duration_seconds_bucket
+          - action: drop
+            sourceLabels: ["__name__"]
+            regex: (apiserver_response_sizes_bucket|apiserver_watch_events_sizes_bucket)
+    kubeControllerManager: &kubeControllerManager
+      service:
+        selector:
+          k8s-app: kube-controller-manager
     kubeScheduler:
-      enabled: true
-      endpoints:
-        - 10.20.0.230
-        - 10.20.0.229
-        - 10.20.0.244
+      service:
+        selector:
+          k8s-app: kube-scheduler
     kubeProxy:
       enabled: false
+    nodeExporter:
+      enabled: false
     kubeEtcd:
-      enabled: true
-      endpoints:
-        - 10.20.0.230
-        - 10.20.0.229
-        - 10.20.0.244
-      service:
-        enabled: true
-        port: 2381
-        targetPort: 2381
-    kubeStateMetrics:
-      metricLabelsAllowlist:
-        - "persistentvolumeclaims=[*]"
-      prometheus:
-        monitor:
-          enabled: true
-          relabelings:
-            - action: replace
-              regex: (.*)
-              replacement: $1
-              sourceLabels:
-                - __meta_kubernetes_pod_node_name
-              targetLabel: kubernetes_node
+      <<: *kubeControllerManager # etcd runs on control plane nodes
     prometheus:
       ingress:
         enabled: true
@@ -159,6 +143,12 @@ spec:
       thanosServiceMonitor:
         enabled: true
       prometheusSpec:
+        scrapeInterval: 1m # Must match interval in Grafana Helm chart
+        alertingEndpoints:
+          - namespace: observability
+            name: alertmanager
+            port: 9093
+            apiVersion: v2
         podMetadata:
           annotations:
             secret.reloader.stakater.com/reload: &secret thanos-objstore-config
