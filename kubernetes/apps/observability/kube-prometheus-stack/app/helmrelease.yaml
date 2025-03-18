@@ -123,8 +123,6 @@ spec:
           k8s-app: kube-scheduler
     kubeProxy:
       enabled: false
-    nodeExporter:
-      enabled: false
     kubeEtcd:
       <<: *kubeControllerManager # etcd runs on control plane nodes
     prometheus:
