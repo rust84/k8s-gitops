@@ -1,0 +1,100 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app audiobookshelf
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: app-template
+      version: 3.7.3
+      sourceRef:
+        kind: HelmRepository
+        name: bjw-s
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    controllers:
+      audiobookshelf:
+        containers:
+          app:
+            image:
+              repository: ghcr.io/advplyr/audiobookshelf
+              tag: 2.20.0@sha256:106531342a5f150e0e3dcbb348f126a5c452ecc4274f162d31545194dbe4352a
+            env:
+              AUDIOBOOKSHELF_UID: 568
+              AUDIOBOOKSHELF_GID: 568
+              CONFIG_PATH: /config
+              METADATA_PATH: /config/metadata
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /healthcheck
+                    port: &port 80
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 100m
+                memory: 100Mi
+              limits:
+                memory: 500Mi
+    defaultPodOptions:
+      securityContext:
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
+        fsGroupChangePolicy: OnRootMismatch
+        supplementalGroups: [65542]
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: *port
+    ingress:
+      app:
+        className: internal
+        annotations:
+          hajimari.io/enable: "true"
+          hajimari.io/icon: "book-open"
+        hosts:
+          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+    persistence:
+      config:
+        existingClaim: audiobookshelf-config # TODO: convert to volsync volume
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /.npm
+      media:
+        enabled: true
+        type: nfs
+        server: "duriel.internal"
+        path: /tank/Media
+        globalMounts:
+          - path: /media
