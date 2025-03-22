@@ -158,7 +158,6 @@ spec:
         className: external
         annotations:
           hajimari.io/icon: "camera"
-          hajimari.io/group: "Self Hosted"
           nginx.ingress.kubernetes.io/proxy-body-size: "0"
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
