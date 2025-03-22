@@ -96,9 +96,6 @@ spec:
         enabled: true
         className: internal
         annotations:
-          auth.home.arpa/enabled: "true"
-          nginx.ingress.kubernetes.io/auth-signin: https://radarr.${SECRET_DOMAIN}/outpost.goauthentik.io/start?rd=$escaped_request_uri
-          hajimari.io/enable: "true"
           hajimari.io/icon: "filmstrip"
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
@@ -108,21 +105,7 @@ spec:
                   identifier: app
                   port: http
         tls:
-          - secretName: &tls "tls.{{ .Release.Name }}"
-            hosts:
-              - *host
-      api:
-        enabled: true
-        className: internal
-        hosts:
-          - host: *host
-            paths:
-              - path: /api
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - secretName: *tls
+          - secretName: "tls.{{ .Release.Name }}"
             hosts:
               - *host
     persistence:

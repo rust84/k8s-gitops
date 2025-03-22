@@ -72,6 +72,9 @@ spec:
             port: *port
     ingress:
       app:
+        annotations:
+          hajimari.io/icon: mdi:chart-bar
+          hajimari.io/group: "Media"
         className: internal
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"

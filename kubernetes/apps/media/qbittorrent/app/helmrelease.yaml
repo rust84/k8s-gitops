@@ -164,10 +164,8 @@ spec:
       app:
         className: internal
         annotations:
-          hajimari.io/enable: "true"
           hajimari.io/icon: cloud-download
           hajimari.io/info: Torrent Downloader
-          hajimari.io/group: media
         hosts:
           - host: "qbittorrent.${SECRET_DOMAIN}"
             paths:

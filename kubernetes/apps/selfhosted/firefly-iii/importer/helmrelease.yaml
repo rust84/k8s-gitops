@@ -34,7 +34,6 @@ spec:
         enabled: true
         ingressClassName: internal
         annotations:
-          hajimari.io/enable: "true"
           hajimari.io/icon: "foundation:page-export-csv"
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"

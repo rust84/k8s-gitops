@@ -95,10 +95,7 @@ spec:
       app:
         className: internal
         annotations:
-          hajimari.io/enable: "true"
           hajimari.io/icon: "cloud-search"
-          auth.home.arpa/enabled: "true"
-          nginx.ingress.kubernetes.io/auth-signin: https://prowlarr.${SECRET_DOMAIN}/outpost.goauthentik.io/start?rd=$escaped_request_uri
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
