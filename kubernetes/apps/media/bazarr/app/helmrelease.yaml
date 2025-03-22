@@ -148,3 +148,7 @@ spec:
                 subPath: whisper
               - path: /tmp
                 subPath: tmp
+              - path: /.config/matplotlib
+                subPath: matplotlib
+              - path: /.cache
+                subPath: cache
