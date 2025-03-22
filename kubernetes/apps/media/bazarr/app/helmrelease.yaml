@@ -145,3 +145,6 @@ spec:
           bazarr:
             whisper:
               - path: /root/.cache/whisper
+                subPath: whisper
+              - path: /tmp
+                subPath: tmp
