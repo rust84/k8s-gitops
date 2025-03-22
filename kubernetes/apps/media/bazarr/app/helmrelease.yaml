@@ -74,6 +74,19 @@ spec:
               limits:
                 memory: 128Mi
             securityContext: *securityContext
+          whisper:
+            image:
+              repository: onerahmet/openai-whisper-asr-webservice
+              tag: v1.8.2@sha256:ce030954e4d0d6abad8f13e853b1c12745cc81f3e2ccef96d64fda927600f71a
+            env:
+              ASR_MODEL: small
+              ASR_ENGINE: faster_whisper
+            securityContext: *securityContext
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 10Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -126,3 +139,9 @@ spec:
         type: emptyDir
       tmp:
         type: emptyDir
+      whisper-cache:
+        type: emptyDir
+        advancedMounts:
+          bazarr:
+            whisper:
+              - path: /root/.cache/whisper
