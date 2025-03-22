@@ -118,8 +118,7 @@ spec:
               - *host
     persistence:
       data:
-        enabled: true
-        type: emptyDir
+        existingClaim: hajimari-config
     resources:
       requests:
         cpu: 10m
