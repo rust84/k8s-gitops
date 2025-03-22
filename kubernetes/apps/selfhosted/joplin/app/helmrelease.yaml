@@ -65,8 +65,8 @@ spec:
         enabled: true
         className: external
         annotations:
-          hajimari.io/enable: "true"
           hajimari.io/icon: notebook-multiple
+          hajimari.io/group: "Self Hosted"
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:

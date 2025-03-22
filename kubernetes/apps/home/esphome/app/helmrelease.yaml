@@ -72,8 +72,9 @@ spec:
         enabled: true
         className: internal
         annotations:
-          hajimari.io/enable: "true"
+          
           hajimari.io/icon: simple-icons:esphome
+          hajimari.io/group: "Home"
         hosts:
           - host: &host "esphome.${SECRET_DOMAIN}"
             paths:

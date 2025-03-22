@@ -84,10 +84,9 @@ spec:
       app:
         className: internal
         annotations:
-          hajimari.io/enable: "true"
           hajimari.io/icon: mdi:download
           hajimari.io/info: Nzb Downloader
-          hajimari.io/group: media
+          hajimari.io/group: "Media"
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:

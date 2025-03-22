@@ -81,8 +81,9 @@ spec:
       app:
         className: internal
         annotations:
-          hajimari.io/enable: "true"
           hajimari.io/icon: "resistor-nodes"
+          hajimari.io/group: "Home"
+          nginx.ingress.kubernetes.io/proxy-body-size: 100M 
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
