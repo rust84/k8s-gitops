@@ -51,6 +51,10 @@ spec:
                   failureThreshold: 3
               readiness: *probes
             securityContext: &securityContext
+              runAsNonRoot: true
+              runAsUser: 568
+              runAsGroup: 568
+              fsGroup: 568
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
               capabilities: { drop: ["ALL"] }
@@ -74,19 +78,40 @@ spec:
               limits:
                 memory: 128Mi
             securityContext: *securityContext
-    defaultPodOptions:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 568
-        runAsGroup: 568
-        fsGroup: 568
-        fsGroupChangePolicy: OnRootMismatch
+      whisper:
+        replicas: 2
+        containers:
+          app:
+            image:
+              repository: onerahmet/openai-whisper-asr-webservice
+              tag: v1.8.2@sha256:ce030954e4d0d6abad8f13e853b1c12745cc81f3e2ccef96d64fda927600f71a
+            env:
+              ASR_MODEL: small
+              ASR_ENGINE: faster_whisper
+              MPLCONFIGDIR: /tmp/matplotlib
+            resources:
+              requests:
+                cpu: 100m
+              limits:
+                memory: 16Gi
+    # defaultPodOptions:
+    #   securityContext:
+    #     runAsNonRoot: true
+    #     runAsUser: 568
+    #     runAsGroup: 568
+    #     fsGroup: 568
+    #     fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         controller: bazarr
         ports:
           http:
             port: *port
+      whisper:
+        controller: whisper
+        ports:
+          http:
+            port: 9000
     ingress:
       app:
         className: internal
@@ -100,6 +125,10 @@ spec:
     persistence:
       config:
         existingClaim: bazarr
+        advancedMounts:
+          bazarr:
+            app:
+              - path: /config
       config-cache:
         type: emptyDir
         globalMounts:
@@ -126,3 +155,9 @@ spec:
         type: emptyDir
       tmp:
         type: emptyDir
+      whisper-cache:
+        type: emptyDir
+        advancedMounts:
+          whisper:
+            app:
+              - path: /root/.cache/whisper
