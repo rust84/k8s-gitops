@@ -74,7 +74,7 @@ spec:
                 memory: 128Mi
             securityContext: *securityContext
       whisper:
-        replicas: 2
+        replicas: 1
         containers:
           app:
             image:
@@ -89,13 +89,6 @@ spec:
                 cpu: 100m
               limits:
                 memory: 16Gi
-    # defaultPodOptions:
-    #   securityContext:
-    #     runAsNonRoot: true
-    #     runAsUser: 568
-    #     runAsGroup: 568
-    #     fsGroup: 568
-    #     fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         controller: bazarr
@@ -151,7 +144,7 @@ spec:
       tmp:
         type: emptyDir
       whisper-cache:
-        type: emptyDir
+        existingClaim: bazarr-whisper-cache
         advancedMounts:
           whisper:
             app:
