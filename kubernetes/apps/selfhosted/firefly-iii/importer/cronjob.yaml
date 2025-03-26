@@ -49,9 +49,9 @@ spec:
                   secretKeyRef:
                     name: *secret
                     key: IMPORTER_PAT
-            securityContext: &sc
+            securityContext:
                 seccompProfile: { type: "RuntimeDefault" }
-                readOnlyRootFilesystem: true
+                # readOnlyRootFilesystem: true # nginx init stuff
                 allowPrivilegeEscalation: false
                 capabilities:
                   drop: ["ALL"]
