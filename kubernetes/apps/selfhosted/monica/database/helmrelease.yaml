@@ -38,8 +38,3 @@ spec:
       persistence:
         enabled: true
         existingClaim: mariadb
-    initdbScripts:
-      create-monica.sql: |
-        CREATE DATABASE IF NOT EXISTS monica;
-        CREATE USER IF NOT EXISTS '${DB_USERNAME}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
-        GRANT ALL PRIVILEGES ON monica.* to '${DB_USERNAME}'@'%';
