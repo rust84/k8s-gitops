@@ -23,8 +23,11 @@ spec:
       fireflyiii-import-sa:
         type: cronjob
         cronjob:
+          concurrencyPolicy: Forbid
           schedule: "0 17 * * *"
-          ttlSecondsAfterFinished: 86400
+          backoffLimit: 0
+          failedJobsHistory: 1
+          successfulJobsHistory: 1
         pod:
           restartPolicy: Never
         containers:
@@ -46,6 +49,12 @@ spec:
                   secretKeyRef:
                     name: *secret
                     key: IMPORTER_PAT
+            securityContext: &sc
+                seccompProfile: { type: "RuntimeDefault" }
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop: ["ALL"]
     service:
       fireflyiii-importer:
         controller: fireflyiii-import-sa
