@@ -78,7 +78,6 @@ spec:
       app:
         annotations:
           hajimari.io/icon: mdi:jellyfish-outline
-          hajimari.io/group: "Media"
         className: external
         hosts:
           - host: requests.${SECRET_DOMAIN}

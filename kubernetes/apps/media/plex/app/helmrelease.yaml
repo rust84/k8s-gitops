@@ -84,7 +84,6 @@ spec:
     ingress:
       app:
         annotations:
-          hajimari.io/group: "Media"
           hajimari.io/icon: "mdi:plex"
           nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
           nginx.ingress.kubernetes.io/server-snippet: |

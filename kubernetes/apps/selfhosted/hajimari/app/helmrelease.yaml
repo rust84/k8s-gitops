@@ -29,6 +29,9 @@ spec:
       reloader.stakater.com/auto: "true"
     env:
       TZ: "${TZ}"
+    podSecurityContext:
+      fsGroup: 101
+      fsGroupChangePolicy: OnRootMismatch
     hajimari:
       name: Russell
       defaultEnable: true
@@ -36,10 +39,9 @@ spec:
         matchNames:
           - home
           - media
-          - observability
           - selfhosted
       alwaysTargetBlank: true
-      showAppGroups: true
+      showAppGroups: false
       showAppUrls: false
       showAppInfo: true
       showGlobalBookmarks: true
@@ -76,7 +78,6 @@ spec:
             - name: Uptime
               url: "https://kuma.microserver.space/status/home-cluster"
               icon: arrow-up-bold
-              info: Uptime Kuma status page
       globalBookmarks:
         - group: Communicate
           bookmarks:
