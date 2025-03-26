@@ -26,14 +26,20 @@ spec:
     keepHistory: false
   values:
     auth:
+      usePasswordFiles: false
       existingSecret: monica-secret
+    metrics:
+      enabled: true
+      resourcesPreset: small
+      serviceMonitor:
+        enabled: true
     primary:
+      resourcesPreset: small
       persistence:
         enabled: true
         existingClaim: mariadb
-      resources:
-        requests:
-          cpu: 17m
-          memory: 143Mi
-        limits:
-          memory: 143Mi
+    initdbScripts:
+      create-monica.sql: |
+        CREATE DATABASE IF NOT EXISTS monica;
+        CREATE USER IF NOT EXISTS '${DB_USERNAME}'@'%' IDENTIFIED BY '${DB_PASSWORD}';
+        GRANT ALL PRIVILEGES ON monica.* to '${DB_USERNAME}'@'%';
