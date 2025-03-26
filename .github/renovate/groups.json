@@ -14,7 +14,7 @@
       "groupName": "Home Assistant",
       "matchDatasources": ["docker"],
       "matchPackageNames": [
-        "ghcr.io/onedr0p/home-assistant",
+        "ghcr.io/home-operations/home-assistant",
         "ghcr.io/coder/code-server"
       ],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },

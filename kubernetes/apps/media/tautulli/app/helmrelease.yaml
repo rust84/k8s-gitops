@@ -5,22 +5,17 @@ kind: HelmRelease
 metadata:
   name: &app tautulli
 spec:
-  interval: 30m
-  chart:
-    spec:
-      chart: app-template
-      version: 3.7.3
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s
-        namespace: flux-system
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   values:
     controllers:
@@ -30,8 +25,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/onedr0p/tautulli
-              tag: 2.15.1@sha256:74468ecce40f44c449675ec7fcb7c86ebff89961572d141ad743b8ccbdde3c98
+              repository: ghcr.io/home-operations/tautulli
+              tag: 2.15.1@sha256:0925254e24ca12769d437527a9463f0738d98908bc41f1bd77072aa8f0307a4c
             env:
               TZ: "${TZ}"
               TAUTULLI__PORT: &port 80

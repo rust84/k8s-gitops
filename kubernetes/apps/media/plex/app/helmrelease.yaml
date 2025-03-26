@@ -6,21 +6,16 @@ metadata:
   name: &app plex
 spec:
   interval: 1h
-  chart:
-    spec:
-      chart: app-template
-      version: 3.7.3
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
   install:
     remediation:
-      retries: 3
+      retries: -1
   upgrade:
     cleanupOnFail: true
     remediation:
-      strategy: rollback
       retries: 3
   dependsOn:
     - name: intel-device-plugin-gpu
@@ -33,8 +28,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/onedr0p/plex
-              tag: 1.41.5.9522@sha256:6d393c4eee152100bd6762a94bdd891b8c80c1c8a914a7f906b4097ab69fd557
+              repository: ghcr.io/home-operations/plex
+              tag: 1.41.5.9522@sha256:cb0310eb53e8ff6e51be2869b6de0425f649e631aa329e6ccf0c72ba580a8aa3
             env:
               TZ: "${TZ}"
               PLEX_ADVERTISE_URL: https://plex.${SECRET_DOMAIN}:443

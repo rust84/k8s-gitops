@@ -6,56 +6,55 @@ metadata:
   name: fireflyiii-import-sa
   namespace: collab
 spec:
-  interval: 15m
-  chart:
-    spec:
-      chart: app-template
-      version: 1.5.1
-      interval: 15m
-      sourceRef:
-        kind: HelmRepository
-        name: bjw-s-charts
-        namespace: flux-system
-
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
   values:
-    controller:
-      type: cronjob
-      cronjob:
-        schedule: "0 17 * * *"
-        ttlSecondsAfterFinished: 86400
-
-    restartPolicy: OnFailure
-
-    image:
-      repository: fireflyiii/data-importer
-      tag: version-1.6.1
-
-    envFrom:
-      - secretRef:
-          name: fireflyiii-secret
-
-    env:
-      TRUSTED_PROXIES: "**"
-      FIREFLY_III_URL: "http://fireflyiii.collab.svc.cluster.local:8080"
-      VANITY_URL: "fireflyiii.${SECRET_DOMAIN}"
-      IMPORT_DIR_ALLOWLIST: "/import"
-      WEB_SERVER: false
-      FIREFLY_III_ACCESS_TOKEN:
-        valueFrom:
-          secretKeyRef:
-            name: fireflyiii-secret
-            key: IMPORTER_PAT
-
+    controllers:
+      fireflyiii-import-sa:
+        type: cronjob
+        cronjob:
+          schedule: "0 17 * * *"
+          ttlSecondsAfterFinished: 86400
+        pod:
+          restartPolicy: Never
+        containers:
+          app:
+            image:
+              repository: fireflyiii/data-importer
+              tag: version-1.6.1-cli
+            envFrom:
+              - secretRef:
+                  name: &secret firefly-secrets
+            env:
+              TRUSTED_PROXIES: "**"
+              FIREFLY_III_URL: "http://firefly-iii.selfhosted.svc:8080"
+              VANITY_URL: "fireflyiii.${SECRET_DOMAIN}"
+              IMPORT_DIR_ALLOWLIST: "/import"
+              WEB_SERVER: false
+              FIREFLY_III_ACCESS_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: *secret
+                    key: IMPORTER_PAT
     service:
-      main:
+      fireflyiii-importer:
+        controller: fireflyiii-import-sa
         enabled: false
-
     persistence:
       import:
-        enabled: true
         type: secret
-        name: fireflyiii-secret
-        subPath: IMPORT_SA
-        mountPath: /import/import_sa.json
-        defaultMode: 0775
-        readOnly: true
+        name: *secret
+        globalMounts:
+          - path: /import/import_sa.json
+            subPath: IMPORT_SA
+            readOnly: true
