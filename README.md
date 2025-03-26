@@ -74,43 +74,6 @@ The way Flux works for me here is it will recursively search the `kubernetes` fo
 
 [Renovate](https://github.com/renovatebot/renovate) watches my **entire** repository looking for dependency updates, when they are found a PR is automatically created. When some PRs are merged Flux applies the changes to my cluster.
 
-### Directories
-
-This Git repository contains the following directories under [Kubernetes](./kubernetes/).
-
-```sh
-📁 k8s
-├── 📁 cluster/cluster-0  # main cluster
-│   ├── 📁 crds         # custom resources
-│   ├── 📁 flux           # core flux configuration
-│   └── 📁 manifests      # applications
-└── 📁 global/flux      # shared resources
-    ├── 📁 repositories   # helm and git repositories
-    ├── 📁 vars           # common variables
-    └── 📁 flux           # core flux configuration
-```
-
-### Flux Workflow
-
-This is a high-level look how Flux deploys my applications with dependencies. Below there are 3 apps `postgres`, `authentik` and `weave-gitops`. `postgres` is the first app that needs to be running and healthy before `authentik` and `weave-gitops`. Once `postgres` is healthy `authentik` will be deployed and after that is healthy `weave-gitops` will be deployed.
-
-```mermaid
-graph TD;
-  id1>Kustomization: cluster] -->|Creates| id2>Kustomization: cluster-apps];
-  id2>Kustomization: cluster-apps] -->|Creates| id3>Kustomization: postgres];
-  id2>Kustomization: cluster-apps] -->|Creates| id6>Kustomization: authentik]
-  id2>Kustomization: cluster-apps] -->|Creates| id8>Kustomization: weave-gitops]
-  id2>Kustomization: cluster-apps] -->|Creates| id5>Kustomization: postgres-cluster]
-  id3>Kustomization: postgres] -->|Creates| id4[HelmRelease: postgres];
-  id5>Kustomization: postgres-cluster] -->|Depends on| id3>Kustomization: postgres];
-  id5>Kustomization: postgres-cluster] -->|Creates| id10[Postgres Cluster];
-  id6>Kustomization: authentik] -->|Creates| id7(HelmRelease: authentik);
-  id6>Kustomization: authentik] -->|Depends on| id5>Kustomization: postgres-cluster];
-  id8>Kustomization: weave-gitops] -->|Creates| id9(HelmRelease: weave-gitops);
-  id8>Kustomization: weave-gitops] -->|Depends on| id5>Kustomization: postgres-cluster];
-  id9(HelmRelease: weave-gitops) -->|Depends on| id7(HelmRelease: authentik);
-```
-
 ---
 
 ## ☁️ Cloud Dependencies
@@ -123,7 +86,6 @@ The alternative solution to these two problems would be to host a Kubernetes clu
 |-------------------------------------------------|-------------------------------------------------------------------|----------------|
 | [Cloudflare](https://www.cloudflare.com/)       | Domain and S3                                                     | ~$30/yr        |
 | [GitHub](https://github.com/)                   | Hosting this repository and continuous integration/deployments    | Free           |
-| [NextDNS](https://nextdns.io/)                  | My router DNS server which includes AdBlocking                    | ~$20/yr        |
 | [Fly.io](https://fly.io/)         | I have two small machines running here which host my password manager and Uptime Kuma | Free (total spend is below $5)           |
 
 ---
@@ -132,10 +94,9 @@ The alternative solution to these two problems would be to host a Kubernetes clu
 
 | Device                      | Count | OS Disk Size | Data Disk Size              | Ram  | Operating System | Purpose             |
 |-----------------------------|-------|--------------|-----------------------------|------|------------------|---------------------|
-| Intel NUC8i3BEH             | 1     | 500GB SSD      | 500GB SSD NVMe (rook-ceph)        | 64GB | Talos OS           | Control-plane/Worker  |
-| Intel NUC8i5BEH             | 2     | 500GB SSD      | 500GB SSD NVMe (rook-ceph)        | 64GB | Talos OS           | Control-plane/Workers  |
+| Asus NUC14 RNUC14RVHU5 | 3 | 870 Evo 500GB SSD | 990Pro 1TB NVMe (rook-ceph) | 64GB | Talos OS | Control-plane/Workers |
 | Jonsbo N3 custom build      | 1     | 256GB SSD      | 4x18TB ZFS Mirror (tank) | 32GB | NixOS           | NFS + Backup Server |
- PiKVM (Arch)     | Network KVM         |
+| PiKVM (Arch) | 1 | - | - | - | - | Network KVM |
 | TESmart 8 Port KVM Switch   | 1     | -            | -                           | -    | -                | Network KVM (PiKVM) |
 | UniFi UDM-Pro-SE     | 1     | -            | -                           | -    | -                | Routing/Firewall/IPS/DNS    |
 | UniFi USW-Pro-Max-24-PoE  | 1     | -            | -                           | -    | -                | Core Switch    |
