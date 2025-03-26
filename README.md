@@ -53,7 +53,7 @@ There is a template over at [onedr0p/flux-cluster-template](https://github.com/o
 
 This semi hyper-converged cluster runs [Talos Linux](https://talos.dev), an immutable and ephemeral Linux distribution built for [Kubernetes](https://kubernetes.io), deployed on bare-metal Intel NUCs. [Rook](https://rook.io) then provides my workloads with persistent block, object, and file storage; while a seperate server provides file storage for my media.
 
-🔸 _[Click here](./infrastructure/talos/cluster-0/talconfig.yaml) to see my Talos configuration._
+🔸 _[Click here](./kubernetes/bootstrap/talos/talconfig.yaml) to see my Talos configuration._
 
 ### Core Components
 
