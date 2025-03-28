@@ -20,6 +20,7 @@ spec:
       retries: 3
   upgrade:
     cleanupOnFail: true
+    # https://github.com/kubernetes-sigs/external-dns/issues/5206
     disableSchemaValidation: true
     crds: CreateReplace
     remediation:
