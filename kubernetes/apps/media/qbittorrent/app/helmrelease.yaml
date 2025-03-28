@@ -129,7 +129,7 @@ spec:
                 memory: 2048Mi
               limits:
                 memory: 8192Mi
-            securityContext:
+            securityContext: &sc
               runAsUser: 568
               runAsGroup: 568
               runAsNonRoot: true
@@ -138,6 +138,20 @@ spec:
               capabilities:
                 drop:
                   - ALL
+          seedboxapi:
+            image:
+              repository: ghcr.io/rust84/seedboxapi
+              tag: latest
+            env:
+              DEBUG: "1"
+              interval: "1"
+            resources:
+              requests:
+                cpu: 10m
+                memory: 25Mi
+              limits:
+                memory: 50Mi
+            securityContext: *sc
           vuetorrent:
             dependsOn: app
             image:
