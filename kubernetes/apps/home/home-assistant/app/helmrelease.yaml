@@ -97,6 +97,8 @@ spec:
             port: 12321
     ingress:
       app:
+        annotations:
+          hajimari.io/icon: "home-automation"
         className: external
         hosts:
           - host: hass.${SECRET_DOMAIN}
