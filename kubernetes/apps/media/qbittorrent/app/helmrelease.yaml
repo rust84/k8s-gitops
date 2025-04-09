@@ -162,6 +162,7 @@ spec:
               - --ref=latest-release
               - --period=86400s
               - --root=/add-ons
+              - --max-failures=5
             resources:
               requests:
                 cpu: 10m
