@@ -162,6 +162,8 @@ spec:
               - --ref=latest-release
               - --period=86400s
               - --root=/add-ons
+              - --sync-timeout=3600s
+              - -v=6
             resources:
               requests:
                 cpu: 10m
