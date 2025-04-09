@@ -56,7 +56,7 @@ spec:
               FIREWALL_INPUT_PORTS: "8080,9999"
               FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16 # Allow access to k8s subnets
               HEALTH_SERVER_ADDRESS: ":9999"
-              FIREWALL_VPN_INPUT_PORTS: &BT-port 21044
+              FIREWALL_VPN_INPUT_PORTS: &BT-port 21044 853
               SERVER_COUNTRIES: Belgium
             envFrom:
               - secretRef:
@@ -162,7 +162,8 @@ spec:
               - --ref=latest-release
               - --period=86400s
               - --root=/add-ons
-              - --max-failures=5
+              - --timeout=3600
+              - -v=6
             resources:
               requests:
                 cpu: 10m
