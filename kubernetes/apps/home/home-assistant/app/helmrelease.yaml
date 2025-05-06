@@ -43,7 +43,7 @@ spec:
           app:
             image:
               repository: ghcr.io/home-operations/home-assistant
-              tag: 2025.4.2@sha256:a0da02d5929788d34e589f0d7e185f9263204c7406ec64fae3a792223906e511
+              tag: 2025.4.4@sha256:dc7bb47eb6b3f62405c185cbc633771527b9710530023f7177d99a09eb858fc4
             env:
               TZ: "${TZ}"
               HASS_HTTP_TRUSTED_PROXY_1: 10.20.0.0/24
@@ -61,7 +61,7 @@ spec:
           code-server:
             image:
               repository: ghcr.io/coder/code-server
-              tag: 4.99.2@sha256:6b5fcf74bb19579ca1666c8f96ac406ca5146a5c8756963a10991c4e520fa085
+              tag: 4.99.4@sha256:316b7f60051b44b81fdf8972293735c2b0fda9a2b1e88fb6b77195df0c9b9b78
             args:
               - --auth
               - none
