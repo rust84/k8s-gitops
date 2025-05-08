@@ -4,9 +4,12 @@ version: "3"
 vars:
   PROJECT_DIR:
     sh: "git rev-parse --show-toplevel"
+  KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
+  TALHELPER_DIR: "{{.ROOT_DIR}}/kubernetes/bootstrap/talos"
+  TALOSCONFIG_FILE: "{{.ROOT_DIR}}/kubernetes/bootstrap/talos/clusterconfig/talosconfig"
 
 env:
-  TALOSCONFIG: ./talos/clusterconfig/talosconfig
+  TALOSCONFIG: "{{.TALOSCONFIG_FILE}}"
 
 includes:
   bootstrap: .taskfiles/bootstrap
