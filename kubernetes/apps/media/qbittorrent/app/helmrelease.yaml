@@ -141,10 +141,14 @@ spec:
           seedboxapi:
             image:
               repository: ghcr.io/rust84/seedboxapi
-              tag: latest
+              tag: 1.0.0@sha256:57df8dc728e3b6c18e69ce14a7666823ba95d9f61b406367b1c3a19ceeb516d2
+              pullPolicy: Always
             env:
-              DEBUG: "1"
-              interval: "1"
+              MAM_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: qbittorrent-secret
+                    key: MAM_ID
             resources:
               requests:
                 cpu: 10m
