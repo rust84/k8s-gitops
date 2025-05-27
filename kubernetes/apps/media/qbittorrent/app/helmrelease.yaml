@@ -57,7 +57,7 @@ spec:
               FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16 # Allow access to k8s subnets
               HEALTH_SERVER_ADDRESS: ":9999"
               FIREWALL_VPN_INPUT_PORTS: &BT-port 21044
-              SERVER_COUNTRIES: Belgium
+              SERVER_COUNTRIES: Netherlands
             envFrom:
               - secretRef:
                   name: qbittorrent-secret
