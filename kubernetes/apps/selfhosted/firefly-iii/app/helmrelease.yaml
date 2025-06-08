@@ -89,7 +89,7 @@ spec:
           app:
             image:
               repository: docker.io/fireflyiii/data-importer
-              tag: version-1.6.2@sha256:753e5c51438da30843ff0f0eef486befca0a7c6f1bb94723cfdf1c80c421272b
+              tag: version-1.6.3@sha256:403cf7d624001fb3c6755188e7fc81ba9748a32d15b9d8458d9b2b65993e57fc
             env:
               TZ: "${TZ}"
               TRUSTED_PROXIES: "**"
