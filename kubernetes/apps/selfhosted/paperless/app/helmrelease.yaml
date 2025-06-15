@@ -40,7 +40,7 @@ spec:
           app:
             image:
               repository: ghcr.io/paperless-ngx/paperless-ngx
-              tag: 2.16.2
+              tag: 2.16.3
             env:
               COMPOSE_PROJECT_NAME: paperless
               PAPERLESS_PORT: &port 8000
@@ -78,7 +78,7 @@ spec:
           tika:
             image:
               repository: docker.io/apache/tika
-              tag: 3.1.0.0-full
+              tag: 3.2.0.0-full
               pullPolicy: IfNotPresent
             ports:
               - containerPort: 9998
