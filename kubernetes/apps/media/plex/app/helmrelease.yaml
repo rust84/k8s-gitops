@@ -33,7 +33,7 @@ spec:
             env:
               TZ: "${TZ}"
               PLEX_ADVERTISE_URL: https://plex.${SECRET_DOMAIN}:443
-              PLEX_NO_AUTH_NETWORKS: 10.20.0.0/16
+              PLEX_NO_AUTH_NETWORKS: 10.42.0.0/16
             probes:
               liveness: &probes
                 enabled: true
