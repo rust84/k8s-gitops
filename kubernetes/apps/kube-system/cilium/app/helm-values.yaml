@@ -7,6 +7,8 @@ bpf:
 cni:
   # Required for pairing with Multus CNI
   exclusive: false
+bgpControlPlane:
+  enabled: true
 cgroup:
   automount:
     enabled: false
@@ -28,6 +30,7 @@ k8sServiceHost: 127.0.0.1
 k8sServicePort: 7445
 kubeProxyReplacement: true
 kubeProxyReplacementHealthzBindAddr: 0.0.0.0:10256
+
 l2announcements:
   enabled: true
 loadBalancer:
