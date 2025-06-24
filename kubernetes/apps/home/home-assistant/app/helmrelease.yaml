@@ -74,6 +74,8 @@ spec:
               - --port
               - "12321"
               - /config
+            env:
+              HASS_SERVER: http://localhost:8123
             resources:
               requests:
                 cpu: 10m
