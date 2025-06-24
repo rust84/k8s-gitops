@@ -14,8 +14,8 @@ clusterSvcNets:
   - "10.43.0.0/16"
 
 additionalApiServerCertSans: &sans
-  - "10.20.0.149"
-  - "127.0.0.1"
+  - &talosControlplaneVip 10.20.0.149
+  - 127.0.0.1 # KubePrism
 additionalMachineCertSans: *sans
 
 # Disable built-in Flannel to use Cilium
@@ -43,12 +43,14 @@ nodes:
           - network: 0.0.0.0/0
             gateway: 10.20.0.1
         vip:
-          ip: "10.20.0.149"   
+          ip: *talosControlplaneVip
         vlans:
-          - vlanId: 30 
-            dhcp: false
-            addresses: [10.30.0.50/24]
+          - &vlan30
+            vlanId: 30
             mtu: 1500
+            dhcp: false
+            dhcpOptions:
+              routeMetric: 4096
 
   - hostname: "k8s-1"
     ipAddress: "10.20.0.229"
@@ -70,12 +72,10 @@ nodes:
           - network: 0.0.0.0/0
             gateway: 10.20.0.1
         vip:
-          ip: "10.20.0.149"
+          ip: *talosControlplaneVip
         vlans:
-          - vlanId: 30 
-            dhcp: false
-            addresses: [10.30.0.51/24]
-            mtu: 1500
+          - *vlan30
+
   - hostname: "k8s-2"
     ipAddress: "10.20.0.244"
     installDisk: "/dev/sda"
@@ -96,12 +96,9 @@ nodes:
           - network: 0.0.0.0/0
             gateway: 10.20.0.1
         vip:
-          ip: "10.20.0.149"
+          ip: *talosControlplaneVip
         vlans:
-          - vlanId: 30 
-            dhcp: false
-            addresses: [10.30.0.52/24]
-            mtu: 1500
+          - *vlan30
 
 # Global patches
 patches:
