@@ -2,8 +2,8 @@
 autoDirectNodeRoutes: true
 bpf:
   masquerade: true
-  # Ref: https://github.com/siderolabs/talos/issues/10002
-  hostLegacyRouting: true
+  # forwardKubeDNSToHost requires this to be true https://github.com/siderolabs/talos/issues/10002
+  hostLegacyRouting: false
 cni:
   # Required for pairing with Multus CNI
   exclusive: false
