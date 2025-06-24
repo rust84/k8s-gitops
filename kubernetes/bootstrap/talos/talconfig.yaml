@@ -39,18 +39,16 @@ nodes:
               driver: igc
         dhcp: true
         mtu: 9000
-        routes:
-          - network: 0.0.0.0/0
-            gateway: 10.20.0.1
+        # routes:
+        #   - network: 0.0.0.0/0
+        #     gateway: 10.20.0.1
         vip:
           ip: *talosControlplaneVip
         vlans:
           - &vlan30
             vlanId: 30
-            mtu: 1500
+            mtu: 9000
             dhcp: false
-            dhcpOptions:
-              routeMetric: 4096
 
   - hostname: "k8s-1"
     ipAddress: "10.20.0.229"
@@ -68,9 +66,6 @@ nodes:
               driver: igc
         dhcp: true
         mtu: 9000
-        routes:
-          - network: 0.0.0.0/0
-            gateway: 10.20.0.1
         vip:
           ip: *talosControlplaneVip
         vlans:
@@ -92,9 +87,6 @@ nodes:
               driver: igc
         dhcp: true
         mtu: 9000
-        routes:
-          - network: 0.0.0.0/0
-            gateway: 10.20.0.1
         vip:
           ip: *talosControlplaneVip
         vlans:

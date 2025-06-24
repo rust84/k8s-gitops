@@ -28,7 +28,8 @@ spec:
               [{
                 "name":"multus-iot",
                 "namespace": "network",
-                "ips": ["10.30.0.55/24"]
+                "ips": ["10.30.0.55/24"],
+                "mac": "b6:84:79:d1:cc:bf"
               }]
         initContainers:
           init-db:
