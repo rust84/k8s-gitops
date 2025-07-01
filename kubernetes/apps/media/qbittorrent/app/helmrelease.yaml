@@ -48,16 +48,25 @@ spec:
               repository: ghcr.io/qdm12/gluetun
               tag: v3.40.0
             env:
-              DOT: "off"
+              BLOCK_MALICIOUS: off # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
               DNS_ADDRESS: "127.0.0.2"
-              VPN_SERVICE_PROVIDER: airvpn
-              VPN_TYPE: wireguard
-              VPN_INTERFACE: wg0
+              DOT: off
+              DOT_CACHING: off
+              DOT_IPV6: off
+              FIREWALL_DEBUG: on
               FIREWALL_INPUT_PORTS: "8080,9999"
               FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16 # Allow access to k8s subnets
-              HEALTH_SERVER_ADDRESS: ":9999"
               FIREWALL_VPN_INPUT_PORTS: &BT-port 21044
-              SERVER_COUNTRIES: Netherlands
+              HEALTH_SERVER_ADDRESS: ":9999"
+              LOG_LEVEL: debug
+              PUBLICIP_API: cloudflare
+              STORAGE_FILEPATH: "" # prevent memory spike and avoid I/O
+              TZ: "${TZ}"
+              UPDATER_PERIOD: 24h
+              VERSION_INFORMATION: off
+              VPN_INTERFACE: wg0
+              VPN_IPV6_SERVER: off
+              VPN_TYPE: wireguard    
             envFrom:
               - secretRef:
                   name: qbittorrent-secret
@@ -87,17 +96,16 @@ spec:
                   failureThreshold: 5
             restartPolicy: Always
             securityContext:
-              capabilities:
-                add:
-                  - NET_ADMIN
-              allowPrivilegeEscalation: false
-
+              capabilities: { add: ["NET_ADMIN", "NET_RAW"] }
+              readOnlyRootFilesystem: false
+              runAsNonRoot: false
+              runAsUser: 0
         containers:
           app:
             nameOverride: qbittorrent
             image:
               repository: ghcr.io/home-operations/qbittorrent
-              tag: 5.1.0@sha256:37aefd713ba31d51255995261616f1144378887bc5f21665a0ebf851fb85f69a
+              tag: 5.1.1@sha256:539688bd5de1d3d7e9b5b91e306635ce2ae3d9aa423cd5fea4d47eebd5c46356
             env:
               UMASK: "022"
               QBT_WEBUI_PORT: &port 8080
@@ -135,9 +143,7 @@ spec:
               runAsNonRoot: true
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
-              capabilities:
-                drop:
-                  - ALL
+              capabilities: { drop: ["ALL"] }
           seedboxapi:
             image:
               repository: ghcr.io/rust84/seedboxapi
@@ -174,6 +180,7 @@ spec:
                 memory: 25Mi
               limits:
                 memory: 50Mi
+            securityContext: *sc
 
     service:
       app:
