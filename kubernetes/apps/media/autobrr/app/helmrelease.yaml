@@ -91,5 +91,7 @@ spec:
             hosts:
               - *host
     persistence:
+      config:
+        existingClaim: *app
       tmp:
         type: emptyDir
