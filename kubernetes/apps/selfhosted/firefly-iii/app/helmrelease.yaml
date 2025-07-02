@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: docker.io/fireflyiii/core
-              tag: version-6.2.18@sha256:2024950477a3188b657b37c988259422b2175d611a5b31ebe5db91401432709f
+              tag: version-6.2.20@sha256:f067064cdf2ef0c196a443ba3921bac4988a180e5ea2c223ee8734ad91085e09
             resources:
               requests:
                 cpu: 15m
