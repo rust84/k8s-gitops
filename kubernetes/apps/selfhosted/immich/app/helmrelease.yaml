@@ -202,6 +202,7 @@ spec:
           ml:
             main:
               - path: /cache
+              - path: /.cache
       tmp:
         type: emptyDir
     defaultPodOptions:
