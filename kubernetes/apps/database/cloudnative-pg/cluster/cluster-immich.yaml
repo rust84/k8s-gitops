@@ -2,10 +2,12 @@
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
-  name: postgres-vector
+  name: postgres-immich
 spec:
   instances: 3
-  imageName: ghcr.io/tensorchord/cloudnative-pgvecto.rs:16.2-v0.2.1
+  # on upgrade of vectorchord, run: k exec -n self-hosted postgres-immich -- psql -d immich -c 'ALTER EXTENSION vchord UPDATE;'
+  # renovate: datasource=docker depName=ghcr.io/tensorchord/cloudnative-vectorchord
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.9-0.4.2@sha256:649da2df5f079dd1f214e3a877cafd0208eff3779e9c60d14d243fbca5e11c97
   primaryUpdateStrategy: unsupervised
   storage:
     size: 20Gi
@@ -26,11 +28,16 @@ spec:
       kubernetes.io/arch: amd64
   postgresql:
     shared_preload_libraries:
-      - "vectors.so"
+      - "vchord.so"
     enableAlterSystem: true
     parameters:
       max_connections: "600"
       shared_buffers: 512MB
+  bootstrap:
+    initdb:
+      postInitSQL:
+        - CREATE EXTENSION vchord CASCADE;
+        - CREATE EXTENSION earthdistance CASCADE;
   monitoring:
     enablePodMonitor: true
   backup:
@@ -45,7 +52,7 @@ spec:
       endpointURL: &s3 https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
       # Note: serverName version needs to be inclemented
       # when recovering from an existing cnpg cluster
-      serverName: postgres-vector-v2
+      serverName: postgres-immich-v4
       s3Credentials: &credentials
         accessKeyId:
           name: cloudnative-pg-secret
@@ -55,18 +62,21 @@ spec:
           key: aws-secret-access-key
   # Note: previousCluster needs to be set to the name of the previous
   # cluster when recovering from an existing cnpg cluster
-  bootstrap:
-    recovery:
-      source: &previousCluster postgres-vector-v1
-  externalClusters:
-    - name: *previousCluster
-      barmanObjectStore:
-        wal:
-          compression: bzip2
-          maxParallel: 8
-        destinationPath: *dest
-        endpointURL: *s3
-        s3Credentials: *credentials
+  # bootstrap:
+  #   recovery:
+  #     source: &previousCluster postgres-vector-v2
+  #     recoveryTarget:
+  #       # Time base target for the recovery
+  #       targetTime: "2025-07-03 20:14:21.00000+02"
+  # externalClusters:
+  #   - name: *previousCluster
+  #     barmanObjectStore:
+  #       wal:
+  #         compression: bzip2
+  #         maxParallel: 8
+  #       destinationPath: *dest
+  #       endpointURL: *s3
+  #       s3Credentials: *credentials
 
   # Note: Enable when migrating from a different major version
   # bootstrap:

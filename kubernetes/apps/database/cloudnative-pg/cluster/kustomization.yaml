@@ -5,6 +5,6 @@ kind: Kustomization
 namespace: database
 resources:
   - ./cluster.yaml
-  - ./cluster-vector.yaml
+  - ./cluster-immich.yaml
   - ./prometheusrule.yaml
   - ./scheduledbackup.yaml
