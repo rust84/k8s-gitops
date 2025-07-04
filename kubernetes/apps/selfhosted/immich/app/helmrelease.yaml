@@ -52,8 +52,7 @@ spec:
             securityContext: &sc
               readOnlyRootFilesystem: true
               allowPrivilegeEscalation: false
-              capabilities:
-                drop: [ "ALL" ]
+              capabilities: { drop: ["ALL"] }
             resources:
               limits:
                 memory: 2.5Gi
@@ -119,7 +118,6 @@ spec:
             env:
               <<: *env-common
               MPLCONFIGDIR: /tmp/matplotlib
-            securityContext: *sc
             resources:
               limits:
                 memory: 1860Mi
