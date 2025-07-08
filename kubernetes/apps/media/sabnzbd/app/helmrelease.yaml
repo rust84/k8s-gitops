@@ -29,6 +29,7 @@ spec:
               tag: 4.5.1@sha256:804650bc034ff4af18159615853d43a0cb7e5a24cb2484b5b46e77486eca91f3
             env:
               TZ: "${TZ}"
+              CROSS_SEED_HOST: cross-seed.media.svc.cluster.local
               SABNZBD__PORT: &port 80
               SABNZBD__HOST_WHITELIST_ENTRIES: >-
                 sabnzbd,
@@ -97,6 +98,12 @@ spec:
         globalMounts:
           - path: /media/downloads/nzbs
             subPath: downloads/nzbs
+      scripts:
+        type: configMap
+        name: sabnzbd-scripts
+        defaultMode: 0775
+        globalMounts:
+          - readOnly: true
       temp:
         type: emptyDir
         advancedMounts:
