@@ -68,7 +68,7 @@ spec:
           cronjob:
             image:
               repository: alpine
-              tag: 3.22.0
+              tag: 3.22.1
               pullPolicy: IfNotPresent
             command:
               - sh
