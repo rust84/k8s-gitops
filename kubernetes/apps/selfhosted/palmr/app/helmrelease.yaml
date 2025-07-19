@@ -70,7 +70,7 @@ spec:
               readOnlyRootFilesystem: false
               capabilities: 
                 drop: ["ALL"]
-                # add: ["SETUID", "SETGID"] # supervisor changes 
+                add: ["SETUID", "SETGID"]
             probes:
               liveness:
                 enabled: true
@@ -83,8 +83,6 @@ spec:
                 memory: 512Mi
     defaultPodOptions:
       securityContext:
-        runAsUser: 1001
-        runAsGroup: 1001
         fsGroup: 1001
         fsGroupChangePolicy: OnRootMismatch
     service:
