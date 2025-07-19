@@ -67,7 +67,7 @@ spec:
                   name: palmr-secret
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: false
+              readOnlyRootFilesystem: true
               capabilities: 
                 drop: ["ALL"]
                 add: ["SETUID", "SETGID"]
@@ -83,6 +83,7 @@ spec:
                 memory: 512Mi
     defaultPodOptions:
       securityContext:
+        runAsGroup: 1001
         fsGroup: 1001
         fsGroupChangePolicy: OnRootMismatch
     service:
