@@ -70,9 +70,9 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false # required
-              capabilities: 
-                drop: ["ALL"]
-                add: ["SETUID", "SETGID"]
+              # capabilities: 
+              #   drop: ["ALL"]
+              #   add: ["SETUID", "SETGID"]
             probes:
               liveness:
                 enabled: true
