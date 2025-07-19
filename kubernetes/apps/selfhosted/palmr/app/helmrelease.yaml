@@ -81,11 +81,10 @@ spec:
                 cpu: 10m
               limits:
                 memory: 512Mi
-    defaultPodOptions:
-      securityContext:
-        runAsGroup: 1001
-        fsGroup: 1001
-        fsGroupChangePolicy: OnRootMismatch
+    # defaultPodOptions:
+    #   securityContext:
+    #     fsGroup: 1001
+    #     fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         controller: *app
