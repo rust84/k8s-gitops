@@ -29,41 +29,13 @@ spec:
               tag: v3.1.3-beta@sha256:4e67bf940e5c52c955471590d64abc855ad94bc34a3d2f5ef66a52fa3eb25ff6
             env:
               ENABLE_S3: true
+              S3_ENDPOINT: s3.us-west-002.backblazeb2.com
+              S3_FORCE_PATH_STYLE: false
+              S3_REGION: us-west-002
+              S3_USE_SSL: true
+              SECURE_SITE: true
               PALMR_UID: &uid 1000
               PALMR_GID: *uid
-              S3_BUCKET_NAME:
-                valueFrom:
-                  configMapKeyRef:
-                    name: palmr-ceph-bucket
-                    key: BUCKET_NAME
-              S3_ENDPOINT:
-                valueFrom:
-                  configMapKeyRef:
-                    name: palmr-ceph-bucket
-                    key: BUCKET_HOST
-              S3_FORCE_PATH_STYLE: true
-              S3_PORT:
-                valueFrom:
-                  configMapKeyRef:
-                    name: palmr-ceph-bucket
-                    key: BUCKET_PORT
-              S3_REGION:
-                valueFrom:
-                  configMapKeyRef:
-                    name: palmr-ceph-bucket
-                    key: BUCKET_HOST
-              S3_ACCESS_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: palmr-ceph-bucket
-                    key: AWS_ACCESS_KEY_ID
-              S3_SECRET_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: palmr-ceph-bucket
-                    key: AWS_SECRET_ACCESS_KEY
-              S3_USE_SSL: false
-              SECURE_SITE: true
             envFrom:
               - secretRef:
                   name: palmr-secret
@@ -72,11 +44,6 @@ spec:
                 enabled: false
               readiness:
                 enabled: false
-              startup:
-                enabled: false
-                # spec:
-                #   failureThreshold: 30
-                #   periodSeconds: 5
             resources:
               requests:
                 cpu: 10m
@@ -91,7 +58,7 @@ spec:
     ingress:
       main:
         enabled: true
-        className: internal
+        className: external
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:
