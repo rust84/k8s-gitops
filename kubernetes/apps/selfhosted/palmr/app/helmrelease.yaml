@@ -81,7 +81,7 @@ spec:
                 memory: 512Mi
     defaultPodOptions:
       securityContext:
-        fsGroup: 568
+        fsGroup: 1001
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
