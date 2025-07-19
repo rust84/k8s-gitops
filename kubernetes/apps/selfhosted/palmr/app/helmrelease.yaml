@@ -1,0 +1,121 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app palmr
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      palmr:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          main:
+            image:
+              repository: kyantech/palmr
+              tag: v3.1.3-beta@sha256:4e67bf940e5c52c955471590d64abc855ad94bc34a3d2f5ef66a52fa3eb25ff6
+            env:
+              ENABLE_S3: true
+              PALMR_UID: &uid 1000
+              PALMR_GID: *uid
+              S3_BUCKET_NAME:
+                valueFrom:
+                  configMapKeyRef:
+                    name: palmr-ceph-bucket
+                    key: BUCKET_NAME
+              S3_ENDPOINT:
+                valueFrom:
+                  configMapKeyRef:
+                    name: palmr-ceph-bucket
+                    key: BUCKET_HOST
+              S3_FORCE_PATH_STYLE: true
+              S3_PORT:
+                valueFrom:
+                  configMapKeyRef:
+                    name: palmr-ceph-bucket
+                    key: BUCKET_PORT
+              S3_REGION:
+                valueFrom:
+                  configMapKeyRef:
+                    name: palmr-ceph-bucket
+                    key: BUCKET_HOST
+              S3_ACCESS_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: palmr-ceph-bucket
+                    key: AWS_ACCESS_KEY_ID
+              S3_SECRET_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: palmr-ceph-bucket
+                    key: AWS_SECRET_ACCESS_KEY
+              S3_USE_SSL: false
+              SECURE_SITE: true
+            envFrom:
+              - secretRef:
+                  name: palmr-secret
+            probes:
+              liveness:
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+                # spec:
+                #   failureThreshold: 30
+                #   periodSeconds: 5
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512Mi
+    service:
+      app:
+        controller: *app
+        ports:
+          http:
+            port: 5487
+    ingress:
+      main:
+        enabled: true
+        className: internal
+        hosts:
+          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+    persistence:
+      config:
+        existingClaim: *app
+        advancedMounts:
+          palmr:
+            main:
+              - path: /app/server
+      config-temp:
+        type: emptyDir
+        globalMounts:
+          - path: /app/server/temp-chunks
+      config-uploads:
+        type: emptyDir
+        globalMounts:
+          - path: /app/server/uploads
+      tmp:
+        type: emptyDir

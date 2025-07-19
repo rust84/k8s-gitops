@@ -10,6 +10,7 @@ resources:
   - ./hajimari/ks.yaml
   - ./immich/ks.yaml
   - ./ntfy/ks.yaml
+  - ./palmr/ks.yaml
   - ./paperless/ks.yaml
   - ./joplin/ks.yaml
   - ./monica/ks.yaml
