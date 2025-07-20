@@ -23,7 +23,7 @@ spec:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          main:
+          app:
             image:
               repository: kyantech/palmr
               tag: v3.1.3-beta@sha256:4e67bf940e5c52c955471590d64abc855ad94bc34a3d2f5ef66a52fa3eb25ff6
@@ -39,7 +39,12 @@ spec:
             envFrom:
               - secretRef:
                   name: palmr-secret
-            probes:
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities:
+                drop: ["ALL"]
+                add: ["SETUID", "SETGID"]  
               liveness:
                 enabled: false
               readiness:
@@ -49,6 +54,10 @@ spec:
                 cpu: 10m
               limits:
                 memory: 512Mi
+    defaultPodOptions:
+      securityContext:
+        fsGroup: *uid
+        fsGroupChangePolicy: OnRootMismatch
     service:
       app:
         controller: *app
@@ -74,7 +83,7 @@ spec:
         existingClaim: *app
         advancedMounts:
           palmr:
-            main:
+            app:
               - path: /app/server
       config-temp:
         type: emptyDir
