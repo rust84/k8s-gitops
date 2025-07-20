@@ -67,12 +67,20 @@ spec:
         ports:
           http:
             port: 5487
+          api:
+            port: 3333
     ingress:
       main:
         enabled: true
         className: external
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
+          - host: &host "send.${SECRET_DOMAIN}"
             paths:
               - path: /
                 service:

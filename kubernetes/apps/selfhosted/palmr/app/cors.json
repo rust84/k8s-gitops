@@ -3,7 +3,8 @@
     {
       "AllowedOrigins": [
         "https://share.REDACTED.com",
-        "https://palmr.roswellian.dev"
+        "https://palmr.roswellian.dev",
+        "https://send.roswellian.dev"
       ],
       "AllowedMethods": [
         "GET",
