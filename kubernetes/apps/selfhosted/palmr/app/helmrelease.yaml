@@ -44,7 +44,7 @@ spec:
               readOnlyRootFilesystem: false
               capabilities:
                 drop: ["ALL"]
-                add: ["SETUID", "SETGID"]  
+                add: ["CHOWN", "SETUID", "SETGID"]  
               liveness:
                 enabled: false
               readiness:
