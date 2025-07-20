@@ -45,9 +45,12 @@ spec:
               capabilities:
                 drop: ["ALL"]
                 add: ["CHOWN", "SETUID", "SETGID"]  
+            probes:
               liveness:
                 enabled: false
               readiness:
+                enabled: false
+              startup:
                 enabled: false
             resources:
               requests:
