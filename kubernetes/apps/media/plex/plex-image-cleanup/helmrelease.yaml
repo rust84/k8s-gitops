@@ -84,7 +84,7 @@ spec:
             app:
               - path: /config
       plex-config:
-        existingClaim: plex-config
+        existingClaim: plex
         advancedMounts:
           plex-image-cleanup:
             app:
