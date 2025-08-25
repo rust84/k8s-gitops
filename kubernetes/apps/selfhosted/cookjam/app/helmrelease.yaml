@@ -39,7 +39,7 @@ spec:
                 spec:
                   httpGet:
                     path: /health
-                    port: *port
+                    port: &port 8080
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -66,7 +66,7 @@ spec:
         controller: *app
         ports:
           http:
-            port: 8080
+            port: *port
     ingress:
       main:
         enabled: true
