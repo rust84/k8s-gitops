@@ -19,7 +19,7 @@ spec:
       retries: 3
   values:
     controllers:
-      palmr:
+      cookjam:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
