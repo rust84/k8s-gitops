@@ -9,3 +9,38 @@ spec:
   interval: 1h
   secretRef:
     name: cookjam-reg
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: cookjam-policy
+  namespace: flux-system
+spec:
+  imageRepositoryRef:
+    name: cookjam
+  filterTags:
+    pattern: '^latest$'
+  policy:
+    alphabetical: {}
+  digestReflectionPolicy: Always
+  interval: 5m
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageUpdateAutomation
+metadata:
+  name: cookjam-update
+  namespace: flux-system
+spec:
+  interval: 5m
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+  git:
+    commit:
+      author:
+        email: fluxcdbot@users.noreply.github.com
+        name: fluxcdbot
+    push:
+      branch: main
+  update:
+    path: ./

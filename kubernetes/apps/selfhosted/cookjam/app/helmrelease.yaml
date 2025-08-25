@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working
-              tag: develop@sha256:6271cf07681c2f9b081b0cb5f026f6dc32ef0e30e356da109dc8bb289caaa239
+              tag: develop@sha256:6271cf07681c2f9b081b0cb5f026f6dc32ef0e30e356da109dc8bb289caaa239 # {"$imagepolicy": "flux-system:cookjam-policy:digest"}
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
