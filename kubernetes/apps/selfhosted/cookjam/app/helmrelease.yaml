@@ -93,3 +93,4 @@ spec:
             app:
               - path: /var/cache/nginx
               - path: /var/log/nginx
+              - path: /var/run
