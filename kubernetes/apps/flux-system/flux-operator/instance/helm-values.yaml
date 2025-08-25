@@ -3,6 +3,8 @@ instance:
   cluster:
     networkPolicy: false
   components:
+    - image-reflector-controller
+    - image-automation-controller
     - source-controller
     - kustomize-controller
     - helm-controller
