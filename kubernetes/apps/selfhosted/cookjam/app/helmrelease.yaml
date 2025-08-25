@@ -82,3 +82,11 @@ spec:
         tls:
           - hosts:
               - *host
+    persistence:
+      config:
+        enabled: false
+        existingClaim: *app
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /var/cache
