@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: cookjam-reg
+  namespace: flux-system
+type: kubernetes.io/dockerconfigjson
+data:
+  .dockerconfigjson: ENC[AES256_GCM,data:q1oeI4DN+LVFiID4+voLNOnK4SgcDGgAq68B8EZDUTfi6tZFcJdelT4N8IbLUruYZCsywZgzkOeMLezvPD2WI913n4424BQyHljPFQy6Zxg7pxD+/Ij0oxyirW7TxgHpCsx6kSt0cF8CAUY7A++amID0SprbT+3Ue8CRQkhnPa4d1F5Y76Zikv3M407SXUOrLEeJjtqwQB/8hBrXb770su//u4KSDa/+Q2egns8eUVOHmyNevw8MlZCG8bOFsvJS4bqdqC7Ldei6jHaDufc6h9zYES2ZeQoUYOWvdQyu7dSv4KdB,iv:XoPvJCumO/B0zBh4a+E9c74BrD9QWefJ2U3+iNPwof0=,tag:nB6Lj6W/Ud/RHJmlTYDR+Q==,type:str]
+sops:
+  age:
+    - recipient: age1wv9mlcm5q92z8q26m85ry3yhgfmzh4cptqeveudxh3nj5jm2dfcqfelgux
+      enc: |
+        -----BEGIN AGE ENCRYPTED FILE-----
+        YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSAzdlp1QitzRVBwU0IwQXRo
+        ekJ3RTArU3RYNkxoTlNEUERqZlhrc01OMDFnCmozclBHZ2UxenAvRFBvaEpIbDRn
+        aHZSVjdyQnJLZjFHdURuY09sanJJZGcKLS0tIHl2cXBGbUtBb2Q1OWlTUmw5VTBI
+        WHQyTllyRFBZQm1zeTV1NmQ1K1N4bHcKE8fxSJzjy7n2+5DGHGjlEYeb9OdhxcvV
+        ezGYCqY5oak9NqEaQPvs3zmQ+RS+UYhu+YdW2QPpc+oq75fa23sJOQ==
+        -----END AGE ENCRYPTED FILE-----
+  lastmodified: "2025-08-25T21:53:51Z"
+  mac: ENC[AES256_GCM,data:Ch3xTCrHz/WHlPW6G1jLmSmiV1GudnIy8y1iEoXFtNBS9G7FjgKQeKprrLP2oBKNbtax2DaVjQCvZIqamR6uwu1AjKcoyPaSuvHT8sg3R0dHnkcXrSnDacU+K7Ct6RI10v+xUPblIGlW204T7/x4zM7xdDNPXg1ca1/k9XZOIuw=,iv:Mw9BU1/LgCu1qBq8kkiFuuBVUNsopRZ8h4dIgZ0XSig=,tag:szBDyByc3QsZ6sgUHlh1Sg==,type:str]
+  encrypted_regex: ^(data|stringData)$
+  mac_only_encrypted: true
+  version: 3.10.2

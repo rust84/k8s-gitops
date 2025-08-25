@@ -7,6 +7,7 @@ components:
   - ../../flux/components/common
 resources:
   - ./authentik/ks.yaml
+  - ./cookjam/ks.yaml
   - ./firefly-iii/ks.yaml
   - ./hajimari/ks.yaml
   - ./immich/ks.yaml

@@ -1,0 +1,11 @@
+---
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: cookjam
+  namespace: flux-system
+spec:
+  image: ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working
+  interval: 1h
+  secretRef:
+    name: cookjam-reg
