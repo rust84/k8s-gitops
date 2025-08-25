@@ -88,5 +88,8 @@ spec:
         existingClaim: *app
       cache:
         type: emptyDir
-        globalMounts:
-          - path: /var/cache
+        advancedMounts:
+          cookjam:
+            app:
+              - path: /var/cache/nginx
+              - path: /var/log/nginx
