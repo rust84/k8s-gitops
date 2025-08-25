@@ -30,9 +30,9 @@ spec:
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
-              # capabilities:
-              #   drop: ["ALL"]
-              #   add: ["CHOWN"] 
+              capabilities:
+                drop: ["ALL"]
+                add: ["CHOWN"]
             probes:
               liveness: &probes
                 enabled: true
