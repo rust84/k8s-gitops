@@ -29,7 +29,7 @@ spec:
               tag: develop@sha256:6271cf07681c2f9b081b0cb5f026f6dc32ef0e30e356da109dc8bb289caaa239
             securityContext:
               allowPrivilegeEscalation: false
-              readOnlyRootFilesystem: true
+              readOnlyRootFilesystem: false
               capabilities:
                 drop: ["ALL"]
                 add: ["CHOWN"] 
