@@ -19,7 +19,7 @@ spec:
   imageRepositoryRef:
     name: cookjam
   filterTags:
-    pattern: '^latest$'
+    pattern: '^develop$'
   policy:
     alphabetical: {}
   digestReflectionPolicy: Always
