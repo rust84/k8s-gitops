@@ -12,7 +12,7 @@ spec:
   path: ./kubernetes/apps/selfhosted/cookjam/app
   postBuild:
     substitute:
-      IMAGE_DIGEST: sha256:9b2051cdb2b2a0f2e02f9926388c0339df2b15676ab4fac50da111181cc7563b # {"$imagepolicy": "flux-system:cookjam-policy:digest"}
+      IMAGE_DIGEST: sha256:4bc0c54ff3999e2fdfd96269c198cc62980d3a25cbe9ba4514abc8f90032a90d # {"$imagepolicy": "flux-system:cookjam-policy:digest"}
   prune: true
   sourceRef:
     kind: GitRepository
