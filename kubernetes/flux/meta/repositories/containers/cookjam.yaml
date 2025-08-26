@@ -35,6 +35,7 @@ spec:
   sourceRef:
     kind: GitRepository
     name: flux-system
+    namespace: flux-system
   git:
     commit:
       author:

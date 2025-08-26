@@ -30,7 +30,7 @@ spec:
   type: github
   events:
     - ping
-    - push
+    - workflow_run
   secretRef:
     name: github-webhook-token-secret
   resources:

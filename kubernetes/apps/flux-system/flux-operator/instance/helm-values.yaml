@@ -12,5 +12,8 @@ instance:
   sync:
     kind: GitRepository
     url: "https://github.com/rust84/k8s-gitops.git"
-    ref: "refs/heads/main"
+    ref:
+      branch: main
     path: kubernetes/flux/cluster
+    provider: github
+    pullSecret: flux-gitops-secret
