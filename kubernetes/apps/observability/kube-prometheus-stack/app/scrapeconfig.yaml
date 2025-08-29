@@ -43,3 +43,26 @@ spec:
     - action: replace
       targetLabel: job
       replacement: *name
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: &name supabase
+spec:
+  metricsPath: "/customer/v1/privileged/metrics"
+  scheme: HTTPS
+  basicAuth:
+    username:
+      name: supabase-secret
+      key: username
+    password:
+      name: supabase-secret
+      key: password
+  staticConfigs:
+    - targets:
+      - "sxggeisdqemcnrgfcheh.supabase.co"
+  relabelings:
+    - action: replace
+      targetLabel: job
+      replacement: *name
