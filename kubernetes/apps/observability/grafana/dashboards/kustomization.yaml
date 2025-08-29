@@ -1,0 +1,15 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+configMapGenerator:
+  - name: supabase-dashboard
+    files:
+      - supabase-dashboard.json=https://raw.githubusercontent.com/supabase/supabase-grafana/refs/heads/main/grafana/dashboard.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+    grafana_folder: Supabase
+  labels:
+    grafana_dashboard: "true"
