@@ -28,3 +28,17 @@ spec:
   valuesFrom:
     - kind: ConfigMap
       name: flux-instance-helm-values
+  postRenderers:
+    - kustomize:
+        patches:
+          - target:
+              version: v1
+              kind: GitRepository
+              name: flux-system
+            patch: |
+              - op: add
+                path: /spec/ref/branch
+                value: main             
+              - op: remove
+                path: /spec/ref/name
+                value: main
