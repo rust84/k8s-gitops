@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: "ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working"
-              tag: "develop@${IMAGE_DIGEST}"
+              tag: "develop"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
@@ -102,5 +102,5 @@ spec:
     - kustomize:            
         images:
           - name: ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working
-            newTag: main
+            newTag: develop
             digest: sha256:7f3794bf99b11e8963859df7999d55615f973e56ae4b0eb95c0096b7142404ef # {"$imagepolicy": "selfhosted:cookjam-dev:digest"}
