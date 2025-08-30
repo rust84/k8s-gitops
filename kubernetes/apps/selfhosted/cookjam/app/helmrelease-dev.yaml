@@ -99,8 +99,8 @@ spec:
               - path: /var/log/nginx
               - path: /var/run
   postRenderers:
-    - kustomize:            
+    - kustomize:
         images:
           - name: ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working
             newTag: develop
-            digest: sha256:7f3794bf99b11e8963859df7999d55615f973e56ae4b0eb95c0096b7142404ef # {"$imagepolicy": "selfhosted:cookjam-dev:digest"}
+            digest: sha256:19d8362a6527612e9fad69961176781dcc2a037a4afec9477278f3aa4bf64e47 # {"$imagepolicy": "selfhosted:cookjam-dev:digest"}
