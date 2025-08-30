@@ -63,7 +63,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: *app
+        controller: cookjam
         ports:
           http:
             port: *port
