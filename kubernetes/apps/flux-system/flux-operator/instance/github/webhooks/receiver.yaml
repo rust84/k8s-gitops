@@ -29,10 +29,10 @@ metadata:
 spec:
   type: github
   events:
-    - ping
     - workflow_run
   secretRef:
     name: github-webhook-token-secret
   resources:
     - kind: ImageRepository
       name: cookjam
+      namespace: selfhosted

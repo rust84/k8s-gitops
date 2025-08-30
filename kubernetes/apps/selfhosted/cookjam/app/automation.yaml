@@ -4,37 +4,51 @@ apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImageRepository
 metadata:
   name: cookjam
-  namespace: flux-system
 spec:
   image: ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working
   interval: 1h
   secretRef:
-    name: cookjam-reg
+    name: cookjam-secret
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imagepolicy-image-v1beta2.json
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImagePolicy
 metadata:
-  name: cookjam-policy
-  namespace: flux-system
+  name: cookjam-dev
 spec:
   imageRepositoryRef:
     name: cookjam
+    namespace: selfhosted
   filterTags:
     pattern: '^develop$'
   policy:
     alphabetical: {}
   digestReflectionPolicy: Always
-  interval: 5m
+  interval: 30m
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imagepolicy-image-v1beta2.json
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: cookjam-prd
+spec:
+  imageRepositoryRef:
+    name: cookjam
+    namespace: selfhosted
+  filterTags:
+    pattern: '^main$'
+  policy:
+    alphabetical: {}
+  digestReflectionPolicy: Always
+  interval: 30m
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imageupdateautomation-image-v1beta2.json
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImageUpdateAutomation
 metadata:
-  name: cookjam-update
-  namespace: flux-system
+  name: cookjam-gitops
 spec:
-  interval: 5m
+  interval: 30m
   sourceRef:
     kind: GitRepository
     name: flux-system
@@ -42,8 +56,8 @@ spec:
   git:
     commit:
       author:
-        email: fluxcdbot@users.noreply.github.com
-        name: fluxcdbot
+        email: 228689925+cookjam-bot[bot]@users.noreply.github.com
+        name: cookie
     checkout:
       ref:
         branch: main

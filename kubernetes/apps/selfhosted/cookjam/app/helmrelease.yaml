@@ -54,7 +54,7 @@ spec:
                 memory: 100Mi
     defaultPodOptions:
       imagePullSecrets:
-        - name: cookjam-reg
+        - name: cookjam-secret
       securityContext:
         runAsNonRoot: true
         runAsUser: 1001
