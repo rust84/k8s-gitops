@@ -15,7 +15,7 @@ spec:
   path: ./kubernetes/apps/selfhosted/cookjam/app
   postBuild:
     substitute:
-      IMAGE_DIGEST: sha256:128ed4dd0f8145d01ec2b6eae3058df83ba26b925cefa6fca3d27b0f8e1554e0 # {"$imagepolicy": "selfhosted:cookjam-dev:digest"}
+      IMAGE_DIGEST: sha256:19d8362a6527612e9fad69961176781dcc2a037a4afec9477278f3aa4bf64e47 # {"$imagepolicy": "selfhosted:cookjam-dev:digest"}
   prune: true
   sourceRef:
     kind: GitRepository
