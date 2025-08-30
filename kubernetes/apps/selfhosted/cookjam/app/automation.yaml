@@ -62,7 +62,7 @@ spec:
       ref:
         branch: main
     push:
-      refspec: refs/heads/main
+      branch: main
   update:
     strategy: Setters
     path: ./
