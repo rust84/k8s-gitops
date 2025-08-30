@@ -2,7 +2,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app cookjam
+  name: &app cookjam-prd
 spec:
   interval: 1h
   chartRef:
@@ -25,7 +25,7 @@ spec:
           app:
             image:
               repository: "ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working"
-              tag: "develop@${IMAGE_DIGEST}"
+              tag: "main"
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
@@ -63,7 +63,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: *app
+        controller: cookjam
         ports:
           http:
             port: *port
@@ -73,27 +73,19 @@ spec:
         annotations:
           kubernetes.io/tls-acme: "true"
           cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_APP_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_APP_PRD_DOMAIN}"
         className: external
         hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-          - host: &appd "${SECRET_APP_DOMAIN}"
+          - host: &host "${SECRET_APP_PRD_DOMAIN}"
             paths:
               - path: /
                 service:
                   identifier: app
                   port: http
         tls:
-          - secretName: cookjam.tls
+          - secretName: cookjam-prd.tls
             hosts:
               - *host
-              - *appd
-            
     persistence:
       config:
         enabled: false
@@ -106,3 +98,9 @@ spec:
               - path: /var/cache/nginx
               - path: /var/log/nginx
               - path: /var/run
+  postRenderers:
+    - kustomize:            
+        images:
+          - name: ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working
+            newTag: main
+            digest: sha256:7f3794bf99b11e8963859df7999d55615f973e56ae4b0eb95c0096b7142404ef # {"$imagepolicy": "selfhosted:cookjam-prd:digest"}
