@@ -73,7 +73,7 @@ spec:
         annotations:
           kubernetes.io/tls-acme: "true"
           cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_APP_PRD_DOMAIN}"
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_APP_DOMAIN}" # Match cloudflared origin cert
         className: external
         hosts:
           - host: &host "${SECRET_APP_PRD_DOMAIN}"
