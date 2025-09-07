@@ -59,7 +59,7 @@ spec:
           unavailable: "90%"
         containers:
           frontend:
-            image: 
+            image:
               repository: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-api
               tag: latest@sha256:8db4234c28e8a364027d55b2c2b76da516a502aade098badf5edbb016ff6a8c6
             env:
@@ -97,7 +97,7 @@ spec:
                     key: SUPABASE_PROJECT_ID
             securityContext: *sc
             probes:
-              liveness: 
+              liveness:
                 enabled: false
               readiness:
                 enabled: false
@@ -113,7 +113,7 @@ spec:
               repository: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-worker
               tag: latest@sha256:1d95bf8af361a2df2e3ed227eddc1599ce27a345ab05acc452d3b9f521dbf89d
             env:
-              AWS_ACCESS_KEY_ID: 
+              AWS_ACCESS_KEY_ID:
                 valueFrom:
                   secretKeyRef:
                     name: *secret
@@ -142,7 +142,7 @@ spec:
                     key: S3_ENDPOINT_URL
             securityContext: *sc
             probes:
-              liveness: 
+              liveness:
                 enabled: false
               readiness:
                 enabled: false
@@ -221,4 +221,4 @@ spec:
         images:
           - name: ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working
             newTag: develop
-            digest: sha256:544cf9c5b82a332c018dc19f2daace90101a30aafad31b5c05b6f76139143425 # {"$imagepolicy": "selfhosted:cookjam-dev:digest"}
+            digest: sha256:310c27d4effcf25223f191675b00bdd8e45a92924522516884c3351b91843348 # {"$imagepolicy": "selfhosted:cookjam-dev:digest"}
