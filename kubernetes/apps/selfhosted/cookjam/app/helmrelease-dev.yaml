@@ -18,15 +18,15 @@ spec:
       retries: 3
   values:
     controllers:
-      cookjam:
+      app:
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
-          app:
+          main:
             image:
               repository: "ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working"
               tag: "develop"
-            securityContext:
+            securityContext: &sc
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
               capabilities:
@@ -52,9 +52,110 @@ spec:
                 cpu: 10m
               limits:
                 memory: 100Mi
+      ml:
+        replicas: 2
+        strategy: RollingUpdate
+        rollingUpdate:
+          unavailable: "90%"
+        containers:
+          frontend:
+            image: 
+              repository: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-api
+              tag: latest@sha256:8db4234c28e8a364027d55b2c2b76da516a502aade098badf5edbb016ff6a8c6
+            env:
+              AWS_ACCESS_KEY_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: &secret cookjam-secret
+                    key: AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: cookjam-secret
+                    key: AWS_SECRET_ACCESS_KEY
+              AWS_REGION: us-east-1
+              REDIS_URL: &redis redis://dragonfly.database.svc.cluster.local:6379/4
+              S3_BUCKET_NAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: *secret
+                    key: S3_BUCKET_NAME
+              S3_ENDPOINT_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: *secret
+                    key: S3_ENDPOINT_URL
+              SUPABASE_JWT_SECRET:
+                valueFrom:
+                  secretKeyRef:
+                    name: *secret
+                    key: SUPABASE_JWT_SECRET
+              SUPABASE_PROJECT_ID:
+                valueFrom:
+                  secretKeyRef:
+                    name: *secret
+                    key: SUPABASE_PROJECT_ID
+            securityContext: *sc
+            probes:
+              liveness: 
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 100Mi
+          worker:
+            image:
+              repository: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-worker
+              tag: latest@sha256:1d95bf8af361a2df2e3ed227eddc1599ce27a345ab05acc452d3b9f521dbf89d
+            env:
+              AWS_ACCESS_KEY_ID: 
+                valueFrom:
+                  secretKeyRef:
+                    name: *secret
+                    key: AWS_ACCESS_KEY_ID
+              AWS_SECRET_ACCESS_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: *secret
+                    key: AWS_SECRET_ACCESS_KEY
+              AWS_REGION: us-east-1
+              OPENAI_API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: *secret
+                    key: OPENAI_API_KEY
+              REDIS_URL: *redis
+              S3_BUCKET_NAME:
+                valueFrom:
+                  secretKeyRef:
+                    name: *secret
+                    key: S3_BUCKET_NAME
+              S3_ENDPOINT_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: *secret
+                    key: S3_ENDPOINT_URL
+            securityContext: *sc
+            probes:
+              liveness: 
+                enabled: false
+              readiness:
+                enabled: false
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 200Mi
     defaultPodOptions:
       imagePullSecrets:
-        - name: cookjam-secret
+        - name: cookjam-reg
       securityContext:
         runAsNonRoot: true
         runAsUser: 1001
@@ -63,10 +164,15 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       app:
-        controller: cookjam
+        controller: app
         ports:
           http:
             port: *port
+      ml:
+        controller: ml
+        ports:
+          http:
+            port: 8000
     ingress:
       main:
         enabled: true
@@ -82,6 +188,10 @@ spec:
                 service:
                   identifier: app
                   port: http
+              - path: /api
+                service:
+                  identifier: ml
+                  port: http
         tls:
           - secretName: cookjam-dev.tls
             hosts:
@@ -93,11 +203,19 @@ spec:
       cache:
         type: emptyDir
         advancedMounts:
-          cookjam:
-            app:
+          app:
+            main:
               - path: /var/cache/nginx
               - path: /var/log/nginx
               - path: /var/run
+      ml-cache:
+        type: emptyDir
+        advancedMounts:
+          ml:
+            frontend:
+              - path: /cache
+            worker:
+              - path: /cache
   postRenderers:
     - kustomize:
         images:
