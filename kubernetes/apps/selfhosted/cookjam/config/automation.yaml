@@ -3,6 +3,28 @@
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImageRepository
 metadata:
+  name: cookjam-web-api
+spec:
+  image: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-api
+  interval: 1h
+  secretRef:
+    name: cookjam-reg
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imagerepository-image-v1beta2.json
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
+  name: cookjam-web-worker
+spec:
+  image: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-worker
+  interval: 1h
+  secretRef:
+    name: cookjam-reg
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imagerepository-image-v1beta2.json
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImageRepository
+metadata:
   name: cookjam
 spec:
   image: ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working
@@ -37,6 +59,38 @@ spec:
     namespace: selfhosted
   filterTags:
     pattern: '^main$'
+  policy:
+    alphabetical: {}
+  digestReflectionPolicy: Always
+  interval: 30m
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imagepolicy-image-v1beta2.json
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: cookjam-web-api
+spec:
+  imageRepositoryRef:
+    name: cookjam-web-api
+    namespace: selfhosted
+  filterTags:
+    pattern: '^latest$'
+  policy:
+    alphabetical: {}
+  digestReflectionPolicy: Always
+  interval: 30m
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imagepolicy-image-v1beta2.json
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: cookjam-web-worker
+spec:
+  imageRepositoryRef:
+    name: cookjam-web-worker
+    namespace: selfhosted
+  filterTags:
+    pattern: '^latest$'
   policy:
     alphabetical: {}
   digestReflectionPolicy: Always
