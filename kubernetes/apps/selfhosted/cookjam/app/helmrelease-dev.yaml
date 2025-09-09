@@ -63,6 +63,7 @@ spec:
               repository: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-api
               tag: latest@sha256:8db4234c28e8a364027d55b2c2b76da516a502aade098badf5edbb016ff6a8c6
             env:
+              API_PORT: *port
               AWS_ACCESS_KEY_ID:
                 valueFrom:
                   secretKeyRef:
@@ -96,13 +97,7 @@ spec:
                     name: *secret
                     key: SUPABASE_PROJECT_ID
             securityContext: *sc
-            probes:
-              liveness:
-                enabled: false
-              readiness:
-                enabled: false
-              startup:
-                enabled: false
+            probes: *probes
             resources:
               requests:
                 cpu: 10m
@@ -124,6 +119,7 @@ spec:
                     name: *secret
                     key: AWS_SECRET_ACCESS_KEY
               AWS_REGION: us-east-1
+              HEALTH_PORT: *port
               OPENAI_API_KEY:
                 valueFrom:
                   secretKeyRef:
@@ -141,13 +137,7 @@ spec:
                     name: *secret
                     key: S3_ENDPOINT_URL
             securityContext: *sc
-            probes:
-              liveness:
-                enabled: false
-              readiness:
-                enabled: false
-              startup:
-                enabled: false
+            probes: *probes
             resources:
               requests:
                 cpu: 10m
@@ -172,7 +162,7 @@ spec:
         controller: ml
         ports:
           http:
-            port: 8000
+            port: *port
     ingress:
       main:
         enabled: true
