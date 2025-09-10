@@ -133,7 +133,7 @@ spec:
                     name: *secret
                     key: AWS_SECRET_ACCESS_KEY
               AWS_REGION: us-east-1
-              HEALTH_PORT: *port
+              HEALTH_PORT: 8001
               OPENAI_API_KEY:
                 valueFrom:
                   secretKeyRef:
@@ -158,7 +158,7 @@ spec:
                 spec:
                   httpGet:
                     path: /health
-                    port: *port
+                    port: 8001
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
