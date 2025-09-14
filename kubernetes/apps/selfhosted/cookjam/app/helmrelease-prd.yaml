@@ -136,11 +136,11 @@ spec:
         - name: cookjam-reg
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1001
-        runAsGroup: 1001
-        fsGroup: 1001
+        runAsUser: &uid 568
+        runAsGroup: *uid
+        fsGroup: *uid
         supplementalGroups: [65534]
-        fsGroupChangePolicy: OnRootMismatch
+        fsGroupChangePolicy: Always
     service:
       app:
         controller: app
