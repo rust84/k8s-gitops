@@ -26,6 +26,8 @@ spec:
             image:
               repository: "ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working"
               tag: "main"
+            env:
+              VITE_INFERENCE_SERVICE_URL: https://${SECRET_APP_PRD_DOMAIN}/api
             securityContext: &sc
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
@@ -76,7 +78,6 @@ spec:
                   secretKeyRef:
                     name: *secret
                     key: SUPABASE_PROJECT_ID
-              VITE_INFERENCE_SERVICE_URL: https://${SECRET_APP_PRD_DOMAIN}/api
             securityContext: *sc
             probes:
               liveness:
