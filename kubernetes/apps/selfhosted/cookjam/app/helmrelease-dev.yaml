@@ -64,28 +64,8 @@ spec:
               tag: latest
             env:
               API_PORT: *port
-              AWS_ACCESS_KEY_ID:
-                valueFrom:
-                  secretKeyRef:
-                    name: &secret cookjam-secret
-                    key: AWS_ACCESS_KEY_ID
-              AWS_SECRET_ACCESS_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: cookjam-secret
-                    key: AWS_SECRET_ACCESS_KEY
-              AWS_REGION: us-east-1
+              CACHE_DIR: &cache /cache
               REDIS_URL: &redis redis://dragonfly.database.svc.cluster.local:6379/4
-              S3_BUCKET_NAME:
-                valueFrom:
-                  secretKeyRef:
-                    name: *secret
-                    key: S3_BUCKET_NAME
-              S3_ENDPOINT_URL:
-                valueFrom:
-                  secretKeyRef:
-                    name: *secret
-                    key: S3_ENDPOINT_URL
               SUPABASE_JWT_SECRET:
                 valueFrom:
                   secretKeyRef:
@@ -122,17 +102,7 @@ spec:
               repository: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-worker
               tag: latest
             env:
-              AWS_ACCESS_KEY_ID:
-                valueFrom:
-                  secretKeyRef:
-                    name: *secret
-                    key: AWS_ACCESS_KEY_ID
-              AWS_SECRET_ACCESS_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: *secret
-                    key: AWS_SECRET_ACCESS_KEY
-              AWS_REGION: us-east-1
+              CACHE_DIR: *cache
               HEALTH_PORT: 8001
               OPENAI_API_KEY:
                 valueFrom:
@@ -140,16 +110,6 @@ spec:
                     name: *secret
                     key: OPENAI_API_KEY
               REDIS_URL: *redis
-              S3_BUCKET_NAME:
-                valueFrom:
-                  secretKeyRef:
-                    name: *secret
-                    key: S3_BUCKET_NAME
-              S3_ENDPOINT_URL:
-                valueFrom:
-                  secretKeyRef:
-                    name: *secret
-                    key: S3_ENDPOINT_URL
             securityContext: *sc
             probes:
               liveness:
@@ -215,9 +175,6 @@ spec:
             hosts:
               - *host
     persistence:
-      config:
-        enabled: false
-        existingClaim: *app
       cache:
         type: emptyDir
         advancedMounts:
@@ -227,7 +184,7 @@ spec:
               - path: /var/log/nginx
               - path: /var/run
       ml-cache:
-        type: emptyDir
+        existingClaim: *app
         advancedMounts:
           ml:
             frontend:
