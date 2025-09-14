@@ -205,7 +205,7 @@ spec:
             digest: sha256:90d83b2603eb7609a34910dd34c134284f208b52f5822069f1346ca463fe47cc # {"$imagepolicy": "selfhosted:cookjam-prd:digest"}
           - name: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-api
             newTag: latest
-            digest: sha256:a491dac1b24234b42ecee483e11234330836ef258438eaec313a3eef0435dffc # {"$imagepolicy": "selfhosted:cookjam-web-api:digest"}
+            digest: sha256:29301df44cc75b5f6f236c9f6c8f64d016d457c7629f9648dff0c84528802083 # {"$imagepolicy": "selfhosted:cookjam-web-api:digest"}
           - name: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-worker
             newTag: latest
             digest: sha256:ef1fa5e696222116b82aba9e6142110f99e14deb8a2ec21aa2ee14ba33cc9788 # {"$imagepolicy": "selfhosted:cookjam-web-worker:digest"}
