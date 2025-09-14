@@ -136,9 +136,9 @@ spec:
         - name: cookjam-reg
       securityContext:
         runAsNonRoot: true
-        runAsUser: 1001
-        runAsGroup: 1001
-        fsGroup: 1001
+        runAsUser: 568
+        runAsGroup: 568
+        fsGroup: 568
         supplementalGroups: [65534]
         fsGroupChangePolicy: OnRootMismatch
     service:
