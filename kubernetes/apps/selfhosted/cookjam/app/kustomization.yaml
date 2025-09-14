@@ -5,3 +5,4 @@ kind: Kustomization
 resources:
   - ./helmrelease-dev.yaml
   - ./helmrelease-prd.yaml
+  - ./pvc.yaml
