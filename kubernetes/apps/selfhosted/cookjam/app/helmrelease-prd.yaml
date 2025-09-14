@@ -69,7 +69,7 @@ spec:
               SUPABASE_JWT_SECRET:
                 valueFrom:
                   secretKeyRef:
-                    name: *secret
+                    name: &secret cookjam-secret
                     key: SUPABASE_JWT_SECRET
               SUPABASE_PROJECT_ID:
                 valueFrom:
