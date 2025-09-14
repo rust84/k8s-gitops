@@ -187,7 +187,7 @@ spec:
               - path: /var/log/nginx
               - path: /var/run
       ml-cache:
-        existingClaim: *app
+        existingClaim: cookjam-nfs
         advancedMounts:
           ml:
             frontend:
