@@ -118,7 +118,7 @@ spec:
                 spec:
                   httpGet:
                     path: /health
-                    port: 8001
+                    port: &metrics 8001
                   initialDelaySeconds: 0
                   periodSeconds: 10
                   timeoutSeconds: 1
@@ -152,6 +152,8 @@ spec:
         ports:
           http:
             port: *port
+          metrics:
+            port: *metrics
     ingress:
       main:
         enabled: true
