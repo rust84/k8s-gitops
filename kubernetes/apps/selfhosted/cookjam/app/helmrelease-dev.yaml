@@ -194,15 +194,6 @@ spec:
               - path: /cache
             worker:
               - path: /cache
-    serviceMonitor:
-      ml:
-        serviceName: ml
-        endpoints:
-          - port: metrics
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 30s
   postRenderers:
     - kustomize:
         images:

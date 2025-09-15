@@ -6,3 +6,4 @@ resources:
   - ./helmrelease-dev.yaml
   - ./helmrelease-prd.yaml
   - ./pvc.yaml
+  - ./servicemonitor.yaml
