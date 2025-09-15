@@ -196,7 +196,7 @@ spec:
       ml:
         serviceName: ml
         endpoints:
-          - port: 8001
+          - port: metrics
             scheme: http
             path: /metrics
             interval: 1m
