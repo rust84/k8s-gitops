@@ -67,6 +67,7 @@ spec:
             env:
               API_PORT: *port
               CACHE_DIR: &cache /cache
+              DEBUG: 1
               REDIS_URL: &redis redis://dragonfly.database.svc.cluster.local:6379/5
               SUPABASE_JWT_SECRET:
                 valueFrom:
