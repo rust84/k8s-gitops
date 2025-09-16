@@ -67,7 +67,6 @@ spec:
             env:
               API_PORT: *port
               CACHE_DIR: &cache /cache
-              DEBUG: 1
               REDIS_URL: &redis redis://dragonfly.database.svc.cluster.local:6379/5
               SUPABASE_JWT_SECRET:
                 valueFrom:
@@ -106,6 +105,7 @@ spec:
               tag: latest
             env:
               CACHE_DIR: *cache
+              DEBUG: 1
               HEALTH_PORT: 8001
               OPENAI_API_KEY:
                 valueFrom:
