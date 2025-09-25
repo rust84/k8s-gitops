@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: kyantech/palmr
-              tag: v3.2.1-beta@sha256:f4eb65ae5c89c865b2d940ec5bd27e70c6fad48679f0661ee829b9b4c8c566ea
+              tag: v3.2.2-beta@sha256:28ea66f94b9c64cc0f5d0466e9564ca04b92ecee407ab0c1fc7fd84776ad8c81
             env:
               ENABLE_S3: true
               S3_ENDPOINT: s3.us-west-002.backblazeb2.com
