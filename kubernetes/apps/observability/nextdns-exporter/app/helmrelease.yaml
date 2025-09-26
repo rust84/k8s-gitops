@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: ghcr.io/raylas/nextdns-exporter
-              tag: 0.6.0@sha256:dc452249866c1de2ad4115a9d6dd8e9dc06b9a72e675a72ea7aaab2a36ea7a9c
+              tag: 0.7.0@sha256:f66a4a53b07a492fd2e8a3451aa6fae33a743296ea413be8699af1b3139ba908
             env:
               TZ: "${TZ}"
               NEXTDNS_RESULT_WINDOW: -5m
