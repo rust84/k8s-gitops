@@ -58,6 +58,8 @@ spec:
             image:
               repository: ghcr.io/san-vibe-coding-2025/cookjam-web-chat-api
               tag: latest
+            env:
+              API_PORT: *port
             envFrom:
               - secretRef:
                   name: &secret cookjam-secret
