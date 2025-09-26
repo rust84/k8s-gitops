@@ -210,7 +210,24 @@ spec:
                 service:
                   identifier: ml
                   port: http
-              - path: /chat
+        tls:
+          - secretName: cookjam-dev.tls
+            hosts:
+              - *host
+      chat:
+        enabled: true
+        annotations:
+          # kubernetes.io/tls-acme: "true"
+          kubernetes.io/use-regex: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_APP_DOMAIN}"
+          nginx.ingress.kubernetes.io/rewrite-target: /$2
+          nginx.ingress.kubernetes.io/use-regex: "true"
+        className: external
+        hosts:
+          - host: &host "${SECRET_APP_DOMAIN}"
+            paths:
+              - path: /chat(/|$)(.*)
                 service:
                   identifier: chat
                   port: http
