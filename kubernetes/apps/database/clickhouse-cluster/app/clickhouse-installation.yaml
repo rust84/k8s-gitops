@@ -1,0 +1,122 @@
+---
+apiVersion: clickhouse.altinity.com/v1
+kind: ClickHouseInstallation
+metadata:
+  name: clickhouse-langfuse
+  namespace: database
+spec:
+  defaults:
+    templates:
+      dataVolumeClaimTemplate: data-volumeclaim-template
+      serviceTemplate: service-template
+  configuration:
+    profiles:
+      default/max_memory_usage: 2147483648  # 2GB
+      default/max_bytes_before_external_group_by: 1073741824  # 1GB
+    clusters:
+      - name: langfuse
+        layout:
+          shardsCount: 1
+          replicasCount: 1
+        templates:
+          podTemplate: pod-template
+    settings:
+      # Basic performance settings
+      max_connections: 4096
+      keep_alive_timeout: 3
+      max_concurrent_queries: 100
+
+      # Logging
+      log_level: warning
+
+      # HTTP settings
+      http_port: 8123
+      tcp_port: 9000
+
+      # Dictionaries and other features
+      dictionaries_lazy_load: 1
+
+      # Skip validation for settings that are user-level but placed at top level
+      skip_check_for_incorrect_settings: 1
+    files:
+      config.d/path.xml: |
+        <clickhouse>
+          <path>/var/lib/clickhouse/</path>
+        </clickhouse>
+      users.d/langfuse.xml: |
+        <clickhouse>
+          <users>
+            <langfuse>
+              <password from_env="CLICKHOUSE_PASSWORD" />
+              <networks>
+                <ip>::/0</ip>
+              </networks>
+              <profile>default</profile>
+              <quota>default</quota>
+              <access_management>1</access_management>
+            </langfuse>
+          </users>
+        </clickhouse>
+  templates:
+    volumeClaimTemplates:
+      - name: data-volumeclaim-template
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 20Gi
+          storageClassName: ceph-block
+    serviceTemplates:
+      - name: service-template
+        generateName: clickhouse-langfuse
+        spec:
+          ports:
+            - name: http
+              port: 8123
+            - name: tcp
+              port: 9000
+          type: ClusterIP
+    podTemplates:
+      - name: pod-template
+        spec:
+          containers:
+            - name: clickhouse
+              image: clickhouse/clickhouse-server:24.12
+              resources:
+                requests:
+                  cpu: 100m
+                  memory: 512Mi
+                limits:
+                  memory: 4Gi
+              securityContext:
+                runAsUser: 101
+                runAsGroup: 101
+                runAsNonRoot: true
+                allowPrivilegeEscalation: false
+                capabilities:
+                  drop: ["ALL"]
+              env:
+                - name: CLICKHOUSE_DB
+                  value: langfuse
+                - name: CLICKHOUSE_USER
+                  value: langfuse
+                - name: CLICKHOUSE_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: clickhouse-secret
+                      key: CLICKHOUSE_PASSWORD
+          securityContext:
+            runAsUser: 101
+            runAsGroup: 101
+            fsGroup: 101
+            fsGroupChangePolicy: OnRootMismatch
+          affinity:
+            podAntiAffinity:
+              preferredDuringSchedulingIgnoredDuringExecution:
+                - weight: 100
+                  podAffinityTerm:
+                    labelSelector:
+                      matchLabels:
+                        clickhouse.altinity.com/chi: clickhouse-langfuse
+                    topologyKey: kubernetes.io/hostname
