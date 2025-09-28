@@ -19,9 +19,9 @@ _... automated via [Flux](https://fluxcd.io), [Renovate](https://github.com/reno
 
 <div align="center">
 
-[![Home Internet](https://kuma.microserver.space/api/badge/7/status?label=home%20internet&style=for-the-badge)](https://kuma.microserver.space/status/home-cluster)&nbsp;&nbsp;
-[![Home-Assistant](https://kuma.microserver.space/api/badge/1/status?label=home%20assistant&logo=homeassistant&style=for-the-badge)](https://kuma.microserver.space/status/home-cluster)&nbsp;&nbsp;
-[![Plex](https://kuma.microserver.space/api/badge/4/status?label=plex&logo=Plex&style=for-the-badge)](https://kuma.microserver.space/status/home-cluster)
+[![Home Internet](https://kuma.roswellian.dev/api/badge/7/status?label=home%20internet&style=for-the-badge)](https://kuma.roswellian.dev/status/home-cluster)&nbsp;&nbsp;
+[![Home-Assistant](https://kuma.roswellian.dev/api/badge/1/status?label=home%20assistant&logo=homeassistant&style=for-the-badge)](https://kuma.roswellian.dev/status/home-cluster)&nbsp;&nbsp;
+[![Plex](https://kuma.roswellian.dev/api/badge/4/status?label=plex&logo=Plex&style=for-the-badge)](https://kuma.roswellian.dev/status/home-cluster)
 
 </div>
 
