@@ -52,6 +52,38 @@ spec:
                 cpu: 10m
               limits:
                 memory: 100Mi
+      chat:
+        containers:
+          main:
+            image:
+              repository: ghcr.io/san-vibe-coding-2025/cookjam-web-chat-api
+              tag: latest
+            env:
+              API_PORT: *port
+            envFrom:
+              - secretRef:
+                  name: &secret cookjam-secret
+            securityContext: *sc
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+              startup:
+                enabled: false
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 1Gi
       ml:
         replicas: 2
         strategy: RollingUpdate
@@ -69,7 +101,7 @@ spec:
               SUPABASE_JWT_SECRET:
                 valueFrom:
                   secretKeyRef:
-                    name: &secret cookjam-secret
+                    name: *secret
                     key: SUPABASE_JWT_SECRET
               SUPABASE_PROJECT_ID:
                 valueFrom:
@@ -147,6 +179,11 @@ spec:
         ports:
           http:
             port: *port
+      chat:
+        controller: chat
+        ports:
+          http:
+            port: *port
       ml:
         controller: ml
         ports:
@@ -177,6 +214,27 @@ spec:
           - secretName: cookjam-dev.tls
             hosts:
               - *host
+      chat:
+        enabled: true
+        annotations:
+          # kubernetes.io/tls-acme: "true"
+          kubernetes.io/use-regex: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_APP_DOMAIN}"
+          nginx.ingress.kubernetes.io/rewrite-target: /$2
+          nginx.ingress.kubernetes.io/use-regex: "true"
+        className: external
+        hosts:
+          - host: &host "${SECRET_APP_DOMAIN}"
+            paths:
+              - path: /chat(/|$)(.*)
+                service:
+                  identifier: chat
+                  port: http
+        tls:
+          - secretName: cookjam-dev.tls
+            hosts:
+              - *host
     persistence:
       cache:
         type: emptyDir
@@ -199,10 +257,13 @@ spec:
         images:
           - name: ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working
             newTag: develop
-            digest: sha256:10140d1f9c3e5a88bc8ee04fd424856f452c5763246bac78b880318fed8a462c # {"$imagepolicy": "selfhosted:cookjam-dev:digest"}
+            digest: sha256:d9c4987c4d094254a4e7a9e9bcea348a8e515f366050ba204b28466be171d228 # {"$imagepolicy": "selfhosted:cookjam-dev:digest"}
           - name: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-api
             newTag: latest
             digest: sha256:01bac33570640d0bc2e8dee7c1b3620661bd5b7f351c58516c70ac104ad2a5ca # {"$imagepolicy": "selfhosted:cookjam-web-api:digest"}
           - name: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-worker
             newTag: latest
             digest: sha256:601b80d9f28c810826e9c941ffdf673439a01946a05a4099a28dd502f39a023e # {"$imagepolicy": "selfhosted:cookjam-web-worker:digest"}
+          - name: ghcr.io/san-vibe-coding-2025/cookjam-web-chat-api
+            newTag: latest
+            digest: sha256:1ef019b1475c5d6a584ddedc47b0e537953f2a189c7eb3baab2938de46cd7256 # {"$imagepolicy": "selfhosted:cookjam-chat:digest"}
