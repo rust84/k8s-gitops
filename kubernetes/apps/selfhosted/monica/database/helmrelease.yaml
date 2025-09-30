@@ -32,7 +32,10 @@ spec:
       usePasswordFiles: false
       existingSecret: monica-secret
     metrics:
-      enabled: true
+      enabled: false
+      image:
+        repository: bitnamilegacy/mysqld-exporter
+        tag: 0.17.2-debian-12-r16
       resourcesPreset: small
       serviceMonitor:
         enabled: true
