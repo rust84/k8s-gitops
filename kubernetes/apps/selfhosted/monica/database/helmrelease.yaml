@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: mariadb
-      version: 21.0.3
+      version: 22.0.0
       sourceRef:
         kind: HelmRepository
         name: bitnami
@@ -25,11 +25,17 @@ spec:
   uninstall:
     keepHistory: false
   values:
+    image:
+      repository: bitnamilegacy/mariadb
+      tag: 12.0.2-debian-12-r0
     auth:
       usePasswordFiles: false
       existingSecret: monica-secret
     metrics:
-      enabled: true
+      enabled: false
+      image:
+        repository: bitnamilegacy/mysqld-exporter
+        tag: 0.17.2-debian-12-r16
       resourcesPreset: small
       serviceMonitor:
         enabled: true

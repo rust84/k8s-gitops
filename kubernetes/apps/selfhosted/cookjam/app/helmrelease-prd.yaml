@@ -105,6 +105,7 @@ spec:
               tag: latest
             env:
               CACHE_DIR: *cache
+              DEBUG: 1
               HEALTH_PORT: 8001
               OPENAI_API_KEY:
                 valueFrom:
@@ -132,7 +133,7 @@ spec:
               requests:
                 cpu: 10m
               limits:
-                memory: 200Mi
+                memory: 1Gi
     defaultPodOptions:
       imagePullSecrets:
         - name: cookjam-reg
@@ -204,10 +205,10 @@ spec:
         images:
           - name: ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working
             newTag: main
-            digest: sha256:4d3117ecb61c88d1ef9646519635f5bb6f46e2de515995c4c7f498a1d3c79385 # {"$imagepolicy": "selfhosted:cookjam-prd:digest"}
+            digest: sha256:96353e107352ee7071a91d2cd10983b3d8d1cba693100be96c7bfb0b80b20563 # {"$imagepolicy": "selfhosted:cookjam-prd:digest"}
           - name: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-api
             newTag: latest
-            digest: sha256:42e50fb818ee4f84f6d35933ec943669668053bb539a4dca481442e24f69b31e # {"$imagepolicy": "selfhosted:cookjam-web-api:digest"}
+            digest: sha256:01bac33570640d0bc2e8dee7c1b3620661bd5b7f351c58516c70ac104ad2a5ca # {"$imagepolicy": "selfhosted:cookjam-web-api:digest"}
           - name: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-worker
             newTag: latest
-            digest: sha256:e0c4078843d9bb1a32a6111d002c4e7a150468e40e8f65c6ed24860f958b8a61 # {"$imagepolicy": "selfhosted:cookjam-web-worker:digest"}
+            digest: sha256:601b80d9f28c810826e9c941ffdf673439a01946a05a4099a28dd502f39a023e # {"$imagepolicy": "selfhosted:cookjam-web-worker:digest"}
