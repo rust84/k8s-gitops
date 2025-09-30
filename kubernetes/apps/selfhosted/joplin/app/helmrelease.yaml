@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: joplin/server
-              tag: 3.3.9-beta@sha256:4b57f0b5cea3ba3bbe52fed3354fea032e7c1bb0e2e5d452005037c572539280
+              tag: 3.4.3@sha256:95b67dc6a4e77a974ac2bcc86818cbbfe5495e7b62d06a66f848a877878dce53
             env:
               TZ: "${TZ}"
               APP_BASE_URL: https://joplin.${SECRET_DOMAIN}
@@ -45,6 +45,22 @@ spec:
               MAILER_SECURE: 1
               MAILER_NOREPLY_NAME: Joplin
             envFrom: *envFrom
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    httpHeaders:
+                      - name: Host
+                        value: joplin.${SECRET_DOMAIN}
+                    path: /api/ping
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
             resources:
               requests:
                 cpu: 50m
