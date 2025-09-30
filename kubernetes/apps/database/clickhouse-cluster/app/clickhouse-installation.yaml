@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Altinity/clickhouse-operator/master/deploy/helm/clickhouse-operator/crds/CustomResourceDefinition-clickhouseinstallations.clickhouse.altinity.com.yaml
 ---
 apiVersion: clickhouse.altinity.com/v1
 kind: ClickHouseInstallation
@@ -20,28 +21,26 @@ spec:
           replicasCount: 1
         templates:
           podTemplate: pod-template
-    settings:
-      # Basic performance settings
-      max_connections: 4096
-      keep_alive_timeout: 3
-      max_concurrent_queries: 100
-
-      # Logging
-      log_level: warning
-
-      # HTTP settings
-      http_port: 8123
-      tcp_port: 9000
-
-      # Dictionaries and other features
-      dictionaries_lazy_load: 1
-
-      # Skip validation for settings that are user-level but placed at top level
-      skip_check_for_incorrect_settings: 1
     files:
       config.d/path.xml: |
         <clickhouse>
           <path>/var/lib/clickhouse/</path>
+        </clickhouse>
+      config.d/server.xml: |
+        <clickhouse>
+          <http_port>8123</http_port>
+          <tcp_port>9000</tcp_port>
+          <max_connections>4096</max_connections>
+          <keep_alive_timeout>3</keep_alive_timeout>
+          <max_concurrent_queries>100</max_concurrent_queries>
+          <dictionaries_lazy_load>1</dictionaries_lazy_load>
+        </clickhouse>
+      config.d/logger.xml: |
+        <clickhouse>
+          <logger>
+            <level>warning</level>
+            <console>true</console>
+          </logger>
         </clickhouse>
       users.d/langfuse.xml: |
         <clickhouse>
