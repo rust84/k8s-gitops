@@ -35,7 +35,7 @@ spec:
           coredns:
             image:
               repository: mirror.gcr.io/coredns/coredns
-              tag: 1.12.2
+              tag: 1.12.4
             args:
               - -conf
               - /etc/coredns/Corefile

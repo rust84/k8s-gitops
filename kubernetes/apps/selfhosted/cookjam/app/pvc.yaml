@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: cookjam-nfs
+spec:
+  storageClassName: cookjam-nfs
+  capacity:
+    storage: 1Mi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  nfs:
+    server: duriel.internal
+    path: /tank/Apps/cookjam
+  # Note: The first two options are strictly for NFSv4.2
+  mountOptions:
+    - nfsvers=4.2
+    - nconnect=8
+    - hard
+    - noatime
+    - nodiratime
+    - nolock
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: cookjam-nfs
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: cookjam-nfs
+  resources:
+    requests:
+      storage: 1Mi

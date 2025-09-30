@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: docker.io/fireflyiii/core
-              tag: version-6.2.21@sha256:3db5043e29495ec61b3b1fe163e42629629df7b7841eac3bad7bff13dbe05fad
+              tag: version-6.4.0@sha256:4ec511c1792290421d8d0803c604d2d2a487b7d0b334547d32cfa23097d9e455
             resources:
               requests:
                 cpu: 15m
@@ -89,7 +89,7 @@ spec:
           app:
             image:
               repository: docker.io/fireflyiii/data-importer
-              tag: version-1.7.8@sha256:7b8491ed8d23c760144fb6551b408f4671aa0ec946e7050b21a39129c9a97fa6
+              tag: version-1.8.1@sha256:7c2e05bcfce2de640071fe6ab560ee23613b0c537e5f22d867a7df7457820d49
             env:
               TZ: "${TZ}"
               TRUSTED_PROXIES: "**"
