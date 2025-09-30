@@ -12,8 +12,8 @@ spec:
       serviceTemplate: service-template
   configuration:
     profiles:
-      default/max_memory_usage: 3435973836  # 3.2GB (80% of 4GB limit)
-      default/max_bytes_before_external_group_by: 2147483648  # 2GB
+      default/max_memory_usage: 6871947672  # 6.4GB (80% of 8GB limit)
+      default/max_bytes_before_external_group_by: 4294967296  # 4GB
     clusters:
       - name: langfuse
         layout:
@@ -85,9 +85,9 @@ spec:
               resources:
                 requests:
                   cpu: 100m
-                  memory: 512Mi
+                  memory: 2Gi
                 limits:
-                  memory: 4Gi
+                  memory: 8Gi
               securityContext:
                 runAsUser: 101
                 runAsGroup: 101
