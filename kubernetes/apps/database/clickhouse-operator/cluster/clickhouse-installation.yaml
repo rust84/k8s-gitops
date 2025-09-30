@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/Altinity/clickhouse-operator/master/deploy/helm/clickhouse-operator/crds/CustomResourceDefinition-clickhouseinstallations.clickhouse.altinity.com.yaml
 ---
 apiVersion: clickhouse.altinity.com/v1
 kind: ClickHouseInstallation
@@ -11,8 +12,8 @@ spec:
       serviceTemplate: service-template
   configuration:
     profiles:
-      default/max_memory_usage: 2147483648  # 2GB
-      default/max_bytes_before_external_group_by: 1073741824  # 1GB
+      default/max_memory_usage: 6871947672  # 6.4GB (80% of 8GB limit)
+      default/max_bytes_before_external_group_by: 4294967296  # 4GB
     clusters:
       - name: langfuse
         layout:
@@ -20,28 +21,26 @@ spec:
           replicasCount: 1
         templates:
           podTemplate: pod-template
-    settings:
-      # Basic performance settings
-      max_connections: 4096
-      keep_alive_timeout: 3
-      max_concurrent_queries: 100
-
-      # Logging
-      log_level: warning
-
-      # HTTP settings
-      http_port: 8123
-      tcp_port: 9000
-
-      # Dictionaries and other features
-      dictionaries_lazy_load: 1
-
-      # Skip validation for settings that are user-level but placed at top level
-      skip_check_for_incorrect_settings: 1
     files:
       config.d/path.xml: |
         <clickhouse>
           <path>/var/lib/clickhouse/</path>
+        </clickhouse>
+      config.d/server.xml: |
+        <clickhouse>
+          <http_port>8123</http_port>
+          <tcp_port>9000</tcp_port>
+          <max_connections>4096</max_connections>
+          <keep_alive_timeout>3</keep_alive_timeout>
+          <max_concurrent_queries>100</max_concurrent_queries>
+          <dictionaries_lazy_load>1</dictionaries_lazy_load>
+        </clickhouse>
+      config.d/logger.xml: |
+        <clickhouse>
+          <logger>
+            <level>warning</level>
+            <console>true</console>
+          </logger>
         </clickhouse>
       users.d/langfuse.xml: |
         <clickhouse>
@@ -82,13 +81,13 @@ spec:
         spec:
           containers:
             - name: clickhouse
-              image: clickhouse/clickhouse-server:24.12
+              image: clickhouse/clickhouse-server:25.9
               resources:
                 requests:
                   cpu: 100m
-                  memory: 512Mi
+                  memory: 2Gi
                 limits:
-                  memory: 4Gi
+                  memory: 8Gi
               securityContext:
                 runAsUser: 101
                 runAsGroup: 101
