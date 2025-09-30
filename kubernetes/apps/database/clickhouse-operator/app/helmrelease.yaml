@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: altinity-clickhouse-operator
-      version: "0.25.3"
+      version: "0.25.4"
       sourceRef:
         kind: HelmRepository
         name: altinity
@@ -29,7 +29,7 @@ spec:
       namespace: database
       image:
         repository: altinity/clickhouse-operator
-        tag: "0.25.3"
+        tag: "0.25.5"
         pullPolicy: IfNotPresent
 
     metrics:
