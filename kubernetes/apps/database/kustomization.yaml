@@ -7,7 +7,6 @@ components:
   - ../../flux/components/common
 resources:
   - ./clickhouse-operator/ks.yaml
-  - ./clickhouse-cluster/ks.yaml
   - ./dragonfly/ks.yaml
   - ./emqx/ks.yaml
   - ./cloudnative-pg/ks.yaml
