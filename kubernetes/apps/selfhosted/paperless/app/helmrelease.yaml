@@ -40,7 +40,7 @@ spec:
           app:
             image:
               repository: ghcr.io/paperless-ngx/paperless-ngx
-              tag: 2.17.1
+              tag: 2.18.4
             env:
               COMPOSE_PROJECT_NAME: paperless
               PAPERLESS_PORT: &port 8000
@@ -85,7 +85,7 @@ spec:
           gotenberg:
             image:
               repository: gotenberg/gotenberg
-              tag: 8.21.1
+              tag: 8.23.2
               pullPolicy: IfNotPresent
             ports:
               - containerPort: 3000

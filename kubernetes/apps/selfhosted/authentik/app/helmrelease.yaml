@@ -10,7 +10,7 @@ spec:
   chart:
     spec:
       chart: *app
-      version: "2025.6.4"
+      version: "2025.8.4"
       sourceRef:
         kind: HelmRepository
         name: authentik
@@ -53,7 +53,7 @@ spec:
       replicas: 1
       initContainers:
         - name: init-db
-          image: ghcr.io/onedr0p/postgres-init:16.6@sha256:5c98db91663fa586c4905a0c91ab4159e6a5e9a8718cf2cb1e82c9d510392498
+          image: ghcr.io/onedr0p/postgres-init:16.8@sha256:217c47c886965474f5c234b5a35ed008f53b39ea90a3088b31c0da98e1f9284d
           imagePullPolicy: IfNotPresent
           envFrom: *envFrom
       ingress:
