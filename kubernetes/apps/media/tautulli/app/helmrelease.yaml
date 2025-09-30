@@ -28,8 +28,8 @@ spec:
               repository: ghcr.io/home-operations/tautulli
               tag: 2.16.0@sha256:2a092f86a51f5718111097b0fced33eaa876b5904a543b7504f92357a4f75635
             env:
-              TZ: "${TZ}"
-              TAUTULLI__PORT: &port 80
+              TAUTULLI_HTTP_BASE_URL: https://tautulli.${SECRET_DOMAIN}
+              TAUTULLI_HTTP_PORT: &port 80
             probes:
               liveness: &probes
                 enabled: true
