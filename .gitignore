@@ -22,3 +22,6 @@ Brewfile.lock.json
 # Bootstrap
 /config.yaml
 cloudflared.json
+# Claude
+.mcp.json
+.claude
