@@ -179,6 +179,8 @@ spec:
         ports:
           http:
             port: *port
+          metrics:
+            port: 3001
       chat:
         controller: chat
         ports:
@@ -235,6 +237,16 @@ spec:
           - secretName: cookjam-dev.tls
             hosts:
               - *host
+    serviceMonitor:
+      app:
+        enabled: true
+        serviceName: cookjam-dev-app
+        endpoints:
+          - port: metrics
+            scheme: http
+            path: /api/metrics
+            interval: 1m
+            scrapeTimeout: 10s
     persistence:
       cache:
         type: emptyDir
