@@ -45,6 +45,8 @@ spec:
         org_role: Viewer
       news:
         news_feed_enabled: false
+      security:
+        allow_embedding: true
     datasources:
       datasources.yaml:
         apiVersion: 1
@@ -267,6 +269,11 @@ spec:
       ingressClassName: internal
       hosts: ["grafana.${SECRET_DOMAIN}"]
     persistence:
-      enabled: false
+      type: pvc
+      enabled: true
+      storageClassName: ceph-block
+      accessModes:
+        - ReadWriteOnce
+      size: 1Gi
     testFramework:
       enabled: false

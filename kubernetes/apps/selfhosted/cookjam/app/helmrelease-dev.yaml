@@ -26,6 +26,18 @@ spec:
             image:
               repository: "ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working"
               tag: "develop"
+            env:
+              METRICS_PORT: 3001
+              SUPABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: &secret cookjam-secret
+                    key: SUPABASE_URL
+              SUPABASE_SERVICE_ROLE_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: *secret
+                    key: SUPABASE_SERVICE_KEY
             securityContext: &sc
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
@@ -40,18 +52,26 @@ spec:
                   httpGet:
                     path: /health
                     port: &port 8080
-                  initialDelaySeconds: 0
+                  initialDelaySeconds: 10
                   periodSeconds: 10
-                  timeoutSeconds: 1
+                  timeoutSeconds: 3
                   failureThreshold: 3
               readiness: *probes
               startup:
-                enabled: false
+                enabled: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 5
+                  timeoutSeconds: 3
+                  failureThreshold: 30
             resources:
               requests:
                 cpu: 10m
               limits:
-                memory: 100Mi
+                memory: 300Mi
       chat:
         containers:
           main:
@@ -237,16 +257,6 @@ spec:
           - secretName: cookjam-dev.tls
             hosts:
               - *host
-    serviceMonitor:
-      app:
-        enabled: true
-        serviceName: cookjam-dev-app
-        endpoints:
-          - port: metrics
-            scheme: http
-            path: /api/metrics
-            interval: 1m
-            scrapeTimeout: 10s
     persistence:
       cache:
         type: emptyDir
@@ -269,7 +279,7 @@ spec:
         images:
           - name: ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working
             newTag: develop
-            digest: sha256:b80f233c93a0435d90122addcc183ecfddf368ea222e2827b11f108ce3202a87 # {"$imagepolicy": "selfhosted:cookjam-dev:digest"}
+            digest: sha256:fa11330ff107febe2525b6068ebf67ba9ab0a21386ed826c3e64c595a0bd8a50 # {"$imagepolicy": "selfhosted:cookjam-dev:digest"}
           - name: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-api
             newTag: latest
             digest: sha256:01bac33570640d0bc2e8dee7c1b3620661bd5b7f351c58516c70ac104ad2a5ca # {"$imagepolicy": "selfhosted:cookjam-web-api:digest"}

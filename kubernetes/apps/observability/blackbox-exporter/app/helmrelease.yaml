@@ -107,12 +107,12 @@ spec:
         scrapeTimeout: 30s
       targets:
         # PiKVM
-        - module: http_2xx
-          name: pikvm-http
-          url: "https://kvm.microserver.space"
-        - module: icmp
-          name: pikvm-icmp
-          url: "kvm.microserver.space"
+        # - module: http_2xx
+        #   name: pikvm-http
+        #   url: "https://kvm.microserver.space"
+        # - module: icmp
+        #   name: pikvm-icmp
+        #   url: "kvm.microserver.space"
 
         # NAS
         - module: icmp

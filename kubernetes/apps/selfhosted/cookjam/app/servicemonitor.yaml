@@ -2,7 +2,7 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: cookjam-dev
+  name: cookjam-dev-image
   namespace: selfhosted
   labels:
     app.kubernetes.io/instance: cookjam-dev
@@ -28,7 +28,7 @@ spec:
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: cookjam-prd
+  name: cookjam-prd-image
   namespace: selfhosted
   labels:
     app.kubernetes.io/instance: cookjam-prd
@@ -50,3 +50,24 @@ spec:
       app.kubernetes.io/instance: cookjam-prd
       app.kubernetes.io/name: cookjam-prd
       app.kubernetes.io/service: cookjam-prd-ml
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: cookjam-dev-app
+  namespace: selfhosted
+  labels:
+    app.kubernetes.io/name: cookjam-dev
+    app.kubernetes.io/instance: cookjam-dev
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: cookjam-dev
+      app.kubernetes.io/name: cookjam-dev
+      app.kubernetes.io/service: cookjam-dev-app
+  endpoints:
+    - port: metrics
+      scheme: http
+      path: /api/metrics
+      interval: 1m
+      scrapeTimeout: 10s
