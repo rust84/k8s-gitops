@@ -26,16 +26,27 @@ spec:
 
         pod:
           securityContext:
-            runAsUser: 568
-            runAsGroup: 568
-            fsGroup: 568
+            runAsUser: 1000
+            runAsGroup: 1000
+            fsGroup: 1000
             fsGroupChangePolicy: "OnRootMismatch"
 
         containers:
           app:
             image:
-              repository: ghcr.io/bjw-s-labs/radicale
+              repository: ghcr.io/kozea/radicale
               tag: 3.5.7
+            args:
+              - --hosts
+              - 0.0.0.0:5232
+              - --auth-type
+              - htpasswd
+              - --auth-htpasswd-filename
+              - /config/users
+              - --auth-htpasswd-encryption
+              - plain
+              - --storage-filesystem-folder
+              - /data/collections
             probes:
               liveness:
                 enabled: true
@@ -74,13 +85,6 @@ spec:
           - hosts:
               - *host
     persistence:
-      config:
-        type: configMap
-        name: radicale-configmap
-        globalMounts:
-          - path: /config/config
-            subPath: config.cfg
-            readOnly: true
       data:
         existingClaim: radicale
         advancedMounts:
