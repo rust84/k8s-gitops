@@ -31,17 +31,17 @@ spec:
   interval: 1h
   secretRef:
     name: cookjam-reg
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imagerepository-image-v1beta2.json
-apiVersion: image.toolkit.fluxcd.io/v1
-kind: ImageRepository
-metadata:
-  name: cookjam-chat
-spec:
-  image: ghcr.io/san-vibe-coding-2025/cookjam-web-chat-api
-  interval: 1h
-  secretRef:
-    name: cookjam-reg
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imagerepository-image-v1beta2.json
+# apiVersion: image.toolkit.fluxcd.io/v1
+# kind: ImageRepository
+# metadata:
+#   name: cookjam-chat
+# spec:
+#   image: ghcr.io/san-vibe-coding-2025/cookjam-web-chat-api
+#   interval: 1h
+#   secretRef:
+#     name: cookjam-reg
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imagepolicy-image-v1beta2.json
 apiVersion: image.toolkit.fluxcd.io/v1
@@ -106,22 +106,22 @@ spec:
     alphabetical: {}
   digestReflectionPolicy: Always
   interval: 30m
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imagepolicy-image-v1beta2.json
-apiVersion: image.toolkit.fluxcd.io/v1
-kind: ImagePolicy
-metadata:
-  name: cookjam-chat
-spec:
-  imageRepositoryRef:
-    name: cookjam-chat
-    namespace: selfhosted
-  filterTags:
-    pattern: '^latest$'
-  policy:
-    alphabetical: {}
-  digestReflectionPolicy: Always
-  interval: 30m
+# ---
+# # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imagepolicy-image-v1beta2.json
+# apiVersion: image.toolkit.fluxcd.io/v1
+# kind: ImagePolicy
+# metadata:
+#   name: cookjam-chat
+# spec:
+#   imageRepositoryRef:
+#     name: cookjam-chat
+#     namespace: selfhosted
+#   filterTags:
+#     pattern: '^latest$'
+#   policy:
+#     alphabetical: {}
+#   digestReflectionPolicy: Always
+#   interval: 30m
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imageupdateautomation-image-v1beta2.json
 apiVersion: image.toolkit.fluxcd.io/v1
