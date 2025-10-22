@@ -97,8 +97,9 @@ spec:
             resources:
               requests:
                 cpu: 10m
+                memory: 200Mi
               limits:
-                memory: 100Mi
+                memory: 200Mi
           worker:
             image:
               repository: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-worker
@@ -132,8 +133,9 @@ spec:
             resources:
               requests:
                 cpu: 10m
-              limits:
                 memory: 1Gi
+              limits:
+                memory: 2Gi
     defaultPodOptions:
       imagePullSecrets:
         - name: cookjam-reg
