@@ -42,38 +42,38 @@ spec:
 #   interval: 1h
 #   secretRef:
 #     name: cookjam-reg
-# ---
-# # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imagepolicy-image-v1beta2.json
-# apiVersion: image.toolkit.fluxcd.io/v1
-# kind: ImagePolicy
-# metadata:
-#   name: cookjam-dev
-# spec:
-#   imageRepositoryRef:
-#     name: cookjam
-#     namespace: selfhosted
-#   filterTags:
-#     pattern: '^develop$'
-#   policy:
-#     alphabetical: {}
-#   digestReflectionPolicy: Always
-#   interval: 30m
-# ---
-# # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imagepolicy-image-v1beta2.json
-# apiVersion: image.toolkit.fluxcd.io/v1
-# kind: ImagePolicy
-# metadata:
-#   name: cookjam-prd
-# spec:
-#   imageRepositoryRef:
-#     name: cookjam
-#     namespace: selfhosted
-#   filterTags:
-#     pattern: '^main$'
-#   policy:
-#     alphabetical: {}
-#   digestReflectionPolicy: Always
-#   interval: 30m
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imagepolicy-image-v1beta2.json
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: cookjam-dev
+spec:
+  imageRepositoryRef:
+    name: cookjam
+    namespace: selfhosted
+  filterTags:
+    pattern: '^develop$'
+  policy:
+    alphabetical: {}
+  digestReflectionPolicy: Always
+  interval: 30m
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imagepolicy-image-v1beta2.json
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: cookjam-prd
+spec:
+  imageRepositoryRef:
+    name: cookjam
+    namespace: selfhosted
+  filterTags:
+    pattern: '^main$'
+  policy:
+    alphabetical: {}
+  digestReflectionPolicy: Always
+  interval: 30m
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imagepolicy-image-v1beta2.json
 apiVersion: image.toolkit.fluxcd.io/v1
