@@ -24,14 +24,14 @@ releases:
   - name: coredns
     namespace: kube-system
     chart: oci://ghcr.io/coredns/charts/coredns
-    version: 1.44.3
+    version: 1.45.0
     values: ['{{ requiredEnv "KUBERNETES_DIR" }}/apps/kube-system/coredns/app/helm-values.yaml']
     needs: ['kube-system/cilium']
 
   - name: cert-manager
     namespace: cert-manager
     chart: jetstack/cert-manager
-    version: v1.19.0
+    version: v1.19.1
     values: ['{{ requiredEnv "KUBERNETES_DIR" }}/apps/cert-manager/cert-manager/app/helm-values.yaml']
     needs: ['kube-system/coredns']
 
