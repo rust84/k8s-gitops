@@ -88,6 +88,7 @@ cameras:
           roles:
             - detect
     detect:
+      enabled: true
       width: 640
       height: 480
       fps: 7
