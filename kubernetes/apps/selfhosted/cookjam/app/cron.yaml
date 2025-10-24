@@ -50,10 +50,10 @@ spec:
 
                 response=$(curl -X POST \
                   -H "Content-Type: application/json" \
-                  -H "x-api-key: ${REFRESH_STATS_API_KEY}" \
+                  -H "x-api-key: $${REFRESH_STATS_API_KEY}" \
                   -w "\n%{http_code}" \
                   -s \
-                  https://${SUPABASE_PROJECT_ID}.supabase.co/functions/v1/refresh-stats)
+                  https://$${SUPABASE_PROJECT_ID}.supabase.co/functions/v1/refresh-stats)
 
                 http_code=$(echo "$response" | tail -n1)
                 body=$(echo "$response" | sed '$d')
