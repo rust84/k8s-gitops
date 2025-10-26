@@ -27,6 +27,7 @@ spec:
               repository: "ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working"
               tag: "develop"
             env:
+              CHAT_ADMIN_ONLY: "true"
               METRICS_PORT: 3001
               SUPABASE_URL:
                 valueFrom:
