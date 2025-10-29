@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: n8n
+  name: &app n8n
 spec:
   interval: 1h
   chartRef:
@@ -73,7 +73,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     persistence:
       data:
-        existingClaim: "{{ .Release.Name }}"
+        existingClaim: *app
         advancedMounts:
           n8n:
             app:
