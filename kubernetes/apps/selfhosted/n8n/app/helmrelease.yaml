@@ -46,7 +46,7 @@ spec:
               N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS: false
               N8N_PROTOCOL: "https"
               N8N_PORT: &port 8080
-              N8N_HOST: &host "n8n.{{ .Release.Name }}"
+              N8N_HOST: &host "n8n.${SECRET_DOMAIN}"
               N8N_LOG_LEVEL: info
               N8N_LOG_OUTPUT: console
               N8N_RUNNERS_ENABLED: true
@@ -90,7 +90,7 @@ spec:
                   port: http
     service:
       app:
-        controller: n8n
+        controller: *app
         ports:
           http:
             port: *port
