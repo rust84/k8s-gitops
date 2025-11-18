@@ -46,7 +46,7 @@ spec:
               - coredns
             image:
               repository: ghcr.io/qdm12/gluetun
-              tag: v3.40.1
+              tag: v3.40.2
             env:
               BLOCK_MALICIOUS: off # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
               DNS_ADDRESS: "127.0.0.2"
