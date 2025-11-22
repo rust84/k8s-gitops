@@ -1,0 +1,95 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app ollama
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      ollama:
+        replicas: 1
+        annotations:
+          reloader.stakater.com/auto: "true"
+        containers:
+          ollama:
+            image:
+              repository: intelanalytics/ipex-llm-inference-cpp-xpu
+              tag: 2.3.0-SNAPSHOT
+            command:
+              - /bin/sh
+              - -c
+              - mkdir -p /llm/ollama && cd /llm/ollama && init-ollama && exec ./ollama serve
+            securityContext:
+              privileged: false
+              capabilities:
+                add:
+                  - SYS_ADMIN
+            env:
+              OLLAMA_MODELS: &modelPath /models
+              no_proxy: localhost,127.0.0.1
+              OLLAMA_HOST: 0.0.0.0
+              DEVICE: Arc
+              OLLAMA_INTEL_GPU: true
+              OLLAMA_NUM_GPU: 999
+              ZES_ENABLE_SYSMAN: 1
+            resources:
+              requests:
+                cpu: 200m
+                gpu.intel.com/i915: 1
+              limits:
+                memory: 12Gi
+                gpu.intel.com/i915: 1
+        pod:
+          affinity:
+            podAntiAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - topologyKey: "kubernetes.io/hostname"
+                  labelSelector:
+                    matchExpressions:
+                      - key: app.kubernetes.io/name
+                        operator: In
+                        values: [ *app ]
+    service:
+      ollama:
+        controller: ollama
+        ports:
+          http:
+            port: 11434
+    ingress:
+      main:
+        enabled: true
+        className: internal
+        hosts:
+          - host: &host "ollama.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: *app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+    persistence:
+      ollama:
+        existingClaim: *app
+        globalMounts:
+          - path: *modelPath
+            subPath: models
+          - path: /root/.ollama
+            subPath: config
+      dri:
+        type: hostPath
+        hostPath: /dev/dri
