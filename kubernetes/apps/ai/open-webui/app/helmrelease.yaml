@@ -29,7 +29,7 @@ spec:
               tag: 17
             envFrom: &envFrom
               - secretRef:
-                  name: open-webui-secret
+                  name: *app
         containers:
           app:
             image:
