@@ -1,0 +1,108 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s-labs/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app open-webui
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      open-webui:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        initContainers:
+          init-db:
+            image:
+              repository: ghcr.io/home-operations/postgres-init
+              tag: 17
+            envFrom: &envFrom
+              - secretRef:
+                  name: open-webui-secret
+        containers:
+          app:
+            image:
+              repository: ghcr.io/open-webui/open-webui
+              tag: v0.6.36@sha256:dfe43b30a5474164b1a81e1cce298a6769bb22144f74df556beefee4ccca5394
+            env:
+              TZ: ${TZ}
+              # App
+              WEBUI_URL: https://chat.${SECRET_DOMAIN}
+              CORS_ALLOW_ORIGIN: https://chat.${SECRET_DOMAIN}
+              DATABASE_PORT: "5432"
+              DATABASE_TYPE: postgres
+              ENABLE_OPENAI_API: False
+              ENABLE_OLLAMA_API: True
+              ENABLE_WEB_SEARCH: True
+              ENABLE_SEARCH_QUERY_GENERATION: True
+              ENABLE_PERSISTENT_CONFIG: False
+              WEBUI_SESSION_COOKIE_SAME_SITE: lax
+              WEBUI_SESSION_COOKIE_SECURE: True
+              # Searx
+              WEB_SEARCH_ENGINE: searxng
+              SEARXNG_QUERY_URL: http://searxng.default.svc.cluster.local:8080/search?q=<query>
+              # Redis
+              ENABLE_WEBSOCKET_SUPPORT: True
+              WEBSOCKET_MANAGER: "redis"
+              WEBSOCKET_REDIS_URL: "redis://dragonfly.database.svc.cluster.local:6379/7"
+            envFrom: *envFrom
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: false
+              capabilities: { drop: ["ALL"] }
+            resources:
+              requests:
+                cpu: 10m
+                memory: 100Mi
+              limits:
+                memory: 2000Mi
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: false
+        runAsUser: 0
+        runAsGroup: 0
+        fsGroup: 0
+        fsGroupChangePolicy: OnRootMismatch
+    service:
+      open-webui:
+        controller: open-webui
+        ports:
+          http:
+            port: 8080
+    ingress:
+      main:
+        enabled: true
+        className: internal
+        hosts:
+          - host: &host "chat.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: *app
+                  port: http
+        tls:
+          - hosts:
+              - *host
+    persistence:
+      data:
+        existingClaim: *app
+        globalMounts:
+          - path: /app/backend/data
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          open-webui:
+            app:
+              - path: /tmp
+                subPath: tmp
