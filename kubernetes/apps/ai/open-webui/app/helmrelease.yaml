@@ -56,6 +56,9 @@ spec:
               ENABLE_WEBSOCKET_SUPPORT: True
               WEBSOCKET_MANAGER: "redis"
               WEBSOCKET_REDIS_URL: "redis://dragonfly.database.svc.cluster.local:6379/7"
+              # Document extraction
+              CONTENT_EXTRACTION_ENGINE: tika
+              TIKA_SERVER_URL: http://localhost:9998
             envFrom: *envFrom
             securityContext:
               allowPrivilegeEscalation: false
@@ -67,6 +70,13 @@ spec:
                 memory: 100Mi
               limits:
                 memory: 2000Mi
+          tika:
+            image:
+              repository: docker.io/apache/tika
+              tag: 3.2.3.0-full
+              pullPolicy: IfNotPresent
+            ports:
+              - containerPort: 9998
     defaultPodOptions:
       securityContext:
         runAsNonRoot: false
