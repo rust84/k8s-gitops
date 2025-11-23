@@ -107,3 +107,19 @@ groups:
         annotations:
           app: "{{ $labels.app }}"
           summary: "{{ $labels.app }} is unable to connect to home assistant"
+
+  #
+  # kometa
+  #
+  - name: kometa
+    rules:
+      - alert: KometaTraktUnauthorized
+        expr: |
+          sum by (app) (count_over_time({app="kometa"} |~ "Trakt Error: \\(401\\) Unauthorized"[2m])) > 0
+        for: 2m
+        labels:
+          severity: warning
+          category: logs
+        annotations:
+          app: "{{ $labels.app }}"
+          summary: "{{ $labels.app }} received Trakt 401 Unauthorized error"
