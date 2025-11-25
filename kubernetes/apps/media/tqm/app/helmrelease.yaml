@@ -23,7 +23,7 @@ spec:
         type: cronjob
         cronjob: &cronJobSpec
           schedule: "@hourly"
-          timeZone: "${TZ}"
+          timeZone: Europe/London
           concurrencyPolicy: Forbid
           successfulJobsHistory: 1
           failedJobsHistory: 1
