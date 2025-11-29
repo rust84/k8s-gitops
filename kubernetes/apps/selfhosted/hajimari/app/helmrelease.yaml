@@ -37,6 +37,7 @@ spec:
       defaultEnable: true
       namespaceSelector:
         matchNames:
+          - ai
           - home
           - media
           - selfhosted
@@ -47,6 +48,11 @@ spec:
       showGlobalBookmarks: true
       defaultSearchProvider: DuckDuckGo
       searchProviders:
+      - name: SearXNG
+        token: s
+        icon: mdi:cloud-search-outline
+        searchUrl: https://search.${SECRET_DOMAIN}/search?q={query}
+        url: https://search.${SECRET_DOMAIN}
       - name: Google
         token: g
         icon: simple-icons:google
