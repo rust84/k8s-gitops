@@ -46,7 +46,7 @@ spec:
       showAppUrls: false
       showAppInfo: true
       showGlobalBookmarks: true
-      defaultSearchProvider: DuckDuckGo
+      defaultSearchProvider: SearXNG
       searchProviders:
       - name: SearXNG
         token: s
