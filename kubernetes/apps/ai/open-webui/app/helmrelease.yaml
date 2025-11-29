@@ -52,7 +52,7 @@ spec:
               WEBUI_SESSION_COOKIE_SECURE: True
               # Searx
               WEB_SEARCH_ENGINE: searxng
-              SEARXNG_QUERY_URL: http://searxng.default.svc.cluster.local:8080/search?q=<query>
+              SEARXNG_QUERY_URL: http://searxng.ai.svc.cluster.local:8080/search?q=<query>
               # Redis
               ENABLE_WEBSOCKET_SUPPORT: True
               WEBSOCKET_MANAGER: "redis"
@@ -87,7 +87,7 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     service:
       open-webui:
-        controller: open-webui
+        controller: *app
         ports:
           http:
             port: 8080
