@@ -1,59 +1,142 @@
-
 ---
 use_default_settings: true
 
-server:
-  limiter: true
-  image_proxy: true
-  method: GET # https://github.com/searxng/searxng/pull/3619
-  public_instance: false
+general:
+  contact_url: false
+  debug: false
+  donation_url: false
+  enable_metrics: true
+  instance_name: "Search"
+  privacypolicy_url: false
+
+ui:
+  center_alignment: true
+  default_theme: simple
+  hotkeys: vim
+  url_formatting: pretty
+  infinite_scroll: true
+  query_in_title: true
+  search_on_category_select: true
+  static_use_hash: true
+  theme_args:
+    simple_style: dark
 
 search:
-  autocomplete: duckduckgo
-  favicon_resolver: duckduckgo
-  languages:
-    - all
-    - en
-    - en-US
-    - sv-SE
+  autocomplete: ""
+  autocomplete_min: 4
+  # favicon_resolver: duckduckgo
+  ban_time_on_fail: 5
+  prefer_configured_language: true
+  default_lang: en
   formats:
     - html
     - json
+    - csv
+    - rss
+  max_ban_time_on_fail: 120
+  safe_search: 0
 
-general:
-  instance_name: Search
+server:
+  # base_url, port, secret_key set via env vars
+  image_proxy: true
+  limiter: true
+  method: POST
+  public_instance: false
+  default_http_headers:
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Robots-Tag: "noindex, nofollow"
+    Referrer-Policy: no-referrer
 
-ui:
-  default_theme: simple
-  infinite_scroll: true
-  query_in_title: true
-  results_on_new_tab: true
-  static_use_hash: true
-  theme_args:
-    simple_style: auto
-
-categories_as_tabs:
-  general:
-  images:
-  videos:
-  map:
+outgoing:
+  request_timeout: 3.0
+  max_request_timeout: 10.0
+  pool_connections: 100
+  pool_maxsize: 20
+  enable_http2: true
 
 enabled_plugins:
   - Basic Calculator
   - Hash plugin
+  - Tor check plugin
   - Open Access DOI rewrite
-  - Self Informations
-  - Tracker URL remover
+  - Hostnames plugin
   - Unit converter plugin
+  - Tracker URL remover
 
+doi_resolvers:
+  sci-hub.se: "https://sci-hub.se/"
+
+default_doi_resolver: sci-hub.se
+
+# Engine configurations
+engines:
+  # General
+  - name: bing
+    disabled: false
+
+  # Files
+  - name: bt4g
+    disabled: true
+  - name: kickass
+    disabled: true
+  - name: piratebay
+    disabled: true
+  - name: solidtorrents
+    disabled: true
+  - name: wikicommans.files
+    disabled: true
+  - name: z-library
+    disabled: false
+  - name: annas_archive
+    disabled: false
+  - name: library_genesis
+    disabled: false
+
+  # Images
+  - name: tineye
+    disabled: false
+    timeout: 9
+    paging: true
+  - name: duckduckgo images
+    disabled: false
+  - name: material icons
+    disabled: false
+  - name: artic
+    disabled: true
+  - name: library of congress
+    disabled: true
+
+  # Videos
+  - name: duckduckgo videos
+    disabled: false
+
+  # Social Media
+  - name: reddit
+    disabled: false
+
+  # Other
+  - name: goodreads
+    disabled: false
+  - name: chefkosh
+    disabled: true
+  - name: openlibrary
+    disabled: false
+  - name: imdb
+    disabled: false
+  - name: rottentomatoes
+    disabled: false
+  - name: tmdb
+    disabled: false
+
+  # IT
+  - name: hackernews
+    disabled: false
+  - name: lobste.rs
+    disabled: false
+
+# Hostnames plugin configuration
 hostnames:
-  high_priority:
-    - (.*)\/blog\/(.*)
-    - (.*\.)?wikipedia.org$
-    - (.*\.)?github.com$
-    - (.*\.)?reddit.com$
-    - (.*\.)?docker.com$
-    - (.*\.)?archlinux.org$
-    - (.*\.)?stackoverflow.com$
-    - (.*\.)?askubuntu.com$
-    - (.*\.)?superuser.com$
+  remove: hostnames-remove.yml
+  high_priority: hostnames-high.yml
+  low_priority: hostnames-low.yml

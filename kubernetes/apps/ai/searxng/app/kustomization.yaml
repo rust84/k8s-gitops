@@ -10,5 +10,8 @@ configMapGenerator:
     files:
       - ./resources/limiter.toml
       - ./resources/settings.yml
+      - ./resources/hostnames-remove.yml
+      - ./resources/hostnames-high.yml
+      - ./resources/hostnames-low.yml
 generatorOptions:
   disableNameSuffixHash: true

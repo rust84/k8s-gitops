@@ -99,6 +99,15 @@ spec:
           - path: /etc/searxng/limiter.toml
             subPath: limiter.toml
             readOnly: true
+          - path: /etc/searxng/hostnames-remove.yml
+            subPath: hostnames-remove.yml
+            readOnly: true
+          - path: /etc/searxng/hostnames-high.yml
+            subPath: hostnames-high.yml
+            readOnly: true
+          - path: /etc/searxng/hostnames-low.yml
+            subPath: hostnames-low.yml
+            readOnly: true
 
       tmpfs:
         enabled: true
