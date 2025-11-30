@@ -84,13 +84,13 @@ engines:
     disabled: true
   - name: solidtorrents
     disabled: true
-  - name: wikicommans.files
+  - name: wikicommons.files
     disabled: true
   - name: z-library
     disabled: false
-  - name: annas_archive
+  - name: annas archive
     disabled: false
-  - name: library_genesis
+  - name: library genesis
     disabled: false
 
   # Images
@@ -118,7 +118,7 @@ engines:
   # Other
   - name: goodreads
     disabled: false
-  - name: chefkosh
+  - name: chefkoch
     disabled: true
   - name: openlibrary
     disabled: false
