@@ -6,7 +6,7 @@ general:
   debug: false
   donation_url: false
   enable_metrics: true
-  instance_name: "Search"
+  instance_name: Search
   privacypolicy_url: false
 
 ui:
@@ -22,9 +22,9 @@ ui:
     simple_style: dark
 
 search:
-  autocomplete: ""
+  autocomplete: duckduckgo
   autocomplete_min: 4
-  # favicon_resolver: duckduckgo
+  favicon_resolver: duckduckgo
   ban_time_on_fail: 5
   prefer_configured_language: true
   default_lang: en
