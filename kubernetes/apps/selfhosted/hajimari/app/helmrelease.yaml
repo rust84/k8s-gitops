@@ -45,7 +45,7 @@ spec:
       showAppGroups: false
       showAppUrls: false
       showAppInfo: true
-      showGlobalBookmarks: true
+      showGlobalBookmarks: false
       defaultSearchProvider: SearXNG
       searchProviders:
       - name: SearXNG
@@ -82,7 +82,7 @@ spec:
         - group: Home
           apps:
             - name: Uptime
-              url: "https://kuma.microserver.space/status/home-cluster"
+              url: "https://uptime.roswellian.dev/status/home-cluster"
               icon: arrow-up-bold
       globalBookmarks:
         - group: Communicate
