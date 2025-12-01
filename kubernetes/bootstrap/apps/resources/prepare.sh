@@ -136,14 +136,21 @@ function apply_configmaps() {
 function apply_sops_secrets() {
     gum "${LOG_ARGS[@]}" debug "Applying secrets"
 
-    local -r secrets=(
+    # Secrets in flux-system namespace
+    local -r flux_secrets=(
         "${KUBERNETES_DIR}/bootstrap/apps/resources/github-deploy-key.sops.yaml"
         "${KUBERNETES_DIR}/bootstrap/apps/resources/doppler-token-auth-api.sops.yaml"
         "${KUBERNETES_DIR}/flux/components/common/cluster-secrets.sops.yaml"
         "${KUBERNETES_DIR}/flux/components/common/sops-age.sops.yaml"
     )
 
-    for secret in "${secrets[@]}"; do
+    # Secrets in external-secrets namespace
+    local -r external_secrets_ns_secrets=(
+        "${KUBERNETES_DIR}/bootstrap/apps/resources/onepassword-secret.sops.yaml"
+    )
+
+    # Apply flux-system namespace secrets
+    for secret in "${flux_secrets[@]}"; do
         if [ ! -f "${secret}" ]; then
             gum "${LOG_ARGS[@]}" warn "File does not exist" file "${secret}"
             continue
@@ -157,6 +164,27 @@ function apply_sops_secrets() {
 
         # Apply secret resources
         if sops exec-file "${secret}" "kubectl --namespace flux-system apply --server-side --filename {}" &>/dev/null; then
+            gum "${LOG_ARGS[@]}" info "Secret resource applied successfully" resource "$(basename "${secret}" ".yaml")"
+        else
+            gum "${LOG_ARGS[@]}" fatal "Failed to apply secret resource" resource "$(basename "${secret}" ".yaml")"
+        fi
+    done
+
+    # Apply external-secrets namespace secrets
+    for secret in "${external_secrets_ns_secrets[@]}"; do
+        if [ ! -f "${secret}" ]; then
+            gum "${LOG_ARGS[@]}" warn "File does not exist" file "${secret}"
+            continue
+        fi
+
+        # Check if the secret resources are up-to-date
+        if sops exec-file "${secret}" "kubectl --namespace external-secrets diff --filename {}" &>/dev/null; then
+            gum "${LOG_ARGS[@]}" info "Secret resource is up-to-date" resource "$(basename "${secret}" ".yaml")"
+            continue
+        fi
+
+        # Apply secret resources
+        if sops exec-file "${secret}" "kubectl --namespace external-secrets apply --server-side --filename {}" &>/dev/null; then
             gum "${LOG_ARGS[@]}" info "Secret resource applied successfully" resource "$(basename "${secret}" ".yaml")"
         else
             gum "${LOG_ARGS[@]}" fatal "Failed to apply secret resource" resource "$(basename "${secret}" ".yaml")"
