@@ -76,7 +76,9 @@ spec:
     ingress:
       main:
         enabled: true
-        className: internal
+        className: external
+        annotations:
+          hajimari.io/icon: cloud-search-outline
         hosts:
           - host: &host "search.${SECRET_DOMAIN}"
             paths:
