@@ -1,0 +1,87 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: qui
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    controllers:
+      qui:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        pod:
+          securityContext:
+            fsGroup: &id 568
+            fsGroupChangePolicy: "OnRootMismatch"
+            runAsGroup: *id
+            runAsNonRoot: true
+            runAsUser: *id
+        containers:
+          app:
+            image:
+              repository: ghcr.io/autobrr/qui
+              tag: main@sha256:38509cf90cd8021738b9f0474a7e629d60191e5ae33dbb943035a17c6ba1f749
+            env:
+              QUI__HOST: 0.0.0.0
+              QUI__PORT: &port 8080
+              QUI__LOG_LEVEL: INFO
+            envFrom:
+              - secretRef:
+                  name: "qui-secret"
+            probes:
+              liveness: &probes
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: *port
+                  initialDelaySeconds: 0
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
+              readiness: *probes
+            resources:
+              requests:
+                cpu: 10m
+              limits:
+                memory: 512Mi
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
+    service:
+      app:
+        ports:
+          http:
+            port: *port
+    persistence:
+      config:
+        existingClaim: qui
+    ingress:
+      app:
+        className: internal
+        annotations:
+          hajimari.io/icon: cloud-download
+        hosts:
+          - host: "qui.${SECRET_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: app
+                  port: http
