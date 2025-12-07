@@ -8,7 +8,7 @@ sonarr:
     replace_existing_custom_formats: true
     quality_profiles:
       - name: WEB-1080p
-        min_upgrade_format_score: 0
+        min_upgrade_format_score: 1
     include:
       - template: sonarr-quality-definition-series
       - template: sonarr-v4-quality-profile-web-1080p
@@ -35,7 +35,7 @@ radarr:
     replace_existing_custom_formats: true
     quality_profiles:
       - name: SQP-1 (2160p)
-        min_upgrade_format_score: 1000
+        min_upgrade_format_score: 1
     include:
       - template: radarr-quality-definition-sqp-streaming
       - template: radarr-quality-profile-sqp-1-2160p-default
