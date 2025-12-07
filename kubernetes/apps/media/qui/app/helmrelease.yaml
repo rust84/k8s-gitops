@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: qui
+  name: &app qui
 spec:
   interval: 1h
   chartRef:
@@ -67,12 +67,13 @@ spec:
                   - ALL
     service:
       app:
+        controller: *app
         ports:
           http:
             port: *port
     persistence:
       config:
-        existingClaim: qui
+        existingClaim: *app
     ingress:
       app:
         className: internal
