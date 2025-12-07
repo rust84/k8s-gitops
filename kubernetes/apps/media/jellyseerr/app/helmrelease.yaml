@@ -25,8 +25,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/fallenbagel/jellyseerr
-              tag: 2.7.3@sha256:9cc9e9ee6cd5cf5a23feb45c37742ba34cfd6314d81d259cddb373a97ac92cdd
+              repository: ghcr.io/seerr-team/seerr
+              tag: develop@sha256:e57a3bb66462867ac9817bb03a57266206217bf15368447abf13ac35065dc8ec
             env:
               TZ: ${TZ}
               LOG_LEVEL: "info"
