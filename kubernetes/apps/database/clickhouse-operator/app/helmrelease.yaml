@@ -37,7 +37,7 @@ spec:
       namespace: database
       image:
         repository: altinity/metrics-exporter
-        tag: "0.25.6"
+        tag: "0.26.0"
         pullPolicy: IfNotPresent
       service:
         type: ClusterIP
