@@ -31,12 +31,12 @@ spec:
           limits:
             cpu: 500m
             memory: 512Mi
-  affinity:
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-      - labelSelector:
-          matchLabels:
-            cnpg.io/poolerName: postgres-cookjam-pooler
-        topologyKey: kubernetes.io/hostname
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                cnpg.io/poolerName: postgres-cookjam-pooler
+            topologyKey: kubernetes.io/hostname
   monitoring:
     enablePodMonitor: true
