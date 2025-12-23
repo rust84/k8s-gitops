@@ -1,0 +1,77 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: postgres-cookjam
+  namespace: database
+spec:
+  instances: 3
+  # on upgrade of vectorchord, run: k exec -n self-hosted postgres-immich -- psql -d immich -c 'ALTER EXTENSION vchord UPDATE;'
+  # renovate: datasource=docker depName=ghcr.io/tensorchord/cloudnative-vectorchord
+  imageName: ghcr.io/tensorchord/cloudnative-vectorchord:16.9-0.4.2@sha256:649da2df5f079dd1f214e3a877cafd0208eff3779e9c60d14d243fbca5e11c97
+  primaryUpdateStrategy: unsupervised
+  storage:
+    size: 50Gi
+    storageClass: openebs-hostpath
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: cloudnative-pg-secret
+  resources:
+    requests:
+      memory: 2Gi
+      cpu: 500m
+    limits:
+      memory: 4Gi
+      cpu: 2000m
+  affinity:
+    enablePodAntiAffinity: true
+    topologyKey: kubernetes.io/hostname
+    podAntiAffinityType: required
+    nodeSelector:
+      kubernetes.io/arch: amd64
+  postgresql:
+    shared_preload_libraries:
+      - "vchord.so"
+    enableAlterSystem: true
+    parameters:
+      max_connections: "600"
+      shared_buffers: 1GB
+      effective_cache_size: 3GB
+      maintenance_work_mem: 512MB
+      work_mem: 32MB
+      random_page_cost: 1.1
+      effective_io_concurrency: 200
+      wal_buffers: 16MB
+      min_wal_size: 1GB
+      max_wal_size: 4GB
+      default_statistics_target: 100
+  bootstrap:
+    initdb:
+      database: cookjam
+      owner: cookjam_app
+      postInitSQL:
+        - CREATE EXTENSION IF NOT EXISTS vchord CASCADE;
+        - CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+        - CREATE EXTENSION IF NOT EXISTS pgcrypto;
+        - CREATE EXTENSION IF NOT EXISTS hstore;
+        - CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
+  monitoring:
+    enablePodMonitor: true
+  backup:
+    retentionPolicy: 30d
+    barmanObjectStore:
+      wal:
+        compression: bzip2
+        maxParallel: 8
+      data:
+        compression: bzip2
+      destinationPath: s3://cloudnative-pg/cookjam/
+      endpointURL: https://${SECRET_CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com
+      serverName: postgres-cookjam-v1
+      s3Credentials:
+        accessKeyId:
+          name: cloudnative-pg-secret
+          key: aws-access-key-id
+        secretAccessKey:
+          name: cloudnative-pg-secret
+          key: aws-secret-access-key

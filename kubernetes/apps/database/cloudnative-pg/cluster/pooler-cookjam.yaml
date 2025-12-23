@@ -1,0 +1,42 @@
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Pooler
+metadata:
+  name: postgres-cookjam-pooler
+  namespace: database
+spec:
+  cluster:
+    name: postgres-cookjam
+  instances: 2
+  type: rw
+  pgbouncer:
+    poolMode: transaction
+    parameters:
+      max_client_conn: "500"
+      default_pool_size: "20"
+      min_pool_size: "5"
+      reserve_pool_size: "5"
+      server_idle_timeout: "30"
+      client_idle_timeout: "0"
+      query_timeout: "0"
+      max_prepared_statements: "0"
+  template:
+    spec:
+      containers:
+      - name: pgbouncer
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 500m
+            memory: 512Mi
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            cnpg.io/poolerName: postgres-cookjam-pooler
+        topologyKey: kubernetes.io/hostname
+  monitoring:
+    enablePodMonitor: true
