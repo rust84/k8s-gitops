@@ -3,6 +3,10 @@ originRequest:
   originServerName: "external.${SECRET_APP_DOMAIN}"
 
 ingress:
+  # CNPG Pooler for database access
+  - hostname: "postgres.${SECRET_APP_DOMAIN}"
+    service: tcp://postgres-cookjam-pooler.database.svc.cluster.local:5432
+  # Main application ingress
   - hostname: "${SECRET_APP_DOMAIN}"
     service: https://external-ingress-nginx-controller.network.svc.cluster.local:443
     originRequest:
