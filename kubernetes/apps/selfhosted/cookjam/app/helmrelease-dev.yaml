@@ -118,7 +118,7 @@ spec:
                 cpu: 10m
               limits:
                 memory: 1Gi
-      deno-backend-gateway:
+      backend-gateway:
         replicas: 2
         containers:
           main:
@@ -288,8 +288,8 @@ spec:
         ports:
           http:
             port: *port
-      deno-backend-gateway:
-        controller: deno-backend-gateway
+      backend-gateway:
+        controller: backend-gateway
         ports:
           http:
             port: 8000
@@ -340,7 +340,25 @@ spec:
                   identifier: chat
                   port: http
         tls:
-          - secretName: cookjam-dev.tls
+          - secretName: cookjam-dev-chat.tls
+            hosts:
+              - *host
+      backend-gateway:
+        enabled: true
+        annotations:
+          kubernetes.io/tls-acme: "true"
+          cert-manager.io/cluster-issuer: letsencrypt-production
+          external-dns.alpha.kubernetes.io/target: "external.${SECRET_APP_DOMAIN}"
+        className: external
+        hosts:
+          - host: &host "backend-gateway.${SECRET_APP_DOMAIN}"
+            paths:
+              - path: /
+                service:
+                  identifier: backend-gateway
+                  port: http
+        tls:
+          - secretName: cookjam-dev-backend.tls
             hosts:
               - *host
     persistence:
