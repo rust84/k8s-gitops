@@ -20,6 +20,8 @@ spec:
       client_idle_timeout: "0"
       query_timeout: "0"
       max_prepared_statements: "0"
+      # Allow search_path to be set in transaction mode (PgBouncer 1.20+)
+      track_extra_parameters: "search_path"
   template:
     spec:
       containers:
