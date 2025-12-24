@@ -43,6 +43,17 @@ spec:
   secretRef:
     name: cookjam-reg
 ---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imagerepository-image-v1beta2.json
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImageRepository
+metadata:
+  name: cookjam-deno-backend-gateway
+spec:
+  image: ghcr.io/san-vibe-coding-2025/cookjam-deno-backend-gateway
+  interval: 1h
+  secretRef:
+    name: cookjam-reg
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imagepolicy-image-v1beta2.json
 apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImagePolicy
@@ -118,6 +129,22 @@ spec:
     namespace: selfhosted
   filterTags:
     pattern: '^main$'
+  policy:
+    alphabetical: {}
+  digestReflectionPolicy: Always
+  interval: 5m
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/refs/heads/main/imagepolicy-image-v1beta2.json
+apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata:
+  name: cookjam-deno-backend-gateway
+spec:
+  imageRepositoryRef:
+    name: cookjam-deno-backend-gateway
+    namespace: selfhosted
+  filterTags:
+    pattern: '^latest$'
   policy:
     alphabetical: {}
   digestReflectionPolicy: Always
