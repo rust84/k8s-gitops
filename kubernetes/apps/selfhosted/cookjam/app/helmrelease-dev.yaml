@@ -377,4 +377,4 @@ spec:
             digest: sha256:71c50f380b521ae1c2fdca3177719f389ee9c11a093b1b575461ea32576e8ee1 # {"$imagepolicy": "selfhosted:cookjam-web-chat-api:digest"}
           - name: ghcr.io/san-vibe-coding-2025/cookjam-deno-backend-gateway
             newTag: latest
-            digest: sha256:1a470d40d4012d1c74141f988a08c9f187fb25bbb7a32f6d6c3ed1ff037ed4c2 # {"$imagepolicy": "selfhosted:cookjam-deno-backend-gateway:digest"}
+            digest: sha256:83c68e5cfdb4ff821aeb9aa29c05447f152cde438ddb9da7e42d0236d8e4d03b # {"$imagepolicy": "selfhosted:cookjam-deno-backend-gateway:digest"}
