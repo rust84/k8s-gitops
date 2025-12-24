@@ -351,7 +351,7 @@ spec:
           external-dns.alpha.kubernetes.io/target: "external.${SECRET_APP_DOMAIN}"
         className: external
         hosts:
-          - host: &host "backend-gateway.${SECRET_APP_DOMAIN}"
+          - host: &host "backend-gateway-dev.${SECRET_APP_DOMAIN}"
             paths:
               - path: /
                 service:
