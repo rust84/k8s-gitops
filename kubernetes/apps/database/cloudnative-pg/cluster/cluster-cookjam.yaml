@@ -64,6 +64,8 @@ spec:
         # Set default privileges for future tables/sequences created in public schema
         - ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO cookjam_app;
         - ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO cookjam_app;
+        # Required role for RLS policies
+        # GRANT authenticated TO cookjam_app;
   monitoring:
     enablePodMonitor: true
   backup:
