@@ -32,32 +32,22 @@ spec:
             supplementalGroups: [65542] # external-services
 
         initContainers:
-          coredns:
-            image:
-              repository: mirror.gcr.io/coredns/coredns
-              tag: 1.13.2
-            args:
-              - -conf
-              - /etc/coredns/Corefile
-            restartPolicy: Always
-
           gluetun:
-            dependsOn:
-              - coredns
             image:
               repository: ghcr.io/qdm12/gluetun
               tag: v3.41.0
             env:
               BLOCK_MALICIOUS: off # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
               DNS_ADDRESS: "127.0.0.2"
-              DOT: off
-              DOT_CACHING: off
-              DOT_IPV6: off
+              DNS_SERVER: on
+              DNS_CACHING: off
+              DNS_UPSTREAM_IPV6: off
               FIREWALL_DEBUG: on
               FIREWALL_INPUT_PORTS: "8080,9999"
               FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16 # Allow access to k8s subnets
               FIREWALL_VPN_INPUT_PORTS: &BT-port 21044
               HEALTH_SERVER_ADDRESS: ":9999"
+              HEALTH_TARGET_ADDRESSES: "cloudflare.com:443,github.com:443"
               LOG_LEVEL: debug
               PUBLICIP_API: cloudflare
               STORAGE_FILEPATH: "" # prevent memory spike and avoid I/O
@@ -212,15 +202,6 @@ spec:
         globalMounts:
           - path: /media/downloads/torrents
             subPath: downloads/torrents
-      coredns:
-        type: configMap
-        name: qbittorrent-coredns
-        advancedMounts:
-          qbittorrent:
-            coredns:
-              - path: /etc/coredns/Corefile
-                subPath: Corefile
-                readOnly: true
       add-ons:
         type: emptyDir
         globalMounts:
