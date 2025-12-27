@@ -81,7 +81,7 @@ spec:
         spec:
           containers:
             - name: clickhouse
-              image: clickhouse/clickhouse-server:25.11
+              image: clickhouse/clickhouse-server:25.12
               resources:
                 requests:
                   cpu: 100m
