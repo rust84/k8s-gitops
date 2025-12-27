@@ -82,6 +82,7 @@ spec:
               limits:
                 memory: 300Mi
       chat:
+        replicas: 0 # Not working
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
