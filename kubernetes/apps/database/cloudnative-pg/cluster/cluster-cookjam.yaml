@@ -55,17 +55,14 @@ spec:
         - CREATE EXTENSION IF NOT EXISTS pgcrypto;
         - CREATE EXTENSION IF NOT EXISTS hstore;
         - CREATE EXTENSION IF NOT EXISTS pg_stat_statements;
-        # Create cookjam_app user (will be used by the Pooler)
-        - CREATE USER cookjam_app;
-        # Grant permissions to cookjam_app for all tables/sequences in public schema
-        - GRANT USAGE ON SCHEMA public TO cookjam_app;
-        - GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO cookjam_app;
-        - GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO cookjam_app;
+        # Grant permissions to cookjam_dev for all tables/sequences in public schema
+        - CREATE USER cookjam_dev;
+        - GRANT USAGE ON SCHEMA public TO cookjam_dev;
+        - GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO cookjam_dev;
+        - GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO cookjam_dev;
         # Set default privileges for future tables/sequences created in public schema
-        - ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO cookjam_app;
-        - ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO cookjam_app;
-        # Required role for RLS policies
-        # GRANT authenticated TO cookjam_app;
+        - ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO cookjam_dev;
+        - ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO cookjam_dev;
   monitoring:
     enablePodMonitor: true
   backup:
