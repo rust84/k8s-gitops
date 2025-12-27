@@ -47,7 +47,7 @@ spec:
       default_statistics_target: "100"
   bootstrap:
     initdb:
-      database: cookjam
+      database: cookjam_dev
       owner: postgres
       postInitSQL:
         - CREATE EXTENSION IF NOT EXISTS vchord CASCADE;
