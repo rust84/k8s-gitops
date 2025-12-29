@@ -70,7 +70,7 @@ spec:
         controller: govee2mqtt
         ports:
           http:
-            port: 4002
+            port: 8056
 
     persistence:
       data:
