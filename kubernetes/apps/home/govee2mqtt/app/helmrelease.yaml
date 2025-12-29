@@ -65,6 +65,13 @@ spec:
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
 
+    service:
+      app:
+        controller: govee2mqtt
+        ports:
+          http:
+            port: 4002
+
     persistence:
       data:
         type: emptyDir
