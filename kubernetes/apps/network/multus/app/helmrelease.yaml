@@ -20,6 +20,8 @@ spec:
     controllers:
       multus:
         type: daemonset
+        serviceAccount:
+          identifier: multus
         initContainers:
           cni-plugins:
             image:
@@ -40,7 +42,7 @@ spec:
             securityContext:
               privileged: true
     serviceAccount:
-      name: *app
+      multus: {}
     defaultPodOptions:
       hostNetwork: true
     persistence:
