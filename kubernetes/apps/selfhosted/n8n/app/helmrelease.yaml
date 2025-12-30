@@ -50,6 +50,7 @@ spec:
               N8N_LOG_LEVEL: info
               N8N_LOG_OUTPUT: console
               N8N_RUNNERS_ENABLED: true
+              WEBHOOK_SECURITY_MODE: permissive
             envFrom:
               - secretRef:
                   name: "{{ .Release.Name }}-secret"
