@@ -34,32 +34,41 @@ spec:
     name: github-webhook-token-secret
   resources:
     # Image Repositories
-    - kind: ImageRepository
+    - apiVersion: image.toolkit.fluxcd.io/v1
+      kind: ImageRepository
       name: cookjam
       namespace: selfhosted
-    - kind: ImageRepository
+    - apiVersion: image.toolkit.fluxcd.io/v1
+      kind: ImageRepository
       name: cookjam-web-api
       namespace: selfhosted
-    - kind: ImageRepository
+    - apiVersion: image.toolkit.fluxcd.io/v1
+      kind: ImageRepository
       name: cookjam-web-chat-api
       namespace: selfhosted
-    - kind: ImageRepository
+    - apiVersion: image.toolkit.fluxcd.io/v1
+      kind: ImageRepository
       name: cookjam-web-worker
       namespace: selfhosted
     # Image Policies
-    - kind: ImagePolicy
+    - apiVersion: image.toolkit.fluxcd.io/v1
+      kind: ImagePolicy
       name: cookjam
       namespace: selfhosted
-    - kind: ImagePolicy
+    - apiVersion: image.toolkit.fluxcd.io/v1
+      kind: ImagePolicy
       name: cookjam-web-api
       namespace: selfhosted
-    - kind: ImagePolicy
+    - apiVersion: image.toolkit.fluxcd.io/v1
+      kind: ImagePolicy
       name: cookjam-web-chat-api
       namespace: selfhosted
-    - kind: ImagePolicy
+    - apiVersion: image.toolkit.fluxcd.io/v1
+      kind: ImagePolicy
       name: cookjam-web-worker
       namespace: selfhosted
     # Image Update Automation
-    - kind: ImageUpdateAutomation
+    - apiVersion: image.toolkit.fluxcd.io/v1
+      kind: ImageUpdateAutomation
       name: cookjam-gitops
       namespace: selfhosted
