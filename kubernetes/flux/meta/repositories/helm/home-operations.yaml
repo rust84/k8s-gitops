@@ -1,0 +1,10 @@
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: HelmRepository
+metadata:
+  name: home-operations
+  namespace: flux-system
+spec:
+  interval: 1h
+  url: oci://ghcr.io/home-operations/charts
+  type: oci

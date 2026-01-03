@@ -1,0 +1,28 @@
+---
+apiVersion: tuppr.home-operations.com/v1alpha1
+kind: TalosUpgrade
+metadata:
+  name: talos
+spec:
+  talos:
+    version: ${TALOS_VERSION}
+
+  policy:
+    debug: true
+    force: false
+    rebootMode: default
+    placement: soft
+    timeout: 30m
+
+  healthChecks:
+    - apiVersion: v1
+      kind: Node
+      description: "All nodes must be Ready"
+      expr: |
+        status.conditions.exists(c, c.type == "Ready" && c.status == "True")
+      timeout: 10m
+
+  talosctl:
+    image:
+      repository: ghcr.io/siderolabs/talosctl
+      tag: ${TALOS_VERSION}

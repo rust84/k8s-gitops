@@ -1,0 +1,51 @@
+---
+# Controller deployment
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: tuppr
+  namespace: system-upgrade
+spec:
+  targetNamespace: system-upgrade
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: tuppr
+  interval: 30m
+  timeout: 5m
+  path: "./kubernetes/apps/system-upgrade/tuppr/app"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: true
+---
+# Upgrade resources
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: tuppr-resources
+  namespace: system-upgrade
+spec:
+  targetNamespace: system-upgrade
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: tuppr-resources
+  interval: 30m
+  timeout: 5m
+  path: "./kubernetes/apps/system-upgrade/tuppr/resources"
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  wait: false
+  dependsOn:
+    - name: tuppr
+      namespace: system-upgrade
+  postBuild:
+    substitute:
+      # renovate: depName=ghcr.io/siderolabs/installer datasource=docker
+      TALOS_VERSION: v1.11.3
+      # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
+      KUBERNETES_VERSION: v1.34.1
