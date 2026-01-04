@@ -118,7 +118,7 @@ radarr:
   root_folder_path: /media/movies
   monitor: true
   availability: announced
-  quality_profile: "SQP-1 (2160p)"
+  quality_profile: "SQP-1 WEB (2160p)"
   tag:
   search: false
   radarr_path:
