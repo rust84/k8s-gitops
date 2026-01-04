@@ -6,5 +6,4 @@ namespace: system-upgrade
 components:
   - ../../flux/components/common
 resources:
-  # - ./system-upgrade-controller/ks.yaml  # Replaced by tuppr
   - ./tuppr/ks.yaml
