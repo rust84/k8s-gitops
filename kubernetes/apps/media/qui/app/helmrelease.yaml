@@ -74,6 +74,13 @@ spec:
     persistence:
       config:
         existingClaim: *app
+      media:
+        type: nfs
+        server: duriel.internal
+        path: /tank/Media
+        globalMounts:
+          - path: /media/downloads/torrents
+            subPath: downloads/torrents
     ingress:
       app:
         className: internal
