@@ -9,7 +9,6 @@ resources:
   - ./audiobookshelf/ks.yaml
   - ./autobrr/ks.yaml
   - ./bazarr/ks.yaml
-  - ./cross-seed/ks.yaml
   - ./jellyfin/ks.yaml
   - ./seerr/ks.yaml
   - ./kometa/ks.yaml
