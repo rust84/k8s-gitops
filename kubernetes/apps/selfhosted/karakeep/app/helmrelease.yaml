@@ -39,7 +39,7 @@ spec:
               DATA_DIR: /data
               NEXTAUTH_URL: https://karakeep.${SECRET_DOMAIN}
               COREPACK_INTEGRITY_KEYS: "0"
-              DISABLE_SIGNUPS: "true"
+              DISABLE_SIGNUPS: "false"
               DISABLE_NEW_RELEASE_CHECK: "true"
               # Services
               BROWSER_WEB_URL: http://karakeep-chrome.selfhosted.svc.cluster.local:9222
