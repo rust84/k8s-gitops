@@ -10,6 +10,7 @@ resources:
   - ./cookjam/ks.yaml
   - ./hajimari/ks.yaml
   - ./immich/ks.yaml
+  - ./karakeep/ks.yaml
   - ./n8n/ks.yaml
   - ./ntfy/ks.yaml
   - ./palmr/ks.yaml
