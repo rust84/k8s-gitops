@@ -28,6 +28,18 @@ spec:
               tag: "main"
             env:
               VITE_INFERENCE_SERVICE_URL: https://${SECRET_APP_PRD_DOMAIN}/api
+              NODE_ENV: production
+              METRICS_PORT: 3001
+              SUPABASE_URL:
+                valueFrom:
+                  secretKeyRef:
+                    name: &secret cookjam-secret
+                    key: SUPABASE_URL
+              SUPABASE_SERVICE_ROLE_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: *secret
+                    key: SUPABASE_SERVICE_ROLE_KEY
             securityContext: &sc
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false

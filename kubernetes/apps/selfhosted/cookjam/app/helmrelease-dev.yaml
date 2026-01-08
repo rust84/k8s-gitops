@@ -75,6 +75,7 @@ spec:
               tag: "develop"
             env:
               CHAT_ADMIN_ONLY: "true"
+              NODE_ENV: dev
               METRICS_PORT: 3001
               SUPABASE_URL:
                 valueFrom:
@@ -85,7 +86,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: *secret
-                    key: SUPABASE_SERVICE_KEY
+                    key: SUPABASE_SERVICE_ROLE_KEY
             securityContext: &sc
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: false
@@ -183,7 +184,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: *secret
-                    key: SUPABASE_SERVICE_KEY
+                    key: SUPABASE_SERVICE_ROLE_KEY
             securityContext: *sc
             probes:
               liveness:
@@ -425,7 +426,7 @@ spec:
         images:
           - name: ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working
             newTag: develop
-            digest: sha256:9833aceebac0eecb9ada452a2ce280b5ae6b1b275e0e9a4179160810bdeed99b # {"$imagepolicy": "selfhosted:cookjam-dev:digest"}
+            digest: sha256:63b5c545ca1f05a2331386fe45db2f324ae62cb6fe2f06672362967128dfbd71 # {"$imagepolicy": "selfhosted:cookjam-dev:digest"}
           - name: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-api
             newTag: latest
             digest: sha256:01bac33570640d0bc2e8dee7c1b3620661bd5b7f351c58516c70ac104ad2a5ca # {"$imagepolicy": "selfhosted:cookjam-web-api:digest"}
