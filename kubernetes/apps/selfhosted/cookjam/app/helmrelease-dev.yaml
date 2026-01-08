@@ -184,7 +184,7 @@ spec:
                 valueFrom:
                   secretKeyRef:
                     name: *secret
-                    key: SUPABASE_SERVICE_KEY
+                    key: SUPABASE_SERVICE_ROLE_KEY
             securityContext: *sc
             probes:
               liveness:
