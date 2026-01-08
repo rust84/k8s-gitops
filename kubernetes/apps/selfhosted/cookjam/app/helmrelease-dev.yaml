@@ -75,6 +75,7 @@ spec:
               tag: "develop"
             env:
               CHAT_ADMIN_ONLY: "true"
+              NODE_ENV: dev
               METRICS_PORT: 3001
               SUPABASE_URL:
                 valueFrom:
