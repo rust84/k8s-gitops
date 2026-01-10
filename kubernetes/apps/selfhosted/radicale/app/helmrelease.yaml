@@ -35,7 +35,7 @@ spec:
           app:
             image:
               repository: ghcr.io/kozea/radicale
-              tag: 3.5.10
+              tag: 3.6.0
             args:
               - --hosts
               - 0.0.0.0:5232
