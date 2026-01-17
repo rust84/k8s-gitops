@@ -120,3 +120,29 @@ spec:
             readOnly: true
       tmp:
         type: emptyDir
+    # TODO: Uncomment to migrate from ingress-nginx to Envoy Gateway
+    # route:
+    #   app:
+    #     hostnames:
+    #       - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+    #     parentRefs:
+    #       - name: envoy-external
+    #         namespace: network
+    #         sectionName: https
+    #     rules:
+    #       # Ref: https://forums.plex.tv/t/external-srt-subtitles-are-not-working-w-reverse-proxy/886540
+    #       - backendRefs:
+    #           - identifier: app
+    #             port: 32400
+    #         filters:
+    #           - type: RequestHeaderModifier
+    #             requestHeaderModifier:
+    #               remove:
+    #                 - Range
+    #         matches:
+    #           - path:
+    #               type: PathPrefix
+    #               value: /library/streams
+    #       - backendRefs:
+    #           - identifier: app
+    #             port: 32400
