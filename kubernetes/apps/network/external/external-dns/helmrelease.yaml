@@ -44,7 +44,7 @@ spec:
       - --ignore-ingress-tls-spec
       - --ingress-class=external
     policy: sync
-    sources: ["crd", "ingress"]
+    sources: ["crd", "ingress", "gateway-httproute"]
     txtPrefix: k8s.main.
     txtOwnerId: k8s
     domainFilters:
