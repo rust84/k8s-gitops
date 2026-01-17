@@ -10,7 +10,7 @@ spec:
   gatewayClassName: envoy
   infrastructure:
     annotations:
-      lbipam.cilium.io/ips: "10.20.0.126"
+      lbipam.cilium.io/ips: "10.20.0.127"
   listeners:
     - name: http
       port: 80
