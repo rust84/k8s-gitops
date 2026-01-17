@@ -8,6 +8,7 @@ spec:
   chartRef:
     kind: OCIRepository
     name: envoy-gateway
+    namespace: flux-system
   install:
     crds: CreateReplace
     remediation:
