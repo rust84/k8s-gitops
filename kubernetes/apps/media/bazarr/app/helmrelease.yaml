@@ -107,6 +107,10 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 6767
     persistence:
       config:
         existingClaim: bazarr
