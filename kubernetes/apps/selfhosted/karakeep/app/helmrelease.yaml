@@ -156,19 +156,17 @@ spec:
           http:
             port: 7700
 
-    ingress:
+    route:
       app:
-        className: internal
-        hosts:
-          - host: &host karakeep.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames:
+          - "karakeep.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 3000
 
     persistence:
       data:

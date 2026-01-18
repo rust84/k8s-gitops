@@ -56,20 +56,13 @@ spec:
         ports:
           http:
             port: 9000
-    ingress:
+    route:
       main:
-        enabled: true
-        className: internal
-        hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
     persistence:
       config:
         existingClaim: *app

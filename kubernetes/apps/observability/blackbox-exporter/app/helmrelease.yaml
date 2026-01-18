@@ -27,17 +27,9 @@ spec:
     image:
       registry: quay.io
       repository: prometheus/blackbox-exporter
+
     ingress:
-      enabled: true
-      className: internal
-      hosts:
-        - host: &host "blackbox.${SECRET_DOMAIN}"
-          paths:
-            - path: /
-              pathType: Prefix
-      tls:
-        - hosts:
-            - *host
+      enabled: false
 
     podSecurityContext:
       sysctls:

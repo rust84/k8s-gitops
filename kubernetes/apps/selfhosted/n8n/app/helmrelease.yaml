@@ -79,16 +79,13 @@ spec:
           n8n:
             app:
               - path: /home/node/.n8n
-    ingress:
+    route:
       app:
-        className: internal
-        hosts:
-          - host: *host
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "n8n.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
     service:
       app:
         controller: *app
