@@ -161,7 +161,7 @@ spec:
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Selfhosted
-          gethomepage.dev/icon: hoarder.png
+          gethomepage.dev/icon: karakeep.png
           gethomepage.dev/name: Karakeep
         hostnames:
           - "karakeep.${SECRET_DOMAIN}"

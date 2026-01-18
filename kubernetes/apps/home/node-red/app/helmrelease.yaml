@@ -74,6 +74,11 @@ spec:
             port: 1880
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home
+          gethomepage.dev/icon: node-red.png
+          gethomepage.dev/name: Node-RED
         hostnames:
           - "{{ .Release.Name }}.${SECRET_DOMAIN}"
         parentRefs:

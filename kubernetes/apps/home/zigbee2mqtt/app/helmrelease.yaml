@@ -89,6 +89,11 @@ spec:
         fsGroupChangePolicy: OnRootMismatch
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home
+          gethomepage.dev/icon: zigbee2mqtt.png
+          gethomepage.dev/name: Zigbee2MQTT
         hostnames:
           - "zigbee.${SECRET_DOMAIN}"
         parentRefs:

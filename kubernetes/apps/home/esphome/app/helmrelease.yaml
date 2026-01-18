@@ -63,6 +63,11 @@ spec:
             port: 6052
     route:
       main:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home
+          gethomepage.dev/icon: esphome.png
+          gethomepage.dev/name: ESPHome
         hostnames:
           - "{{ .Release.Name }}.${SECRET_DOMAIN}"
         parentRefs:

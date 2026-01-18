@@ -71,6 +71,11 @@ spec:
             port: 8554
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home
+          gethomepage.dev/icon: frigate.png
+          gethomepage.dev/name: Frigate
         hostnames:
           - "{{ .Release.Name }}.${SECRET_DOMAIN}"
         parentRefs:
