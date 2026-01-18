@@ -86,6 +86,10 @@ spec:
       homepage: {}
     persistence:
       config:
+        type: emptyDir
+        globalMounts:
+          - path: /app/config
+      homepage-config:
         type: configMap
         name: homepage-config
         globalMounts:
