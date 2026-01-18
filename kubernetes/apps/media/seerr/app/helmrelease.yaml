@@ -72,7 +72,10 @@ spec:
     ingress:
       app:
         annotations:
-          hajimari.io/icon: mdi:jellyfish-outline
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: overseerr.png
+          gethomepage.dev/name: Seerr
         className: external
         hosts:
           - host: requests.${SECRET_DOMAIN}

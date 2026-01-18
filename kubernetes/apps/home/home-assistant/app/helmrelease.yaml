@@ -118,7 +118,10 @@ spec:
     ingress:
       app:
         annotations:
-          hajimari.io/icon: "home-automation"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home
+          gethomepage.dev/icon: home-assistant.png
+          gethomepage.dev/name: Home Assistant
         className: external
         hosts:
           - host: hass.${SECRET_DOMAIN}

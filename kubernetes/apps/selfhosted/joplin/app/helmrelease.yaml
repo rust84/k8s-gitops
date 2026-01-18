@@ -76,7 +76,10 @@ spec:
         enabled: true
         className: external
         annotations:
-          hajimari.io/icon: notebook-multiple
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Selfhosted
+          gethomepage.dev/icon: joplin.png
+          gethomepage.dev/name: Joplin
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:

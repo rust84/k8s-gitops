@@ -70,7 +70,10 @@ spec:
       app:
         className: external
         annotations:
-          hajimari.io/icon: "book-open"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: audiobookshelf.png
+          gethomepage.dev/name: Audiobookshelf
         hosts:
           - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
             paths:

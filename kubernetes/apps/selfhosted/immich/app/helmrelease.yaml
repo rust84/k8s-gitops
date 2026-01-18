@@ -149,7 +149,10 @@ spec:
         enabled: true
         className: external
         annotations:
-          hajimari.io/icon: "camera"
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Selfhosted
+          gethomepage.dev/icon: immich.png
+          gethomepage.dev/name: Immich
           nginx.ingress.kubernetes.io/proxy-body-size: "0"
         hosts:
           - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
