@@ -83,6 +83,11 @@ spec:
             subPath: downloads/torrents
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: qui.png
+          gethomepage.dev/name: Qui
         hostnames:
           - "qui.${SECRET_DOMAIN}"
         parentRefs:

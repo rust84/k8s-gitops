@@ -58,6 +58,11 @@ spec:
             port: 9000
     route:
       main:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Selfhosted
+          gethomepage.dev/icon: thelounge.png
+          gethomepage.dev/name: The Lounge
         hostnames:
           - "{{ .Release.Name }}.${SECRET_DOMAIN}"
         parentRefs:

@@ -101,6 +101,11 @@ spec:
             port: *port
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Selfhosted
+          gethomepage.dev/icon: paperless.png
+          gethomepage.dev/name: Paperless
         hostnames:
           - "{{ .Release.Name }}.${SECRET_DOMAIN}"
         parentRefs:

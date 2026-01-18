@@ -102,6 +102,11 @@ spec:
             port: 9000
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: bazarr.png
+          gethomepage.dev/name: Bazarr
         hostnames:
           - "{{ .Release.Name }}.${SECRET_DOMAIN}"
         parentRefs:

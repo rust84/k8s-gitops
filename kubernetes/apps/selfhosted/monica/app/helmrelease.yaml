@@ -58,6 +58,11 @@ spec:
             port: 80
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Selfhosted
+          gethomepage.dev/icon: monica.png
+          gethomepage.dev/name: Monica
         hostnames:
           - "{{ .Release.Name }}.${SECRET_DOMAIN}"
         parentRefs:

@@ -67,6 +67,11 @@ spec:
             port: *port
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/icon: tautulli.png
+          gethomepage.dev/name: Tautulli
         hostnames:
           - "{{ .Release.Name }}.${SECRET_DOMAIN}"
         parentRefs:

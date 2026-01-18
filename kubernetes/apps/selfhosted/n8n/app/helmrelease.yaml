@@ -81,6 +81,11 @@ spec:
               - path: /home/node/.n8n
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Selfhosted
+          gethomepage.dev/icon: n8n.png
+          gethomepage.dev/name: n8n
         hostnames:
           - "n8n.${SECRET_DOMAIN}"
         parentRefs:

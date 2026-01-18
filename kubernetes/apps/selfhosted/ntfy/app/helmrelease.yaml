@@ -51,6 +51,11 @@ spec:
             port: 8080
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Selfhosted
+          gethomepage.dev/icon: ntfy.png
+          gethomepage.dev/name: Ntfy
         hostnames:
           - "{{ .Release.Name }}.${SECRET_DOMAIN}"
         parentRefs:
