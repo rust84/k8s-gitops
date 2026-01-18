@@ -91,16 +91,7 @@ spec:
       podAnnotations: &podAnnotations
         configmap.reloader.stakater.com/reload: *configMap
       ingress:
-        enabled: true
-        ingressClassName: internal
-        annotations:
-          auth.home.arpa/enabled: "true"
-          nginx.ingress.kubernetes.io/auth-signin: https://thanos.${SECRET_DOMAIN}/outpost.goauthentik.io/start?rd=$escaped_request_uri
-        hosts:
-          - &host thanos.${SECRET_DOMAIN}
-        tls:
-          - hosts:
-              - *host
+        enabled: false
     rule:
       enabled: true
       replicas: 3

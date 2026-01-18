@@ -268,10 +268,14 @@ spec:
       - vonage-status-panel
     serviceMonitor:
       enabled: true
-    ingress:
-      enabled: true
-      ingressClassName: internal
-      hosts: ["grafana.${SECRET_DOMAIN}"]
+    route:
+      main:
+        enabled: true
+        hostnames:
+          - "grafana.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
     persistence:
       type: pvc
       enabled: true

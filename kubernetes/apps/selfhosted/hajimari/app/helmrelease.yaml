@@ -111,18 +111,7 @@ spec:
               url: "https://tildes.net/"
     ingress:
       main:
-        annotations:
-          hajimari.io/enable: "false"
-        enabled: true
-        ingressClassName: internal
-        hosts:
-          - host: &host "hajimari.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                pathType: Prefix
-        tls:
-          - hosts:
-              - *host
+        enabled: false
     persistence:
       data:
         existingClaim: hajimari-config

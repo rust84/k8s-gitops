@@ -126,14 +126,14 @@ spec:
     kubeEtcd:
       <<: *kubeControllerManager # etcd runs on control plane nodes
     prometheus:
-      ingress:
-        enabled: true
-        pathType: Prefix
-        ingressClassName: internal
-        hosts:
-          - &host prometheus.${SECRET_DOMAIN}
-        tls:
-          - hosts: [*host]
+      route:
+        main:
+          enabled: true
+          hostnames:
+            - "prometheus.${SECRET_DOMAIN}"
+          parentRefs:
+            - name: envoy-internal
+              namespace: network
       thanosService:
         enabled: true
       thanosServiceMonitor:

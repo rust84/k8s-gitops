@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - dashboard
   - helmrelease.yaml
+  - httproute.yaml
   - object-bucket-claim.yaml
 configMapGenerator:
   - name: thanos-cache-configmap
