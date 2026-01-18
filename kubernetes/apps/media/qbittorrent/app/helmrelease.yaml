@@ -179,18 +179,13 @@ spec:
           http:
             port: *port
 
-    ingress:
+    route:
       app:
-        className: internal
-        annotations:
-          hajimari.io/icon: cloud-download
-        hosts:
-          - host: "qbittorrent.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "qbittorrent.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
 
     persistence:
       config:
