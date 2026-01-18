@@ -134,6 +134,10 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 12321
     persistence:
       config:
         existingClaim: *app
