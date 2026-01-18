@@ -72,19 +72,13 @@ spec:
         ports:
           http:
             port: 1880
-    ingress:
+    route:
       app:
-        className: internal
-        annotations:
-          hajimari.io/icon: "resistor-nodes"
-          nginx.ingress.kubernetes.io/proxy-body-size: 100M 
-        hosts:
-          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
     persistence:
       data:
         existingClaim: *app

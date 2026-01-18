@@ -215,20 +215,13 @@ spec:
             port: 3030
             targetPort: 3030
 
-    ingress:
+    route:
       main:
-        enabled: true
-        className: internal
-        hosts:
-          - host: &host "langfuse.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: langfuse
-                  port: http
-        tls:
-          - hosts:
-              - *host
+        hostnames:
+          - "langfuse.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
 
     persistence:
       data:

@@ -127,15 +127,13 @@ spec:
                 service:
                   identifier: app
                   port: http
+    route:
       code-server:
-        className: internal
-        hosts:
-          - host: hass-vscode.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: code-server
+        hostnames:
+          - "hass-vscode.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
     persistence:
       config:
         existingClaim: *app

@@ -87,18 +87,13 @@ spec:
         runAsGroup: 568
         fsGroup: 568
         fsGroupChangePolicy: OnRootMismatch
-    ingress:
+    route:
       app:
-        className: internal
-        hosts:
-          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
-            paths: &paths
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-          - host: zigbee.${SECRET_DOMAIN}
-            paths: *paths
+        hostnames:
+          - "zigbee.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
     persistence:
       config:
         existingClaim: *app
