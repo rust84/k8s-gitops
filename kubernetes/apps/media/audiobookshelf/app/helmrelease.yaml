@@ -78,10 +78,6 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: http
     persistence:
       config:
         existingClaim: audiobookshelf-config # TODO: convert to volsync volume

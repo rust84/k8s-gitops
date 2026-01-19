@@ -185,10 +185,10 @@ spec:
                   value: /api
             backendRefs:
               - identifier: ml
-                port: http
+                port: 8080
           - backendRefs:
               - identifier: app
-                port: http
+                port: 8080
     persistence:
       config:
         enabled: false

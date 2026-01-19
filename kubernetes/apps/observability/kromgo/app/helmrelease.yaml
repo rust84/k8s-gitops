@@ -80,10 +80,6 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
-        rules:
-          - backendRefs:
-              - identifier: app
-                port: http
     persistence:
       config-file:
         type: configMap

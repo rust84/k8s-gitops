@@ -357,10 +357,10 @@ spec:
                   value: /api
             backendRefs:
               - identifier: ml
-                port: http
+                port: 8080
           - backendRefs:
               - identifier: app
-                port: http
+                port: 8080
       chat:
         hostnames:
           - "${SECRET_APP_DOMAIN}"
@@ -380,7 +380,7 @@ spec:
                     replacePrefixMatch: /
             backendRefs:
               - identifier: chat
-                port: http
+                port: 8080
       backend-gateway:
         hostnames:
           - "backend-gateway-dev.${SECRET_APP_DOMAIN}"
@@ -390,7 +390,7 @@ spec:
         rules:
           - backendRefs:
               - identifier: backend-gateway
-                port: http
+                port: 8000
     persistence:
       cache:
         type: emptyDir

@@ -159,7 +159,7 @@ spec:
         rules:
           - backendRefs:
               - identifier: immich
-                port: http
+                port: 2283
     persistence:
       library:
         existingClaim: immich-nfs

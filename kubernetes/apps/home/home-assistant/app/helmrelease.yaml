@@ -130,7 +130,7 @@ spec:
         rules:
           - backendRefs:
               - identifier: app
-                port: http
+                port: 8123
       code-server:
         hostnames:
           - "hass-vscode.${SECRET_DOMAIN}"
