@@ -34,16 +34,11 @@ spec:
         env:
           - name: UNIFI_HOST
             value: https://192.168.1.1
-          - name: UNIFI_USER
+          - name: UNIFI_API_KEY
             valueFrom:
               secretKeyRef:
                 name: &secret unifi-dns-secret
-                key: EXTERNAL_DNS_UNIFI_USER
-          - name: UNIFI_PASS
-            valueFrom:
-              secretKeyRef:
-                name: *secret
-                key: EXTERNAL_DNS_UNIFI_PASS
+                key: api-key
         livenessProbe:
           httpGet:
             path: /healthz
