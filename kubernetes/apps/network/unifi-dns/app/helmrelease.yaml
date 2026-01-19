@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app internal-external-dns
+  name: &app unifi-dns
 spec:
   interval: 30m
   chart:
@@ -24,6 +24,7 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    fullnameOverride: *app
     provider:
       name: webhook
       webhook:
@@ -36,7 +37,7 @@ spec:
           - name: UNIFI_USER
             valueFrom:
               secretKeyRef:
-                name: &secret internal-external-dns-secret
+                name: &secret unifi-dns-secret
                 key: EXTERNAL_DNS_UNIFI_USER
           - name: UNIFI_PASS
             valueFrom:
@@ -55,14 +56,15 @@ spec:
             port: http-webhook
           initialDelaySeconds: 10
           timeoutSeconds: 5
+    triggerLoopOnEvent: true
     policy: sync
     sources: ["gateway-httproute", "service"]
     txtOwnerId: k8s
     txtPrefix: k8s.main.
     domainFilters:
-    - "${SECRET_DOMAIN}"
-    - "${SECRET_APP_DOMAIN}"
-    - "${SECRET_APP_PRD_DOMAIN}"
+      - "${SECRET_DOMAIN}"
+      - "${SECRET_APP_DOMAIN}"
+      - "${SECRET_APP_PRD_DOMAIN}"
     serviceMonitor:
       enabled: true
     podAnnotations:

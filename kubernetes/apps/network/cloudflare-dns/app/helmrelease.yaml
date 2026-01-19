@@ -3,7 +3,7 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
-  name: &app external-external-dns
+  name: &app cloudflare-dns
 spec:
   interval: 30m
   chart:
@@ -27,13 +27,14 @@ spec:
       strategy: rollback
       retries: 3
   values:
+    fullnameOverride: *app
     provider:
       name: cloudflare
     env:
       - name: &name CF_API_TOKEN
         valueFrom:
           secretKeyRef:
-            name: &secret external-external-dns-secret 
+            name: &secret cloudflare-dns-secret
             key: *name
     extraArgs:
       - --cloudflare-dns-records-per-page=1000
@@ -41,14 +42,15 @@ spec:
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
       - --gateway-name=envoy-external
+    triggerLoopOnEvent: true
     policy: sync
     sources: ["crd", "gateway-httproute"]
     txtPrefix: k8s.main.
     txtOwnerId: k8s
     domainFilters:
-    - "${SECRET_DOMAIN}"
-    - "${SECRET_APP_DOMAIN}"
-    - "${SECRET_APP_PRD_DOMAIN}"
+      - "${SECRET_DOMAIN}"
+      - "${SECRET_APP_DOMAIN}"
+      - "${SECRET_APP_PRD_DOMAIN}"
     serviceMonitor:
       enabled: true
     podAnnotations:

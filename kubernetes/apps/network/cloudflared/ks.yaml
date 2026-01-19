@@ -3,30 +3,6 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app external-external-dns
-  namespace: &namespace network
-spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  path: ./kubernetes/apps/network/external/external-dns
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  dependsOn:
-    - name: external-secrets
-      namespace: external-secrets
-  interval: 30m
-  targetNamespace: *namespace
-  timeout: 5m
-  wait: true
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: &app cloudflared
   namespace: &namespace network
 spec:
@@ -34,10 +10,10 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: external-external-dns
+    - name: cloudflare-dns
       namespace: network
   interval: 30m
-  path: ./kubernetes/apps/network/external/cloudflared/default
+  path: ./kubernetes/apps/network/cloudflared/default
   prune: true
   sourceRef:
     kind: GitRepository
@@ -58,10 +34,10 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: external-external-dns
+    - name: cloudflare-dns
       namespace: network
   interval: 30m
-  path: ./kubernetes/apps/network/external/cloudflared/cookjam
+  path: ./kubernetes/apps/network/cloudflared/cookjam
   prune: true
   sourceRef:
     kind: GitRepository

@@ -1,0 +1,12 @@
+---
+originRequest:
+  http2Origin: true
+  keepAliveTimeout: 3600s
+  originServerName: "external.${SECRET_DOMAIN}"
+  tcpKeepAlive: 7200s
+ingress:
+  - hostname: "*.${SECRET_DOMAIN}"
+    service: https://envoy-external.network.svc.cluster.local:443
+    originRequest:
+      noTLSVerify: true
+  - service: http_status:404

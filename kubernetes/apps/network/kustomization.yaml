@@ -6,7 +6,8 @@ namespace: network
 components:
   - ../../flux/components/common
 resources:
-  - ./external/ks.yaml
-  - ./internal/ks.yaml
-  - ./multus/ks.yaml
+  - ./cloudflare-dns/ks.yaml
+  - ./cloudflared/ks.yaml
   - ./envoy-gateway/ks.yaml
+  - ./multus/ks.yaml
+  - ./unifi-dns/ks.yaml
