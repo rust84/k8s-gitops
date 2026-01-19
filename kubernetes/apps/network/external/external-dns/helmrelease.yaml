@@ -40,9 +40,7 @@ spec:
       - --cloudflare-proxied
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
-      - --events
-      - --ignore-ingress-tls-spec
-      - --ingress-class=external
+      - --gateway-name=envoy-external
     policy: sync
     sources: ["crd", "gateway-httproute"]
     txtPrefix: k8s.main.

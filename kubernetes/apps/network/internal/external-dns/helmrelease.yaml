@@ -55,8 +55,6 @@ spec:
             port: http-webhook
           initialDelaySeconds: 10
           timeoutSeconds: 5
-    extraArgs:
-      - --ignore-ingress-tls-spec
     policy: sync
     sources: ["gateway-httproute", "service"]
     txtOwnerId: k8s
