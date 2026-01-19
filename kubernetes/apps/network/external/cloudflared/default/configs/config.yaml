@@ -1,6 +1,9 @@
 ---
-originRequest:
-  originServerName: "external.${SECRET_DOMAIN}"
+# NOTE: originServerName removed - envoy gateway uses SNI to match listeners,
+# so cloudflared must use the actual hostname (e.g., hass.roswellian.dev) not
+# a fixed value, otherwise envoy returns 404 (route_not_found)
+# originRequest:
+#   originServerName: "external.${SECRET_DOMAIN}"
 
 ingress:
   - hostname: "${SECRET_DOMAIN}"
