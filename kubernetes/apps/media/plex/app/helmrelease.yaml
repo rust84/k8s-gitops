@@ -80,28 +80,35 @@ spec:
         ports:
           http:
             port: *port
-    ingress:
+    route:
       app:
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Media
           gethomepage.dev/icon: plex.png
           gethomepage.dev/name: Plex
-          nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
-          nginx.ingress.kubernetes.io/server-snippet: |
-            location ~ ^/library/streams {
-              proxy_set_header        Range "";
-              proxy_pass              http://plex.media.svc.cluster.local:32400;
-              proxy_http_version      1.1;
-            }
-        className: external
-        hosts:
-          - host: "{{ .Release.Name }}.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+        rules:
+          # Ref: https://forums.plex.tv/t/external-srt-subtitles-are-not-working-w-reverse-proxy/886540
+          - backendRefs:
+              - identifier: app
+                port: http
+            filters:
+              - type: RequestHeaderModifier
+                requestHeaderModifier:
+                  remove:
+                    - Range
+            matches:
+              - path:
+                  type: PathPrefix
+                  value: /library/streams
+          - backendRefs:
+              - identifier: app
+                port: http
     persistence:
       config:
         existingClaim: *app
@@ -124,28 +131,3 @@ spec:
             readOnly: true
       tmp:
         type: emptyDir
-    # TODO: Uncomment to migrate from ingress-nginx to Envoy Gateway
-    # route:
-    #   app:
-    #     hostnames:
-    #       - "{{ .Release.Name }}.${SECRET_DOMAIN}"
-    #     parentRefs:
-    #       - name: envoy-external
-    #         namespace: network
-    #     rules:
-    #       # Ref: https://forums.plex.tv/t/external-srt-subtitles-are-not-working-w-reverse-proxy/886540
-    #       - backendRefs:
-    #           - identifier: app
-    #             port: 32400
-    #         filters:
-    #           - type: RequestHeaderModifier
-    #             requestHeaderModifier:
-    #               remove:
-    #                 - Range
-    #         matches:
-    #           - path:
-    #               type: PathPrefix
-    #               value: /library/streams
-    #       - backendRefs:
-    #           - identifier: app
-    #             port: 32400

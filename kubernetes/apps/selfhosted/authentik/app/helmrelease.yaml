@@ -57,15 +57,7 @@ spec:
           imagePullPolicy: IfNotPresent
           envFrom: *envFrom
       ingress:
-        enabled: true
-        ingressClassName: external
-        hosts:
-          - auth.${SECRET_DOMAIN}
-        paths:
-          - "/"
-        tls:
-          - hosts:
-              - auth.${SECRET_DOMAIN}
+        enabled: false
       metrics:
         enabled: true
         serviceMonitor:

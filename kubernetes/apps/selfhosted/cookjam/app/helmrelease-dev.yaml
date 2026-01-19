@@ -343,67 +343,54 @@ spec:
             port: *port
           metrics:
             port: *metrics
-    ingress:
+    route:
       main:
-        enabled: true
-        annotations:
-          kubernetes.io/tls-acme: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_APP_DOMAIN}"
-        className: external
-        hosts:
-          - host: &host "${SECRET_APP_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-              - path: /api
-                service:
-                  identifier: ml
-                  port: http
-        tls:
-          - secretName: cookjam-dev.tls
-            hosts:
-              - *host
+        hostnames:
+          - "${SECRET_APP_DOMAIN}"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /api
+            backendRefs:
+              - identifier: ml
+                port: http
+          - backendRefs:
+              - identifier: app
+                port: http
       chat:
-        enabled: true
-        annotations:
-          # kubernetes.io/tls-acme: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_APP_DOMAIN}"
-          nginx.ingress.kubernetes.io/rewrite-target: /$2
-          nginx.ingress.kubernetes.io/use-regex: "true"
-        className: external
-        hosts:
-          - host: &host "${SECRET_APP_DOMAIN}"
-            paths:
-              - path: /chat(/|$)(.*)
-                service:
-                  identifier: chat
-                  port: http
-        tls:
-          - secretName: cookjam-dev-chat.tls
-            hosts:
-              - *host
+        hostnames:
+          - "${SECRET_APP_DOMAIN}"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /chat
+            filters:
+              - type: URLRewrite
+                urlRewrite:
+                  path:
+                    type: ReplacePrefixMatch
+                    replacePrefixMatch: /
+            backendRefs:
+              - identifier: chat
+                port: http
       backend-gateway:
-        enabled: true
-        annotations:
-          kubernetes.io/tls-acme: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_APP_DOMAIN}"
-        className: external
-        hosts:
-          - host: &host "backend-gateway-dev.${SECRET_APP_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: backend-gateway
-                  port: http
-        tls:
-          - secretName: cookjam-dev-backend.tls
-            hosts:
-              - *host
+        hostnames:
+          - "backend-gateway-dev.${SECRET_APP_DOMAIN}"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: backend-gateway
+                port: http
     persistence:
       cache:
         type: emptyDir

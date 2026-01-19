@@ -115,22 +115,22 @@ spec:
         ports:
           sonos:
             port: 1400
-    ingress:
+    route:
       app:
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Home
           gethomepage.dev/icon: home-assistant.png
           gethomepage.dev/name: Home Assistant
-        className: external
-        hosts:
-          - host: hass.${SECRET_DOMAIN}
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-    route:
+        hostnames:
+          - "hass.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: http
       code-server:
         hostnames:
           - "hass-vscode.${SECRET_DOMAIN}"

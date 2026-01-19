@@ -171,29 +171,24 @@ spec:
             port: *port
           metrics:
             port: *metrics
-    ingress:
+    route:
       main:
-        enabled: true
-        annotations:
-          kubernetes.io/tls-acme: "true"
-          cert-manager.io/cluster-issuer: letsencrypt-production
-          external-dns.alpha.kubernetes.io/target: "external.${SECRET_APP_DOMAIN}" # Match cloudflared origin cert
-        className: external
-        hosts:
-          - host: &host "${SECRET_APP_PRD_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: app
-                  port: http
-              - path: /api
-                service:
-                  identifier: ml
-                  port: http
-        tls:
-          - secretName: cookjam-prd.tls
-            hosts:
-              - *host
+        hostnames:
+          - "${SECRET_APP_PRD_DOMAIN}"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+        rules:
+          - matches:
+              - path:
+                  type: PathPrefix
+                  value: /api
+            backendRefs:
+              - identifier: ml
+                port: http
+          - backendRefs:
+              - identifier: app
+                port: http
     persistence:
       config:
         enabled: false

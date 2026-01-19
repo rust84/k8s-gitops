@@ -144,27 +144,22 @@ spec:
         ports:
           http:
             port: 3003
-    ingress:
+    route:
       main:
-        enabled: true
-        className: external
         annotations:
           gethomepage.dev/enabled: "true"
           gethomepage.dev/group: Selfhosted
           gethomepage.dev/icon: immich.png
           gethomepage.dev/name: Immich
-          nginx.ingress.kubernetes.io/proxy-body-size: "0"
-        hosts:
-          - host: &host "{{ .Release.Name }}.${SECRET_DOMAIN}"
-            paths:
-              - path: /
-                service:
-                  identifier: immich
-                  port: http
-        tls:
-          - secretName: "tls.{{ .Release.Name }}"
-            hosts:
-              - *host
+        hostnames:
+          - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-external
+            namespace: network
+        rules:
+          - backendRefs:
+              - identifier: immich
+                port: http
     persistence:
       library:
         existingClaim: immich-nfs

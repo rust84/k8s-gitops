@@ -78,6 +78,7 @@ metadata:
   name: &app external-ingress-nginx
   namespace: &namespace network
 spec:
+  suspend: true
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
