@@ -8,20 +8,23 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  # TODO: Add volsync component after initial deployment for backups
-  # components:
-  #   - ../../../../flux/components/volsync
+  components:
+    - ../../../../flux/components/volsync
   dependsOn:
     - name: external-secrets
       namespace: external-secrets
     - name: rook-ceph-cluster
       namespace: rook-ceph
+    - name: volsync
+      namespace: volsync-system
   interval: 1h
   path: ./kubernetes/apps/selfhosted/karakeep/app
   postBuild:
     substitute:
       APP: *app
       VOLSYNC_CAPACITY: 10Gi
+      VOLSYNC_PUID: "1000"
+      VOLSYNC_PGID: "1000"
   prune: true
   sourceRef:
     kind: GitRepository
