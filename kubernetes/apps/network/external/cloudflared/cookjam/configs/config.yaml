@@ -4,6 +4,8 @@
 # value, otherwise envoy returns 404 (route_not_found)
 # originRequest:
 #   originServerName: "external.${SECRET_APP_DOMAIN}"
+originRequest:
+  matchSNItoHost: true
 
 ingress:
   # CNPG Pooler for database access
