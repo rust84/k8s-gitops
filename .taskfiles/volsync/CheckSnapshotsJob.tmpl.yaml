@@ -1,0 +1,33 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: "check-snapshots-${rsrc}-${ts}"
+  namespace: "${namespace}"
+spec:
+  ttlSecondsAfterFinished: 60
+  template:
+    spec:
+      automountServiceAccountToken: false
+      restartPolicy: Never
+      containers:
+        - name: check
+          image: docker.io/restic/restic:0.16.0
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              set -e
+              echo "Checking for existing snapshots in repository..."
+              SNAPSHOTS=$(restic snapshots --json 2>/dev/null)
+              COUNT=$(echo "$SNAPSHOTS" | grep -c '"time"' || echo "0")
+              if [ "$COUNT" -eq "0" ]; then
+                echo "ERROR: No snapshots found in repository!"
+                echo "Cannot perform bootstrap restore without existing backups."
+                exit 1
+              fi
+              echo "Found $COUNT snapshot(s). Most recent:"
+              restic snapshots --latest 1
+              exit 0
+          envFrom:
+            - secretRef:
+                name: "${rsrc}-restic"

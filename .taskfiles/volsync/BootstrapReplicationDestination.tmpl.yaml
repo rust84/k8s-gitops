@@ -1,0 +1,30 @@
+---
+# Bootstrap ReplicationDestination for initial restore when using the volsync component pattern.
+# This creates a ReplicationDestination with the app name (matching the PVC's dataSourceRef)
+# and uses copyMethod: Snapshot to create a VolumeSnapshot that the PVC can clone from.
+apiVersion: volsync.backube/v1alpha1
+kind: ReplicationDestination
+metadata:
+  name: "${rsrc}"
+  namespace: "${namespace}"
+spec:
+  trigger:
+    manual: restore-once
+  restic:
+    repository: "${rsrc}-restic"
+    copyMethod: Snapshot
+    volumeSnapshotClassName: "${snapshotclass}"
+    cacheStorageClassName: "${storageclass}"
+    cacheAccessModes: ["ReadWriteOnce"]
+    cacheCapacity: 2Gi
+    storageClassName: "${storageclass}"
+    accessModes: ["ReadWriteOnce"]
+    capacity: "${capacity}"
+    moverSecurityContext:
+      runAsUser: ${puid}
+      runAsGroup: ${pgid}
+      fsGroup: ${pgid}
+    previous: ${previous}
+    enableFileDeletion: true
+    cleanupCachePVC: true
+    cleanupTempPVC: true

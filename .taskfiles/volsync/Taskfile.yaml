@@ -11,12 +11,25 @@ x-task-vars: &task-vars
   kustomization: '{{.kustomization}}'
   previous: '{{.previous}}'
 
+x-bootstrap-vars: &bootstrap-vars
+  rsrc: '{{.rsrc}}'
+  namespace: '{{.namespace}}'
+  capacity: '{{.capacity}}'
+  storageclass: '{{.storageclass}}'
+  snapshotclass: '{{.snapshotclass}}'
+  puid: '{{.puid}}'
+  pgid: '{{.pgid}}'
+  previous: '{{.previous}}'
+  ts: '{{.ts}}'
+
 vars:
   destinationTemplate: "{{.ROOT_DIR}}/.taskfiles/volsync/ReplicationDestination.tmpl.yaml"
+  bootstrapDestinationTemplate: "{{.ROOT_DIR}}/.taskfiles/volsync/BootstrapReplicationDestination.tmpl.yaml"
   wipeJobTemplate: "{{.ROOT_DIR}}/.taskfiles/volsync/WipeJob.tmpl.yaml"
   waitForJobScript: "{{.ROOT_DIR}}/.taskfiles/volsync/wait-for-job.sh"
   listJobTemplate: "{{.ROOT_DIR}}/.taskfiles/volsync/ListJob.tmpl.yaml"
   unlockJobTemplate: "{{.ROOT_DIR}}/.taskfiles/volsync/UnlockJob.tmpl.yaml"
+  checkSnapshotsJobTemplate: "{{.ROOT_DIR}}/.taskfiles/volsync/CheckSnapshotsJob.tmpl.yaml"
   ts: '{{now | date "150405"}}'
 
 tasks:
@@ -157,3 +170,135 @@ tasks:
       - flux -n {{.namespace}} resume helmrelease {{.rsrc}}
       - flux -n flux-system resume kustomization {{.kustomization}}
     env: *task-vars
+
+  # Bootstrap restore for migrating to the volsync component pattern.
+  # Use this when the PVC has a dataSourceRef pointing to a ReplicationDestination
+  # that doesn't exist yet (initial migration from manual PVC to volsync pattern).
+  #
+  # Example: task volsync:bootstrap-restore rsrc=seerr namespace=media capacity=1Gi
+  #
+  bootstrap-restore:
+    desc: Bootstrap restore for apps using the volsync component pattern (ex. task volsync:bootstrap-restore rsrc=plex namespace=media capacity=5Gi)
+    cmds:
+      - task: bootstrap-check-snapshots
+        vars: *bootstrap-vars
+      - task: bootstrap-suspend-app
+        vars: *bootstrap-vars
+      - task: bootstrap-delete-pvc
+        vars: *bootstrap-vars
+      - task: bootstrap-create-replicationdestination
+        vars: *bootstrap-vars
+      - task: bootstrap-wait-for-restore
+        vars: *bootstrap-vars
+      - task: bootstrap-reconcile-kustomization
+        vars: *bootstrap-vars
+      - task: bootstrap-resume-app
+        vars: *bootstrap-vars
+      - task: bootstrap-cleanup
+        vars: *bootstrap-vars
+    vars:
+      rsrc: '{{ or .rsrc (fail "Variable `rsrc` is required") }}'
+      namespace: '{{.namespace | default "default"}}'
+      capacity: '{{ or .capacity (fail "Variable `capacity` is required (e.g., 1Gi, 5Gi)") }}'
+      storageclass: '{{.storageclass | default "ceph-block"}}'
+      snapshotclass: '{{.snapshotclass | default "csi-ceph-blockpool"}}'
+      puid: '{{.puid | default "568"}}'
+      pgid: '{{.pgid | default "568"}}'
+      previous: '{{.previous | default "1"}}'
+    env: *bootstrap-vars
+    preconditions:
+      - sh: test -f {{.bootstrapDestinationTemplate}}
+        msg: "Bootstrap template not found at {{.bootstrapDestinationTemplate}}"
+      - sh: test -f {{.checkSnapshotsJobTemplate}}
+        msg: "Check snapshots template not found at {{.checkSnapshotsJobTemplate}}"
+      - sh: kubectl -n {{.namespace}} get secret {{.rsrc}}-restic
+        msg: "Restic secret '{{.rsrc}}-restic' not found in namespace '{{.namespace}}'"
+
+  bootstrap-check-snapshots:
+    internal: true
+    cmds:
+      - echo "Checking for existing backups..."
+      - envsubst < <(cat {{.checkSnapshotsJobTemplate}}) | kubectl apply -f -
+      - bash {{.waitForJobScript}} check-snapshots-{{.rsrc}}-{{.ts}} {{.namespace}}
+      - kubectl -n {{.namespace}} wait job/check-snapshots-{{.rsrc}}-{{.ts}} --for condition=complete --timeout=2m
+      - |
+        if ! kubectl -n {{.namespace}} get job check-snapshots-{{.rsrc}}-{{.ts}} -o jsonpath='{.status.succeeded}' | grep -q "1"; then
+          echo "ERROR: No backups found for {{.rsrc}}. Cannot proceed with restore."
+          kubectl -n {{.namespace}} logs job/check-snapshots-{{.rsrc}}-{{.ts}} --container check
+          kubectl -n {{.namespace}} delete job check-snapshots-{{.rsrc}}-{{.ts}} --ignore-not-found
+          exit 1
+        fi
+      - kubectl -n {{.namespace}} logs job/check-snapshots-{{.rsrc}}-{{.ts}} --container check
+      - kubectl -n {{.namespace}} delete job check-snapshots-{{.rsrc}}-{{.ts}} --ignore-not-found
+    env: *bootstrap-vars
+
+  bootstrap-suspend-app:
+    internal: true
+    cmds:
+      - flux -n {{.namespace}} suspend helmrelease {{.rsrc}} || true
+      - |
+        if kubectl -n {{.namespace}} get deployment {{.rsrc}} >/dev/null 2>&1; then
+          kubectl -n {{.namespace}} scale deployment {{.rsrc}} --replicas 0
+        elif kubectl -n {{.namespace}} get statefulset {{.rsrc}} >/dev/null 2>&1; then
+          kubectl -n {{.namespace}} scale statefulset {{.rsrc}} --replicas 0
+        fi
+      - kubectl -n {{.namespace}} wait pod --for delete --selector="app.kubernetes.io/name={{.rsrc}}" --timeout=2m || true
+    env: *bootstrap-vars
+
+  bootstrap-delete-pvc:
+    internal: true
+    cmds:
+      - kubectl -n {{.namespace}} delete pvc {{.rsrc}} --ignore-not-found
+    env: *bootstrap-vars
+
+  bootstrap-create-replicationdestination:
+    internal: true
+    cmds:
+      - envsubst < <(cat {{.bootstrapDestinationTemplate}}) | kubectl apply -f -
+    env: *bootstrap-vars
+
+  bootstrap-wait-for-restore:
+    internal: true
+    cmds:
+      - |
+        echo "Waiting for ReplicationDestination to complete..."
+        until kubectl -n {{.namespace}} get replicationdestination {{.rsrc}} -o jsonpath='{.status.latestMoverStatus.result}' 2>/dev/null | grep -q "Successful"; do
+          sleep 5
+          STATUS=$(kubectl -n {{.namespace}} get replicationdestination {{.rsrc}} -o jsonpath='{.status.conditions[0].message}' 2>/dev/null)
+          echo "Status: $STATUS"
+        done
+        echo "Restore completed successfully!"
+        kubectl -n {{.namespace}} get replicationdestination {{.rsrc}} -o jsonpath='{.status.latestMoverStatus.logs}'
+        echo ""
+    env: *bootstrap-vars
+
+  bootstrap-reconcile-kustomization:
+    internal: true
+    cmds:
+      - flux -n {{.namespace}} reconcile kustomization {{.rsrc}} --with-source
+      - |
+        echo "Waiting for PVC to be bound..."
+        kubectl -n {{.namespace}} wait pvc {{.rsrc}} --for=jsonpath='{.status.phase}'=Bound --timeout=5m
+    env: *bootstrap-vars
+
+  bootstrap-resume-app:
+    internal: true
+    cmds:
+      - flux -n {{.namespace}} resume helmrelease {{.rsrc}}
+      - |
+        if kubectl -n {{.namespace}} get deployment {{.rsrc}} >/dev/null 2>&1; then
+          kubectl -n {{.namespace}} scale deployment {{.rsrc}} --replicas 1
+        elif kubectl -n {{.namespace}} get statefulset {{.rsrc}} >/dev/null 2>&1; then
+          kubectl -n {{.namespace}} scale statefulset {{.rsrc}} --replicas 1
+        fi
+      - |
+        echo "Waiting for pod to be ready..."
+        kubectl -n {{.namespace}} wait pod --for=condition=Ready --selector="app.kubernetes.io/name={{.rsrc}}" --timeout=5m || echo "Warning: Pod not ready within timeout, check manually"
+    env: *bootstrap-vars
+
+  bootstrap-cleanup:
+    internal: true
+    cmds:
+      - kubectl -n {{.namespace}} delete replicationdestination {{.rsrc}}
+      - echo "Bootstrap restore complete!"
+    env: *bootstrap-vars
