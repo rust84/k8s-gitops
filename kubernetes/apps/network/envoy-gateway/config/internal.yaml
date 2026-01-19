@@ -5,7 +5,8 @@ kind: Gateway
 metadata:
   name: envoy-internal
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: "envoy-int.${SECRET_DOMAIN}"
+    external-dns.alpha.kubernetes.io/hostname: "internal.${SECRET_DOMAIN}"
+    external-dns.alpha.kubernetes.io/target: "10.20.0.127"
 spec:
   gatewayClassName: envoy
   infrastructure:
