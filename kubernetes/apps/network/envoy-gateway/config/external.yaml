@@ -21,10 +21,59 @@ spec:
     - name: https
       port: 443
       protocol: HTTPS
+      hostname: "*.${SECRET_DOMAIN}"
       tls:
         mode: Terminate
         certificateRefs:
           - name: "${SECRET_DOMAIN/./-}-production-tls"
+            namespace: cert-manager
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-app
+      port: 443
+      protocol: HTTPS
+      hostname: "${SECRET_APP_DOMAIN}"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: "${SECRET_APP_DOMAIN/./-}-production-tls"
+            namespace: cert-manager
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-app-wildcard
+      port: 443
+      protocol: HTTPS
+      hostname: "*.${SECRET_APP_DOMAIN}"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: "${SECRET_APP_DOMAIN/./-}-production-tls"
+            namespace: cert-manager
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-app-prd
+      port: 443
+      protocol: HTTPS
+      hostname: "${SECRET_APP_PRD_DOMAIN}"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: "${SECRET_APP_PRD_DOMAIN/./-}-production-tls"
+            namespace: cert-manager
+      allowedRoutes:
+        namespaces:
+          from: All
+    - name: https-app-prd-wildcard
+      port: 443
+      protocol: HTTPS
+      hostname: "*.${SECRET_APP_PRD_DOMAIN}"
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: "${SECRET_APP_PRD_DOMAIN/./-}-production-tls"
             namespace: cert-manager
       allowedRoutes:
         namespaces:
