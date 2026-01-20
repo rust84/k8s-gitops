@@ -9,8 +9,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  # components:
-  #   - ../../../../flux/components/volsync
+  components:
+    - ../../../../flux/components/volsync
   dependsOn:
     - name: external-secrets
       namespace: external-secrets

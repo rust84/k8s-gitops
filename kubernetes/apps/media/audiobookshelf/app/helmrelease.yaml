@@ -80,7 +80,7 @@ spec:
             namespace: network
     persistence:
       config:
-        existingClaim: audiobookshelf-config # TODO: convert to volsync volume
+        existingClaim: audiobookshelf
       cache:
         type: emptyDir
         globalMounts:
