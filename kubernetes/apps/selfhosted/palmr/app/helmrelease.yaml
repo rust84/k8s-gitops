@@ -77,6 +77,10 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 5487
     persistence:
       config:
         existingClaim: *app
