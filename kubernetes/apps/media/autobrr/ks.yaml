@@ -10,7 +10,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   components:
-    # - ../../../../flux/components/volsync
+    - ../../../../flux/components/volsync
   dependsOn:
     - name: external-secrets
       namespace: external-secrets
