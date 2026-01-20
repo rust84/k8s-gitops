@@ -6,4 +6,3 @@ resources:
   - ./externalsecret.yaml
   - ./helmrelease.yaml
   - ./object-bucket-claim.yaml
-  - ./pvc.yaml
