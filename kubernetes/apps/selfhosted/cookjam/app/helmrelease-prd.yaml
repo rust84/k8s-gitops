@@ -19,6 +19,7 @@ spec:
   values:
     controllers:
       app:
+        replicas: 2
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -67,7 +68,7 @@ spec:
               limits:
                 memory: 300Mi
       ml:
-        replicas: 2
+        replicas: 1
         strategy: RollingUpdate
         rollingUpdate:
           unavailable: "90%"

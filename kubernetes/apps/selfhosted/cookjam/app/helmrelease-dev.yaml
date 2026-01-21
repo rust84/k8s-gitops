@@ -19,55 +19,56 @@ spec:
   values:
     controllers:
       app:
+        replicas: 2 # Not working
         annotations:
           reloader.stakater.com/auto: "true"
-        initContainers:
-          01-init-db:
-            image:
-              repository: ghcr.io/home-operations/postgres-init
-              tag: 17
-            envFrom:
-              - secretRef:
-                  name: &secret cookjam-secret
-          02-config-db:
-            image:
-              repository: docker.io/library/postgres
-              tag: 17
-            envFrom:
-              - secretRef:
-                  name: *secret
-            command:
-              - /bin/bash
-              - -c
-              - |
-                set -e
+        # initContainers:
+        #   01-init-db:
+        #     image:
+        #       repository: ghcr.io/home-operations/postgres-init
+        #       tag: 17
+        #     envFrom:
+        #       - secretRef:
+        #           name: &secret cookjam-secret
+        #   02-config-db:
+        #     image:
+        #       repository: docker.io/library/postgres
+        #       tag: 17
+        #     envFrom:
+        #       - secretRef:
+        #           name: *secret
+        #     command:
+        #       - /bin/bash
+        #       - -c
+        #       - |
+        #         set -e
 
-                # Set up PostgreSQL environment variables (same as entrypoint.sh)
-                export PGHOST="$${INIT_POSTGRES_HOST}"
-                export PGUSER="postgres"
-                export PGPASSWORD="$${INIT_POSTGRES_SUPER_PASS}"
-                export PGDATABASE="$${INIT_POSTGRES_DBNAME}"
+        #         # Set up PostgreSQL environment variables (same as entrypoint.sh)
+        #         export PGHOST="$${INIT_POSTGRES_HOST}"
+        #         export PGUSER="postgres"
+        #         export PGPASSWORD="$${INIT_POSTGRES_SUPER_PASS}"
+        #         export PGDATABASE="$${INIT_POSTGRES_DBNAME}"
 
-                echo "Configuring database extensions and permissions..."
+        #         echo "Configuring database extensions and permissions..."
 
-                # Create extensions
-                psql -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";" 2>&1
-                psql -c "CREATE EXTENSION IF NOT EXISTS pgcrypto;" 2>&1
-                psql -c "CREATE EXTENSION IF NOT EXISTS hstore;" 2>&1
-                psql -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;" 2>&1
+        #         # Create extensions
+        #         psql -c "CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\";" 2>&1
+        #         psql -c "CREATE EXTENSION IF NOT EXISTS pgcrypto;" 2>&1
+        #         psql -c "CREATE EXTENSION IF NOT EXISTS hstore;" 2>&1
+        #         psql -c "CREATE EXTENSION IF NOT EXISTS pg_stat_statements;" 2>&1
 
-                # Grant schema permissions to cookjam_dev
-                psql -c "GRANT USAGE ON SCHEMA public TO cookjam_dev;" 2>&1
-                psql -c "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO cookjam_dev;" 2>&1
-                psql -c "GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO cookjam_dev;" 2>&1
-                psql -c "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO cookjam_dev;" 2>&1
-                psql -c "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO cookjam_dev;" 2>&1
+        #         # Grant schema permissions to cookjam_dev
+        #         psql -c "GRANT USAGE ON SCHEMA public TO cookjam_dev;" 2>&1
+        #         psql -c "GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO cookjam_dev;" 2>&1
+        #         psql -c "GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO cookjam_dev;" 2>&1
+        #         psql -c "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT, INSERT, UPDATE, DELETE ON TABLES TO cookjam_dev;" 2>&1
+        #         psql -c "ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO cookjam_dev;" 2>&1
 
-                # Grant RLS roles
-                psql -c "GRANT authenticated TO cookjam_dev;" 2>&1
-                psql -c "GRANT anon TO cookjam_dev;" 2>&1
+        #         # Grant RLS roles
+        #         psql -c "GRANT authenticated TO cookjam_dev;" 2>&1
+        #         psql -c "GRANT anon TO cookjam_dev;" 2>&1
 
-                echo "Database configuration completed!"
+        #         echo "Database configuration completed!"
         containers:
           main:
             image:
@@ -80,7 +81,7 @@ spec:
               SUPABASE_URL:
                 valueFrom:
                   secretKeyRef:
-                    name: *secret
+                    name: &secret cookjam-secret
                     key: SUPABASE_URL
               SUPABASE_SERVICE_ROLE_KEY:
                 valueFrom:
@@ -226,7 +227,7 @@ spec:
               limits:
                 memory: 512Mi
       ml:
-        replicas: 2
+        replicas: 1
         strategy: RollingUpdate
         rollingUpdate:
           unavailable: "90%"
