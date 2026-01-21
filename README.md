@@ -60,8 +60,8 @@ This semi hyper-converged cluster runs [Talos Linux](https://talos.dev), an immu
 - [cilium](https://cilium.io): Internal Kubernetes networking plugin.
 - [cert-manager](https://cert-manager.io): Creates SSL certificates for services in my Kubernetes cluster.
 - [external-dns](https://github.com/kubernetes-sigs/external-dns): Automatically manages DNS records from my cluster in a cloud DNS provider.
-- [external-secrets](https://external-secrets.io): Managed Kubernetes secrets using [Doppler](https://www.doppler.com/).
-- [ingress-nginx](https://github.com/kubernetes/ingress-nginx): Ingress controller for Kubernetes using NGINX as a reverse proxy and load balancer.
+- [external-secrets](https://github.com/external-secrets/external-secrets) with [1Password Connect](https://github.com/1Password/connect) to inject secrets into Kubernetes.
+- [envoy-gateway](https://gateway.envoyproxy.io): Kubernetes Gateway API implementation using Envoy proxy.
 - [rook](https://rook.io): Distributed block storage for peristent storage.
 - [sops](https://github.com/getsops/sops): Managed secrets for Kubernetes and Terraform which are commited to Git.
 - [volsync](https://github.com/backube/volsync): Backup and recovery of persistent volume claims.

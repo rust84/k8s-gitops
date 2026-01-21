@@ -139,7 +139,6 @@ function apply_sops_secrets() {
     # Secrets in flux-system namespace
     local -r flux_secrets=(
         "${KUBERNETES_DIR}/bootstrap/apps/resources/github-deploy-key.sops.yaml"
-        "${KUBERNETES_DIR}/bootstrap/apps/resources/doppler-token-auth-api.sops.yaml"
         "${KUBERNETES_DIR}/flux/components/common/cluster-secrets.sops.yaml"
         "${KUBERNETES_DIR}/flux/components/common/sops-age.sops.yaml"
     )
