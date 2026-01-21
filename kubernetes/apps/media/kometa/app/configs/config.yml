@@ -86,7 +86,7 @@ settings:
 
 plex:
   url: http://plex.media.svc:32400
-  token: {{ .PLEX_APIKEY }}
+  token: {{ .PLEX_TOKEN }}
   timeout: 60
   clean_bundles: false
   empty_trash: false
@@ -112,7 +112,7 @@ mdblist:
 
 radarr:
   url: http://radarr.media.svc:7878
-  token: {{ .RADARR_APIKEY }}
+  token: {{ .RADARR__API_KEY }}
   add_missing: false
   add_existing: false
   root_folder_path: /media/movies
@@ -129,7 +129,7 @@ radarr:
 
 sonarr:
   url: http://sonarr.media.svc:8989
-  token: {{ .SONARR_APIKEY }}
+  token: {{ .SONARR__API_KEY }}
   add_missing: false
   add_existing: false
   root_folder_path: /media/tv
