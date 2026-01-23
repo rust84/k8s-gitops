@@ -78,6 +78,10 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
+        rules:
+          - backendRefs:
+              - identifier: app
+                port: 5232
     persistence:
       data:
         existingClaim: radicale
