@@ -50,10 +50,16 @@ spec:
             probes:
               liveness:
                 enabled: true
+                type: TCP
+                port: 5232
               readiness:
                 enabled: true
+                type: TCP
+                port: 5232
               startup:
                 enabled: true
+                type: TCP
+                port: 5232
                 spec:
                   failureThreshold: 30
                   periodSeconds: 5
