@@ -20,6 +20,9 @@ spec:
     controllers:
       app:
         replicas: 2
+        rollingUpdate:
+          maxSurge: 0
+          maxUnavailable: 1
         annotations:
           reloader.stakater.com/auto: "true"
         containers:

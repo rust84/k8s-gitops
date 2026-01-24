@@ -19,7 +19,10 @@ spec:
   values:
     controllers:
       app:
-        replicas: 2 # Not working
+        replicas: 2
+        rollingUpdate:
+          maxSurge: 0
+          maxUnavailable: 1
         annotations:
           reloader.stakater.com/auto: "true"
         # initContainers:
