@@ -36,39 +36,48 @@ spec:
             image:
               repository: ghcr.io/kozea/radicale
               tag: 3.6.0
-            args:
-              - --hosts
-              - 0.0.0.0:5232
-              - --auth-type
-              - htpasswd
-              - --auth-htpasswd-filename
-              - /config/users
-              - --auth-htpasswd-encryption
-              - plain
-              - --storage-filesystem-folder
-              - /data/collections
             probes:
               liveness:
                 enabled: true
-                type: TCP
-                port: 5232
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 5232
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
               readiness:
                 enabled: true
-                type: TCP
-                port: 5232
+                custom: true
+                spec:
+                  httpGet:
+                    path: /
+                    port: 5232
+                  periodSeconds: 10
+                  timeoutSeconds: 1
+                  failureThreshold: 3
               startup:
                 enabled: true
-                type: TCP
-                port: 5232
+                custom: true
                 spec:
+                  httpGet:
+                    path: /
+                    port: 5232
                   failureThreshold: 30
                   periodSeconds: 5
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop:
+                  - ALL
             resources:
               requests:
                 cpu: 15m
                 memory: 105Mi
               limits:
-                memory: 105Mi
+                memory: 256M
 
     service:
       app:
@@ -95,6 +104,13 @@ spec:
           radicale:
             app:
               - path: /data
+      config:
+        type: configMap
+        name: radicale-config
+        globalMounts:
+          - path: /config/config
+            subPath: config.cfg
+            readOnly: true
       auth:
         type: secret
         name: radicale
