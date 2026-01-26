@@ -6,5 +6,4 @@ resources:
   - ./cron.yaml
   - ./helmrelease-dev.yaml
   - ./helmrelease-prd.yaml
-  - ./pvc.yaml
   - ./servicemonitor.yaml

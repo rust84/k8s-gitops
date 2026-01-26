@@ -6,7 +6,5 @@ namespace: database
 resources:
   - ./cluster.yaml
   - ./cluster-immich.yaml
-  - ./cluster-cookjam.yaml
-  - ./pooler-cookjam.yaml
   - ./prometheusrule.yaml
   - ./scheduledbackup.yaml
