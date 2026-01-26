@@ -46,7 +46,7 @@ spec:
           app:
             image:
               repository: docker.io/nodered/node-red
-              tag: 4.1.3
+              tag: 4.1.4
             env:
               TZ: "${TZ}"
               NODE_RED_ENABLE_SAFE_MODE: "false"
