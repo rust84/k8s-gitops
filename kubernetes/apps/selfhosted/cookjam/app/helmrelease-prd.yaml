@@ -70,88 +70,6 @@ spec:
                 cpu: 10m
               limits:
                 memory: 300Mi
-      ml:
-        replicas: 1
-        strategy: RollingUpdate
-        rollingUpdate:
-          unavailable: "90%"
-        containers:
-          frontend:
-            image:
-              repository: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-api
-              tag: latest
-            env:
-              API_PORT: *port
-              CACHE_DIR: &cache /cache
-              REDIS_URL: &redis redis://dragonfly.database.svc.cluster.local:6379/5
-              SUPABASE_JWT_SECRET:
-                valueFrom:
-                  secretKeyRef:
-                    name: &secret cookjam-secret
-                    key: SUPABASE_JWT_SECRET
-              SUPABASE_PROJECT_ID:
-                valueFrom:
-                  secretKeyRef:
-                    name: *secret
-                    key: SUPABASE_PROJECT_ID
-            securityContext: *sc
-            probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: *port
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
-              startup:
-                enabled: false
-            resources:
-              requests:
-                cpu: 10m
-                memory: 200Mi
-              limits:
-                memory: 200Mi
-          worker:
-            image:
-              repository: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-worker
-              tag: latest
-            env:
-              CACHE_DIR: *cache
-              DEBUG: 1
-              HEALTH_PORT: 8001
-              OPENAI_API_KEY:
-                valueFrom:
-                  secretKeyRef:
-                    name: *secret
-                    key: OPENAI_API_KEY
-              REDIS_URL: *redis
-            securityContext: *sc
-            probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /health
-                    port: &metrics 8001
-                  initialDelaySeconds: 0
-                  periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
-              startup:
-                enabled: false
-            resources:
-              requests:
-                cpu: 10m
-                memory: 1Gi
-              limits:
-                memory: 2Gi
     defaultPodOptions:
       imagePullSecrets:
         - name: cookjam-reg
@@ -168,13 +86,6 @@ spec:
         ports:
           http:
             port: *port
-      ml:
-        controller: ml
-        ports:
-          http:
-            port: *port
-          metrics:
-            port: *metrics
     route:
       main:
         hostnames:
@@ -183,13 +94,6 @@ spec:
           - name: envoy-external
             namespace: network
         rules:
-          - matches:
-              - path:
-                  type: PathPrefix
-                  value: /api
-            backendRefs:
-              - identifier: ml
-                port: 8080
           - backendRefs:
               - identifier: app
                 port: 8080
@@ -205,23 +109,9 @@ spec:
               - path: /var/cache/nginx
               - path: /var/log/nginx
               - path: /var/run
-      ml-cache:
-        existingClaim: cookjam-nfs
-        advancedMounts:
-          ml:
-            frontend:
-              - path: *cache
-            worker:
-              - path: *cache
   postRenderers:
     - kustomize:
         images:
           - name: ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working
             newTag: main
             digest: sha256:3d6305ed66cf1c05d4b118c358544870fae4f611da8f726253e40fd44e5a021c # {"$imagepolicy": "selfhosted:cookjam-prd:digest"}
-          - name: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-api
-            newTag: latest
-            digest: sha256:01bac33570640d0bc2e8dee7c1b3620661bd5b7f351c58516c70ac104ad2a5ca # {"$imagepolicy": "selfhosted:cookjam-web-api:digest"}
-          - name: ghcr.io/san-vibe-coding-2025/cookjam-web-inference-api-worker
-            newTag: latest
-            digest: sha256:601b80d9f28c810826e9c941ffdf673439a01946a05a4099a28dd502f39a023e # {"$imagepolicy": "selfhosted:cookjam-web-worker:digest"}
