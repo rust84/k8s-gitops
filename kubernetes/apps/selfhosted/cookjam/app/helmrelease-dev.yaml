@@ -20,9 +20,10 @@ spec:
     controllers:
       app:
         replicas: 2
+        strategy: RollingUpdate
         rollingUpdate:
-          maxSurge: 1
-          maxUnavailable: 0
+          surge: 1
+          unavailable: 0
         annotations:
           reloader.stakater.com/auto: "true"
         containers:
@@ -88,6 +89,15 @@ spec:
         fsGroup: *uid
         supplementalGroups: [65534]
         fsGroupChangePolicy: Always
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: cookjam-dev
+                topologyKey: kubernetes.io/hostname
     service:
       app:
         controller: app
