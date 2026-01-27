@@ -11,7 +11,7 @@ data:
     [auth]
     type = htpasswd
     htpasswd_filename = /config/users
-    htpasswd_encryption = plain
+    htpasswd_encryption = bcrypt
 
     [storage]
     filesystem_folder = /data/collections
