@@ -36,6 +36,9 @@ spec:
             image:
               repository: ghcr.io/kozea/radicale
               tag: 3.6.0
+            args:
+              - --config
+              - /config/config
             probes:
               liveness:
                 enabled: true
