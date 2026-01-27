@@ -48,6 +48,7 @@ spec:
   listenersServiceTemplate:
     metadata:
       annotations:
-        lbipam.cilium.io/ips: 10.20.0.122
+        lbipam.cilium.io/ips: 10.20.69.122
     spec:
       type: LoadBalancer
+      externalTrafficPolicy: Local
