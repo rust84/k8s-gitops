@@ -35,7 +35,7 @@ spec:
           main:
             image: &img
               repository: ghcr.io/immich-app/immich-server
-              tag: v2.5.0
+              tag: v2.5.2
             env:
               <<: &env-common
                 TZ: "${TZ}"
@@ -114,7 +114,7 @@ spec:
           main:
             image:
               repository: ghcr.io/immich-app/immich-machine-learning
-              tag: v2.5.0
+              tag: v2.5.2
             env:
               <<: *env-common
               MPLCONFIGDIR: /tmp/matplotlib
