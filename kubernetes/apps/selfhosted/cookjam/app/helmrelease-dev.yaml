@@ -131,4 +131,4 @@ spec:
         images:
           - name: ghcr.io/san-vibe-coding-2025/cookjam-web-otp-working
             newTag: develop
-            digest: sha256:8c3afe072f9f0ec8414608dbdd33e2f2ad5a611be9257e4d97a72ed5cafa17ae # {"$imagepolicy": "selfhosted:cookjam-dev:digest"}
+            digest: sha256:245419188e3eb21c35320d86ce13d0202298afa4d316dd32e99227803289ea3d # {"$imagepolicy": "selfhosted:cookjam-dev:digest"}
