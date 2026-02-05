@@ -77,14 +77,14 @@ data:
             description: Torrents
             widget:
               type: qbittorrent
-              url: http://qbittorrent.media.svc.cluster.local:9999
+              url: http://qbittorrent.media.svc.cluster.local:8080
         - SABnzbd:
             icon: sabnzbd.png
             href: https://sabnzbd.${SECRET_DOMAIN}
             description: Usenet
             widget:
               type: sabnzbd
-              url: http://sabnzbd.media.svc.cluster.local:8080
+              url: http://sabnzbd.media.svc.cluster.local:80
               key: "{{HOMEPAGE_VAR_SABNZBD_API_KEY}}"
     - Home:
         - Home Assistant:
@@ -115,7 +115,7 @@ data:
         columns: 2
       Home:
         style: row
-        columns: 3
+        columns: 2
       AI:
         style: row
         columns: 2
