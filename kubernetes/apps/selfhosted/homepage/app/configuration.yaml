@@ -50,6 +50,14 @@ data:
             icon: prowlarr.png
             href: https://prowlarr.${SECRET_DOMAIN}
             description: Indexers
+        - Seerr:
+            icon: overseerr.png
+            href: https://requests.${SECRET_DOMAIN}
+            description: Requests
+            widget:
+              type: jellyseerr
+              url: http://seerr.media.svc.cluster.local:80
+              key: "{{HOMEPAGE_VAR_SEERR_API_KEY}}"
         - Plex:
             icon: plex.png
             href: https://plex.${SECRET_DOMAIN}

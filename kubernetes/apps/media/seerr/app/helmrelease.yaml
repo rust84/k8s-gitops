@@ -71,11 +71,6 @@ spec:
             port: *port
     route:
       app:
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Media
-          gethomepage.dev/icon: overseerr.png
-          gethomepage.dev/name: Seerr
         hostnames:
           - "requests.${SECRET_DOMAIN}"
         parentRefs:
