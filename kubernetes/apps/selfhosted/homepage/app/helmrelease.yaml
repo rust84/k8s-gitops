@@ -31,6 +31,9 @@ spec:
             env:
               TZ: "${TZ}"
               HOMEPAGE_ALLOWED_HOSTS: "*" # "homepage.${SECRET_DOMAIN}" # TODO: Uncomment once I've changed envoy networking to Local
+            envFrom:
+              - secretRef:
+                  name: homepage-secrets
             probes:
               liveness: &probes
                 enabled: true

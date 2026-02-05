@@ -29,18 +29,90 @@ data:
     mode: cluster
     gateway: true
   services.yaml: |
+    - Media:
+        - Sonarr:
+            icon: sonarr.png
+            href: https://sonarr.${SECRET_DOMAIN}
+            description: TV Shows
+            widget:
+              type: sonarr
+              url: http://sonarr.media.svc.cluster.local:8989
+              key: "{{HOMEPAGE_VAR_SONARR_API_KEY}}"
+        - Radarr:
+            icon: radarr.png
+            href: https://radarr.${SECRET_DOMAIN}
+            description: Movies
+            widget:
+              type: radarr
+              url: http://radarr.media.svc.cluster.local:7878
+              key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
+        - Prowlarr:
+            icon: prowlarr.png
+            href: https://prowlarr.${SECRET_DOMAIN}
+            description: Indexers
+            widget:
+              type: prowlarr
+              url: http://prowlarr.media.svc.cluster.local:9696
+              key: "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}"
+        - Plex:
+            icon: plex.png
+            href: https://plex.${SECRET_DOMAIN}
+            description: Media Server
+            widget:
+              type: plex
+              url: http://plex.media.svc.cluster.local:32400
+              key: "{{HOMEPAGE_VAR_PLEX_TOKEN}}"
+        - Tautulli:
+            icon: tautulli.png
+            href: https://tautulli.${SECRET_DOMAIN}
+            description: Plex Stats
+            widget:
+              type: tautulli
+              url: http://tautulli.media.svc.cluster.local:80
+              key: "{{HOMEPAGE_VAR_TAUTULLI_API_KEY}}"
+    - Downloads:
+        - qBittorrent:
+            icon: qbittorrent.png
+            href: https://qbittorrent.${SECRET_DOMAIN}
+            description: Torrents
+            widget:
+              type: qbittorrent
+              url: http://qbittorrent.media.svc.cluster.local:9999
+        - SABnzbd:
+            icon: sabnzbd.png
+            href: https://sabnzbd.${SECRET_DOMAIN}
+            description: Usenet
+            widget:
+              type: sabnzbd
+              url: http://sabnzbd.media.svc.cluster.local:8080
+              key: "{{HOMEPAGE_VAR_SABNZBD_API_KEY}}"
     - Home:
-        - Uptime:
-            icon: mdi-arrow-up-bold
-            href: https://uptime.roswellian.dev/status/home-cluster
+        - Home Assistant:
+            icon: home-assistant.png
+            href: https://hass.${SECRET_DOMAIN}
+            description: Home Automation
+            widget:
+              type: homeassistant
+              url: http://home-assistant.home.svc.cluster.local:8123
+              key: "{{HOMEPAGE_VAR_HOMEASSISTANT_TOKEN}}"
+        - Uptime Kuma:
+            icon: uptime-kuma.png
+            href: https://uptime.${SECRET_DOMAIN}
             description: Status page
+            widget:
+              type: uptimekuma
+              url: https://uptime.roswellian.dev
+              slug: "{{HOMEPAGE_VAR_UPTIMEKUMA_SLUG}}"
   settings.yaml: |
     title: Russell
     headerStyle: clean
     layout:
       Media:
         style: row
-        columns: 4
+        columns: 5
+      Downloads:
+        style: row
+        columns: 2
       Home:
         style: row
         columns: 3
@@ -51,10 +123,22 @@ data:
         style: row
         columns: 4
   widgets.yaml: |
+    - datetime:
+        text_size: xl
+        format:
+          dateStyle: short
+          timeStyle: short
+          hour12: false
     - search:
         provider: custom
         url: https://search.${SECRET_DOMAIN}/search?q=
         target: _blank
+    - openmeteo:
+        label: London
+        latitude: 51.51
+        longitude: -0.13
+        units: metric
+        cache: 5
     - kubernetes:
         cluster:
           show: true
