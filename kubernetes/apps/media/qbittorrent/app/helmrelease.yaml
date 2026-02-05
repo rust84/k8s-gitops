@@ -181,11 +181,6 @@ spec:
 
     route:
       app:
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Media
-          gethomepage.dev/icon: qbittorrent.png
-          gethomepage.dev/name: qBittorrent
         hostnames:
           - "qbittorrent.${SECRET_DOMAIN}"
         parentRefs:

@@ -93,7 +93,7 @@ data:
             description: Home Automation
             widget:
               type: homeassistant
-              url: http://home-assistant.home.svc.cluster.local:8123
+              url: http://home-assistant-app.home.svc.cluster.local:8123
               key: "{{HOMEPAGE_VAR_HOMEASSISTANT_TOKEN}}"
         - Uptime Kuma:
             icon: uptime-kuma.png
