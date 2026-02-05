@@ -130,9 +130,9 @@ data:
         url: https://search.${SECRET_DOMAIN}/search?q=
         target: _blank
     - openmeteo:
-        label: London
-        latitude: 51.51
-        longitude: -0.13
+        label: Home
+        latitude: "{{HOMEPAGE_VAR_HASS_LATITUDE}}"
+        longitude: "{{HOMEPAGE_VAR_HASS_LONGITUDE}}"
         units: metric
         cache: 5
     - kubernetes:
