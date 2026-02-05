@@ -50,10 +50,6 @@ data:
             icon: prowlarr.png
             href: https://prowlarr.${SECRET_DOMAIN}
             description: Indexers
-            widget:
-              type: prowlarr
-              url: http://prowlarr.media.svc.cluster.local:9696
-              key: "{{HOMEPAGE_VAR_PROWLARR_API_KEY}}"
         - Plex:
             icon: plex.png
             href: https://plex.${SECRET_DOMAIN}
