@@ -46,7 +46,7 @@ spec:
               tag: 2026.1.3@sha256:9f094e0531e5784d1df9bcb817d95830d1da9d4a03c914f8fd1b3cc6168c4e65
             env:
               TZ: "${TZ}"
-              HASS_HTTP_TRUSTED_PROXY_1: 10.20.0.0/24 # TODO: update with new LB sbnet
+              HASS_HTTP_TRUSTED_PROXY_1: 10.20.69.0/24
               HASS_HTTP_TRUSTED_PROXY_2: 10.42.0.0/16
             envFrom: *envFrom
             securityContext:
