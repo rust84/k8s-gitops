@@ -28,7 +28,25 @@ nodes:
     installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/de3b865124c5616da8084826167f8c0b0fbc9b905b146290db797024e84097fc
+    schematic: &schematic
+      customization:
+        extraKernelArgs:
+          - -selinux                            # Less security, faster puter
+          - apparmor=0                          # Less security, faster puter
+          - init_on_alloc=0                     # Less security, faster puter
+          - init_on_free=0                      # Less security, faster puter
+          - intel_iommu=on                      # PCI Passthrough
+          - iommu=pt                            # PCI Passthrough
+          - mitigations=off                     # Less security, faster puter
+          - security=none                       # Less security, faster puter
+          - sysctl.kernel.kexec_load_disabled=1 # Meteor Lake CPU / iGPU
+          - talos.auditd.disabled=1             # Less security, faster puter
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/i915
+            - siderolabs/intel-ucode
+            - siderolabs/mei
+            - siderolabs/thunderbolt
     controlPlane: true
     networkInterfaces:
       - interface: bond0
@@ -56,7 +74,7 @@ nodes:
     installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/de3b865124c5616da8084826167f8c0b0fbc9b905b146290db797024e84097fc
+    schematic: *schematic
     controlPlane: true
     networkInterfaces:
       - interface: bond0
@@ -78,7 +96,7 @@ nodes:
     installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
-    talosImageURL: factory.talos.dev/installer/de3b865124c5616da8084826167f8c0b0fbc9b905b146290db797024e84097fc
+    schematic: *schematic
     controlPlane: true
     networkInterfaces:
       - interface: bond0
