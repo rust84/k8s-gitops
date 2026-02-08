@@ -35,7 +35,8 @@ spec:
               [{
                 "name":"multus-vpn",
                 "namespace": "network",
-                "ips": ["192.168.90.10/24"]
+                "ips": ["192.168.90.10/24"],
+                "mac": "06:fe:df:46:b4:55"
               }]
         containers:
           app:
@@ -50,9 +51,9 @@ spec:
               QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
               QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
                 10.42.0.0/16, 10.20.0.0/24
-              # QBT_BitTorrent__Session__Interface: wg0
-              # QBT_BitTorrent__Session__InterfaceAddress: "0.0.0.0"
-              # QBT_BitTorrent__Session__InterfaceName: wg0
+              QBT_BitTorrent__Session__Interface: net1
+              QBT_BitTorrent__Session__InterfaceAddress: "0.0.0.0"
+              QBT_BitTorrent__Session__InterfaceName: net1
               QBT_Preferences__WebUI__AlternativeUIEnabled: true
               QBT_Preferences__WebUI__RootFolder: /add-ons/VueTorrent
             probes:
