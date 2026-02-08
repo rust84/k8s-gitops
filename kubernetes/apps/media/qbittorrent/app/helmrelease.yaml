@@ -54,6 +54,7 @@ spec:
               QBT_BitTorrent__Session__Interface: net1
               QBT_BitTorrent__Session__InterfaceAddress: "0.0.0.0"
               QBT_BitTorrent__Session__InterfaceName: net1
+              QBT_Preferences__WebUI__AlternativeUIEnabled: false
             probes:
               liveness: &probes
                 enabled: true
@@ -124,9 +125,5 @@ spec:
         globalMounts:
           - path: /media/downloads/torrents
             subPath: downloads/torrents
-      add-ons:
-        type: emptyDir
-        globalMounts:
-          - path: /add-ons
       tmp:
         type: emptyDir
