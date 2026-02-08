@@ -54,8 +54,6 @@ spec:
               QBT_BitTorrent__Session__Interface: net1
               QBT_BitTorrent__Session__InterfaceAddress: "0.0.0.0"
               QBT_BitTorrent__Session__InterfaceName: net1
-              QBT_Preferences__WebUI__AlternativeUIEnabled: true
-              QBT_Preferences__WebUI__RootFolder: /add-ons/VueTorrent
             probes:
               liveness: &probes
                 enabled: true
@@ -93,25 +91,6 @@ spec:
                   secretKeyRef:
                     name: qbittorrent-secret
                     key: MAM_ID
-            resources:
-              requests:
-                cpu: 10m
-                memory: 25Mi
-              limits:
-                memory: 50Mi
-            securityContext: *sc
-          vuetorrent:
-            dependsOn: app
-            image:
-              repository: registry.k8s.io/git-sync/git-sync
-              tag: v4.5.1
-            args:
-              - --repo=https://github.com/WDaan/VueTorrent
-              - --ref=latest-release
-              - --period=86400s
-              - --root=/add-ons
-              - --sync-timeout=3600s
-              - -v=6
             resources:
               requests:
                 cpu: 10m
