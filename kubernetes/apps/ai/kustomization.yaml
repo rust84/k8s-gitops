@@ -6,7 +6,6 @@ namespace: ai
 components:
   - ../../flux/components/common
 resources:
-  - ./langfuse/ks.yaml
   - ./ollama/ks.yaml
   - ./open-webui/ks.yaml
   - ./searxng/ks.yaml
