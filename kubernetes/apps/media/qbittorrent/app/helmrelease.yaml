@@ -30,66 +30,13 @@ spec:
             fsGroup: 568
             fsGroupChangePolicy: "OnRootMismatch"
             supplementalGroups: [65542] # external-services
-
-        initContainers:
-          gluetun:
-            image:
-              repository: ghcr.io/qdm12/gluetun
-              tag: v3.41.0
-            env:
-              BLOCK_MALICIOUS: off # save 300MB of RAM; https://github.com/qdm12/gluetun/issues/2054
-              DNS_ADDRESS: "127.0.0.1"
-              DNS_SERVER: on
-              DNS_CACHING: off
-              DNS_UPSTREAM_IPV6: off
-              FIREWALL_DEBUG: on
-              FIREWALL_INPUT_PORTS: "8080,9999"
-              FIREWALL_OUTBOUND_SUBNETS: 10.42.0.0/16,10.43.0.0/16 # Allow access to k8s subnets
-              FIREWALL_VPN_INPUT_PORTS: &BT-port 21044
-              HEALTH_SERVER_ADDRESS: ":9999"
-              HEALTH_TARGET_ADDRESSES: "cloudflare.com:443,github.com:443"
-              LOG_LEVEL: debug
-              PUBLICIP_API: cloudflare
-              STORAGE_FILEPATH: "" # prevent memory spike and avoid I/O
-              TZ: "${TZ}"
-              UPDATER_PERIOD: 24h
-              VERSION_INFORMATION: off
-              VPN_INTERFACE: wg0
-              VPN_IPV6_SERVER: off
-              VPN_TYPE: wireguard    
-            envFrom:
-              - secretRef:
-                  name: qbittorrent-secret
-            resources:
-              limits:
-                squat.ai/tun: "1"
-            probes:
-              liveness:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: 9999
-                  timeoutSeconds: 10
-                  periodSeconds: 30
-                  failureThreshold: 5
-              startup:
-                enabled: true
-                custom: true
-                spec:
-                  httpGet:
-                    path: /
-                    port: 9999
-                  initialDelaySeconds: 10
-                  periodSeconds: 10
-                  failureThreshold: 5
-            restartPolicy: Always
-            securityContext:
-              capabilities: { add: ["NET_ADMIN", "NET_RAW"] }
-              readOnlyRootFilesystem: false
-              runAsNonRoot: false
-              runAsUser: 0
+          annotations:
+            k8s.v1.cni.cncf.io/networks: |
+              [{
+                "name":"multus-vpn",
+                "namespace": "network",
+                "ips": ["192.168.90.10/24"]
+              }]
         containers:
           app:
             nameOverride: qbittorrent
@@ -99,13 +46,13 @@ spec:
             env:
               UMASK: "022"
               QBT_WEBUI_PORT: &port 8080
-              QBT_TORRENTING_PORT: *BT-port
+              QBT_TORRENTING_PORT: 21044
               QBT_Preferences__WebUI__AuthSubnetWhitelistEnabled: true
               QBT_Preferences__WebUI__AuthSubnetWhitelist: |-
                 10.42.0.0/16, 10.20.0.0/24
-              QBT_BitTorrent__Session__Interface: wg0
-              QBT_BitTorrent__Session__InterfaceAddress: "0.0.0.0"
-              QBT_BitTorrent__Session__InterfaceName: wg0
+              # QBT_BitTorrent__Session__Interface: wg0
+              # QBT_BitTorrent__Session__InterfaceAddress: "0.0.0.0"
+              # QBT_BitTorrent__Session__InterfaceName: wg0
               QBT_Preferences__WebUI__AlternativeUIEnabled: true
               QBT_Preferences__WebUI__RootFolder: /add-ons/VueTorrent
             probes:
