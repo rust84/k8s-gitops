@@ -13,31 +13,7 @@ spec:
     - name: cloudflare-dns
       namespace: network
   interval: 30m
-  path: ./kubernetes/apps/network/cloudflared/default
-  prune: true
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-    namespace: flux-system
-  targetNamespace: *namespace
-  timeout: 5m
-  wait: false
----
-# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: &app cloudflared-cookjam
-  namespace: &namespace network
-spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
-  dependsOn:
-    - name: cloudflare-dns
-      namespace: network
-  interval: 30m
-  path: ./kubernetes/apps/network/cloudflared/cookjam
+  path: ./kubernetes/apps/network/cloudflared/app
   prune: true
   sourceRef:
     kind: GitRepository

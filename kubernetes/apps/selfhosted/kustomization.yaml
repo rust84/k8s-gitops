@@ -7,7 +7,6 @@ components:
   - ../../flux/components/common
 resources:
   #  - ./authentik/ks.yaml
-  - ./cookjam/ks.yaml
   - ./homepage/ks.yaml
   - ./immich/ks.yaml
   - ./karakeep/ks.yaml
