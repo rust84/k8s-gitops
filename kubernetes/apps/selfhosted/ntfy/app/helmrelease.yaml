@@ -36,7 +36,7 @@ spec:
             args: ["serve"]
             image:
               repository: binwiederhier/ntfy
-              tag: v2.16.0
+              tag: v2.17.0
             resources:
               requests:
                 cpu: 50m
