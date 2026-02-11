@@ -42,8 +42,8 @@ spec:
           app:
             nameOverride: qbittorrent
             image:
-              repository: ghcr.io/home-operations/qbittorrent
-              tag: 5.1.4@sha256:e9c2c24ad2b39fa0ee44de682bf26b14bf23cffea1de9e1f082f26caed4277f9
+              repository: ghcr.io/home-operations/qbittorrent-libtorrentv1
+              tag: 5.1.4@sha256:fc48ae3a5b3daa2e80811207f659d0349da459f086faa06810f5353050da541b
             env:
               UMASK: "022"
               QBT_WEBUI_PORT: &port 8080
@@ -54,7 +54,6 @@ spec:
               QBT_BitTorrent__Session__Interface: net1
               QBT_BitTorrent__Session__InterfaceAddress: "0.0.0.0"
               QBT_BitTorrent__Session__InterfaceName: net1
-              QBT_Preferences__WebUI__AlternativeUIEnabled: false
             probes:
               liveness: &probes
                 enabled: true
@@ -106,14 +105,6 @@ spec:
         ports:
           http:
             port: *port
-
-    route:
-      app:
-        hostnames:
-          - "qbittorrent.${SECRET_DOMAIN}"
-        parentRefs:
-          - name: envoy-internal
-            namespace: network
 
     persistence:
       config:
