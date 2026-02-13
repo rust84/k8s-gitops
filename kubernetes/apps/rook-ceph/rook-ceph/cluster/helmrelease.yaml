@@ -44,12 +44,19 @@ spec:
             namespace: network
     toolbox:
       enabled: true
-    configOverride: |
-      [global]
-      bdev_enable_discard = true
-      bdev_async_discard = true
-      osd_class_update_on_start = false
     cephClusterSpec:
+      cephConfig:
+        global:
+          bdev_enable_discard: "true"
+          bdev_async_discard: "true"
+          bdev_async_discard_threads: "1"
+          osd_class_update_on_start: "false"
+          device_failure_prediction_mode: local
+        mon:
+          mon_data_avail_warn: "20"  # Warn at 20% available (80% used)
+          mon_data_avail_crit: "10"  # Critical at 10% available (90% used)
+      cleanupPolicy:
+        wipeDevicesFromOtherClusters: true
       crashCollector:
         disable: false
       csi:
@@ -62,6 +69,8 @@ spec:
         prometheusEndpoint: http://prometheus-operated.observability.svc.cluster.local:9090
       mgr:
         modules:
+          - name: diskprediction_local
+            enabled: true
           - name: insights
             enabled: true
           - name: pg_autoscaler
@@ -72,6 +81,16 @@ spec:
         provider: host
         connections:
           requireMsgr2: true
+        # Use thunderbolt network for both client and OSD replication traffic
+        addressRanges:
+          public:
+            - 169.254.255.0/24
+          cluster:
+            - 169.254.255.0/24
+      resources:
+        osd:
+          limits:
+            memory: 8Gi
       storage:
         useAllNodes: true
         useAllDevices: false
@@ -93,6 +112,9 @@ spec:
           volumeBindingMode: Immediate
           mountOptions: ["discard"]
           parameters:
+            # TODO: Enable compression at next cluster rebuild
+            # compression_mode: passive  # Only compress if beneficial
+            # compression_algorithm: zstd  # Good compression with low CPU overhead
             imageFormat: "2"
             imageFeatures: layering,fast-diff,object-map,deep-flatten,exclusive-lock
             csi.storage.k8s.io/provisioner-secret-name: rook-csi-rbd-provisioner
