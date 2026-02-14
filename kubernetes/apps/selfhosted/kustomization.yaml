@@ -12,7 +12,6 @@ resources:
   - ./karakeep/ks.yaml
   - ./n8n/ks.yaml
   - ./ntfy/ks.yaml
-  - ./palmr/ks.yaml
   - ./paperless/ks.yaml
   - ./joplin/ks.yaml
   - ./monica/ks.yaml
