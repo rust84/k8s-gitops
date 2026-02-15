@@ -80,6 +80,14 @@ spec:
           - path: /config/Pre-rolls.yml
             subPath: Pre-rolls.yml
             readOnly: true
+      config-movies-reference:
+        enabled: true
+        type: configMap
+        name: pmm-movies-reference
+        globalMounts:
+          - path: /config/Movies - Reference.yml
+            subPath: Movies-Reference.yml
+            readOnly: true
       logs:
         type: emptyDir
         globalMounts:

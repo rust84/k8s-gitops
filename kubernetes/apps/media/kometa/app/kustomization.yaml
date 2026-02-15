@@ -11,6 +11,9 @@ configMapGenerator:
   - name: pmm-prerolls
     files:
       - ./configs/Pre-rolls.yml
+  - name: pmm-movies-reference
+    files:
+      - Movies-Reference.yml=./configs/Movies - Reference.yml
 generatorOptions:
   disableNameSuffixHash: true
 labels:

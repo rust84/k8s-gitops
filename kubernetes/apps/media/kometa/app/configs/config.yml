@@ -5,7 +5,7 @@ libraries:
       - file: config/Pre-rolls.yml
       - file: config/Movies.yml
       - file: config/Movies - Holidays.yml
-      - file: config/Movies - Trakt (Unplayed).yml
+      - file: config/Movies - Reference.yml
     overlay_files:
       - file: config/Overlays - Ratings.yml
       - file: config/Movies - Overlays - Charts.yml
@@ -16,6 +16,9 @@ libraries:
       - file: config/Movies - Overlays - Audio.yml
       - file: config/Movies - Overlays - Runtimes.yml
     operations:
+      delete_collections:
+        configured: false
+        managed: true
       mass_genre_update: imdb
       mass_content_rating_update: omdb
       mass_audience_rating_update: mdb_tomatoesaudience
@@ -111,14 +114,14 @@ mdblist:
   cache_expiration: 60
 
 radarr:
-  url: http://radarr.media.svc:7878
+  url: http://radarr-archive.media.svc:7878
   token: {{ .RADARR__API_KEY }}
   add_missing: false
   add_existing: false
   root_folder_path: /media/movies
   monitor: true
   availability: announced
-  quality_profile: "SQP-1 WEB (2160p)"
+  quality_profile: "SQP-1 (2160p)"
   tag:
   search: false
   radarr_path:
@@ -146,16 +149,3 @@ sonarr:
   upgrade_existing: false
   monitor_existing: false
   ignore_cache: false
-
-trakt:
-  client_id: {{ .TRAKT_CLIENT_ID }}
-  client_secret: {{ .TRAKT_CLIENT_SECRET }}
-  pin:
-  force_refresh: false
-  authorization:
-    access_token: {{ .TRAKT_ACCESS_TOKEN }}
-    token_type: Bearer
-    expires_in: {{ .TRAKT_EXPIRES_IN }}
-    refresh_token: {{ .TRAKT_REFRESH_TOKEN }}
-    scope: public
-    created_at: {{ .TRAKT_CREATED_AT }}

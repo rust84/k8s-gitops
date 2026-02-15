@@ -1,0 +1,36 @@
+---
+collections:
+  clear_reference_audio_tag_in_radarr:
+    radarr_taglist: reference-audio
+    item_radarr_tag.remove: reference-audio
+    build_collection: false
+  Reference Audio:
+    tmdb_list:
+      - https://www.themoviedb.org/list/8563963-reference-audio-9
+    summary: Get ready for a cinematic adventure where the power of sound takes center stage, transporting you on a captivating sonic journey like no other. These immersive soundscapes deliver an auditory experience that will leave you breathless and exhilarated.
+    cache_builders: 0
+    collection_order: custom
+    sort_title: "*101"
+    sync_mode: sync
+    item_radarr_tag: reference-audio
+    radarr_add_missing: false
+    radarr_quality: "SQP-1 (2160p)"
+    radarr_availability: released
+    radarr_monitor_existing: false
+    radarr_monitor: false
+    radarr_search: false
+  Reference Video:
+    tmdb_list:
+      - https://www.themoviedb.org/list/8563964-reference-video-9
+    summary: Movies with standout video quality according to Shane Lee YouTube review series.
+    cache_builders: 0
+    collection_order: custom
+    sort_title: "*102"
+    sync_mode: sync
+    item_radarr_tag: reference-video
+    radarr_add_missing: false
+    radarr_quality: "SQP-1 (2160p)"
+    radarr_availability: released
+    radarr_monitor_existing: false
+    radarr_monitor: false
+    radarr_search: false
