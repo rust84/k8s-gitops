@@ -106,20 +106,15 @@ spec:
             subPath: logs
           - path: /tmp
             subPath: tmp
-      ephemeral:
+      incomplete:
         type: custom
         volumeSpec:
           ephemeral:
             volumeClaimTemplate:
               spec:
-                accessModes:
-                  - ReadWriteOnce
-                storageClassName: "openebs-hostpath"
+                accessModes: ["ReadWriteOnce"]
                 resources:
                   requests:
-                    storage: 100Gi
-        advancedMounts:
-          sabnzbd:
-            app:
-              - path: /incomplete
-                subPath: incomplete
+                    storage: 100Gi # ignored
+                storageClassName: "openebs-hostpath"
+                volumeMode: Filesystem
