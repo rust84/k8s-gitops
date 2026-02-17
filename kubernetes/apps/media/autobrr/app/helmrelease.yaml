@@ -27,19 +27,23 @@ spec:
             image:
               repository: ghcr.io/home-operations/postgres-init
               tag: 17
-            envFrom: &envFrom
+            envFrom:
               - secretRef:
                   name: *app
         containers:
           app:
             image:
               repository: ghcr.io/autobrr/autobrr
-              tag: v1.72.1@sha256:89e5e266ae415b4979ddc303cfa80c9bd90fd5be26290ebd8b4757fdc47d7523
+              tag: v1.73.0@sha256:6b0e57048087e5b7b626b0f02d39e91c8287d32691c26c709b3957227df12f7c
             env:
               AUTOBRR__CHECK_FOR_UPDATES: "false"
               AUTOBRR__HOST: 0.0.0.0
               AUTOBRR__PORT: &port 7474
-              AUTOBRR__LOG_LEVEL: DEBUG
+              AUTOBRR__LOG_LEVEL: INFO
+              AUTOBRR__OIDC_ENABLED: "false"
+              AUTOBRR__METRICS_ENABLED: "true"
+              AUTOBRR__METRICS_HOST: 0.0.0.0
+              AUTOBRR__METRICS_PORT: &metricsPort 9094
             envFrom:
               - secretRef:
                   name: *app
@@ -74,6 +78,8 @@ spec:
         ports:
           http:
             port: *port
+          metrics:
+            port: *metricsPort
     route:
       app:
         annotations:
@@ -86,6 +92,11 @@ spec:
         parentRefs:
           - name: envoy-internal
             namespace: network
+    serviceMonitor:
+      app:
+        serviceName: *app
+        endpoints:
+          - port: metrics
     persistence:
       config:
         existingClaim: *app
