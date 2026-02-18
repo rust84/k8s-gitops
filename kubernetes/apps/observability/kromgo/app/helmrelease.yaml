@@ -71,7 +71,7 @@ spec:
         ports:
           http:
             port: *serverPort
-          health:
+          monitoring:
             port: *healthPort
     route:
       app:
