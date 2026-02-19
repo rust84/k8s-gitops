@@ -65,6 +65,10 @@ spec:
     service:
       ollama:
         controller: ollama
+        type: LoadBalancer
+        annotations:
+          lbipam.cilium.io/ips: 10.20.69.125
+          external-dns.alpha.kubernetes.io/hostname: ollama.${SECRET_DOMAIN}
         ports:
           http:
             port: 11434
