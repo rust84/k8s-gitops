@@ -25,8 +25,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/agregarr/agregarr
-              tag: v2.4.0@sha256:5f638efaa7ebf19defaea2168ee95a7108709bd5598974f243c19b3993c11e50
+              repository: ghcr.io/rust84/agregarr
+              tag: latest@sha256:9282a21a5d6005981acadfb1dd8b038fd02f405214f36206b9360c5297c624e2
             env:
               TZ: "${TZ}"
               PORT: 80
