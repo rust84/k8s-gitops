@@ -126,7 +126,7 @@ spec:
           gethomepage.dev/description: Home Automation
           gethomepage.dev/widget.type: homeassistant
           gethomepage.dev/widget.url: "http://home-assistant-app.home.svc.cluster.local:8123"
-          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_HOMEASSISTANT_TOKEN}}"
+          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_HOMEASSISTANT_TOKEN}}" }}'
         hostnames:
           - "hass.${SECRET_DOMAIN}"
         parentRefs:

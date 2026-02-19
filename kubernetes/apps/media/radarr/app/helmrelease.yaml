@@ -94,7 +94,7 @@ spec:
           gethomepage.dev/description: Movies
           gethomepage.dev/widget.type: radarr
           gethomepage.dev/widget.url: "http://radarr.media.svc.cluster.local:7878"
-          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_RADARR_API_KEY}}"
+          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_RADARR_API_KEY}}" }}'
         hostnames:
           - "{{ .Release.Name }}.${SECRET_DOMAIN}"
         parentRefs:

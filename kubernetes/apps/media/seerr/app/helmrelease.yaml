@@ -79,7 +79,7 @@ spec:
           gethomepage.dev/description: Requests
           gethomepage.dev/widget.type: jellyseerr
           gethomepage.dev/widget.url: "http://seerr.media.svc.cluster.local:80"
-          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_SEERR_API_KEY}}"
+          gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_SEERR_API_KEY}}" }}'
         hostnames:
           - "requests.${SECRET_DOMAIN}"
         parentRefs:
