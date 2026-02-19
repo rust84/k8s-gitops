@@ -102,6 +102,15 @@ spec:
     service:
       app:
         controller: qbittorrent
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Downloads
+          gethomepage.dev/name: qBittorrent
+          gethomepage.dev/icon: qbittorrent.png
+          gethomepage.dev/href: "https://qbittorrent.${SECRET_DOMAIN}"
+          gethomepage.dev/description: Torrents
+          gethomepage.dev/widget.type: qbittorrent
+          gethomepage.dev/widget.url: "http://qbittorrent.media.svc.cluster.local:8080"
         ports:
           http:
             port: *port

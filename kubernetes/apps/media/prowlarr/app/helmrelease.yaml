@@ -81,6 +81,13 @@ spec:
     service:
       app:
         controller: *app
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/name: Prowlarr
+          gethomepage.dev/icon: prowlarr.png
+          gethomepage.dev/href: "https://prowlarr.${SECRET_DOMAIN}"
+          gethomepage.dev/description: Indexers
         ports:
           http:
             port: *port

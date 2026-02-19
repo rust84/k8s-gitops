@@ -66,6 +66,16 @@ spec:
     service:
       app:
         controller: seerr
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/name: Seerr
+          gethomepage.dev/icon: overseerr.png
+          gethomepage.dev/href: "https://requests.${SECRET_DOMAIN}"
+          gethomepage.dev/description: Requests
+          gethomepage.dev/widget.type: jellyseerr
+          gethomepage.dev/widget.url: "http://seerr.media.svc.cluster.local:80"
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_SEERR_API_KEY}}"
         ports:
           http:
             port: *port
