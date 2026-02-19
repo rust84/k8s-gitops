@@ -102,16 +102,6 @@ spec:
     service:
       app:
         controller: *app
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Home
-          gethomepage.dev/name: Home Assistant
-          gethomepage.dev/icon: home-assistant.png
-          gethomepage.dev/href: "https://hass.${SECRET_DOMAIN}"
-          gethomepage.dev/description: Home Automation
-          gethomepage.dev/widget.type: homeassistant
-          gethomepage.dev/widget.url: "http://home-assistant-app.home.svc.cluster.local:8123"
-          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_HOMEASSISTANT_TOKEN}}"
         ports:
           http:
             port: 8123
@@ -128,6 +118,15 @@ spec:
             port: 1400
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Home
+          gethomepage.dev/name: Home Assistant
+          gethomepage.dev/icon: home-assistant.png
+          gethomepage.dev/description: Home Automation
+          gethomepage.dev/widget.type: homeassistant
+          gethomepage.dev/widget.url: "http://home-assistant-app.home.svc.cluster.local:8123"
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_HOMEASSISTANT_TOKEN}}"
         hostnames:
           - "hass.${SECRET_DOMAIN}"
         parentRefs:

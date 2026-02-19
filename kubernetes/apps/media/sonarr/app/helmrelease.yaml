@@ -78,21 +78,20 @@ spec:
     service:
       app:
         controller: *app
-        annotations:
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Media
-          gethomepage.dev/name: Sonarr
-          gethomepage.dev/icon: sonarr.png
-          gethomepage.dev/href: "https://sonarr.${SECRET_DOMAIN}"
-          gethomepage.dev/description: TV Shows
-          gethomepage.dev/widget.type: sonarr
-          gethomepage.dev/widget.url: "http://sonarr.media.svc.cluster.local:8989"
-          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_SONARR_API_KEY}}"
         ports:
           http:
             port: *port
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/name: Sonarr
+          gethomepage.dev/icon: sonarr.png
+          gethomepage.dev/description: TV Shows
+          gethomepage.dev/widget.type: sonarr
+          gethomepage.dev/widget.url: "http://sonarr.media.svc.cluster.local:8989"
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_SONARR_API_KEY}}"
         hostnames:
           - "{{ .Release.Name }}.${SECRET_DOMAIN}"
         parentRefs:

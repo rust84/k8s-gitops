@@ -76,21 +76,21 @@ spec:
         type: LoadBalancer
         annotations:
           lbipam.cilium.io/ips: 10.20.69.124
-          gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Media
-          gethomepage.dev/name: Plex
-          gethomepage.dev/icon: plex.png
-          gethomepage.dev/href: "https://plex.${SECRET_DOMAIN}"
-          gethomepage.dev/description: Media Server
-          gethomepage.dev/widget.type: plex
-          gethomepage.dev/widget.url: "http://plex.media.svc.cluster.local:32400"
-          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_PLEX_TOKEN}}"
         externalTrafficPolicy: Local
         ports:
           http:
             port: *port
     route:
       app:
+        annotations:
+          gethomepage.dev/enabled: "true"
+          gethomepage.dev/group: Media
+          gethomepage.dev/name: Plex
+          gethomepage.dev/icon: plex.png
+          gethomepage.dev/description: Media Server
+          gethomepage.dev/widget.type: plex
+          gethomepage.dev/widget.url: "http://plex.media.svc.cluster.local:32400"
+          gethomepage.dev/widget.key: "{{HOMEPAGE_VAR_PLEX_TOKEN}}"
         hostnames:
           - "{{ .Release.Name }}.${SECRET_DOMAIN}"
         parentRefs:
