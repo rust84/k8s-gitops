@@ -96,3 +96,9 @@ spec:
                 subPath: logs
               - path: /tmp
                 subPath: tmp
+      plex-base-posters:
+        type: nfs
+        server: duriel.internal
+        path: /tank/Media/agregarr
+        globalMounts:
+          - path: /app/config/plex-base-posters
