@@ -37,6 +37,8 @@ spec:
               - secretRef:
                   name: *app
     persistence:
+      config:
+        existingClaim: *app
       config-file:
         type: configMap
         name: *app
@@ -44,3 +46,14 @@ spec:
           - path: /config/recyclarr.yml
             subPath: recyclarr.yml
             readOnly: true
+      tmpfs:
+        type: emptyDir
+        advancedMounts:
+          recyclarr:
+            app:
+              - path: /config/logs
+                subPath: logs
+              - path: /config/repositories
+                subPath: repositories
+              - path: /tmp
+                subPath: tmp
