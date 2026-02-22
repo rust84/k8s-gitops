@@ -12,7 +12,7 @@ resources:
   - ./bazarr/ks.yaml
   - ./jellyfin/ks.yaml
   - ./seerr/ks.yaml
-  - ./kometa/ks.yaml
+  #- ./kometa/ks.yaml
   - ./plex/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
