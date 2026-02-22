@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: ghcr.io/karakeep-app/karakeep
-              tag: 0.30.0
+              tag: 0.31.0
             env:
               # Core
               DATA_DIR: /data
