@@ -9,8 +9,8 @@ spec:
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
-  components:
-    - ../../../../flux/components/volsync
+  # components:
+  #   - ../../../../flux/components/volsync
   dependsOn:
     - name: external-secrets
       namespace: external-secrets
@@ -18,10 +18,10 @@ spec:
     - name: sonarr
   interval: 30m
   path: ./kubernetes/apps/media/recyclarr/app
-  postBuild:
-    substitute:
-      APP: *app
-      VOLSYNC_CAPACITY: 1Gi
+  # postBuild:
+  #   substitute:
+  #     APP: *app
+  #     VOLSYNC_CAPACITY: 1Gi
   prune: true
   sourceRef:
     kind: GitRepository
