@@ -85,9 +85,12 @@ spec:
       app:
         annotations:
           gethomepage.dev/enabled: "true"
-          gethomepage.dev/group: Media
+          gethomepage.dev/group: Downloads
           gethomepage.dev/icon: qui.png
           gethomepage.dev/name: Qui
+          gethomepage.dev/description: Torrents
+          gethomepage.dev/widget.type: qbittorrent
+          gethomepage.dev/widget.url: "http://qbittorrent.media.svc.cluster.local:8080"
         hostnames:
           - "qui.${SECRET_DOMAIN}"
         parentRefs:

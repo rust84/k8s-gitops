@@ -29,14 +29,6 @@ data:
     mode: cluster
     gateway: true
   services.yaml: |
-    - Downloads:
-        - qBittorrent:
-            icon: qbittorrent.png
-            href: https://qbittorrent.${SECRET_DOMAIN}
-            description: Torrents
-            widget:
-              type: qbittorrent
-              url: http://qbittorrent.media.svc.cluster.local:8080
     - Home:
         - Uptime Kuma:
             icon: uptime-kuma.png
