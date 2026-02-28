@@ -18,18 +18,18 @@ spec:
     remediation:
       retries: 3
   values:
+    defaultPodOptions:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
     controllers:
       unpoller:
         annotations:
           reloader.stakater.com/auto: "true"
-        pod:
-          securityContext:
-            runAsNonRoot: true
-            runAsUser: 1000
-            runAsGroup: 1000
-            fsGroup: 1000
-            fsGroupChangePolicy: OnRootMismatch
-            seccompProfile: { type: RuntimeDefault }
         containers:
           app:
             image:
@@ -46,6 +46,11 @@ spec:
             envFrom:
               - secretRef:
                   name: unpoller-secret
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: [ALL]
             probes:
               liveness:
                 enabled: true
@@ -59,9 +64,9 @@ spec:
             resources:
               requests:
                 cpu: 10m
-                memory: 36M
+                memory: 36Mi
               limits:
-                memory: 128M
+                memory: 128Mi
     service:
       app:
         controller: *app
