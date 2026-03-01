@@ -22,15 +22,15 @@ spec:
       sabnzbd:
         annotations:
           reloader.stakater.com/auto: "true"
-        pod:
-          annotations:
-            k8s.v1.cni.cncf.io/networks: |
-              [{
-                "name":"multus-vpn",
-                "namespace": "network",
-                "ips": ["192.168.90.11/24"],
-                "mac": "9e:f2:16:a5:94:b0"
-              }]
+        # pod:
+        #   annotations:
+        #     k8s.v1.cni.cncf.io/networks: |
+        #       [{
+        #         "name":"multus-vpn",
+        #         "namespace": "network",
+        #         "ips": ["192.168.90.11/24"],
+        #         "mac": "9e:f2:16:a5:94:b0"
+        #       }]
         containers:
           app:
             image:
