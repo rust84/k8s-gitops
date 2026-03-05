@@ -1,5 +1,8 @@
 ---
 autoDirectNodeRoutes: true
+bandwidthManager:
+  enabled: true
+  bbr: true
 bpf:
   masquerade: true
   # forwardKubeDNSToHost requires this to be true https://github.com/siderolabs/talos/issues/10002
