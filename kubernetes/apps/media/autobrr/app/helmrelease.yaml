@@ -40,7 +40,6 @@ spec:
               AUTOBRR__HOST: 0.0.0.0
               AUTOBRR__PORT: &port 7474
               AUTOBRR__LOG_LEVEL: INFO
-              AUTOBRR__OIDC_ENABLED: "false"
               AUTOBRR__METRICS_ENABLED: "true"
               AUTOBRR__METRICS_HOST: 0.0.0.0
               AUTOBRR__METRICS_PORT: &metricsPort 9094
