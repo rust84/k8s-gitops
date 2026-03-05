@@ -61,17 +61,18 @@ spec:
     http:
       requestTimeout: 0s
   responseOverride:
-    - match:
-        statusCodes:
-          - type: Value
-            value: 403
-      redirect:
-        scheme: https
-        hostname: "error-pages.${SECRET_DOMAIN}"
-        path:
-          type: ReplaceFullPath
-          replaceFullPath: /403.html
-        statusCode: 302
+    # Note: This causes issues with autobrr 403 redirects to the login page.
+    # - match:
+    #     statusCodes:
+    #       - type: Value
+    #         value: 403
+    #   redirect:
+    #     scheme: https
+    #     hostname: "error-pages.${SECRET_DOMAIN}"
+    #     path:
+    #       type: ReplaceFullPath
+    #       replaceFullPath: /403.html
+    #     statusCode: 302
     - match:
         statusCodes:
           - type: Value
