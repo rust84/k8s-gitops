@@ -37,9 +37,6 @@ snapshots:
 
 record:
   enabled: True
-  retain:
-    days: 3
-    mode: motion
   alerts:
     retain:
       days: 14
