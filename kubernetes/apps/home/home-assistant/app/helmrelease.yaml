@@ -127,6 +127,7 @@ spec:
           gethomepage.dev/widget.type: homeassistant
           gethomepage.dev/widget.url: "http://home-assistant-app.home.svc.cluster.local:8123"
           gethomepage.dev/widget.key: '{{ "{{HOMEPAGE_VAR_HOMEASSISTANT_TOKEN}}" }}'
+          gethomepage.dev/pod-selector: "app.kubernetes.io/name=home-assistant"
         hostnames:
           - "hass.${SECRET_DOMAIN}"
         parentRefs:
