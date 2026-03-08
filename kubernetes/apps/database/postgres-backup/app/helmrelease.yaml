@@ -58,7 +58,7 @@ spec:
                   secretKeyRef:
                     name: cloudnative-pg-secret
                     key: password
-              POSTGRES_DB: "authentik,fireflyiii,home_assistant,joplin,paperless,bazarr,prowlarr_log,prowlarr_main,radarr_log,radarr_main,readarr_cache,readarr_log,readarr_main,sonarr_log,sonarr_main"
+              POSTGRES_DB: "authentik,home_assistant,joplin,paperless,bazarr,prowlarr_log,prowlarr_main,radarr_log,radarr_main,readarr_cache,readarr_log,readarr_main,sonarr_log,sonarr_main"
           postgres-vector:
             image:
               repository: docker.io/prodrigestivill/postgres-backup-local
@@ -68,7 +68,7 @@ spec:
               - -x
               - /backup.sh
             env:
-              POSTGRES_HOST: postgres-vector-ro.database.svc.cluster.local
+              POSTGRES_HOST: postgres-immich-ro.database.svc.cluster.local
               POSTGRES_USER:
                 valueFrom:
                   secretKeyRef:
@@ -79,7 +79,7 @@ spec:
                   secretKeyRef:
                     name: cloudnative-pg-secret
                     key: password
-              POSTGRES_DB: "immich"
+              POSTGRES_DB: immich
     persistence:
       nas-backups:
         enabled: true
