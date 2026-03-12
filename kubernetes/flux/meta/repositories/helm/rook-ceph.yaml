@@ -7,4 +7,5 @@ metadata:
   namespace: flux-system
 spec:
   interval: 12h
-  url: https://charts.rook.io/release
+  type: oci
+  url: oci://ghcr.io/rook/rook-ceph
