@@ -267,22 +267,79 @@ The other key metric here is latency. There is less of an improvement seen here 
 
 1. **Verify interface status**: Ensure all thunderbolt interfaces show `operstate=up`
    ```bash
-   talosctl --nodes 10.20.0.230 get links | grep thunderbolt
+   talosctl -n k8s-0,k8s-1,k8s-2 get LinkStatus --namespace network | grep enx
    ```
 
 2. **Check physical cables**: Verify Thunderbolt cables are securely connected
 
-3. **Verify bus paths**: Confirm bus paths match the physical topology
+3. **Verify TB peers are detected**: Confirm both ends of each cable see each other
    ```bash
-   talosctl --nodes 10.20.0.230 dmesg | grep "thunderbolt.*Linux"
+   talosctl -n k8s-0 dmesg | grep "thunderbolt.*Linux"
    ```
 
-4. **Test ARP**: Verify layer 2 connectivity
+4. **Check for ThunderboltIP login timeouts**:
+   ```bash
+   talosctl -n k8s-0 dmesg | grep "timed out"
+   ```
+   If timeouts are present, the physical link is up but the IP handshake failed — see **ThunderboltIP Login Timeout** below.
+
+5. **Test ARP**: Verify layer 2 connectivity
    ```bash
    kubectl run arping-test --image=nicolaka/netshoot --rm -it --restart=Never \
      --overrides='{"spec":{"nodeSelector":{"kubernetes.io/hostname":"k8s-0"},"hostNetwork":true}}' \
-     -- arping -c 4 -I enx023b986bed45 169.254.255.21
+     -- arping -c 4 -I ethSel0 169.254.255.21
    ```
+
+### ThunderboltIP Login Timeout
+
+The ThunderboltIP handshake times out (~5 minutes) if both sides aren't admin-up simultaneously at boot, or if one side's interface never gets set admin-up due to a stale alias-keyed `LinkSpec`.
+
+**Diagnose — check if the `LinkSpec` is keyed by alias instead of interface name:**
+```bash
+talosctl -n k8s-0 get LinkSpec --namespace network
+```
+Healthy output has interface-named specs (e.g. `enx024d9865f07c`). A problem looks like:
+```
+k8s-0   network   LinkSpec   ethSel0   2   # keyed by alias — broken
+k8s-0   network   LinkSpec   ethSel1   2   # keyed by alias — broken
+```
+
+**Fix — apply a `LinkConfig` patch directly referencing the alias names:**
+
+Create a patch file (adjust IPs/routes per node):
+```yaml
+---
+apiVersion: v1alpha1
+kind: LinkConfig
+name: ethSel0
+mtu: 65520
+addresses:
+  - address: 169.254.255.20/32
+routes:
+  - destination: 169.254.255.21/32
+    metric: 2048
+up: true
+---
+apiVersion: v1alpha1
+kind: LinkConfig
+name: ethSel1
+mtu: 65520
+addresses:
+  - address: 169.254.255.20/32
+routes:
+  - destination: 169.254.255.22/32
+    metric: 2048
+up: true
+```
+
+Apply without reboot:
+```bash
+talosctl -n k8s-0 apply-config --mode=no-reboot -f patch.yaml
+```
+
+This forces the `LinkSpecController` to re-reconcile and push admin-up to the interfaces, which retriggers the ThunderboltIP handshake. The link should come up within seconds.
+
+**Root cause:** When a node boots and the TB peer isn't ready in time, the Talos network controller creates a `LinkSpec` keyed by alias name (`ethSel0`) rather than interface name (`enx...`). The controller then can't resolve the alias to the actual interface and never sets it admin-up. The explicit `LinkConfig` patch breaks the deadlock.
 
 ### Bus Path Mismatch
 
