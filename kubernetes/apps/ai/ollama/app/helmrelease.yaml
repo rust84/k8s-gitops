@@ -32,6 +32,7 @@ spec:
               OLLAMA_MODELS: &modelPath /models
               OLLAMA_HOST: 0.0.0.0
               OLLAMA_VULKAN: "1"
+              OLLAMA_FLASH_ATTENTION: "false"
               OLLAMA_NUM_GPU: 999
             resources:
               requests:
