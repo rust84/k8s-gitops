@@ -26,25 +26,13 @@ spec:
         containers:
           ollama:
             image:
-              repository: intelanalytics/ipex-llm-inference-cpp-xpu
-              tag: 2.3.0-SNAPSHOT
-            command:
-              - /bin/sh
-              - -c
-              - mkdir -p /llm/ollama && cd /llm/ollama && init-ollama && exec ./ollama serve
-            securityContext:
-              privileged: false
-              capabilities:
-                add:
-                  - SYS_ADMIN
+              repository: docker.io/ollama/ollama
+              tag: 0.18.0
             env:
               OLLAMA_MODELS: &modelPath /models
-              no_proxy: localhost,127.0.0.1
               OLLAMA_HOST: 0.0.0.0
-              DEVICE: Arc
-              OLLAMA_INTEL_GPU: true
+              OLLAMA_VULKAN: "1"
               OLLAMA_NUM_GPU: 999
-              ZES_ENABLE_SYSMAN: 1
             resources:
               requests:
                 cpu: 200m
