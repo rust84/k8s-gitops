@@ -33,7 +33,8 @@ spec:
               OLLAMA_HOST: 0.0.0.0
               OLLAMA_VULKAN: "1"
               OLLAMA_FLASH_ATTENTION: "false"
-              OLLAMA_NUM_GPU: "0"
+              OLLAMA_NUM_GPU: "999"
+              GGML_VK_DISABLE_INTEGER_DOT_PRODUCT: 1
             resources:
               requests:
                 cpu: 200m
