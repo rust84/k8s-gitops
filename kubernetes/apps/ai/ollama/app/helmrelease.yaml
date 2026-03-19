@@ -27,7 +27,7 @@ spec:
           ollama:
             image:
               repository: docker.io/ollama/ollama
-              tag: 0.18.0
+              tag: 0.18.2
             env:
               OLLAMA_MODELS: &modelPath /models
               OLLAMA_HOST: 0.0.0.0
