@@ -263,32 +263,47 @@ The other key metric here is latency. There is less of an improvement seen here 
 
 ## Troubleshooting
 
+### LINK STATE Always Shows `false` in talosctl
+
+`talosctl get links` reports `LINK STATE: false` for thunderbolt-net interfaces even when the network is fully operational. This is a known display quirk — Talos does not correctly reflect the thunderbolt-net carrier state in this column. **Do not rely on `LINK STATE` to determine if the thunderbolt network is working.** Use ping instead:
+
+```bash
+kubectl run ping-test --image=nicolaka/netshoot --restart=Never -n default \
+  --overrides='{"spec":{"nodeSelector":{"kubernetes.io/hostname":"k8s-2"},"hostNetwork":true,"containers":[{"name":"ping-test","image":"nicolaka/netshoot","command":["ping","-c","4","-I","169.254.255.22","169.254.255.20"],"securityContext":{"privileged":true}}]}}'
+sleep 10 && kubectl logs ping-test -n default
+kubectl delete pod ping-test -n default
+```
+
+The `OPER STATE` column (`up`/`down`) is reliable for determining whether an interface is admin-up.
+
 ### No Connectivity Between Nodes
 
 1. **Verify interface status**: Ensure all thunderbolt interfaces show `operstate=up`
    ```bash
-   talosctl -n k8s-0,k8s-1,k8s-2 get LinkStatus --namespace network | grep enx
+   talosctl -n 10.20.0.230,10.20.0.229,10.20.0.244 get links --output table | grep -E "(ethSel|enx)"
    ```
 
-2. **Check physical cables**: Verify Thunderbolt cables are securely connected
-
-3. **Verify TB peers are detected**: Confirm both ends of each cable see each other
+2. **Verify with ping** (not LINK STATE — see above):
    ```bash
-   talosctl -n k8s-0 dmesg | grep "thunderbolt.*Linux"
+   kubectl run ping-test --image=nicolaka/netshoot --restart=Never -n default \
+     --overrides='{"spec":{"nodeSelector":{"kubernetes.io/hostname":"k8s-0"},"hostNetwork":true,"containers":[{"name":"ping-test","image":"nicolaka/netshoot","command":["ping","-c","4","-I","169.254.255.20","169.254.255.21"],"securityContext":{"privileged":true}}]}}'
+   sleep 10 && kubectl logs ping-test -n default && kubectl delete pod ping-test -n default
    ```
 
-4. **Check for ThunderboltIP login timeouts**:
+3. **Check physical cables**: Verify Thunderbolt cables are securely connected
+
+4. **Verify TB peers are detected**: Confirm both ends of each cable see each other
    ```bash
-   talosctl -n k8s-0 dmesg | grep "timed out"
+   talosctl -n 10.20.0.230 dmesg | grep "thunderbolt.*Linux"
+   ```
+
+5. **Check for ThunderboltIP login timeouts**:
+   ```bash
+   talosctl -n 10.20.0.230 dmesg | grep "timed out"
    ```
    If timeouts are present, the physical link is up but the IP handshake failed — see **ThunderboltIP Login Timeout** below.
 
-5. **Test ARP**: Verify layer 2 connectivity
-   ```bash
-   kubectl run arping-test --image=nicolaka/netshoot --rm -it --restart=Never \
-     --overrides='{"spec":{"nodeSelector":{"kubernetes.io/hostname":"k8s-0"},"hostNetwork":true}}' \
-     -- arping -c 4 -I ethSel0 169.254.255.21
-   ```
+6. **Check if interfaces are admin-down on neighboring nodes**: When a node was offline when its neighbors booted, the neighbors' ethSel interfaces facing that node will be admin-down — see **Neighbor Interfaces Admin-Down After Node Recovery** below.
 
 ### ThunderboltIP Login Timeout
 
@@ -304,42 +319,56 @@ k8s-0   network   LinkSpec   ethSel0   2   # keyed by alias — broken
 k8s-0   network   LinkSpec   ethSel1   2   # keyed by alias — broken
 ```
 
-**Fix — apply a `LinkConfig` patch directly referencing the alias names:**
+**Fix — apply the node config using the task runner:**
 
-Create a patch file (adjust IPs/routes per node):
-```yaml
----
-apiVersion: v1alpha1
-kind: LinkConfig
-name: ethSel0
-mtu: 65520
-addresses:
-  - address: 169.254.255.20/32
-routes:
-  - destination: 169.254.255.21/32
-    metric: 2048
-up: true
----
-apiVersion: v1alpha1
-kind: LinkConfig
-name: ethSel1
-mtu: 65520
-addresses:
-  - address: 169.254.255.20/32
-routes:
-  - destination: 169.254.255.22/32
-    metric: 2048
-up: true
-```
+The clusterconfig files already contain `LinkConfig` entries with `up: true` for both `ethSel0` and `ethSel1`. Apply them to all three nodes:
 
-Apply without reboot:
 ```bash
-talosctl -n k8s-0 apply-config --mode=no-reboot -f patch.yaml
+task talos:apply-node IP=10.20.0.230
+task talos:apply-node IP=10.20.0.229
+task talos:apply-node IP=10.20.0.244
 ```
 
-This forces the `LinkSpecController` to re-reconcile and push admin-up to the interfaces, which retriggers the ThunderboltIP handshake. The link should come up within seconds.
+This forces the `LinkSpecController` to re-reconcile. **Important:** if the node's `LinkSpec` already contains `up: true` with the same content, the version won't increment and no re-reconciliation is triggered. In that case, proceed to the **Neighbor Interfaces Admin-Down** section below.
 
-**Root cause:** When a node boots and the TB peer isn't ready in time, the Talos network controller creates a `LinkSpec` keyed by alias name (`ethSel0`) rather than interface name (`enx...`). The controller then can't resolve the alias to the actual interface and never sets it admin-up. The explicit `LinkConfig` patch breaks the deadlock.
+**Root cause:** When a node boots and the TB peer isn't ready in time, the Talos network controller creates a `LinkSpec` keyed by alias name (`ethSel0`) rather than interface name (`enx...`). The controller then can't resolve the alias to the actual interface and never sets it admin-up. The explicit `LinkConfig` in the clusterconfig breaks the deadlock on next apply.
+
+### Neighbor Interfaces Admin-Down After Node Recovery
+
+**Symptom:** A node (e.g. k8s-2) recovers after being offline, but its ThunderboltIP handshake keeps timing out. The neighboring nodes' ethSel interfaces facing k8s-2 are admin-down (OPER STATE: down, MTU 1500) because those interfaces didn't exist when the neighbors booted.
+
+**Diagnose:** Check the OPER STATE of the unaliased/ethSel1 interfaces on neighboring nodes:
+```bash
+talosctl -n 10.20.0.230,10.20.0.229 get links --output table | grep -E "(ethSel|enx)"
+```
+If `ethSel1` shows `down` on k8s-0 or k8s-1, those interfaces were never set admin-up.
+
+**Also check:** dmesg for repeated ThunderboltIP timeouts on the recovering node:
+```bash
+talosctl -n 10.20.0.244 dmesg | grep "timed out"
+```
+
+**Fix:** After replugging the TB cables on the recovering node (to give a fresh 5-minute handshake window), bring the admin-down interfaces up on the neighbors using privileged pods. Look up the actual interface names first:
+
+```bash
+talosctl -n 10.20.0.230,10.20.0.229 get links --output table | grep -E "enx.*down"
+```
+
+Then toggle them up simultaneously (replace interface names with the actual `enx...` values):
+```bash
+kubectl run tb-fix-k8s0 --image=nicolaka/netshoot --restart=Never -n default \
+  --overrides='{"spec":{"nodeSelector":{"kubernetes.io/hostname":"k8s-0"},"hostNetwork":true,"containers":[{"name":"tb-fix-k8s0","image":"nicolaka/netshoot","command":["ip","link","set","<enx-interface>","up"],"securityContext":{"privileged":true}}]}}' &
+kubectl run tb-fix-k8s1 --image=nicolaka/netshoot --restart=Never -n default \
+  --overrides='{"spec":{"nodeSelector":{"kubernetes.io/hostname":"k8s-1"},"hostNetwork":true,"containers":[{"name":"tb-fix-k8s1","image":"nicolaka/netshoot","command":["ip","link","set","<enx-interface>","up"],"securityContext":{"privileged":true}}]}}' &
+wait
+```
+
+Verify the pods completed successfully then check connectivity with ping. Clean up:
+```bash
+kubectl delete pod tb-fix-k8s0 tb-fix-k8s1 -n default
+```
+
+**Note:** The ThunderboltIP driver does not automatically retry after a timeout. The only ways to trigger a new handshake attempt are: replug the physical cable, toggle the interface admin-down then admin-up, or reboot the node. Talos will not re-reconcile admin-up on its own if the interface appears after boot.
 
 ### Bus Path Mismatch
 
