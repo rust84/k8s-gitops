@@ -86,6 +86,11 @@ spec:
               - /config
             env:
               HASS_SERVER: http://localhost:8123
+              HASS_TOKEN:
+                valueFrom:
+                  secretKeyRef:
+                    name: home-assistant-secret
+                    key: HASS_TOKEN
             resources:
               requests:
                 cpu: 10m
