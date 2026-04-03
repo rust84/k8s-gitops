@@ -14,6 +14,7 @@ resources:
   - ./seerr/ks.yaml
   #- ./kometa/ks.yaml
   - ./plex/ks.yaml
+  - ./postarr/ks.yaml
   - ./prowlarr/ks.yaml
   - ./qbittorrent/ks.yaml
   - ./qui/ks.yaml
