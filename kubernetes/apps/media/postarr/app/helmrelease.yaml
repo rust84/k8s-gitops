@@ -26,11 +26,12 @@ spec:
           app:
             image:
               repository: ghcr.io/zarskie/postarr
-              tag: v0.9.0-alpha.2@sha256:6f7d8b5754cdc95948c89fa46d8d37c7cac00d35a2be0d13b09dfb0599405baa
+              tag: develop@sha256:6f7d8b5754cdc95948c89fa46d8d37c7cac00d35a2be0d13b09dfb0599405baa
             env:
               TZ: "${TZ}"
               PUID: "1000"
               PGID: "1000"
+              MAIN_LOG_LEVEL: "debug"
             securityContext:
               allowPrivilegeEscalation: true
               readOnlyRootFilesystem: false
@@ -84,15 +85,13 @@ spec:
     persistence:
       config:
         existingClaim: *app
-        globalMounts:
-          - path: /config
       assets:
         type: nfs
         server: duriel.internal
         path: /tank/Media/postarr/assets
         globalMounts:
           - path: /assets
-      mpostersa:
+      posters:
         type: nfs
         server: duriel.internal
         path: /tank/Media/postarr/posters
@@ -105,3 +104,7 @@ spec:
           - path: /config/rclone_sa.json
             subPath: rclone_sa.json
             readOnly: true
+      logs:
+        type: emptyDir
+        globalMounts:
+          - path: /config/logs
