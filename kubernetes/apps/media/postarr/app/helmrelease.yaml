@@ -98,3 +98,10 @@ spec:
         path: /tank/Media/postarr/posters
         globalMounts:
           - path: /posters
+      rclone-sa:
+        type: secret
+        name: postarr-secret
+        globalMounts:
+          - path: /config/rclone_sa.json
+            subPath: rclone_sa.json
+            readOnly: true
