@@ -8,4 +8,4 @@ metadata:
 spec:
   interval: 12h
   type: oci
-  url: oci://ghcr.io/rook/rook-ceph
+  url: oci://ghcr.io/rook
