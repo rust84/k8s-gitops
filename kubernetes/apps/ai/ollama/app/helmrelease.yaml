@@ -44,7 +44,7 @@ spec:
               DEVICE: Arc
               OLLAMA_INTEL_GPU: true
               OLLAMA_NUM_GPU: 999
-              ZES_ENABLE_SYSMAN: 
+              ZES_ENABLE_SYSMAN: 1
               # OpenVINO specific
               GGML_OPENVINO_DEVICE: GPU
               GGML_OPENVINO_PROFILING: 1
