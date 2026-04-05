@@ -47,7 +47,7 @@ spec:
                 cpu: 200m
                 gpu.intel.com/i915: 1
               limits:
-                memory: 20Gi
+                memory: 18Gi
                 gpu.intel.com/i915: 1
         pod:
           affinity:
