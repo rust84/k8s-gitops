@@ -28,10 +28,10 @@ spec:
             image:
               repository: ghcr.io/rust84/ollama-ov
               tag: latest@sha256:4e73627c39f6abda6cddec841e0eb6ee7ffec21b272f37323881fb5ac79be539
-            command:
-              - /bin/sh
-              - -c
-              - mkdir -p /llm/ollama && cd /llm/ollama && init-ollama && exec ./ollama serve
+            # command:
+            #   - /bin/sh
+            #   - -c
+            #   - mkdir -p /llm/ollama && cd /llm/ollama && init-ollama && exec ./ollama serve
             securityContext:
               privileged: false
               capabilities:
