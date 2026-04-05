@@ -27,7 +27,7 @@ spec:
           ollama:
             image:
               repository: ghcr.io/rust84/ollama-ov
-              tag: latest@sha256:2e1cb1487e32e52ceb9a78d3b724d9fb255a8e572653a2988a35c241aefda6f9
+              tag: latest@sha256:37365bfa8258cafc41076551a0a9b8b1041b2d41ae521e96dac38845f3239b72
             # command:
             #   - /bin/sh
             #   - -c
