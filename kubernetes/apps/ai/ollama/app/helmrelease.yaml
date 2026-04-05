@@ -27,7 +27,7 @@ spec:
           ollama:
             image:
               repository: ghcr.io/rust84/ollama-ov
-              tag: latest@sha256:52753e475c82f604b1255d35a06310b8dd007543547266cce41d45bc9b268817
+              tag: latest@sha256:2e1cb1487e32e52ceb9a78d3b724d9fb255a8e572653a2988a35c241aefda6f9
             # command:
             #   - /bin/sh
             #   - -c
@@ -39,17 +39,9 @@ spec:
                   - SYS_ADMIN
             env:
               OLLAMA_MODELS: &modelPath /models
-              no_proxy: localhost,127.0.0.1
               OLLAMA_HOST: 0.0.0.0
-              DEVICE: Arc
-              OLLAMA_INTEL_GPU: true
-              OLLAMA_NUM_GPU: 999
-              ZES_ENABLE_SYSMAN: 1
-              # OpenVINO specific
-              GGML_OPENVINO_DEVICE: GPU
-              GGML_OPENVINO_PROFILING: 1
-              GGML_OPENVINO_STATEFUL_EXECUTION: 1
-              GGML_OPENVINO_CACHE_DIR: /tmp/ov_cache
+              GODEBUG: cgocheck=0
+              no_proxy: localhost,127.0.0.1
             resources:
               requests:
                 cpu: 200m
@@ -88,7 +80,3 @@ spec:
       dri:
         type: hostPath
         hostPath: /dev/dri
-      cache:
-        type: emptyDir
-        globalMounts:
-          - path: /tmp/ov_cache
