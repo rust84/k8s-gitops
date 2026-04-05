@@ -26,12 +26,12 @@ spec:
         containers:
           ollama:
             image:
-              repository: intelanalytics/ipex-llm-inference-cpp-xpu
-              tag: 2.3.0-SNAPSHOT
-            command:
-              - /bin/sh
-              - -c
-              - mkdir -p /llm/ollama && cd /llm/ollama && init-ollama && exec ./ollama serve
+              repository: ghcr.io/rust84/ollama-ov
+              tag: latest@sha256:2ce6730190d435622654e7b1cc8f11afc26735e13b4dac00196a4744dc9c207d
+            # command:
+            #   - /bin/sh
+            #   - -c
+            #   - mkdir -p /llm/ollama && cd /llm/ollama && init-ollama && exec ./ollama serve
             securityContext:
               privileged: false
               capabilities:
@@ -39,18 +39,15 @@ spec:
                   - SYS_ADMIN
             env:
               OLLAMA_MODELS: &modelPath /models
-              no_proxy: localhost,127.0.0.1
               OLLAMA_HOST: 0.0.0.0
-              DEVICE: Arc
-              OLLAMA_INTEL_GPU: true
-              OLLAMA_NUM_GPU: 999
-              ZES_ENABLE_SYSMAN: 1
+              GODEBUG: cgocheck=0
+              no_proxy: localhost,127.0.0.1
             resources:
               requests:
                 cpu: 200m
                 gpu.intel.com/i915: 1
               limits:
-                memory: 12Gi
+                memory: 18Gi
                 gpu.intel.com/i915: 1
         pod:
           affinity:
