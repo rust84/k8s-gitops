@@ -26,8 +26,8 @@ spec:
         containers:
           ollama:
             image:
-              repository: intelanalytics/ipex-llm-inference-cpp-xpu
-              tag: 2.3.0-SNAPSHOT
+              repository: ghcr.io/rust84/ollama-ov
+              tag: latest@sha256:4e73627c39f6abda6cddec841e0eb6ee7ffec21b272f37323881fb5ac79be539
             command:
               - /bin/sh
               - -c
@@ -44,7 +44,12 @@ spec:
               DEVICE: Arc
               OLLAMA_INTEL_GPU: true
               OLLAMA_NUM_GPU: 999
-              ZES_ENABLE_SYSMAN: 1
+              ZES_ENABLE_SYSMAN: 
+              # OpenVINO specific
+              GGML_OPENVINO_DEVICE: GPU
+              GGML_OPENVINO_PROFILING: 1
+              GGML_OPENVINO_STATEFUL_EXECUTION: 1
+              GGML_OPENVINO_CACHE_DIR: /tmp/ov_cache
             resources:
               requests:
                 cpu: 200m
@@ -83,3 +88,7 @@ spec:
       dri:
         type: hostPath
         hostPath: /dev/dri
+      cache:
+        type: emptyDir
+        globalMounts:
+          - path: /tmp/ov_cache
