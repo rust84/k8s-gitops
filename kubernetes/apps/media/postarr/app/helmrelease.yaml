@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: ghcr.io/zarskie/postarr
-              tag: develop@sha256:7ef85904d548425c6b16868ef0398302ff33e8c6eaeab61ec416b815087cf7ec
+              tag: develop@sha256:9a2b94b6b365f6d3fa28b85be4ef44d1ef98e1c9f257dd13f487a1a1d03f2993
             env:
               TZ: "${TZ}"
               PUID: "1000"
