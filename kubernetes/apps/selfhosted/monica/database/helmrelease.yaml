@@ -9,7 +9,7 @@ spec:
   chart:
     spec:
       chart: mariadb
-      version: 25.0.7
+      version: 25.0.8
       sourceRef:
         kind: HelmRepository
         name: bitnami
