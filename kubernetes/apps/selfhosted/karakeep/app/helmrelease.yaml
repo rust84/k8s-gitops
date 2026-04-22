@@ -58,10 +58,11 @@ spec:
               CRAWLER_DOWNLOAD_BANNER_IMAGE: "true"
               CRAWLER_ENABLE_ADBLOCKER: "true"
               CRAWLER_STORE_SCREENSHOT: "true"
-              # AI (Ollama)
-              OLLAMA_BASE_URL: http://ollama.ai.svc.cluster.local:11434
-              INFERENCE_TEXT_MODEL: Mistral-7B-Instruct-v0.3-int4-cw-ov:v1
-              INFERENCE_IMAGE_MODEL: llava
+              # AI (Lemonade)
+              OPENAI_API_KEY: ""
+              OPENAI_BASE_URL: https://lemonade.russhome.xyz/api/v1
+              INFERENCE_TEXT_MODEL: gemma3-4b-FLM
+              INFERENCE_IMAGE_MODEL: gemma3-4b-FLM
             probes:
               liveness:
                 enabled: true
