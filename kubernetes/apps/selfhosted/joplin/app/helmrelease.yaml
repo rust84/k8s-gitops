@@ -34,7 +34,7 @@ spec:
           app:
             image:
               repository: joplin/server
-              tag: 3.5.2@sha256:5d9e7f9d31b436cb1b99d1a6a65d8c5bf760829094617e8ad1e956fd925de888
+              tag: 3.7.1@sha256:0877bfba41a943017c42c58e90db9d8d548bfe699b5e410248b5b879371734f9
             env:
               TZ: "${TZ}"
               APP_BASE_URL: https://joplin.${SECRET_DOMAIN}
