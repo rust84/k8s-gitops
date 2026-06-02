@@ -11,7 +11,7 @@ birdseye:
   enabled: false
 
 mqtt:
-  host: emqx-listeners.database.svc.cluster.local
+  host: mosquitto.database.svc.cluster.local
   topic_prefix: frigate
   user: mqtt
   password: "{FRIGATE_MQTT_PASSWORD}"

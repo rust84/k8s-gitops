@@ -3,33 +3,24 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app home-assistant
-  namespace: &namespace home
+  name: mosquitto
+  namespace: database
 spec:
   commonMetadata:
     labels:
-      app.kubernetes.io/name: *app
-  components:
-    - ../../../../flux/components/volsync
+      app.kubernetes.io/name: mosquitto
   dependsOn:
-    - name: mosquitto
-      namespace: database
     - name: external-secrets
       namespace: external-secrets
     - name: rook-ceph-cluster
       namespace: rook-ceph
-  interval: 1h
-  path: ./kubernetes/apps/home/home-assistant/app
-  postBuild:
-    substitute:
-      APP: *app
-      VOLSYNC_CAPACITY: 5Gi
+  interval: 30m
+  path: ./kubernetes/apps/database/mosquitto/app
   prune: true
-  retryInterval: 2m
   sourceRef:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: *namespace
+  targetNamespace: database
   timeout: 5m
-  wait: false
+  wait: true

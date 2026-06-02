@@ -7,6 +7,6 @@ components:
   - ../../flux/components/common
 resources:
   - ./dragonfly/ks.yaml
-  - ./emqx/ks.yaml
+  - ./mosquitto/ks.yaml
   - ./cloudnative-pg/ks.yaml
   - ./postgres-backup/ks.yaml

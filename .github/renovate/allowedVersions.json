@@ -16,17 +16,5 @@
       "matchPackagePatterns": ["node"],
       "allowedVersions": "<20"
     },
-    {
-      "description": ["EMQX 5.9+ switched to BSL 1.1 requiring a commercial license for clustering; stay on OSS 5.8.x"],
-      "matchDatasources": ["docker"],
-      "matchPackageNames": ["public.ecr.aws/emqx/emqx"],
-      "allowedVersions": "<5.9.0"
-    },
-    {
-      "description": ["emqx-operator 2.3.x calls Enterprise-only load_rebalance API incompatible with EMQX OSS 5.8.x"],
-      "matchDatasources": ["helm"],
-      "matchPackageNames": ["emqx-operator"],
-      "allowedVersions": "<2.3.0"
-    }
-  ]
+   ]
 }
