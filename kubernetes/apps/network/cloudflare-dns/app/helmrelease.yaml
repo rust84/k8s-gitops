@@ -49,8 +49,6 @@ spec:
     txtOwnerId: k8s
     domainFilters:
       - "${SECRET_DOMAIN}"
-      - "${SECRET_APP_DOMAIN}"
-      - "${SECRET_APP_PRD_DOMAIN}"
     serviceMonitor:
       enabled: true
     podAnnotations:
