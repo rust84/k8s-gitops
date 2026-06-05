@@ -21,7 +21,7 @@ spec:
       multus:
         type: daemonset
         serviceAccount:
-          identifier: multus
+          identifier: *app
         initContainers:
           cni-plugins:
             image:
@@ -44,6 +44,7 @@ spec:
     serviceAccount:
       multus: {}
     defaultPodOptions:
+      automountServiceAccountToken: true
       hostNetwork: true
     persistence:
       etc-cni-net-d:
