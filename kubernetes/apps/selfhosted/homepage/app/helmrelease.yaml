@@ -20,6 +20,8 @@ spec:
   values:
     controllers:
       homepage:
+        serviceAccount:
+          identifier: *app
         annotations:
           reloader.stakater.com/auto: "true"
         strategy: RollingUpdate
@@ -60,6 +62,7 @@ spec:
                 drop:
                   - ALL
     defaultPodOptions:
+      automountServiceAccountToken: true
       securityContext:
         runAsNonRoot: true
         runAsUser: 1000
