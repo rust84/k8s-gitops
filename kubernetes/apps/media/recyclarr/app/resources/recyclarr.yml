@@ -34,6 +34,12 @@ sonarr:
         assign_scores_to:
           - name: WEB-1080p
             score: 10
+    custom_format_groups:
+      add:
+      - trash_id: bad5bc85573a0134e1e1987c46f67e98 # accessibility
+        select_all: true
+        assign_scores_to:
+          - name: WEB-1080p
 
 radarr:
   radarr:
