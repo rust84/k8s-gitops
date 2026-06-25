@@ -10,9 +10,9 @@ resources:
   - ./audiobookshelf/ks.yaml
   - ./autobrr/ks.yaml
   - ./bazarr/ks.yaml
+  - ./deduparr/ks.yaml
   - ./jellyfin/ks.yaml
   - ./seerr/ks.yaml
-  #- ./kometa/ks.yaml
   - ./plex/ks.yaml
   - ./postarr/ks.yaml
   - ./prowlarr/ks.yaml
