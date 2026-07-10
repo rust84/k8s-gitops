@@ -1,0 +1,37 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/v1/configmap.json
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: litellm-config
+data:
+  config.yaml: |
+    model_list:
+      # GPU models via llama-swap (http://local-ai.russhome.xyz:8080)
+      # Mid-range ($4.00/$20.00 per 1M)
+      - model_name: ornith-1.0-35b
+        litellm_params:
+          model: openai/ornith-1.0-35b
+          api_base: http://local-ai.russhome.xyz:8080/v1
+          api_key: "dummy"
+        model_info:
+          input_cost_per_token: 0.00000400
+          output_cost_per_token: 0.00002000
+
+      - model_name: qwen3.6-35b-mtp
+        litellm_params:
+          model: openai/qwen3.6-35b-mtp
+          api_base: http://local-ai.russhome.xyz:8080/v1
+          api_key: "dummy"
+        model_info:
+          input_cost_per_token: 0.00000400
+          output_cost_per_token: 0.00002000
+
+      - model_name: qwen3.6-27b-mtp
+        litellm_params:
+          model: openai/qwen3.6-27b-mtp
+          api_base: http://local-ai.russhome.xyz:8080/v1
+          api_key: "dummy"
+        model_info:
+          input_cost_per_token: 0.00000400
+          output_cost_per_token: 0.00002000
