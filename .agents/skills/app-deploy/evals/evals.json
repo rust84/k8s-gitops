@@ -1,0 +1,23 @@
+{
+  "skill_name": "app-deploy",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Deploy Authentik to the cluster. Use the existing authentik HelmRepository. I want it on https://authentik.${SECRET_DOMAIN} (literal subdomain, not {{ .Release.Name }}) and I'll set up the 1Password item called 'authentik' later — just scaffold the ExternalSecret.",
+      "expected_output": "Complete end-to-end deploy of Authentik: HelmRelease in apps/<category>/authentik/app/, ExternalSecret in instance/, ks.yaml wiring both, parent kustomization updated, validation passes. hostname is the literal 'authentik.${SECRET_DOMAIN}', not templated.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "Deploy kube-prometheus-stack to the observability namespace. Use Kubesearch to find the best chart version. I want Prometheus to scrape itself. Don't expose it externally — no httpRoute. No secrets needed.",
+      "expected_output": "HelmRelease for kube-prometheus-stack in apps/observability/kube-prometheus-stack/. ServiceMonitor enabled. No httpRoute block. helmrelease passes kubeconform, kustomize renders.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Add a new app called 'paperless' to selfhosted. Use the bjw-s chart. It needs a Postgres password and an admin secret from 1Password item 'paperless' (fields: postgresPassword, secretKey). External hostname should be paperless.${SECRET_DOMAIN} (literal).",
+      "expected_output": "HelmRelease + ExternalSecret scaffolded in apps/selfhosted/paperless/. ExternalSecret references ClusterSecretStore/onepassword with both 1Password fields templated into the Secret. httpRoute present with literal 'paperless.${SECRET_DOMAIN}'.",
+      "files": []
+    }
+  ]
+}

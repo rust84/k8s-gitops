@@ -1,0 +1,52 @@
+---
+# yaml-language-server: $schema=https://k8s-schemas.home-operations.com/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: <APP>
+  namespace: <NAMESPACE>
+spec:
+  # ----- OCI chart (oci://... repos in flux/meta/repositories/oci/) -----
+  chartRef:
+    kind: OCIRepository
+    name: <REPO_NAME_IN_FLUX_SYSTEM>
+
+  # ----- OR HTTP/HTTPS HelmRepository chart (https://... in flux/meta/repositories/helm/) -----
+  # chart:
+  #   spec:
+  #     chart: <chart name>
+  #     version: "<exact pinned version>"
+  #     sourceRef:
+  #       kind: HelmRepository
+  #       name: <REPO_NAME_IN_FLUX_SYSTEM>
+  #       namespace: flux-system
+
+  interval: 1h
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  values:
+    # config: { ... }   # chart-specific, from Kubesearch popular-values
+    secret:
+      existingSecret: <APP>-secret
+    httpRoute:
+      enabled: true
+      parentRefs:
+        - name: envoy-external
+          namespace: network
+      hostnames:
+        - "{{ .Release.Name }}.${SECRET_DOMAIN}"
+    monitoring:
+      serviceMonitor:
+        enabled: true
+    resources:
+      requests:
+        cpu: 50m
+        memory: 256Mi
+      limits:
+        memory: 1Gi
