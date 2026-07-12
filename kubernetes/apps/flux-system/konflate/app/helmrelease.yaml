@@ -26,7 +26,6 @@ spec:
       publicUrl: https://{{ .Release.Name }}.${SECRET_DOMAIN}
       mcp: true
       verifyImages: false
-      appClientId: "Iv23li..." # GitHub App Client ID (https://github.com/settings/apps)
     secret:
       existingSecret: konflate-github-app-secret
     httpRoute:
