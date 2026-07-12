@@ -2,7 +2,8 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: flux-system
+commonLabels:
+  app.kubernetes.io/name: konflate
 resources:
-  - ./app-template.yaml
-  - ./envoy-gateway.yaml
-  - ./konflate.yaml
+  - ./helmrelease.yaml

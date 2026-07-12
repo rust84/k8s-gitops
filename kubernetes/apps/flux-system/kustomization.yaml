@@ -7,3 +7,4 @@ components:
   - ../../flux/components/common
 resources:
   - ./flux-operator/ks.yaml
+  - ./konflate/ks.yaml
