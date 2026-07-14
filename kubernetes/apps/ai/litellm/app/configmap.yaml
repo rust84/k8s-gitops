@@ -7,30 +7,94 @@ data:
   config.yaml: |
     model_list:
       # GPU models via llama-swap (http://local-ai.russhome.xyz:8080)
-      # Mid-range ($4.00/$20.00 per 1M)
       - model_name: ornith-1.0-35b
         litellm_params:
           model: openai/ornith-1.0-35b
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
         model_info:
-          input_cost_per_token: 0.00000400
-          output_cost_per_token: 0.00002000
+          mode: chat
+          input_cost_per_token: 0.0000001250
+          cache_creation_input_token_cost: 0.0000001250
+          cache_read_input_token_cost: 0.0000000125
+          output_cost_per_token: 0.0000004999
+          max_input_tokens: 262144
+          max_output_tokens: 16384
+          supports_function_calling: true
+          supports_vision: false
 
-      - model_name: qwen3.6-35b-mtp
+      - model_name: qwen3.6-35b
         litellm_params:
-          model: openai/qwen3.6-35b-mtp
+          model: openai/qwen3.6-35b
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
         model_info:
-          input_cost_per_token: 0.00000400
-          output_cost_per_token: 0.00002000
+          mode: chat
+          input_cost_per_token: 0.0000001250
+          cache_creation_input_token_cost: 0.0000001250
+          cache_read_input_token_cost: 0.0000000125
+          output_cost_per_token: 0.0000004999
+          max_input_tokens: 262144
+          max_output_tokens: 16384
+          supports_function_calling: true
+          supports_vision: false
 
-      - model_name: qwen3.6-27b-mtp
+      - model_name: qwen3.6-27b
         litellm_params:
-          model: openai/qwen3.6-27b-mtp
+          model: openai/qwen3.6-27b
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
         model_info:
-          input_cost_per_token: 0.00000400
-          output_cost_per_token: 0.00002000
+          mode: chat
+          input_cost_per_token: 0.0000001250
+          cache_creation_input_token_cost: 0.0000001250
+          cache_read_input_token_cost: 0.0000000125
+          output_cost_per_token: 0.0000004999
+          max_input_tokens: 262144
+          max_output_tokens: 16384
+          supports_function_calling: true
+          supports_vision: false
+
+      # DeepSeek V4 Flash via OpenCode/zen (fallback tier for pr-reviewer-action)
+      - model_name: deepseek-v4-flash-free
+        model_info:
+          input_cost_per_token: 0.0000001400
+          cache_creation_input_token_cost: 0.0000001400
+          cache_read_input_token_cost: 0.0000000280
+          output_cost_per_token: 0.0000002800
+          mode: chat
+          max_input_tokens: 1000000
+          max_output_tokens: 16384
+          supports_function_calling: true
+          supports_prompt_caching: true
+        litellm_params:
+          model: openai/deepseek-v4-flash
+          api_base: https://opencode.ai/zen/go/v1
+          api_key: os.environ/OPENCODE_API_KEY
+          extra_body:
+            thinking:
+              type: disabled
+          merge_reasoning_content_in_choices: true
+
+      # MiniMax M2-7 direct (smart tier for pr-reviewer-action)
+      - model_name: minimax/MiniMax-M2-7
+        model_info:
+          mode: messages
+          input_cost_per_token: 0.0000003000
+          cache_creation_input_token_cost: 0.0000003750
+          cache_read_input_token_cost: 0.0000000600
+          output_cost_per_token: 0.0000012000
+          max_input_tokens: 204800
+          max_output_tokens: 131072
+          supports_function_calling: true
+          supports_prompt_caching: true
+          supports_vision: false
+        litellm_params:
+          model: minimax/MiniMax-M2.7
+          api_base: https://api.minimax.io/anthropic/v1/messages
+          api_key: os.environ/MINIMAX_API_KEY
+          cache_control_injection_points:
+            - location: message
+              role: system
+            - location: message
+              index: -1

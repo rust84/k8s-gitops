@@ -1,0 +1,101 @@
+---
+name: AI PR Review
+on:
+  pull_request:
+    branches: ["main"]
+    types: [opened, reopened, synchronize, ready_for_review, labeled]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: PR number to (re-)review
+        required: true
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || inputs.pr_number || github.ref }}${{ github.event.action == 'labeled' && format('-label-{0}', github.run_id) || '' }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review-pr:
+    name: AI PR Review
+    if: ${{ (github.event_name == 'pull_request' && !github.event.pull_request.draft) || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+
+    steps:
+      - name: Resolve PR head for re-review
+        id: prctx
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ inputs.pr_number }}
+        run: |
+          sha="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.head.sha')"
+          echo "head_sha=$sha" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || steps.prctx.outputs.head_sha }}
+
+      - name: Generate bot token
+        id: app-token
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1 # v3.2.0
+        with:
+          client-id: ${{ secrets.RUST84_APP_ID }}
+          private-key: ${{ secrets.RUST84_APP_PRIVATE_KEY }}
+
+      - name: Analyze PR with reusable AI reviewer
+        id: analyze
+        uses: misospace/pr-reviewer-action@9e96ced346f7080b21f6e61722b04969c6d4b50a # v2.1.4
+        env:
+          KONFLATE_MCP_URL: ${{ vars.KONFLATE_URL }}
+        with:
+          github_token: ${{ steps.app-token.outputs.token }}
+          pr_number: ${{ github.event.pull_request.number || inputs.pr_number }}
+          force_review: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
+          ai_primary_retries: "3"
+          ai_primary_retry_delay_sec: "15"
+          ai_base_url: ${{ vars.LITELLM_URL }}
+          ai_api_format: openai
+          ai_model: ornith-1.0-35b
+          ai_api_key: ${{ secrets.LITELLM_API_KEY }}
+          ai_response_format: json_object
+          ai_max_tokens: "16000"
+          ai_fallback_base_url: ${{ vars.LITELLM_URL }}
+          ai_fallback_api_format: openai
+          ai_fallback_model: deepseek-v4-flash-free
+          ai_fallback_api_key: ${{ secrets.LITELLM_API_KEY }}
+          review_routing_mode: auto
+          ai_smart_base_url: ${{ vars.LITELLM_URL }}
+          ai_smart_api_format: openai
+          ai_smart_model: minimax/MiniMax-M2-7
+          ai_smart_api_key: ${{ secrets.LITELLM_API_KEY }}
+          allowed_source_hosts: "github.com,api.github.com,gitlab.com,registry.terraform.io,artifacthub.io,talos.dev,www.talos.dev,docs.siderolabs.com"
+          context_limit_mode: normal
+          ci_status_check: "true"
+          ci_timeout_sec: "600"
+          search_url: "https://search.roswellian.dev/search"
+          tool_mode: native_loop
+          tool_max_rounds: "2"
+          tool_max_requests: "4"
+          tool_loop_wall_clock_sec: "600"
+          tool_planning_timeout_sec: "300"
+          tool_planning_max_context_bytes: "15000"
+          tool_planning_max_tokens: "16000"
+          tool_max_response_bytes: "12000"
+          tool_allowed_gh_api_repos: "*"
+          tool_request_timeout_sec: "15"
+          tool_enable_for_forks: "false"
+          tool_mcp_servers: "konflate=${{ vars.KONFLATE_URL }}"
+          system_prompt_file: .agents/instructions/pr-review.instructions.md
+          system_prompt_mode: append
+          standards_file_candidates: "AGENTS.md"
+          evidence_providers_file: .github/konflate-evidence-providers.json
+          on_model_failure: notice
+          inline_findings: "true"
+          publish_mode: review_comment
