@@ -8,10 +8,24 @@ data:
     model_list:
       # GPU models via llama-swap (http://local-ai.russhome.xyz:8080)
       - model_name: ornith-1.0-35b
+        model_info:
+          mode: chat
+          input_cost_per_token: 0.0000001250
+          cache_creation_input_token_cost: 0.0000001250
+          cache_read_input_token_cost: 0.0000000125
+          output_cost_per_token: 0.0000004999
+          max_input_tokens: 262144
+          max_output_tokens: 16384
+          supports_function_calling: true
+          supports_vision: false
         litellm_params:
           model: openai/ornith-1.0-35b
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
+          max_parallel_requests: 1
+          additional_drop_params: ["response_format"]
+
+      - model_name: qwen3.6-35b
         model_info:
           mode: chat
           input_cost_per_token: 0.0000001250
@@ -22,12 +36,12 @@ data:
           max_output_tokens: 16384
           supports_function_calling: true
           supports_vision: false
-
-      - model_name: qwen3.6-35b
         litellm_params:
           model: openai/qwen3.6-35b
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
+
+      - model_name: qwen3.6-27b
         model_info:
           mode: chat
           input_cost_per_token: 0.0000001250
@@ -38,22 +52,10 @@ data:
           max_output_tokens: 16384
           supports_function_calling: true
           supports_vision: false
-
-      - model_name: qwen3.6-27b
         litellm_params:
           model: openai/qwen3.6-27b
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
-        model_info:
-          mode: chat
-          input_cost_per_token: 0.0000001250
-          cache_creation_input_token_cost: 0.0000001250
-          cache_read_input_token_cost: 0.0000000125
-          output_cost_per_token: 0.0000004999
-          max_input_tokens: 262144
-          max_output_tokens: 16384
-          supports_function_calling: true
-          supports_vision: false
 
       # DeepSeek V4 Flash via OpenCode/zen (fallback tier for pr-reviewer-action)
       - model_name: deepseek-v4-flash-free
@@ -68,8 +70,8 @@ data:
           supports_function_calling: true
           supports_prompt_caching: true
         litellm_params:
-          model: openai/deepseek-v4-flash
-          api_base: https://opencode.ai/zen/v1/chat/completions
+          model: openai/deepseek-v4-flash-free
+          api_base: https://opencode.ai/zen/v1
           api_key: os.environ/OPENCODE_API_KEY
           extra_body:
             thinking:
