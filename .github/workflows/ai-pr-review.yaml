@@ -73,7 +73,7 @@ jobs:
           review_routing_mode: auto
           ai_smart_base_url: ${{ vars.LITELLM_URL }}
           ai_smart_api_format: openai
-          ai_smart_model: minimax/MiniMax-M2-7
+          ai_smart_model: MiniMax-M2.7
           ai_smart_api_key: ${{ secrets.LITELLM_API_KEY }}
           allowed_source_hosts: "github.com,api.github.com,gitlab.com,registry.terraform.io,artifacthub.io,talos.dev,www.talos.dev,docs.siderolabs.com"
           context_limit_mode: normal
