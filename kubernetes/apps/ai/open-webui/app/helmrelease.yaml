@@ -47,7 +47,7 @@ spec:
               ENABLE_WEB_SEARCH: True
               ENABLE_SEARCH_QUERY_GENERATION: True
               ENABLE_PERSISTENT_CONFIG: False
-              OPENAI_API_BASE_URL: https://litellm.russhome.xyz/v1
+              OPENAI_API_BASE_URL: https://litellm.${SECRET_DOMAIN}/v1
               WEBUI_SESSION_COOKIE_SAME_SITE: lax
               WEBUI_SESSION_COOKIE_SECURE: True
               # Searx
