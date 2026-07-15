@@ -28,7 +28,7 @@ spec:
               repository: ghcr.io/koenkk/zigbee2mqtt
               tag: 2.11.0@sha256:f1f5195076d771727e9ff3db638de0f54d37969a66f317cd34624a7af5faf364
             env:
-              TZ: ${TZ}
+              TZ: "${TZ}"
               ZIGBEE2MQTT_DATA: /config
               ZIGBEE2MQTT_CONFIG_ADVANCED_LAST_SEEN: ISO_8601
               ZIGBEE2MQTT_CONFIG_ADVANCED_LEGACY_API: "false"

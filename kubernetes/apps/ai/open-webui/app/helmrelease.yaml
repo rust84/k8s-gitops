@@ -36,7 +36,7 @@ spec:
               repository: ghcr.io/open-webui/open-webui
               tag: v0.10.2@sha256:9fcea9c6e32ab60b0498f3986c6cdf651ddbe61db48d2213a3d28048ddd673d4
             env:
-              TZ: ${TZ}
+              TZ: "${TZ}"
               # App
               WEBUI_URL: https://chat.${SECRET_DOMAIN}
               CORS_ALLOW_ORIGIN: https://chat.${SECRET_DOMAIN}

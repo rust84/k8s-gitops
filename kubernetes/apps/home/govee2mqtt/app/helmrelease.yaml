@@ -34,7 +34,7 @@ spec:
         containers:
           app:
             env:
-              TZ: ${TZ}
+              TZ: "${TZ}"
               GOVEE_MQTT_HOST: mosquitto.database.svc.cluster.local
               GOVEE_MQTT_PORT: 1883
               GOVEE_TEMPERATURE_SCALE: C

@@ -28,7 +28,7 @@ spec:
               repository: ghcr.io/unpackerr/unpackerr
               tag: 0.15.2@sha256:89e13608521ece21dd300c39229fd595a55fbf4b8152771af5670a7455b5c747
             env:
-              TZ: ${TZ}
+              TZ: "${TZ}"
               UN_WEBSERVER_METRICS: true
               UN_WEBSERVER_LOG_FILE: /logs/webserver.log
               UN_ACTIVITY: true
