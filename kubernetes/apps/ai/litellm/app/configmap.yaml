@@ -6,7 +6,7 @@ metadata:
 data:
   config.yaml: |
     model_list:
-      # GPU models via llama-swap (http://local-ai.russhome.xyz:8080)
+      # Local models
       - model_name: ornith-1.0-35b
         model_info:
           mode: chat
@@ -57,7 +57,7 @@ data:
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
 
-      # DeepSeek V4 Flash via OpenCode/zen (fallback tier for pr-reviewer-action)
+      # DeepSeek V4 Flash Free via OpenCode/zen
       - model_name: deepseek-v4-flash-free
         model_info:
           input_cost_per_token: 0.0000001400
@@ -78,7 +78,43 @@ data:
               type: disabled
           merge_reasoning_content_in_choices: true
 
-      # MiniMax M2-7 direct (smart tier for pr-reviewer-action)
+      # OpenAI-compatible M3 clients
+      - model_name: MiniMax-M3-chat
+        model_info:
+          mode: chat
+          input_cost_per_token: 0.0000003000
+          output_cost_per_token: 0.0000012000
+          max_input_tokens: 1000000
+          max_output_tokens: 131072
+          supports_function_calling: true
+        litellm_params:
+          model: openai/MiniMax-M3
+          api_base: https://api.minimax.io/v1
+          api_key: os.environ/MINIMAX_API_KEY
+
+      # Anthropic compatible M3 clients (Openclaw).
+      - model_name: MiniMax-M3
+        model_info:
+          mode: messages
+          input_cost_per_token: 0.0000003000
+          cache_creation_input_token_cost: 0.0000003750
+          cache_read_input_token_cost: 0.0000000600
+          output_cost_per_token: 0.0000012000
+          max_input_tokens: 204800
+          max_output_tokens: 131072
+          supports_function_calling: true
+          supports_prompt_caching: true
+          supports_vision: false
+        litellm_params:
+          model: minimax/MiniMax-M3
+          api_base: https://api.minimax.io/anthropic/v1/messages
+          api_key: os.environ/MINIMAX_API_KEY
+          cache_control_injection_points:
+            - location: message
+              role: system
+            - location: message
+              index: -1
+
       - model_name: MiniMax-M2.7
         model_info:
           mode: messages
@@ -101,44 +137,36 @@ data:
             - location: message
               index: -1
 
-    litellm_settings:
-      custom_callback_path: /config/custom_callbacks.py
+      - model_name: glm-5.2
+        model_info:
+          input_cost_per_token: 0.0000014500
+          cache_creation_input_token_cost: 0.0000014500
+          cache_read_input_token_cost: 0.0000003600
+          output_cost_per_token: 0.0000045000
+          mode: chat
+          max_input_tokens: 1048560
+          max_output_tokens: 16384
+          supports_function_calling: true
+          supports_prompt_caching: true
+        litellm_params:
+          model: openai/glm-5.2
+          api_base: https://api.neuralwatt.com/v1
+          api_key: os.environ/NEURALWATT_API_KEY
 
-  custom_callbacks.py: |
-    from typing import Optional
-    from litellm.integrations.custom_logger import CustomLogger
-
-
-    class StripToolPatternsHandler(CustomLogger):
-        async def async_pre_call_hook(
-            self,
-            user_api_key_dict,
-            cache,
-            data: dict,
-            call_type: str,
-        ) -> Optional[dict]:
-            tools = data.get("tools")
-            if not tools:
-                opt = data.get("optional_params") or {}
-                tools = opt.get("tools")
-            if not tools:
-                return None
-            for tool in tools:
-                self._strip_patterns(tool)
-            return data
-
-        def _strip_patterns(self, obj):
-            if isinstance(obj, dict):
-                obj.pop("pattern", None)
-                if "properties" in obj and isinstance(obj["properties"], dict):
-                    for prop_schema in obj["properties"].values():
-                        if isinstance(prop_schema, dict):
-                            prop_schema.pop("pattern", None)
-                for v in obj.values():
-                    self._strip_patterns(v)
-            elif isinstance(obj, list):
-                for item in obj:
-                    self._strip_patterns(item)
-
-
-    proxy_handler_instance = StripToolPatternsHandler()
+      - model_name: kimi-k2.7
+        model_info:
+          input_cost_per_token: 0.0000009500
+          cache_creation_input_token_cost: 0.0000009500
+          cache_read_input_token_cost: 0.0000002400
+          output_cost_per_token: 0.0000040000
+          mode: chat
+          max_input_tokens: 262128
+          max_output_tokens: 16384
+          supports_function_calling: true
+          supports_prompt_caching: true
+          supports_vision: true
+        litellm_params:
+          model: openai/kimi-k2.7-code
+          api_base: https://api.neuralwatt.com/v1
+          api_key: os.environ/NEURALWATT_API_KEY
+          order: 2
