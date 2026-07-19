@@ -38,7 +38,7 @@ spec:
                 custom: true
                 spec:
                   httpGet:
-                    path: /api
+                    path: /api/system/ping
                     port: &port 6767
                   initialDelaySeconds: 0
                   periodSeconds: 10
