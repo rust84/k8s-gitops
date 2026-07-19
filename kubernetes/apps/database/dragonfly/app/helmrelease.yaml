@@ -11,6 +11,7 @@ spec:
     name: app-template
     namespace: flux-system
   install:
+    crds: CreateReplace
     remediation:
       retries: -1
   upgrade:
