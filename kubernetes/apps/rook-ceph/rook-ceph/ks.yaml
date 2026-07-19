@@ -24,6 +24,29 @@ spec:
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: &app rook-ceph-csi
+  namespace: &namespace rook-ceph
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  interval: 30m
+  path: ./kubernetes/apps/rook-ceph/rook-ceph/csi
+  prune: false
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 15m
+  wait: false
+  dependsOn:
+    - name: rook-ceph
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: &app rook-ceph-cluster
   namespace: &namespace rook-ceph
 spec:
@@ -44,3 +67,5 @@ spec:
   targetNamespace: *namespace
   timeout: 15m
   wait: false
+  dependsOn:
+    - name: rook-ceph-csi

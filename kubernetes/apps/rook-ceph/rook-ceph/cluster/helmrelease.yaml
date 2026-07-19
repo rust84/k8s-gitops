@@ -60,6 +60,10 @@ spec:
       crashCollector:
         disable: false
       csi:
+        # Rook v1.20: opt in to the ceph-csi-operator path (installed by the
+        # rook-ceph chart's csi.installCsiOperator subchart; driver behavior
+        # configured by the ceph-csi-drivers HelmRelease in csi/).
+        rookUseCsiOperator: true
         readAffinity:
           enabled: true
       dashboard:

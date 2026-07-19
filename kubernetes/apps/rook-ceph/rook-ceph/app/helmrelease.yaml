@@ -28,9 +28,13 @@ spec:
     - name: snapshot-controller
       namespace: volsync-system
   values:
+    # Rook v1.20 breaking change: CSI driver behavior settings moved from the
+    # rook-ceph chart to the ceph-csi-operator (managed by the ceph-csi-drivers
+    # HelmRelease in csi/helmrelease.yaml). The flag below installs the operator
+    # subchart; ServiceAccounts/RBAC the operator needs are created by that
+    # release. Without it, PVC attach/detach breaks (rook/rook#17644).
     csi:
-      cephFSKernelMountOptions: ms_mode=prefer-crc
-      enableLiveness: true
+      installCsiOperator: true
       serviceMonitor:
         enabled: true
     enableDiscoveryDaemon: true

@@ -8,6 +8,7 @@ resources:
   - ./backube.yaml
   - ./bitnami.yaml
   - ./bjw-s.yaml
+  - ./ceph-csi-operator.yaml
   - ./cloudnative-pg.yaml
   - ./cilium.yaml
   - ./controlplaneio.yaml

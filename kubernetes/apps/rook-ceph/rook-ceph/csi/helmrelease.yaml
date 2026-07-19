@@ -1,0 +1,63 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: ceph-csi-drivers
+  namespace: rook-ceph
+spec:
+  interval: 30m
+  timeout: 15m
+  chart:
+    spec:
+      chart: ceph-csi-drivers
+      version: 1.0.4
+      sourceRef:
+        kind: HelmRepository
+        name: ceph-csi-operator
+        namespace: flux-system
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      strategy: rollback
+      retries: 3
+  dependsOn:
+    - name: rook-ceph-operator
+      namespace: rook-ceph
+  # Rook v1.20 breaking change: ceph-csi-operator (installed by the rook-ceph
+  # chart via csi.installCsiOperator) consumes the OperatorConfig + Driver CRs
+  # this chart creates. Driver names MUST match the provisioner names Rook uses
+  # in StorageClasses/VolumeSnapshotClasses. Without this release the CSI
+  # controller-plugin Deployments never get their ServiceAccounts and all PVC
+  # attach/detach breaks (rook/rook#17644).
+  values:
+    operatorConfig:
+      namespace: rook-ceph
+      driverSpecDefaults:
+        # preserved from former csi.cephFSKernelMountOptions: ms_mode=prefer-crc
+        kernelMountOptions:
+          ms_mode: prefer-crc
+        controllerPlugin:
+          # preserved from former csi.enableCSIHostNetwork: true
+          hostNetwork: true
+    drivers:
+      rbd:
+        # MUST be prefixed with the rook operator namespace so it matches the
+        # rook-ceph-block StorageClass provisioner (rook-ceph.rbd.csi.ceph.com).
+        name: rook-ceph.rbd.csi.ceph.com
+        enabled: true
+        # Default is "none" which drops the csi-snapshotter sidecar and breaks
+        # VolSync (this cluster has 39 dependents on rook-ceph-cluster, all
+        # VolSync-backed). Keep volumeSnapshot to preserve backups.
+        snapshotPolicy: volumeSnapshot
+      cephfs:
+        name: rook-ceph.cephfs.csi.ceph.com
+        enabled: true
+        snapshotPolicy: volumeSnapshot
+      nfs:
+        enabled: false
+      nvmeof:
+        enabled: false
