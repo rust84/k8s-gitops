@@ -48,7 +48,7 @@
       "groupName": "Rook",
       "matchDatasources": ["docker", "helm"],
       "matchPackagePatterns": [
-        "rook-ceph"
+        "ceph"
       ],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
       "separateMinorPatch": false

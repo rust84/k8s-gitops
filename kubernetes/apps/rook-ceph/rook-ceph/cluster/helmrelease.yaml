@@ -11,7 +11,7 @@ spec:
   chart:
     spec:
       chart: rook-ceph-cluster
-      version: v1.19.3
+      version: v1.20.2
       sourceRef:
         kind: HelmRepository
         name: rook-ceph
@@ -60,6 +60,10 @@ spec:
       crashCollector:
         disable: false
       csi:
+        # Rook v1.20: opt in to the ceph-csi-operator path (installed by the
+        # rook-ceph chart's csi.installCsiOperator subchart; driver behavior
+        # configured by the ceph-csi-drivers HelmRelease in csi/).
+        rookUseCsiOperator: true
         readAffinity:
           enabled: true
       dashboard:
