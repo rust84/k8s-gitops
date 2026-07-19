@@ -1,0 +1,21 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "kubesearch": {
+      "type": "local",
+      "enabled": true,
+      "command": [
+        "docker",
+        "run",
+        "--init",
+        "-i",
+        "--rm",
+        "-v",
+        "/home/russell/repos/kubesearch-mcp-server/repos.db:/data/repos.db:ro,z",
+        "-v",
+        "/home/russell/repos/kubesearch-mcp-server/repos-extended.db:/data/repos-extended.db:ro,z",
+        "ghcr.io/rust84/kubesearch-mcp-server:latest"
+      ]
+    }
+  }
+}
