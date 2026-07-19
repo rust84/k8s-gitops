@@ -42,6 +42,16 @@
       ],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
       "separateMinorPatch": false
+    },
+    {
+      "description": "Rook Operator and Cluster",
+      "groupName": "Rook",
+      "matchDatasources": ["docker", "helm"],
+      "matchPackagePatterns": [
+        "rook-ceph"
+      ],
+      "group": { "commitMessageTopic": "{{{groupName}}} group" },
+      "separateMinorPatch": false
     }
   ]
 }
