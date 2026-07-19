@@ -55,6 +55,12 @@ spec:
         mon:
           mon_data_avail_warn: "20"  # Warn at 20% available (80% used)
           mon_data_avail_crit: "10"  # Critical at 10% available (90% used)
+        mgr:
+          # Ceph 20.x defaults mgr/dashboard/server_addr to the cluster's
+          # public_addr (here the thunderbolt network, 169.254.255.x). The
+          # rook-ceph-mgr-dashboard Service, however, publishes the hostNetwork
+          # IP (10.20.0.x). Bind to all interfaces to resolve.
+          mgr/dashboard/server_addr: "0.0.0.0"
       cleanupPolicy:
         wipeDevicesFromOtherClusters: true
       crashCollector:
