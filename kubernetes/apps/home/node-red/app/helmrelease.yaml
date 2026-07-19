@@ -31,7 +31,7 @@ spec:
           npm-update:
             image:
               repository: docker.io/node
-              tag: 20-alpine
+              tag: 24-alpine
             command:
               - /bin/sh
               - -c
@@ -46,7 +46,7 @@ spec:
           app:
             image:
               repository: docker.io/nodered/node-red
-              tag: 4.1.11
+              tag: 5.0.1
             env:
               TZ: "${TZ}"
               NODE_RED_ENABLE_SAFE_MODE: "false"
