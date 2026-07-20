@@ -5,14 +5,10 @@ metadata:
   name: loki
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: loki
-      version: 6.55.0
-      sourceRef:
-        kind: HelmRepository
-        name: grafana
-        namespace: flux-system
+  chartRef:
+    kind: OCIRepository
+    name: grafana-community-loki
+    namespace: flux-system
   install:
     crds: Skip
     remediation:
@@ -24,7 +20,7 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    deploymentMode: SingleBinary
+    deploymentMode: Monolithic
     loki:
       auth_enabled: false
       analytics:

@@ -5,4 +5,5 @@ kind: Kustomization
 resources:
   - ./app-template.yaml
   - ./envoy-gateway.yaml
+  - ./grafana-community-loki.yaml
   - ./konflate.yaml
