@@ -7,3 +7,4 @@ commonLabels:
   app.kubernetes.io/name: konflate
 resources:
   - ./helmrelease.yaml
+  - ./ocirepository.yaml

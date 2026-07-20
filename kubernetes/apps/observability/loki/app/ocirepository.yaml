@@ -3,8 +3,7 @@
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: OCIRepository
 metadata:
-  name: grafana-community-loki
-  namespace: flux-system
+  name: loki
 spec:
   interval: 1h
   layerSelector:

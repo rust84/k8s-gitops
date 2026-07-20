@@ -7,8 +7,7 @@ spec:
   interval: 30m
   chartRef:
     kind: OCIRepository
-    name: grafana-community-loki
-    namespace: flux-system
+    name: loki
   install:
     crds: Skip
     remediation:
