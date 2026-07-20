@@ -10,7 +10,6 @@ resources:
   - ./homepage/ks.yaml
   - ./immich/ks.yaml
   - ./karakeep/ks.yaml
-  - ./n8n/ks.yaml
   - ./ntfy/ks.yaml
   - ./paperless/ks.yaml
   - ./joplin/ks.yaml
