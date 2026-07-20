@@ -82,7 +82,8 @@ spec:
       enabled: false
     sidecar:
       image:
-        repository: ghcr.io/kiwigrid/k8s-sidecar
+        registry: ghcr.io
+        repository: kiwigrid/k8s-sidecar
       enableUniqueFilenames: true
       rules:
         searchNamespace: ALL
