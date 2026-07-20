@@ -20,7 +20,7 @@ spec:
       strategy: rollback
       retries: 3
   values:
-    deploymentMode: SingleBinary
+    deploymentMode: Monolithic
     loki:
       auth_enabled: false
       analytics:
