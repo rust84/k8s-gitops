@@ -35,6 +35,8 @@ The repo at `/home/russell/repos/k8s-gitops` has these conventions baked in. Mir
 - **Domain substitution**: `${SECRET_DOMAIN}` is rendered by Flux from the `cluster-secrets` Secret — don't substitute it yourself, leave it literal in HelmRelease values.
 - **GitHub repo**: `github://rust84/k8s-gitops` (used by tools like Konflate).
 - **Task runner**: `Taskfile.yaml` + `.taskfiles/{k8s,flux,...}/*.yaml`. Tasks like `task k:ks-apply PATH=...` and `task flux:hr-sync` exist.
+- **Storage**: default block storage class is `ceph-block` (RWO); for RWX/NFS use the `duriel.internal` NAS at `/tank/Apps/<app>/`. PVCs are either static (`app/pvc.yaml`, brand-new apps with no existing backup) or volsync-managed (component `kubernetes/flux/components/volsync/`, requires an existing backup snapshot — see step 5a).
+- **Validation tooling**: `flate` at `/home/linuxbrew/.linuxbrew/bin/flate` renders manifests through the same helm/kustomize SDKs Flux uses. Prefer `flate build ks <app>` and `flate build hr <app>` over `kubeconform` — flate catches chart-template and Flux-substitution errors that schema-only validation misses. See step 8.
 
 ## Workflow
 
@@ -75,20 +77,35 @@ Pick the highest-scored `key` (more stars = better-maintained) and the most rece
 
 ### 4. Create the app directory tree
 
+The **default layout** (used by ~97% of apps in this repo — karakeep, immich, recyclarr, audiobookshelf, bazarr, etc.) is a single Kustomization per app, with the ExternalSecret colocated in `app/`:
+
 ```
 kubernetes/apps/<category>/<app>/
 ├── app/
 │   ├── helmrelease.yaml          # the main HelmRelease
-│   ├── kustomization.yaml        # labels: app.kubernetes.io/name: <app>
+│   ├── kustomization.yaml        # labels: app.kubernetes.io/name: <app>; resources: pvc + externalsecret + helmrelease
+│   ├── externalsecret.yaml       # if app needs credentials (colocated, not in a separate instance/ dir)
+│   ├── pvc.yaml                  # if a static PVC is needed (see step 5a, Pattern A)
 │   ├── helm-values.yaml          # only if values are large/complex; otherwise inline
 │   └── kustomizeconfig.yaml      # only if you need name reference transformations
-├── instance/                     # secrets / instance-specific config
-│   ├── externalsecret.yaml       # if app needs credentials
-│   └── kustomization.yaml        # references externalsecret.yaml (+ optional configmap)
-└── ks.yaml                       # two Kustomizations: <app> (app/), <app>-instance (instance/)
+└── ks.yaml                       # ONE Kustomization: <app> pointing at app/
 ```
 
-Reference an existing two-Kustomization app for the layout — `flux-operator/` and the konflate deployment we just did are good templates.
+Reference implementations to mirror:
+- `kubernetes/apps/selfhosted/karakeep/` — clean single-Kustomization app with colocated ExternalSecret
+- `kubernetes/apps/selfhosted/immich/` — app with NFS PVC + multiple HelmReleases in one Kustomization
+- `kubernetes/apps/media/recyclarr/` — app with static ceph-block PVC and volsync component commented out
+
+#### When to split into two Kustomizations (`app/` + `instance/`)
+
+**Rarely.** Only ~3% of apps in this repo use the split. Use the split only when at least one of these applies:
+
+- **Structural separation of concerns** — `app/` and `instance/` hold meaningfully different *kinds* of resources, not just an ExternalSecret. Example: `kubernetes/apps/flux-system/flux-operator/` — `app/` is the cluster-scoped Flux operator (CRDs), `instance/` is a *separate* HelmRelease for your GitHub App instance + webhook config tree (`instance/github/webhooks/`).
+- **Strict startup ordering** — the operator must read its secret at process startup, before reconciling anything else, and you want Flux to guarantee the Secret materializes first. Example: `kubernetes/apps/flux-system/konflate/` — `instance/externalsecret.yaml` holds the GitHub App credentials the operator needs read at boot; the split enforces that `instance/` materializes before `app/` starts.
+
+If neither condition applies, **use the single-Kustomization layout**. A simple ExternalSecret does not justify splitting — `dependsOn: external-secrets` on the app Kustomization already ensures the external-secrets operator is running before the ExternalSecret is reconciled, which is all the ordering you need for a typical app.
+
+If you find yourself creating an `instance/` folder that contains only an ExternalSecret and its `kustomization.yaml`, stop and use the single-Kustomization layout instead.
 
 ### 5. Write the HelmRelease
 
@@ -159,9 +176,145 @@ Critical rules:
 - Default hostname: `{{ .Release.Name }}.${SECRET_DOMAIN}` (matches the wildcard cert).
 - Pin chart versions to a specific tag, never `latest` or `*`. Kubesearch returns the latest; use exactly that.
 
+### 5a. Plan persistence and PVCs
+
+If the app needs persistent data (most do — databases, document stores, config files), pick one of four patterns. The **volsync ReplicationDestination requires an existing backup snapshot** to restore from — meaning **brand-new apps without a backup cannot use it on first deploy**. This is a hard constraint, not a workaround.
+
+#### Pattern A — static PVC (first deploy of any new app)
+
+Use this when there's no existing backup/snapshot of the data to restore from. This is the correct default for new apps.
+
+1. Create `app/pvc.yaml`:
+
+```yaml
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: <app>
+  namespace: <ns>
+  labels:
+    app.kubernetes.io/name: &name <app>
+    app.kubernetes.io/instance: *name
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi             # adjust per app — 1Gi for tiny configs, 5-10Gi for databases
+  storageClassName: ceph-block
+```
+
+2. Add `./pvc.yaml` to `app/kustomization.yaml` resources (before `./helmrelease.yaml`).
+
+3. In the HelmRelease, reference the PVC by its **YAML anchor `*app`**, NOT a Flux substitute variable like `${APP}`:
+
+```yaml
+metadata:
+  name: &app <app>           # this anchor is what you reference below
+...
+values:
+  persistence:
+    config:
+      existingClaim: *app    # ← correct; resolves at Helm template time
+      globalMounts:
+        - path: /app/data
+```
+
+Why not `${APP}` (Flux postBuild substitute): `${APP}` only resolves when the ks.yaml has `postBuild.substitute.APP: *app`, which the volsync component attaches. Without volsync, `${APP}` stays literal and the chart sees an invalid `existingClaim: ${APP}` — which makes the chart think it has to create a new PVC itself and fails with `accessMode is required for PVC <app>`. The YAML anchor is independent of Flux substitution and always works. (Most apps in this repo use `*app`; the volsync ones are the exception because they want the substitute var shared across both the ks.yaml and the HelmRelease.)
+
+4. **Do NOT attach the volsync component** in `ks.yaml`. Don't add `postBuild.substitute` either. The static PVC in `app/pvc.yaml` is the only source of truth.
+
+5. Leave a `NOTE:` comment in `ks.yaml` (above `dependsOn:`) so the next person knows to migrate:
+
+```yaml
+  # NOTE: volsync component is intentionally not attached yet. The PVC is
+  # static (see app/pvc.yaml) because there's no existing backup to restore
+  # from. Once the first volsync backup has completed, swap the static PVC
+  # for the volsync component + ReplicationDestination and delete app/pvc.yaml.
+```
+
+Reference implementations: `kubernetes/apps/media/recyclarr/` (transitional — ks.yaml has volsync commented out + `app/pvc.yaml`), `kubernetes/apps/selfhosted/karakeep/` (fully static), `kubernetes/apps/media/radarr-archive/`.
+
+#### Pattern B — volsync-managed PVC (existing backup exists)
+
+Use this when an app already has at least one volsync backup snapshot in object storage, AND you're redeploying it (e.g. migrating, restructuring, restoring after a wipe).
+
+1. Attach the volsync component to the app's ks.yaml:
+
+```yaml
+spec:
+  commonMetadata: ...
+  components:
+    - ../../../../flux/components/volsync
+  postBuild:
+    substitute:
+      APP: *app
+      VOLSYNC_CAPACITY: 5Gi
+      VOLSYNC_PUID: "1000"
+      VOLSYNC_PGID: "1000"
+  dependsOn:
+    - name: volsync
+      namespace: volsync-system
+    # ...other deps
+```
+
+2. The volsync component (`kubernetes/flux/components/volsync/`) generates:
+   - A `PersistentVolumeClaim` with `dataSourceRef.kind: ReplicationDestination` (so the PVC is populated from the last backup snapshot on first create)
+   - A `ReplicationDestination` (for restore) and a `ReplicationSource` (for ongoing backups), both on a schedule
+
+3. Do NOT create `app/pvc.yaml` — the component already provides it. The PVC's `claimName` matches the value of `${APP}`.
+
+4. In the HelmRelease, reference the PVC via the Flux substitute var:
+
+```yaml
+persistence:
+  config:
+    existingClaim: ${APP}    # ← matches the claim name the volsync component creates
+    globalMounts:
+      - path: /app/data
+```
+
+Reference implementations: any app whose `ks.yaml` attaches `../../../../flux/components/volsync` (e.g. `kubernetes/apps/ai/open-webui/app/helmrelease.yaml` uses `${APP}` substitution successfully because volsync is in scope).
+
+#### Pattern C — NFS-backed PVC (RWX shared storage)
+
+Use this when the app needs ReadWriteMany storage across multiple pods or nodes, OR when the data already lives on the NAS at `duriel.internal:/tank/Apps/<app>/`. Model on `kubernetes/apps/selfhosted/immich/app/pvc.yaml` — a paired `PersistentVolume` (NFS) + `PersistentVolumeClaim` with a custom `storageClassName` to prevent collisions.
+
+Do NOT attach the volsync component for NFS apps — volsync only knows how to snapshot block/Ceph volumes.
+
+#### Pattern D — `emptyDir` for cache / scratch / tmp
+
+For ephemeral mounts (PM2 runtime, log dirs, tmp) that don't need to survive pod restarts:
+
+```yaml
+persistence:
+  tmp:
+    type: emptyDir
+    globalMounts:
+      - path: /tmp
+```
+
+No PVC needed. Always `readOnlyRootFilesystem: true` on the container when using `emptyDir` for write paths — otherwise the app crashes on its first write attempt to the root fs.
+
+#### Migration path: static PVC → volsync-managed
+
+Once an app deployed with Pattern A has been running long enough for a volsync backup to complete (manually triggered — Pattern A doesn't set up scheduled backups, so you'll need to either temporarily enable volsync in a one-off way OR just leave it on Pattern A indefinitely if the data is reproducible):
+
+1. Ensure there's a `ReplicationDestination` snapshot in object storage for this app.
+2. Delete the static `app/pvc.yaml`.
+3. Attach the volsync component to `ks.yaml` and add the `postBuild.substitute` block.
+4. Change `existingClaim: *app` in the HelmRelease to `existingClaim: ${APP}`.
+5. The next Flux reconcile will replace the static PVC with a ReplicationDestination-populated one. The existing data on disk survives because volsync's `copyMethod: Snapshot` creates the new PVC from the snapshot (which has the same content).
+
+#### Known chart issues to watch for
+
+- **app-template v5.0.1**: When `persistence.<name>.existingClaim` references a non-existent or literal-invalid claim name (e.g. `${APP}` when postBuild isn't wired), the chart silently falls back to creating its own PVC and errors with `accessMode is required for PVC <name>`. The fix is always to ensure the claim name resolves at Helm template time — either via YAML anchor (`*app`, always works) or via postBuild substitute (only when volsync is attached).
+- **`readOnlyRootFilesystem: true`** in the container securityContext means any path the app writes to must be covered by a `persistence` entry. A 4-hour debugging session of "app crashes on startup with no error" can be caused by the app trying to write `/tmp/.cache` with no `emptyDir` mount there.
+
 ### 6. Write the ExternalSecret (only if credentials required)
 
-Model on `flux-operator/instance/externalsecret.yaml` or `konflate/instance/externalsecret.yaml`:
+In the **default single-Kustomization layout** (step 4), the ExternalSecret lives at `app/externalsecret.yaml` alongside the HelmRelease. Model on `kubernetes/apps/selfhosted/karakeep/app/externalsecret.yaml`:
 
 ```yaml
 ---
@@ -210,23 +363,40 @@ Or, if `<category>` doesn't exist yet, scaffold it with the `common` component f
 
 ### 8. Validate
 
-Run these in order. They catch ~all mistakes and don't require cluster access.
+Use `flate` (installed at `/home/linuxbrew/.linuxbrew/bin/flate`) — it renders Flux manifests using the upstream helm, kustomize, and source SDKs, so it catches errors that pure-schema validators miss (chart template failures, missing ConfigMaps referenced by `valuesFrom`, broken `chartRef` references, PVC `accessMode` issues, etc.).
 
 ```bash
-# 1. Kubeconform: schema validation for each manifest
-kubeconform -strict -summary \
-  -schema-location default \
-  -schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
-  <all new .yaml files>
+# 1. flate build ks: render the Kustomization (catches volsync component errors,
+#    missing PVCs, broken kustomize refs in the ks.yaml tree). The output is
+#    the full set of resources Flux would apply for this ks.
+flate build ks <app> --no-progress
 
-# 2. Kustomize: parent kustomization renders without errors
-kubectl kustomize kubernetes/apps/<category>/
+# 2. flate build hr: render the HelmRelease through the actual chart (catches
+#    chart template errors, invalid values, missing existingClaim refs, env
+#    var schema mistakes). The output is the full set of resources Helm would
+#    produce.
+flate build hr <app> --no-progress
 
-# 3. yamllint with repo's CI config
+# 3. flate get ks: confirm both Kustomizations (<app> and <app>-instance)
+#    appear in the target namespace.
+flate get ks --no-progress | grep <app>
+
+# 4. yamllint with repo's CI config (style + trailing newline checks)
 yamllint -c /home/russell/repos/k8s-gitops/.github/lint/.yamllint.yaml <new files>
 ```
 
-If any fails, fix before reporting success. Common failures: missing trailing newline (yamllint), wrong indentation, missing namespace in metadata, `chartRef` pointing at a repo that wasn't created in step 3.
+Why `flate` over `kubeconform`/`kubectl kustomize`:
+
+- **`kubeconform` only validates schemas** — it does not run Helm. A HelmRelease that passes kubeconform (schema-valid YAML) can still blow up when Helm renders the chart (e.g. `chartRef` pointing at a non-existent OCIRepository, `persistence.config.existingClaim: ${APP}` where `${APP}` is never substituted by Flux postBuild, `envFrom.secretRef.name` referencing a Secret that doesn't exist in the rendered tree). `flate build hr` does the real Helm render and surfaces these.
+- **`kubectl kustomize` does not understand Flux** — it can't resolve `kustomization.yaml` files that live in a different `path` than the Kustomization's target, can't follow OCIRepository/HelmRepository sources, and can't substitute `postBuild.substitute` variables. `flate build ks` does all three.
+- **`flate` is the same engine the cluster uses** — it's the SDK Flux's source controller and helm-controller are built on, so a render that succeeds locally will succeed in-cluster (modulo the live Secret values, which `--allow-missing-secrets` skips conservatively if a Secret is declared by an in-repo `ExternalSecret`).
+
+Common failures `flate` surfaces (and `kubeconform` does not):
+
+- `accessMode is required for PVC <name>` — the app-template chart v5.0.1 wants `accessMode` even when `existingClaim` is set; usually means the `existingClaim` value is a literal `${VAR}` that Flux postBuild never substituted (only the volsync component's ks.yaml sets postBuild). Fix: use a YAML anchor `*app` instead of a Flux substitute var, or attach the volsync component / add a postBuild block.
+- `execution error at ... chart-content.v1.tar+gzip ...` — the OCIRepository in `kubernetes/flux/meta/repositories/oci/` is wrong or missing.
+- `could not find Secret <name> in namespace <ns>` in HelmRelease `valuesFrom` — `ExternalSecret` for that Secret lives in a different `instance/` folder that hasn't been wired into `ks.yaml` yet.
+- `HelmRelease <ns>/<app> failed: no chart matching version "<x>"` — pinned chart version doesn't exist in the referenced repo.
 
 ### 9. Report
 
@@ -234,7 +404,7 @@ Tell the user:
 - All files created/edited (with paths and a one-line summary of each)
 - The chart version and source repo chosen (with why)
 - Any `TODO` placeholders left (1Password item name, real client ID, real webhook URL, etc.)
-- Validation results (kubeconform pass-rate, kustomize rendered without error, yamllint exit 0)
+- Validation results (`flate build ks` and `flate build hr` exit 0, `yamllint` exit 0)
 - Whether the commit / push / PR step was done (default: no — only do it if explicitly asked)
 
 ## Bundled resources
@@ -248,9 +418,11 @@ This skill doesn't ship scripts today — the workflow is mostly read+write. As 
 
 The grader will run the following checks against generated manifests:
 
-1. `kubeconform -strict` exits 0 on every new file.
-2. `kubectl kustomize kubernetes/apps/<category>/` succeeds and includes both `Kustomization`s (`<app>` and `<app>-instance`).
-3. `yamllint -c .github/lint/.yamllint.yaml` exits 0 on every new file.
-4. The HelmRelease uses the correct source pattern for its repo type: `chartRef.kind: OCIRepository` for OCI repos, or `chart.spec.sourceRef.kind: HelmRepository` for HTTP repos. The referenced repo exists in `kubernetes/flux/meta/repositories/{oci,helm}/`.
-5. If an `ExternalSecret` is created, it references `ClusterSecretStore/onepassword`.
-6. If `httpRoute` is present, `parentRefs[0]` is `{name: envoy-external, namespace: network}` and `hostnames[0]` uses `${SECRET_DOMAIN}`.
+1. `flate build ks <app> --no-progress` exits 0 and emits the expected resources (PVC, ReplicationDestination if volsync-attached, etc.).
+2. `flate build hr <app> --no-progress` exits 0 and emits the Deployment + Service + HTTPRoute + ServiceAccount.
+3. `flate get ks --no-progress` lists the `<app>` Kustomization in the target namespace. (Only `<app>` by default — `<app>-instance` appears only if the two-Kustomization split from step 4's "When to split" branch is in use.)
+4. `yamllint -c .github/lint/.yamllint.yaml` exits 0 on every new file.
+5. The HelmRelease uses the correct source pattern for its repo type: `chartRef.kind: OCIRepository` for OCI repos, or `chart.spec.sourceRef.kind: HelmRepository` for HTTP repos. The referenced repo exists in `kubernetes/flux/meta/repositories/{oci,helm}/`.
+6. If an `ExternalSecret` is created, it references `ClusterSecretStore/onepassword`.
+7. If `httpRoute` is present, `parentRefs[0]` is `{name: envoy-external, namespace: network}` and `hostnames[0]` uses `${SECRET_DOMAIN}`.
+8. If a static PVC is used (Pattern A in step 5a), the HelmRelease references it via YAML anchor (`*app`), NOT via `${APP}` Flux substitute var (unless the volsync component is also attached with `postBuild.substitute.APP`).

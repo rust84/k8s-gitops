@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/fluxcd-community/flux2-schemas/main/kustomization-kustomize-v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app paperless-ai
+  namespace: &namespace ai
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  # NOTE: volsync component is intentionally not attached yet. The PVC is
+  # static (see app/pvc.yaml) because there's no existing backup to restore
+  # from. Once the first volsync backup has completed, swap the static PVC
+  # for the volsync component + ReplicationDestination and delete app/pvc.yaml.
+  # See: kubernetes/apps/media/recyclarr for the same transitional pattern.
+  dependsOn:
+    - name: external-secrets
+      namespace: external-secrets
+    - name: litellm
+      namespace: ai
+  interval: 30m
+  path: ./kubernetes/apps/ai/paperless-ai/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
