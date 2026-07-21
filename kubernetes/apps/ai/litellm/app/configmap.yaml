@@ -7,6 +7,21 @@ data:
   config.yaml: |
     model_list:
       # Local models
+      # Strix NPU via Lemonade (vision-capable, single-tenant)
+      - model_name: gemma3-4b-FLM
+        model_info:
+          mode: chat
+          max_input_tokens: 16384
+          max_output_tokens: 8192
+          supports_function_calling: false
+          supports_vision: true
+        litellm_params:
+          model: openai/gemma3-4b-FLM
+          api_base: https://lemonade.russhome.xyz/api/v1
+          api_key: "dummy"
+          drop_params: true
+          max_parallel_requests: 1
+
       - model_name: ornith-1.0-35b
         model_info:
           mode: chat
