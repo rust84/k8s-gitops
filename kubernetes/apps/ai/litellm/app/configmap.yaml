@@ -11,6 +11,10 @@ data:
       - model_name: gemma3-4b-FLM
         model_info:
           mode: chat
+          input_cost_per_token: 0.0000001400
+          cache_creation_input_token_cost: 0.0000001400
+          cache_read_input_token_cost: 0.0000000280
+          output_cost_per_token: 0.0000002800
           max_input_tokens: 16384
           max_output_tokens: 8192
           supports_function_calling: false
@@ -19,7 +23,6 @@ data:
           model: openai/gemma3-4b-FLM
           api_base: https://lemonade.russhome.xyz/api/v1
           api_key: "dummy"
-          drop_params: true
           max_parallel_requests: 1
 
       - model_name: ornith-1.0-35b
@@ -38,7 +41,6 @@ data:
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
           max_parallel_requests: 1
-          additional_drop_params: ["response_format"]
 
       - model_name: qwen3.6-35b
         model_info:
