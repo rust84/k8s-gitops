@@ -50,6 +50,8 @@ spec:
               AI_PROVIDER: custom
               CUSTOM_BASE_URL: http://litellm.ai.svc.cluster.local:4000/v1
               CUSTOM_MODEL: gemma3-4b-FLM
+              RAG_SERVICE_ENABLED: true
+              RAG_SERVICE_URL: http://localhost:8000
             envFrom:
               - secretRef:
                   name: paperless-ai-secret
@@ -111,3 +113,8 @@ spec:
         type: emptyDir
         globalMounts:
           - path: /tmp
+      nltk:
+        type: emptyDir
+        sizeLimit: 100Mi
+        globalMounts:
+          - path: /home/node/nltk_data
