@@ -56,10 +56,24 @@ spec:
               - secretRef:
                   name: paperless-ai-secret
             probes:
-              liveness:
+              startup:
                 enabled: true
-              readiness:
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 3000
+                  periodSeconds: 10
+                  failureThreshold: 30
+              liveness: &probes
                 enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 3000
+                  periodSeconds: 10
+                  failureThreshold: 3
+              readiness: *probes
             resources:
               requests:
                 cpu: 10m
