@@ -118,3 +118,8 @@ spec:
         sizeLimit: 100Mi
         globalMounts:
           - path: /home/node/nltk_data
+      hf-cache:
+        type: emptyDir
+        sizeLimit: 1Gi
+        globalMounts:
+          - path: /home/node/.cache
