@@ -51,7 +51,7 @@ jobs:
 
       - name: Analyze PR with reusable AI reviewer
         id: analyze
-        uses: misospace/pr-reviewer-action@2f3713c246216f5d1a4fc5c3d944932d5567b4b5 # v2.1.6
+        uses: misospace/pr-reviewer-action@a14a8bb4e15ac6765eba782b2b21c7bcb351ffee # v2.1.8
         env:
           KONFLATE_MCP_URL: ${{ vars.KONFLATE_URL }}
         with:
