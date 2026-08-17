@@ -33,7 +33,7 @@ data:
           cache_read_input_token_cost: 0.0000000125
           output_cost_per_token: 0.0000004999
           max_input_tokens: 262144
-          max_output_tokens: 16384
+          max_output_tokens: 20480
           supports_function_calling: true
           supports_vision: false
         litellm_params:
@@ -50,7 +50,7 @@ data:
           cache_read_input_token_cost: 0.0000000125
           output_cost_per_token: 0.0000004999
           max_input_tokens: 262144
-          max_output_tokens: 16384
+          max_output_tokens: 20480
           supports_function_calling: true
           supports_vision: false
         litellm_params:
@@ -66,7 +66,7 @@ data:
           cache_read_input_token_cost: 0.0000000125
           output_cost_per_token: 0.0000004999
           max_input_tokens: 262144
-          max_output_tokens: 16384
+          max_output_tokens: 20480
           supports_function_calling: true
           supports_vision: false
         litellm_params:
@@ -82,11 +82,37 @@ data:
           cache_read_input_token_cost: 0.0000000125
           output_cost_per_token: 0.0000004999
           max_input_tokens: 262144
-          max_output_tokens: 16384
+          max_output_tokens: 20480
           supports_function_calling: true
           supports_vision: true
         litellm_params:
           model: openai/qwen3.8-27b
+          api_base: http://local-ai.russhome.xyz:8080/v1
+          api_key: "dummy"
+
+      - model_name: qwen3.5-9b
+        model_info:
+          mode: chat
+          input_cost_per_token: 0.0000001250
+          cache_creation_input_token_cost: 0.0000001250
+          cache_read_input_token_cost: 0.0000000125
+          output_cost_per_token: 0.0000004999
+          max_input_tokens: 32768
+          max_output_tokens: 8192
+          supports_function_calling: false
+          supports_vision: true
+        litellm_params:
+          model: openai/qwen3.5-9b
+          api_base: http://local-ai.russhome.xyz:8080/v1
+          api_key: "dummy"
+
+      - model_name: qwen3-embedding-0.6b
+        model_info:
+          input_cost_per_token: 0.0000000100
+          output_cost_per_token: 0.0000000000
+          mode: embedding
+        litellm_params:
+          model: openai/qwen3-embedding-0.6b
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
 
@@ -220,3 +246,26 @@ data:
           api_base: https://api.neuralwatt.com/v1
           api_key: os.environ/NEURALWATT_API_KEY
           order: 2
+
+    litellm_settings:
+      success_callback: ["prometheus"]
+      failure_callback: ["prometheus"]
+      prometheus_adapter: true
+      require_auth_for_metrics_endpoint: false
+      # cache: true
+      # cache_params:
+      #   type: redis
+      #   host: os.environ/REDIS_HOST
+      #   port: os.environ/REDIS_PORT
+      #   ttl: 300
+      request_timeout: 1200
+      num_retries: 2
+      retry_after: 5
+      set_verbose: false
+
+    environment:
+      - MINIMAX_API_KEY
+      - NEURALWATT_API_KEY
+      - OPENCODE_API_KEY
+      # - REDIS_HOST
+      # - REDIS_PORT
