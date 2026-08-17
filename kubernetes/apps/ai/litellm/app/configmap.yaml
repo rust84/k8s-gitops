@@ -84,7 +84,7 @@ data:
           max_input_tokens: 262144
           max_output_tokens: 16384
           supports_function_calling: true
-          supports_vision: false
+          supports_vision: true
         litellm_params:
           model: openai/qwen3.8-27b
           api_base: http://local-ai.russhome.xyz:8080/v1
