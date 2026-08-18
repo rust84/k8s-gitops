@@ -49,7 +49,7 @@ spec:
               AI_PROCESSED_TAG_NAME: ai-processed
               AI_PROVIDER: custom
               CUSTOM_BASE_URL: http://litellm.ai.svc.cluster.local:4000/v1
-              CUSTOM_MODEL: gemma3-4b-FLM
+              CUSTOM_MODEL: qwen3.5-9b
               RAG_SERVICE_ENABLED: false
               RAG_SERVICE_URL: http://localhost:8000
             envFrom:
