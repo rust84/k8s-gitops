@@ -58,6 +58,16 @@ spec:
               PAPERLESS_TIKA_ENDPOINT: http://localhost:9998
               USERMAP_GID: 65542
               PAPERLESS_DEBUG: "false"
+
+              PAPERLESS_AI_ENABLED: "true"
+              PAPERLESS_AI_LLM_EMBEDDING_BACKEND: "openai-like"
+              PAPERLESS_AI_LLM_EMBEDDING_MODEL: openai/qwen3-embedding-0.6b
+              PAPERLESS_AI_LLM_CONTEXT_SIZE: 32768
+              PAPERLESS_AI_LLM_BACKEND: "openai-like"
+              PAPERLESS_AI_LLM_MODEL: openai/qwen3.5-9b
+              PAPERLESS_AI_LLM_ENDPOINT: http://litellm.ai.svc.cluster.local:4000/v1
+              PAPERLESS_LLM_INDEX_TASK_CRON: 10 2 * * *
+
             envFrom: *envFrom
             probes:
               liveness:
