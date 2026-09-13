@@ -62,7 +62,7 @@ jobs:
           ai_primary_retry_delay_sec: "15"
           ai_base_url: ${{ vars.LITELLM_URL }}
           ai_api_format: openai
-          ai_model: ornith-1.0-35b
+          ai_model: qwen3.8-flash-next
           ai_api_key: ${{ secrets.LITELLM_API_KEY }}
           ai_response_format: json_object
           ai_max_tokens: "16000"
