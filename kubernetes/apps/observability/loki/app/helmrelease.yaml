@@ -36,6 +36,10 @@ spec:
         chunk_encoding: snappy
       limits_config:
         retention_period: 14d
+        # Truncate oversized log lines at ingest instead of rejecting whole
+        # batches (fixes promtail retry storm / readiness flapping caused by
+        # 400 "max entry size '262144' bytes exceeded" from ceph-mgr logs).
+        max_line_size_truncate: true
       storage:
         type: filesystem
       schemaConfig:
