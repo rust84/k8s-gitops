@@ -38,6 +38,8 @@ spec:
             key: *name
     extraArgs:
       - --cloudflare-dns-records-per-page=1000
+      - --cloudflare-proxied
+      - --annotation-prefix=external-dns.alpha.kubernetes.io/
       - --crd-source-apiversion=externaldns.k8s.io/v1alpha1
       - --crd-source-kind=DNSEndpoint
       - --gateway-name=envoy-external
