@@ -1,0 +1,33 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app memini
+  namespace: &namespace ai
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  # NOTE: volsync component is intentionally not attached yet. The PVC is
+  # static (see app/pvc.yaml) because there's no existing backup to restore
+  # from. Once the first volsync backup has completed, swap the static PVC
+  # for the volsync component + ReplicationDestination and delete app/pvc.yaml.
+  # See: kubernetes/apps/ai/paperless-ai for the same transitional pattern.
+  dependsOn:
+    - name: external-secrets
+      namespace: external-secrets
+    - name: litellm
+      namespace: ai
+    - name: text-embeddings
+      namespace: ai
+  interval: 1h
+  path: ./kubernetes/apps/ai/memini/app
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  wait: false
