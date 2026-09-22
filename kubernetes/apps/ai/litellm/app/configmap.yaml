@@ -25,7 +25,7 @@ data:
           api_key: "dummy"
           max_parallel_requests: 1
 
-      - model_name: ornith-1.0-35b
+      - model_name: ornith-1.5-35b
         model_info:
           mode: chat
           input_cost_per_token: 0.0000001250
@@ -37,42 +37,10 @@ data:
           supports_function_calling: true
           supports_vision: false
         litellm_params:
-          model: openai/ornith-1.0-35b
+          model: openai/ornith-1.5-35b
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
           max_parallel_requests: 1
-
-      - model_name: qwen3.6-35b
-        model_info:
-          mode: chat
-          input_cost_per_token: 0.0000001250
-          cache_creation_input_token_cost: 0.0000001250
-          cache_read_input_token_cost: 0.0000000125
-          output_cost_per_token: 0.0000004999
-          max_input_tokens: 262144
-          max_output_tokens: 20480
-          supports_function_calling: true
-          supports_vision: false
-        litellm_params:
-          model: openai/qwen3.6-35b
-          api_base: http://local-ai.russhome.xyz:8080/v1
-          api_key: "dummy"
-
-      - model_name: qwen3.6-27b
-        model_info:
-          mode: chat
-          input_cost_per_token: 0.0000001250
-          cache_creation_input_token_cost: 0.0000001250
-          cache_read_input_token_cost: 0.0000000125
-          output_cost_per_token: 0.0000004999
-          max_input_tokens: 262144
-          max_output_tokens: 20480
-          supports_function_calling: true
-          supports_vision: false
-        litellm_params:
-          model: openai/qwen3.6-27b
-          api_base: http://local-ai.russhome.xyz:8080/v1
-          api_key: "dummy"
 
       - model_name: qwen3.8-27b
         model_info:
@@ -90,7 +58,6 @@ data:
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
 
-      # Qwen3.8 Flash Next (qwen4exp) - ROCmFP4 + MTP draft, vision-capable
       - model_name: qwen3.8-flash-next
         model_info:
           mode: chat
@@ -133,7 +100,6 @@ data:
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
 
-      # DeepSeek V4 Flash 0731 DSpark IQ3 XXS local
       - model_name: dsv4-flash-0731
         model_info:
           input_cost_per_token: 0.0000001400
@@ -149,27 +115,6 @@ data:
           model: openai/dsv4-flash-0731
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
-
-      # DeepSeek V4 Flash Free via OpenCode/zen
-      - model_name: deepseek-v4-flash-free
-        model_info:
-          input_cost_per_token: 0.0000001400
-          cache_creation_input_token_cost: 0.0000001400
-          cache_read_input_token_cost: 0.0000000280
-          output_cost_per_token: 0.0000002800
-          mode: chat
-          max_input_tokens: 1000000
-          max_output_tokens: 16384
-          supports_function_calling: true
-          supports_prompt_caching: true
-        litellm_params:
-          model: openai/deepseek-v4-flash-free
-          api_base: https://opencode.ai/zen/v1
-          api_key: os.environ/OPENCODE_API_KEY
-          extra_body:
-            thinking:
-              type: disabled
-          merge_reasoning_content_in_choices: true
 
       # OpenAI-compatible M3 clients
       - model_name: MiniMax-M3-chat
@@ -230,39 +175,37 @@ data:
             - location: message
               index: -1
 
-      - model_name: glm-5.2
+      - model_name: gpt-6-luna
         model_info:
-          input_cost_per_token: 0.0000014500
-          cache_creation_input_token_cost: 0.0000014500
-          cache_read_input_token_cost: 0.0000003600
-          output_cost_per_token: 0.0000045000
-          mode: chat
-          max_input_tokens: 1048560
-          max_output_tokens: 16384
-          supports_function_calling: true
-          supports_prompt_caching: true
+          input_cost_per_token: 0.0000001000
+          cache_creation_input_token_cost: 0.0000001250
+          cache_read_input_token_cost: 0.0000000100
+          output_cost_per_token: 0.0000005000
+          mode: responses
+          max_input_tokens: 1050000
         litellm_params:
-          model: openai/glm-5.2
-          api_base: https://api.neuralwatt.com/v1
-          api_key: os.environ/NEURALWATT_API_KEY
+          model: openai/gpt-6-luna
+          additional_drop_params:
+          - temperature
+          api_key: os.environ/OPENAI_API_KEY
+          extra_body:
+            reasoning_effort: "high"
 
-      - model_name: kimi-k2.7
+      - model_name: gpt-6-sol
         model_info:
-          input_cost_per_token: 0.0000009500
-          cache_creation_input_token_cost: 0.0000009500
-          cache_read_input_token_cost: 0.0000002400
-          output_cost_per_token: 0.0000040000
-          mode: chat
-          max_input_tokens: 262128
-          max_output_tokens: 16384
-          supports_function_calling: true
-          supports_prompt_caching: true
-          supports_vision: true
+          input_cost_per_token: 0.0000020000
+          cache_creation_input_token_cost: 0.0000025000
+          cache_read_input_token_cost: 0.0000002000
+          output_cost_per_token: 0.0000100000
+          mode: responses
+          max_input_tokens: 1100000
         litellm_params:
-          model: openai/kimi-k2.7-code
-          api_base: https://api.neuralwatt.com/v1
-          api_key: os.environ/NEURALWATT_API_KEY
-          order: 2
+          model: openai/gpt-6-sol
+          additional_drop_params:
+          - temperature
+          api_key: os.environ/OPENAI_API_KEY
+          extra_body:
+            reasoning_effort: "high"
 
     litellm_settings:
       success_callback: ["prometheus"]
@@ -282,7 +225,7 @@ data:
 
     environment:
       - MINIMAX_API_KEY
-      - NEURALWATT_API_KEY
+      - OPENAI_API_KEY
       - OPENCODE_API_KEY
       # - REDIS_HOST
       # - REDIS_PORT
