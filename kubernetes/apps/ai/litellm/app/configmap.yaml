@@ -188,8 +188,6 @@ data:
           additional_drop_params:
           - temperature
           api_key: os.environ/OPENAI_API_KEY
-          extra_body:
-            reasoning_effort: "high"
 
       - model_name: gpt-6-sol
         model_info:
