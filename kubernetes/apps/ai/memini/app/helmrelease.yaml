@@ -44,6 +44,7 @@ spec:
                     name: memini-secret
                     key: MEMINI_API_KEY
               MEMINI_BACKEND: sqlite
+              MEMINI_DEBUG: "true"
               MEMINI_DEFAULT_NAMESPACE: ai
               MEMINI_LOG_FORMAT: json
               # in-cluster TEI embeddings server (bge-small-en-v1.5, 384-dim)
