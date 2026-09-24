@@ -7,6 +7,7 @@ components:
   - ../../flux/components/common
 resources:
   - ./litellm/ks.yaml
+  - ./llmkube/ks.yaml
   - ./memini/ks.yaml
   - ./open-webui/ks.yaml
   - ./paperless-ai/ks.yaml
