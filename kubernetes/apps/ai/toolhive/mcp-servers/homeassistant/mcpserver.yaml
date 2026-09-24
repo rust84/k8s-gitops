@@ -1,0 +1,31 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/toolhive.stacklok.dev/mcpserver_v1beta1.json
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPServer
+metadata:
+  name: homeassistant
+  namespace: ai
+spec:
+  image: ghcr.io/homeassistant-ai/ha-mcp:8.5.0
+  transport: stdio
+  proxyMode: streamable-http
+  proxyPort: 8080
+  groupRef:
+    name: mcp-tools
+  env:
+    - name: HOMEASSISTANT_URL
+      value: "http://home-assistant-app.home.svc.cluster.local:8123"
+  secrets:
+    - name: ha-mcp
+      key: HOMEASSISTANT_TOKEN
+      targetEnvName: HOMEASSISTANT_TOKEN
+  permissionProfile:
+    type: builtin
+    name: network
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 50m
+      memory: 128Mi
