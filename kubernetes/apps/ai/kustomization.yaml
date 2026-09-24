@@ -12,4 +12,3 @@ resources:
   - ./open-webui/ks.yaml
   - ./paperless-ai/ks.yaml
   - ./searxng/ks.yaml
-  - ./text-embeddings/ks.yaml

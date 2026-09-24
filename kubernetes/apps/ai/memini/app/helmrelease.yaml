@@ -47,10 +47,13 @@ spec:
               MEMINI_DEFAULT_NAMESPACE: ai
               MEMINI_LOG_FORMAT: json
               MEMINI_LOG_LEVEL: info
-              # in-cluster TEI embeddings server (bge-small-en-v1.5, 384-dim)
-              MEMINI_EMBED_BASE_URL: http://text-embeddings.ai.svc.cluster.local:8080/v1
-              MEMINI_EMBED_MODEL: bge-small-en-v1.5
-              MEMINI_EMBED_DIMS: "384"
+              # llmkube qwen3-embedding served on the Intel iGPU (1024-dim)
+              MEMINI_EMBED_BASE_URL: http://qwen3-embedding-0-6b.ai.svc.cluster.local:8080/v1
+              MEMINI_EMBED_MODEL: qwen3-embedding
+              MEMINI_EMBED_DIMS: "1024"
+              MEMINI_EMBED_MAX_CONCURRENCY: "2"
+              MEMINI_RECALL_EMBED_TIMEOUT: 10s
+              MEMINI_EMBED_QUERY_PREFIX: "Instruct: Given a user message, retrieve relevant past memories\nQuery: "
               # Opt-in LLM pipeline: dedup/consolidation, episodic->semantic
               # promotion, /v1/answer, and rerank. Routed through litellm
               # (ai namespace) to a hosted OpenAI-compatible provider.

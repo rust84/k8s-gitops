@@ -19,7 +19,7 @@ spec:
       namespace: external-secrets
     - name: litellm
       namespace: ai
-    - name: text-embeddings
+    - name: llmkube-models
       namespace: ai
   interval: 1h
   path: ./kubernetes/apps/ai/memini/app
