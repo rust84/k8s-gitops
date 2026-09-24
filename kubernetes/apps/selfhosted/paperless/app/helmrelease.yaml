@@ -61,7 +61,8 @@ spec:
 
               PAPERLESS_AI_ENABLED: "true"
               PAPERLESS_AI_LLM_EMBEDDING_BACKEND: "openai-like"
-              PAPERLESS_AI_LLM_EMBEDDING_MODEL: openai/qwen3-embedding-0.6b
+              PAPERLESS_AI_LLM_EMBEDDING_MODEL: qwen3-embedding
+              PAPERLESS_AI_LLM_EMBEDDING_ENDPOINT: http://qwen3-embedding-0-6b.ai.svc.cluster.local:8080/v1
               PAPERLESS_AI_LLM_CONTEXT_SIZE: 32768
               PAPERLESS_AI_LLM_BACKEND: "openai-like"
               PAPERLESS_AI_LLM_MODEL: openai/qwen3.5-9b
