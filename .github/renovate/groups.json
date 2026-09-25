@@ -52,6 +52,17 @@
       ],
       "group": { "commitMessageTopic": "{{{groupName}}} group" },
       "separateMinorPatch": false
+    },
+    {
+      "description": "Toolhive controller and CRDs",
+      "groupName": "Toolhive",
+      "matchDatasources": ["docker", "helm"],
+      "matchPackageNames": [
+        "ghcr.io/stacklok/toolhive/toolhive-operator",
+        "ghcr.io/stacklok/toolhive/toolhive-operator-crds"
+      ],
+      "group": { "commitMessageTopic": "{{{groupName}}} group" },
+      "separateMinorPatch": false
     }
   ]
 }
