@@ -8,15 +8,23 @@ metadata:
 spec:
   groupRef:
     name: mcp-tools
-  # NOTE: the optimizer (embedding-based tool routing) is intentionally not
-  # enabled -- it needs an embedding service + API key. Add a config.optimizer
-  # block (and the matching OPENAI_API_KEY env) once litellm exposes an embed
-  # model you want to route against.
   config:
     aggregation:
       conflictResolution: prefix
       conflictResolutionConfig:
         prefixFormat: "{workload}_"
+    # Optimizer: replace the full backend tool list with find_tool/call_tool and
+    # route via hybrid semantic+keyword search. embeddingServerRef only accepts
+    # ToolHive-managed TEI servers, so we point at the LLMKube qwen3-embedding
+    # InferenceService directly via an explicit OpenAI-compatible URL.
+    optimizer:
+      embeddingProvider: openai
+      embeddingService: http://qwen3-embedding-0-6b.ai.svc.cluster.local:8080/v1
+      embeddingModel: qwen3-embedding
+      # Cold iGPU llama.cpp faults compute buffers under load; allow headroom.
+      embeddingServiceTimeout: 180s
+      maxToolsToReturn: 8
+      hybridSearchSemanticRatio: "0.5"
   incomingAuth:
     type: anonymous
   outgoingAuth:
@@ -25,6 +33,12 @@ spec:
     spec:
       containers:
         - name: vmcp
+          env:
+            # LLMKube's embedding endpoint is keyless; the OpenAI embedding client
+            # the optimizer uses requires a non-empty key to initialize, so give it
+            # a throwaway value. Not a secret -- LLMKube ignores the bearer token.
+            - name: OPENAI_API_KEY
+              value: llmkube-local
           resources:
             requests:
               cpu: 50m
