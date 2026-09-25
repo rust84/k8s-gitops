@@ -29,6 +29,15 @@ spec:
     type: anonymous
   outgoingAuth:
     source: discovered
+  # Durable session storage on the cluster-local Dragonfly (Redis-compatible),
+  # needed because the optimizer pins clients to the stateful session path so
+  # sessions survive vmcp restarts/rollouts. Dragonfly is keyless here, so no
+  # passwordRef. Dedicated db 9 to avoid shared db 0 and open-webui(7)/searxng(8).
+  sessionStorage:
+    provider: redis
+    address: dragonfly.database.svc.cluster.local:6379
+    db: 9
+    keyPrefix: "toolhive:vmcp:"
   podTemplateSpec:
     spec:
       containers:
