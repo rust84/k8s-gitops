@@ -7,7 +7,7 @@
       "automerge": true,
       "automergeType": "branch",
       "matchUpdateTypes": ["digest"],
-      "matchPackageNames": ["ghcr.io/home-operations"]
+      "matchPackageNames": ["ghcr.io/home-operations", "ghcr.io/seerr-team/seerr"]
     },
     {
       "description": "Auto merge GitHub Actions",
