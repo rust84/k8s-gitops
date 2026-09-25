@@ -14,14 +14,11 @@ spec:
       conflictResolutionConfig:
         prefixFormat: "{workload}_"
     # Optimizer: replace the full backend tool list with find_tool/call_tool and
-    # route via hybrid semantic+keyword search. embeddingServerRef only accepts
-    # ToolHive-managed TEI servers, so we point at the LLMKube qwen3-embedding
-    # InferenceService directly via an explicit OpenAI-compatible URL.
+    # route via hybrid semantic+keyword search.
     optimizer:
       embeddingProvider: openai
       embeddingService: http://qwen3-embedding-0-6b.ai.svc.cluster.local:8080/v1
       embeddingModel: qwen3-embedding
-      # Cold iGPU llama.cpp faults compute buffers under load; allow headroom.
       embeddingServiceTimeout: 180s
       maxToolsToReturn: 8
       hybridSearchSemanticRatio: "0.5"
@@ -29,10 +26,6 @@ spec:
     type: anonymous
   outgoingAuth:
     source: discovered
-  # Durable session storage on the cluster-local Dragonfly (Redis-compatible),
-  # needed because the optimizer pins clients to the stateful session path so
-  # sessions survive vmcp restarts/rollouts. Dragonfly is keyless here, so no
-  # passwordRef. Dedicated db 9 to avoid shared db 0 and open-webui(7)/searxng(8).
   sessionStorage:
     provider: redis
     address: dragonfly.database.svc.cluster.local:6379
@@ -43,9 +36,6 @@ spec:
       containers:
         - name: vmcp
           env:
-            # LLMKube's embedding endpoint is keyless; the OpenAI embedding client
-            # the optimizer uses requires a non-empty key to initialize, so give it
-            # a throwaway value. Not a secret -- LLMKube ignores the bearer token.
             - name: OPENAI_API_KEY
               value: llmkube-local
           resources:
