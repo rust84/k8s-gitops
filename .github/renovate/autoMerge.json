@@ -6,8 +6,8 @@
       "matchDatasources": ["docker"],
       "automerge": true,
       "automergeType": "branch",
-      "matchUpdateTypes": ["digest"],
-      "matchPackageNames": ["ghcr.io/home-operations", "ghcr.io/seerr-team/seerr"]
+      "matchUpdateTypes": ["pinDigest", "digest"],
+      "matchPackageNames": ["ghcr.io/home-operations", "ghcr.io/thelounge/thelounge", "ghcr.io/seerr-team/seerr"]
     },
     {
       "description": "Auto merge GitHub Actions",
