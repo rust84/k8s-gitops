@@ -6,6 +6,8 @@
       "matchDatasources": ["docker"],
       "automerge": true,
       "automergeType": "branch",
+      "recreateClosed": true,
+      "commitMessageExtra": "to digest {{newDigestShort}}",
       "matchUpdateTypes": ["pinDigest", "digest"],
       "matchPackageNames": ["ghcr.io/home-operations", "ghcr.io/thelounge/thelounge", "ghcr.io/seerr-team/seerr"]
     },
