@@ -25,3 +25,13 @@ spec:
     limits:
       cpu: 200m
       memory: 256Mi
+  # SQLite needs to write WAL/journal files alongside the DBs in /data.
+  # The toolhive-operator enforces readOnlyRootFilesystem: true by default;
+  # override it for this MCP since the bundled SQLite DBs need a writable
+  # parent directory.
+  podTemplateSpec:
+    spec:
+      containers:
+        - name: mcp
+          securityContext:
+            readOnlyRootFilesystem: false
