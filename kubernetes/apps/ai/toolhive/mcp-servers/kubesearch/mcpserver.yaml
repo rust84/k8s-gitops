@@ -1,0 +1,27 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/toolhive.stacklok.dev/mcpserver_v1beta1.json
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPServer
+metadata:
+  name: kubesearch
+  namespace: ai
+spec:
+  # Renovate-managed: pinned by digest via :automergeDigest, and bumped daily
+  # when the rust84/kubesearch-mcp-server db-refresh.yml workflow rebuilds the
+  # image with fresh k8s-at-home-search SQLite databases. The Renovate PR is
+  # auto-merged, Flux reconciles, and the pod restarts with the new DBs.
+  image: ghcr.io/rust84/kubesearch-mcp-server:latest
+  # MCP server speaks stdio natively; Toolhive proxies to streamable-http.
+  transport: stdio
+  proxyMode: streamable-http
+  proxyPort: 8080
+  # Joins the mcp-tools MCPGroup; VirtualMCPServer/mcp-gateway auto-aggregates.
+  groupRef:
+    name: mcp-tools
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
