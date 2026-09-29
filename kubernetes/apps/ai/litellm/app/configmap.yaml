@@ -196,7 +196,7 @@ data:
           cache_read_input_token_cost: 0.0000002000
           output_cost_per_token: 0.0000100000
           mode: responses
-          max_input_tokens: 1100000
+          max_input_tokens: 1050000
         litellm_params:
           model: openai/gpt-6-sol
           additional_drop_params:
