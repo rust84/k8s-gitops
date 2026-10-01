@@ -9,7 +9,7 @@
       "recreateClosed": true,
       "commitMessageExtra": "to digest {{newDigestShort}}",
       "matchUpdateTypes": ["pinDigest", "digest"],
-      "matchPackageNames": ["ghcr.io/home-operations", "ghcr.io/thelounge/thelounge", "ghcr.io/seerr-team/seerr"]
+      "matchPackageNames": ["ghcr.io/home-operations", "ghcr.io/rust84/kubesearch-mcp-server", "ghcr.io/thelounge/thelounge", "ghcr.io/seerr-team/seerr"]
     },
     {
       "description": "Auto merge GitHub Actions",
