@@ -17,6 +17,7 @@ concurrency:
 permissions:
   contents: read
   pull-requests: write
+  checks: read
 
 jobs:
   review-pr:
@@ -51,51 +52,49 @@ jobs:
 
       - name: Analyze PR with reusable AI reviewer
         id: analyze
-        uses: misospace/pr-reviewer-action@a962cdfc21c378a3b8cf2d8b194c787408e60e6b # v2.5.0
-        env:
-          KONFLATE_MCP_URL: ${{ vars.KONFLATE_URL }}
+        uses: misospace/pr-reviewer-action@829f395f7154b4d87c229500fd09b30a8ad2224d # v3.3.0
         with:
-          github_token: ${{ steps.app-token.outputs.token }}
-          pr_number: ${{ github.event.pull_request.number || inputs.pr_number }}
-          force_review: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
-          ai_primary_retries: "3"
-          ai_primary_retry_delay_sec: "15"
-          ai_base_url: ${{ vars.LITELLM_URL }}
-          ai_api_format: openai
-          ai_model: qwen3.8-flash-next
-          ai_api_key: ${{ secrets.LITELLM_API_KEY }}
-          ai_response_format: json_object
-          ai_max_tokens: "16000"
-          ai_fallback_base_url: ${{ vars.LITELLM_URL }}
-          ai_fallback_api_format: openai
-          ai_fallback_model: deepseek-v4-flash-free
-          ai_fallback_api_key: ${{ secrets.LITELLM_API_KEY }}
-          review_routing_mode: auto
-          ai_smart_base_url: ${{ vars.LITELLM_URL }}
-          ai_smart_api_format: anthropic
-          ai_smart_model: MiniMax-M3
-          ai_smart_api_key: ${{ secrets.LITELLM_API_KEY }}
-          allowed_source_hosts: "github.com,api.github.com,gitlab.com,registry.terraform.io,artifacthub.io,talos.dev,www.talos.dev,docs.siderolabs.com"
-          context_limit_mode: normal
-          ci_status_check: "true"
-          ci_timeout_sec: "600"
-          search_url: "https://search.roswellian.dev/search"
-          tool_mode: native_loop
-          tool_max_rounds: "2"
-          tool_max_requests: "4"
-          tool_loop_wall_clock_sec: "600"
-          tool_planning_timeout_sec: "300"
-          tool_planning_max_context_bytes: "15000"
-          tool_planning_max_tokens: "16000"
-          tool_max_response_bytes: "12000"
-          tool_allowed_gh_api_repos: "*"
-          tool_request_timeout_sec: "15"
-          tool_enable_for_forks: "false"
-          tool_mcp_servers: "konflate=${{ vars.KONFLATE_URL }}"
-          system_prompt_file: .agents/instructions/pr-review.instructions.md
-          system_prompt_mode: append
-          standards_file_candidates: "AGENTS.md"
-          evidence_providers_file: .github/konflate-evidence-providers.json
-          on_model_failure: notice
-          inline_findings: "true"
-          publish_mode: review_comment
+          github-token: ${{ steps.app-token.outputs.token }}
+          pr-number: ${{ github.event.pull_request.number || inputs.pr_number }}
+          force-review: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
+          ai-primary-retries: "3"
+          ai-primary-retry-delay-sec: "15"
+          ai-base-url: ${{ vars.LITELLM_URL }}
+          ai-api-format: openai
+          ai-model: qwen3.8-flash-next
+          ai-api-key: ${{ secrets.LITELLM_API_KEY }}
+          ai-response-format: json_object
+          ai-max-tokens: "16000"
+          ai-fallback-base-url: ${{ vars.LITELLM_URL }}
+          ai-fallback-api-format: anthropic
+          ai-fallback-model: MiniMax-M2.7
+          ai-fallback-api-key: ${{ secrets.LITELLM_API_KEY }}
+          review-routing-mode: auto
+          ai-smart-base-url: ${{ vars.LITELLM_URL }}
+          ai-smart-api-format: anthropic
+          ai-smart-model: MiniMax-M3
+          ai-smart-api-key: ${{ secrets.LITELLM_API_KEY }}
+          allowed-source-hosts: "github.com,api.github.com,gitlab.com,registry.terraform.io,artifacthub.io,talos.dev,www.talos.dev,docs.siderolabs.com"
+          context-limit-mode: normal
+          ci-status-check: "true"
+          ci-timeout-sec: "600"
+          search-url: "https://search.roswellian.dev/search"
+          tool-mode: native_loop
+          tool-max-rounds: "2"
+          tool-max-requests: "4"
+          tool-loop-wall-clock-sec: "600"
+          tool-turn-timeout-sec: "300"
+          tool-corpus-max-bytes: "15000"
+          tool-max-tokens-per-turn: "16000"
+          tool-max-response-bytes: "12000"
+          tool-allowed-gh-api-repos: "*"
+          tool-request-timeout-sec: "15"
+          tool-enable-for-forks: "false"
+          tool-mcp-servers: "konflate=${{ vars.KONFLATE_URL }}"
+          system-prompt-file: .agents/instructions/pr-review.instructions.md
+          system-prompt-mode: append
+          standards-file-candidates: "AGENTS.md"
+          evidence-providers-file: .github/konflate-evidence-providers.json
+          on-model-failure: notice
+          inline-findings: "true"
+          publish-mode: review_comment
