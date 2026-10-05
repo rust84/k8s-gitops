@@ -71,7 +71,9 @@
   "packageRules": [
     // Setup datasources
     {"matchDatasources": ["helm"], "ignoreDeprecated": true},
-    {"matchDatasources": ["docker"], "commitMessageExtra": "to {{newVersion}}"},
+    {"matchDatasources": ["docker"], "matchUpdateTypes": ["major", "minor", "patch", "bump"], "commitMessageExtra": "to {{newVersion}}"},
+    // Digest-only updates have no newVersion, so {{newVersion}} renders empty and truncates the title
+    {"matchDatasources": ["docker"], "matchUpdateTypes": ["digest", "pinDigest"], "commitMessageExtra": "to digest {{newDigestShort}}"},
     // Custom version schemes
     {
       "description": ["Custom versioning for fireflyiii"],
