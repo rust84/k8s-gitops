@@ -33,24 +33,30 @@ spec:
               - secretRef:
                   name: bazarr-secret
             probes:
-              liveness: &probes
+              # 1.6.x can take >60s to bind the port and answers /api/system/ping
+              # slower than 1s during warmup, so liveness must not be an HTTP check
+              # with a 1s timeout or it kills bazarr mid-boot (upgrade restart loop).
+              liveness:
+                enabled: true
+                spec:
+                  periodSeconds: 30
+                  timeoutSeconds: 5
+                  failureThreshold: 5
+              readiness:
                 enabled: true
                 custom: true
                 spec:
                   httpGet:
                     path: /api/system/ping
                     port: &port 6767
-                  initialDelaySeconds: 0
                   periodSeconds: 10
-                  timeoutSeconds: 1
-                  failureThreshold: 3
-              readiness: *probes
+                  timeoutSeconds: 5
+                  failureThreshold: 5
               startup:
                 enabled: true
                 spec:
-                  <<: *probes
                   failureThreshold: 30
-                  periodSeconds: 5
+                  periodSeconds: 10
             securityContext: &securityContext
               runAsNonRoot: true
               runAsUser: 568
