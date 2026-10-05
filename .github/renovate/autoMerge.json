@@ -2,10 +2,14 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
-      "description": "Auto merge container digests",
+      "description": [
+        "Auto merge container digests.",
+        "`ignoreTests` is required here: no workflow runs on `renovate/**` branches, so those commits have no status checks and Renovate resolves their branch status as `yellow`, which blocks `automergeType: branch`. The `prNotPendingHours` (25h) fallback that would raise a PR never fires for daily-rebuilt images, because each new digest resets the clock first."
+      ],
       "matchDatasources": ["docker"],
       "automerge": true,
       "automergeType": "branch",
+      "ignoreTests": true,
       "recreateClosed": true,
       "commitMessageExtra": "to digest {{newDigestShort}}",
       "matchUpdateTypes": ["pinDigest", "digest"],
