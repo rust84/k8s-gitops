@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/budimanjojo/talhelper/master/pkg/config/schemas/talconfig.json
 ---
-# renovate: depName=ghcr.io/siderolabs/installer datasource=docker
+# renovate: depName=ghcr.io/siderolabs/talos datasource=docker
 talosVersion: v1.13.8
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
 kubernetesVersion: v1.36.3
@@ -28,6 +28,7 @@ nodes:
     installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
+    talosImageURL: factory.talos.dev/installer/a325b38cc3bb53867f7eb2b52338ee5b6898575329fc6da36d06981dce30bb5c
     schematic: &schematic
       customization:
         extraKernelArgs:
@@ -95,6 +96,7 @@ nodes:
     installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
+    talosImageURL: factory.talos.dev/installer/a325b38cc3bb53867f7eb2b52338ee5b6898575329fc6da36d06981dce30bb5c
     schematic: *schematic
     controlPlane: true
     networkInterfaces:
@@ -137,6 +139,7 @@ nodes:
     installDisk: "/dev/sda"
     machineSpec:
       secureboot: false
+    talosImageURL: factory.talos.dev/installer/a325b38cc3bb53867f7eb2b52338ee5b6898575329fc6da36d06981dce30bb5c
     schematic: *schematic
     controlPlane: true
     networkInterfaces:
