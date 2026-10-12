@@ -58,11 +58,15 @@ spec:
               CRAWLER_DOWNLOAD_BANNER_IMAGE: "true"
               CRAWLER_ENABLE_ADBLOCKER: "true"
               CRAWLER_STORE_SCREENSHOT: "true"
-              # AI (Lemonade)
-              OPENAI_API_KEY: "fake"
-              OPENAI_BASE_URL: https://lemonade.russhome.xyz/api/v1
-              INFERENCE_TEXT_MODEL: gemma3-4b-FLM
-              INFERENCE_IMAGE_MODEL: gemma3-4b-FLM
+              # AI (LiteLLM - Sol)
+              OPENAI_API_KEY:
+                valueFrom:
+                  secretKeyRef:
+                    name: karakeep-secret
+                    key: OPENAI_API_KEY
+              OPENAI_BASE_URL: http://litellm.ai.svc.cluster.local:4000/v1
+              INFERENCE_TEXT_MODEL: gpt-6-sol
+              INFERENCE_IMAGE_MODEL: gpt-6-sol
             probes:
               liveness:
                 enabled: true
