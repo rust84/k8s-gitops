@@ -1,0 +1,10 @@
+---
+# Talos API access from Kubernetes pods (KubePrism on :7445 is the generated default)
+apiVersion: v1alpha1
+kind: KubeTalosAPIAccessConfig
+allowedRoles:
+  - os:admin
+  - os:reader
+allowedKubernetesNamespaces:
+  - system-upgrade
+  - ai

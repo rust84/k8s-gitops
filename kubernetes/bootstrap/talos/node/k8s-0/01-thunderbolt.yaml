@@ -1,0 +1,22 @@
+---
+# k8s-0 to k8s-1 (bus 1-1.0)
+apiVersion: v1alpha1
+kind: LinkConfig
+name: ethSel0
+mtu: 65520
+addresses:
+  - address: 169.254.255.20/32
+routes:
+  - destination: 169.254.255.21/32
+    metric: 2048
+---
+# k8s-0 to k8s-2 (bus 0-1.0)
+apiVersion: v1alpha1
+kind: LinkConfig
+name: ethSel1
+mtu: 65520
+addresses:
+  - address: 169.254.255.20/32
+routes:
+  - destination: 169.254.255.22/32
+    metric: 2048

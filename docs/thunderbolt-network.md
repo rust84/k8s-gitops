@@ -64,33 +64,47 @@ Point-to-point routes with metric 2048 ensure traffic to each peer uses the corr
 
 ## Talos Configuration
 
-The network is configured in `kubernetes/bootstrap/talos/talconfig.yaml` using device selectors to match interfaces by bus path and driver:
+The network is configured in the TOPF patch tree under `kubernetes/bootstrap/talos/`. The `ethSel0` / `ethSel1` link aliases match interfaces by bus path and driver and are shared by all nodes (`all/40-network-thunderbolt.yaml`):
 
 ```yaml
-networkInterfaces:
-  - # k8s-0 to k8s-1
-    deviceSelector:
-      driver: thunderbolt-net
-      busPath: "1-1.0"
-    addresses:
-      - "169.254.255.20/32"
-    mtu: 65520
-    routes:
-      - network: 169.254.255.21/32
-        metric: 2048
-  - # k8s-0 to k8s-2
-    deviceSelector:
-      driver: thunderbolt-net
-      busPath: "0-1.0"
-    addresses:
-      - "169.254.255.20/32"
-    mtu: 65520
-    routes:
-      - network: 169.254.255.22/32
-        metric: 2048
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: ethSel0
+selector:
+  match: glob("1-1.0", link.bus_path) && glob("thunderbolt-net", link.driver)
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: ethSel1
+selector:
+  match: glob("0-1.0", link.bus_path) && glob("thunderbolt-net", link.driver)
 ```
 
-The configuration generates Talos v1alpha1 `LinkAliasConfig` and `LinkConfig` resources with auto-generated interface aliases (`ethSel0`, `ethSel1`).
+Per-node addressing lives in `node/<host>/01-thunderbolt.yaml`, e.g. for k8s-0:
+
+```yaml
+# k8s-0 to k8s-1 (bus 1-1.0)
+apiVersion: v1alpha1
+kind: LinkConfig
+name: ethSel0
+mtu: 65520
+addresses:
+  - address: 169.254.255.20/32
+routes:
+  - destination: 169.254.255.21/32
+    metric: 2048
+---
+# k8s-0 to k8s-2 (bus 0-1.0)
+apiVersion: v1alpha1
+kind: LinkConfig
+name: ethSel1
+mtu: 65520
+addresses:
+  - address: 169.254.255.20/32
+routes:
+  - destination: 169.254.255.22/32
+    metric: 2048
+```
 
 ## Performance Characteristics
 
@@ -321,17 +335,17 @@ k8s-0   network   LinkSpec   ethSel1   2   # keyed by alias — broken
 
 **Fix — apply the node config using the task runner:**
 
-The clusterconfig files already contain `LinkConfig` entries with `up: true` for both `ethSel0` and `ethSel1`. Apply them to all three nodes:
+The `node/<host>/01-thunderbolt.yaml` patches contain `LinkConfig` entries for both `ethSel0` and `ethSel1`. Apply them to all three nodes:
 
 ```bash
-task talos:apply-node IP=10.20.0.230
-task talos:apply-node IP=10.20.0.229
-task talos:apply-node IP=10.20.0.244
+task talos:apply NODE=k8s-0
+task talos:apply NODE=k8s-1
+task talos:apply NODE=k8s-2
 ```
 
 This forces the `LinkSpecController` to re-reconcile. **Important:** if the node's `LinkSpec` already contains `up: true` with the same content, the version won't increment and no re-reconciliation is triggered. In that case, proceed to the **Neighbor Interfaces Admin-Down** section below.
 
-**Root cause:** When a node boots and the TB peer isn't ready in time, the Talos network controller creates a `LinkSpec` keyed by alias name (`ethSel0`) rather than interface name (`enx...`). The controller then can't resolve the alias to the actual interface and never sets it admin-up. The explicit `LinkConfig` in the clusterconfig breaks the deadlock on next apply.
+**Root cause:** When a node boots and the TB peer isn't ready in time, the Talos network controller creates a `LinkSpec` keyed by alias name (`ethSel0`) rather than interface name (`enx...`). The controller then can't resolve the alias to the actual interface and never sets it admin-up. The explicit `LinkConfig` in the machine config breaks the deadlock on next apply.
 
 ### Neighbor Interfaces Admin-Down After Node Recovery
 
@@ -379,12 +393,12 @@ If ARP works in one direction but not the other, the bus paths may be swapped in
    talosctl --nodes 10.20.0.230 dmesg | grep -E "thunderbolt.*found|thunderbolt.*Linux"
    ```
 
-2. Update `talconfig.yaml` with correct bus paths for each link
+2. Update the `LinkAliasConfig` bus paths in `kubernetes/bootstrap/talos/all/40-network-thunderbolt.yaml` (and the per-node `LinkConfig` routes in `node/<host>/01-thunderbolt.yaml` if peers changed)
 
-3. Regenerate and apply Talos configuration:
+3. Review and apply the Talos configuration:
    ```bash
-   task talos:generate-config
-   task talos:apply-config
+   task talos:diff
+   task talos:apply
    ```
 
 ### Low Performance

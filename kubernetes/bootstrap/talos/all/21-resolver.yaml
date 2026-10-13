@@ -1,0 +1,12 @@
+---
+# DNS nameserver, disable search domain, and host DNS
+apiVersion: v1alpha1
+kind: ResolverConfig
+nameservers:
+  - address: 10.20.0.1
+searchDomains:
+  disableDefault: true
+hostDNS:
+  enabled: true
+  resolveMemberNames: true
+  forwardKubeDNSToHost: false

@@ -1,0 +1,13 @@
+---
+# Thunderbolt ring links (see docs/thunderbolt-network.md); per-node addressing in node/<host>/
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: ethSel0
+selector:
+  match: glob("1-1.0", link.bus_path) && glob("thunderbolt-net", link.driver)
+---
+apiVersion: v1alpha1
+kind: LinkAliasConfig
+name: ethSel1
+selector:
+  match: glob("0-1.0", link.bus_path) && glob("thunderbolt-net", link.driver)

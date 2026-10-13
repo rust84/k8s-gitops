@@ -1,0 +1,5 @@
+---
+machine:
+  certSANs:
+    - 10.20.0.149 # Control plane VIP
+    - 127.0.0.1   # KubePrism

@@ -1,0 +1,19 @@
+---
+clusterName: kubernetes
+clusterEndpoint: https://10.20.0.149:6443
+# renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
+kubernetesVersion: v1.36.3
+# renovate: depName=ghcr.io/siderolabs/talos datasource=docker
+talosVersion: v1.14.2
+schematicId: "@schematic.yaml"
+
+nodes:
+  - host: k8s-0
+    ip: 10.20.0.230
+    role: control-plane
+  - host: k8s-1
+    ip: 10.20.0.229
+    role: control-plane
+  - host: k8s-2
+    ip: 10.20.0.244
+    role: control-plane

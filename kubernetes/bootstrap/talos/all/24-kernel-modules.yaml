@@ -1,0 +1,13 @@
+---
+# Load kernel modules for NBD and Thunderbolt
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: nbd
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: thunderbolt
+---
+apiVersion: v1alpha1
+kind: KernelModuleConfig
+name: thunderbolt_net

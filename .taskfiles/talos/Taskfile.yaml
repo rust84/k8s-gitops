@@ -4,63 +4,78 @@ version: '3'
 
 tasks:
 
-  generate-config:
-    desc: Generate Talos configuration
-    dir: '{{.TALHELPER_DIR}}'
-    cmd: talhelper genconfig
+  render:
+    desc: Render Talos machine configs to ./output (contains secrets, gitignored)
+    dir: '{{.TALOS_DIR}}'
+    cmd: topf render --online
     preconditions:
-      - test -f {{.TALHELPER_DIR}}/talconfig.yaml
-      - test -f {{.ROOT_DIR}}/.sops.yaml
+      - test -f {{.TOPFCONFIG}}
       - test -f {{.SOPS_AGE_KEY_FILE}}
-      - which talhelper
+      - which topf
 
-  apply-node:
-    desc: Apply Talos config to a node [IP=required]
-    dir: '{{.TALHELPER_DIR}}'
-    cmd: talhelper gencommand apply --node {{.IP}} --extra-flags '--mode={{.MODE}}' | bash
+  diff:
+    desc: Show the config diff against running nodes without applying [NODE=optional hostname]
+    dir: '{{.TALOS_DIR}}'
+    cmd: topf --nodes-filter '^{{.NODE}}$' apply --dry-run || [ $? -eq 2 ] # exit 2 = changes detected
     vars:
+      NODE: '{{.NODE | default ".*"}}'
+    preconditions:
+      - test -f {{.TOPFCONFIG}}
+      - test -f {{.SOPS_AGE_KEY_FILE}}
+      - which topf
+
+  apply:
+    desc: Apply Talos config [NODE=optional hostname] [MODE=auto]
+    dir: '{{.TALOS_DIR}}'
+    cmd: topf --nodes-filter '^{{.NODE}}$' apply --mode={{.MODE}}
+    vars:
+      NODE: '{{.NODE | default ".*"}}'
       MODE: '{{.MODE | default "auto"}}'
-    requires:
-      vars: [IP]
     preconditions:
-      - talosctl --nodes {{.IP}} get machineconfig
-      - talosctl config info
-      - test -f {{.TALOSCONFIG}}
-      - which talhelper talosctl yq
+      - test -f {{.TOPFCONFIG}}
+      - test -f {{.SOPS_AGE_KEY_FILE}}
+      - which topf
 
-  upgrade-node:
-    desc: Upgrade Talos on a single node [IP=required]
-    dir: '{{.TALHELPER_DIR}}'
-    cmd: talhelper gencommand upgrade --node {{.IP}} --extra-flags "--image='{{.TALOS_IMAGE}}:{{.TALOS_VERSION}}' --timeout=10m" | bash
+  upgrade:
+    desc: Upgrade Talos to topf.yaml talosVersion [NODE=optional hostname]
+    dir: '{{.TALOS_DIR}}'
+    cmd: topf --nodes-filter '^{{.NODE}}$' upgrade
     vars:
-      TALOS_IMAGE:
-        sh: yq '.nodes[] | select(.ipAddress == "{{.IP}}") | .talosImageURL' {{.TALHELPER_DIR}}/talconfig.yaml
-      TALOS_VERSION:
-        sh: yq '.talosVersion' {{.TALHELPER_DIR}}/talconfig.yaml
-    requires:
-      vars: [IP]
+      NODE: '{{.NODE | default ".*"}}'
     preconditions:
-      - talosctl --nodes {{.IP}} get machineconfig
-      - talosctl config info
-      - test -f {{.TALOSCONFIG}}
-      - which kubectl talhelper talosctl yq
+      - test -f {{.TOPFCONFIG}}
+      - test -f {{.SOPS_AGE_KEY_FILE}}
+      - which topf
 
   upgrade-k8s:
-    desc: Upgrade Kubernetes
-    dir: '{{.TALHELPER_DIR}}'
-    cmd: talhelper gencommand upgrade-k8s --extra-flags "--to '{{.KUBERNETES_VERSION}}'" | bash
+    desc: Upgrade Kubernetes to topf.yaml kubernetesVersion
+    cmd: talosctl --nodes {{.CONTROLLER}} upgrade-k8s --to {{.KUBERNETES_VERSION}}
     vars:
+      CONTROLLER:
+        sh: yq '[.nodes[] | select(.role == "control-plane")] | .[0].ip' {{.TOPFCONFIG}}
       KUBERNETES_VERSION:
-        sh: yq '.kubernetesVersion' {{.TALHELPER_DIR}}/talconfig.yaml
+        sh: yq '.kubernetesVersion' {{.TOPFCONFIG}}
     preconditions:
       - talosctl config info
       - test -f {{.TALOSCONFIG}}
-      - which talhelper talosctl yq
+      - which talosctl yq
+
+  talosconfig:
+    desc: Generate talosconfig from the secrets bundle
+    dir: '{{.TALOS_DIR}}'
+    cmd: topf talosconfig > {{.TALOSCONFIG}}
+    preconditions:
+      - test -f {{.TOPFCONFIG}}
+      - test -f {{.SOPS_AGE_KEY_FILE}}
+      - which topf
 
   reset:
-    desc: Resets nodes back to maintenance mode
-    dir: '{{.TALHELPER_DIR}}'
+    desc: Resets nodes back to maintenance mode [NODE=optional hostname]
+    dir: '{{.TALOS_DIR}}'
     prompt: This will destroy your cluster and reset the nodes back to maintenance mode... continue?
-    cmd: talhelper gencommand reset --extra-flags="--reboot {{- if eq .CLI_FORCE false }} --system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL{{ end }} --graceful=false --wait=false" | bash
+    cmd: topf --nodes-filter '^{{.NODE}}$' reset --graceful=false {{- if eq .CLI_FORCE false }} --full=false{{ end }}
+    vars:
+      NODE: '{{.NODE | default ".*"}}'
     preconditions:
-      - which talhelper
+      - test -f {{.TOPFCONFIG}}
+      - which topf

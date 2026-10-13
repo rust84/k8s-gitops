@@ -1,0 +1,19 @@
+---
+# v1.14 generates these defaults for new clusters; this cluster was upgraded from
+# v1.13 and runs without them. Keep the running behaviour until opted into deliberately.
+# Workload isolation (containerd/kubelet/pods in the sandboxd namespace)
+apiVersion: v1alpha1
+kind: SecurityProfileConfig
+workloadIsolation: false
+---
+# /var without nosuid,nodev
+apiVersion: v1alpha1
+kind: VolumeConfig
+name: EPHEMERAL
+mount:
+  secure: false
+---
+# Weekly fstrim
+apiVersion: v1alpha1
+kind: FilesystemTrimConfig
+$patch: delete

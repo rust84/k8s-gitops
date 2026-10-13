@@ -1,0 +1,8 @@
+---
+# Install disk; disable wiping disk on install (installer image is set by topf)
+apiVersion: v1alpha1
+kind: UnattendedInstallConfig
+provisioning:
+  diskSelector:
+    match: disk.dev_path == "/dev/sda"
+  wipe: false

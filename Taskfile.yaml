@@ -5,11 +5,12 @@ vars:
   PROJECT_DIR:
     sh: "git rev-parse --show-toplevel"
   KUBERNETES_DIR: "{{.ROOT_DIR}}/kubernetes"
-  TALHELPER_DIR: "{{.ROOT_DIR}}/kubernetes/bootstrap/talos"
-  TALOSCONFIG_FILE: "{{.ROOT_DIR}}/kubernetes/bootstrap/talos/clusterconfig/talosconfig"
+  TALOS_DIR: "{{.ROOT_DIR}}/kubernetes/bootstrap/talos"
+  TALOSCONFIG_FILE: "{{.ROOT_DIR}}/kubernetes/bootstrap/talos/talosconfig"
 
 env:
   TALOSCONFIG: "{{.TALOSCONFIG_FILE}}"
+  TOPFCONFIG: "{{.ROOT_DIR}}/kubernetes/bootstrap/talos/topf.yaml"
 
 includes:
   bootstrap: .taskfiles/bootstrap

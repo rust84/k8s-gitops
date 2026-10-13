@@ -1,0 +1,5 @@
+---
+apiVersion: v1alpha1
+kind: Layer2VIPConfig
+name: 10.20.0.149
+link: bond0

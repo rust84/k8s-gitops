@@ -1,0 +1,20 @@
+---
+# containerd: keep unpacked layers
+apiVersion: v1alpha1
+kind: CRICustomizationConfig
+name: discard-unpacked-layers
+content: |-
+  [plugins."io.containerd.cri.v1.images"]
+    discard_unpacked_layers = false
+---
+# NFS mount options
+apiVersion: v1alpha1
+kind: EtcFileConfig
+name: nfsmount.conf
+mode: 0o644
+contents: |-
+  [ NFSMount_Global_Options ]
+  nfsvers=4.2
+  hard=True
+  nconnect=16
+  noatime=True

@@ -1,0 +1,15 @@
+---
+# Disable built-in Flannel to use Cilium
+apiVersion: v1alpha1
+kind: KubeFlannelCNIConfig
+$patch: delete
+---
+# Cilium replaces kube-proxy
+apiVersion: v1alpha1
+kind: KubeProxyConfig
+enabled: false
+---
+# CoreDNS is deployed via Flux
+apiVersion: v1alpha1
+kind: KubeCoreDNSConfig
+enabled: false

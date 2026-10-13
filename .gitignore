@@ -20,6 +20,7 @@ Brewfile.lock.json
 # intellij
 .idea
 # Bootstrap
+kubernetes/bootstrap/talos/output/
 /config.yaml
 cloudflared.json
 # Claude
