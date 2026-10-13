@@ -12,6 +12,7 @@ resources:
   - ./bazarr/ks.yaml
   - ./deduparr/ks.yaml
   - ./jellyfin/ks.yaml
+  - ./maintainerr/ks.yaml
   - ./seerr/ks.yaml
   - ./plex/ks.yaml
   - ./postarr/ks.yaml
