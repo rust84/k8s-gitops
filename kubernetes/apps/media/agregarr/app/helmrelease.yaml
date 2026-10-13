@@ -26,7 +26,7 @@ spec:
           app:
             image:
               repository: ghcr.io/agregarr/agregarr
-              tag: v2.4.2@sha256:5f1390bc43fefbbfb67f38a7a8dd65b4086c1f187a37c8df5c6020a498e5d1b5
+              tag: develop@sha256:d97083f55f9397245e7f5ad034df523cc93202b38032bb4b8be39a4f5268465e # issue #602s
             env:
               TZ: "${TZ}"
               PORT: 80
