@@ -103,7 +103,7 @@ spec:
             memory: 8Gi
       security:
         cephx:
-          allowedCiphers: [aes256k]
+          # allowedCiphers: [aes256k]
           daemon:
             keyRotationPolicy: KeyGeneration
             keyGeneration: 2
