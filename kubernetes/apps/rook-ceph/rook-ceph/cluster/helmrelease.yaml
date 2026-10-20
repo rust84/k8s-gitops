@@ -103,10 +103,11 @@ spec:
             memory: 8Gi
       security:
         cephx:
-          # allowedCiphers: [aes256k]
+          allowedCiphers:
+            - aes
+            - aes256k
           daemon:
-            keyRotationPolicy: KeyGeneration
-            keyGeneration: 2
+            keyType: aes # use this only as a workaround!
           csi:
             keyRotationPolicy: KeyGeneration
             keyGeneration: 2
