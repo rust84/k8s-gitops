@@ -101,6 +101,27 @@ spec:
         osd:
           limits:
             memory: 8Gi
+      security:
+        cephx:
+          # Only restrict to [aes256k] once `ceph auth dump-keys` shows no AES
+          # keys; restricting early locks client.admin out of the mons.
+          allowedCiphers:
+            - aes
+            - aes256k
+          daemon:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 3
+          csi:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 2
+            # Keeps the old key alive for already-mounted PVCs; drain each
+            # node after rotation, then drop this to 0.
+            keepPriorKeyCountMax: 1
+            keyType: aes256k # Talos 1.14+ backports the kernel 7.0 aes256k support
+          rbdMirrorPeer:
+            keyRotationPolicy: KeyGeneration
+            keyGeneration: 2
+            keyType: aes256k
       storage:
         useAllNodes: true
         useAllDevices: false
