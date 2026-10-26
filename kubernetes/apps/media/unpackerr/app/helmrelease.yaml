@@ -29,7 +29,11 @@ spec:
               tag: v1.0.0@sha256:21c6bfa4f4c86ab2dd0232da0dfb3ed4c5d929e42e09894e7b4d2154d0c144f6
             env:
               TZ: "${TZ}"
-              UN_WEBSERVER_METRICS: true
+              # Unpackerr v1.0.0 starts the HTTP server whenever listen_addr is set
+              # (default 0.0.0.0:5656), which turns on the web UI and HTTP API.
+              # We run headless, so disable the server. This also removes
+              # /metrics, so the ServiceMonitor scrape is dropped below.
+              UN_WEBSERVER_LISTEN_ADDR: ""
               UN_WEBSERVER_LOG_FILE: /logs/webserver.log
               UN_ACTIVITY: true
               UN_SONARR_0_URL: http://sonarr.media.svc.cluster.local:8989
@@ -40,10 +44,12 @@ spec:
               - secretRef:
                   name: unpackerr-secret
             probes:
+              # Nothing listens on 5656 while the web server is off, so the
+              # default tcpSocket probes would fail and CrashLoopBackOff the pod.
               liveness:
-                enabled: true
+                enabled: false
               readiness:
-                enabled: true
+                enabled: false
             securityContext:
               allowPrivilegeEscalation: false
               readOnlyRootFilesystem: true
@@ -63,20 +69,13 @@ spec:
         supplementalGroups: [65542]
         seccompProfile: { type: RuntimeDefault }
     service:
+      # Kept for when the web server is re-enabled; nothing listens on 5656
+      # while UN_WEBSERVER_LISTEN_ADDR is empty.
       app:
         controller: unpackerr
         ports:
           http:
             port: 5656
-    serviceMonitor:
-      app:
-        serviceName: unpackerr
-        endpoints:
-          - port: http
-            scheme: http
-            path: /metrics
-            interval: 1m
-            scrapeTimeout: 10s
     persistence:
       logs:
         type: emptyDir
