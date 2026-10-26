@@ -67,7 +67,7 @@ jobs:
           ai-max-tokens: "16000"
           ai-fallback-base-url: ${{ vars.LITELLM_URL }}
           ai-fallback-api-format: anthropic
-          ai-fallback-model: MiniMax-M2.7
+          ai-fallback-model: MiniMax-M3.1-Flash
           ai-fallback-api-key: ${{ secrets.LITELLM_API_KEY }}
           review-routing-mode: auto
           ai-smart-base-url: ${{ vars.LITELLM_URL }}
