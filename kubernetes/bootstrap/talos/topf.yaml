@@ -2,7 +2,7 @@
 clusterName: kubernetes
 clusterEndpoint: https://10.20.0.149:6443
 # renovate: depName=ghcr.io/siderolabs/kubelet datasource=docker
-kubernetesVersion: v1.36.3
+kubernetesVersion: v1.37.2
 # renovate: depName=ghcr.io/siderolabs/talos datasource=docker
 talosVersion: v1.14.4
 schematicId: "@schematic.yaml"
