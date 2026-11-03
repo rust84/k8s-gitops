@@ -17,6 +17,9 @@ spec:
   values:
     fullnameOverride: promtail
 
+    nodeSelector:
+      migration.mute: "true"
+
     config:
       clients:
         - url: http://loki-headless.observability.svc.cluster.local:3100/loki/api/v1/push
