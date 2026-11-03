@@ -1,0 +1,18 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/toolhive.stacklok.dev/mcpserverentry_v1beta1.json
+apiVersion: toolhive.stacklok.dev/v1beta1
+kind: MCPServerEntry
+metadata:
+  name: grafana
+  namespace: ai
+spec:
+  # mcp-grafana runs as a plain app in observability (see
+  # kubernetes/apps/observability/grafana/mcp); this entry registers it
+  # with the mcp-tools group so VirtualMCPServer/mcp-gateway aggregates it.
+  remoteUrl: http://mcp-grafana.observability.svc.cluster.local:8000/sse
+  transport: sse
+  # Required for *.cluster.local remote URLs; without it admission rejects
+  # in-cluster endpoints.
+  allowPrivateEndpoint: true
+  groupRef:
+    name: mcp-tools

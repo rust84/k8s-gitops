@@ -5,6 +5,7 @@ kind: Kustomization
 resources:
   - ./flux
   - ./github
+  - ./grafana
   - ./homeassistant
   - ./kubesearch
   - ./talos
