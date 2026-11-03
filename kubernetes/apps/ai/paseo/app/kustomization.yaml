@@ -1,0 +1,11 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ai
+resources:
+  - ./pvc.yaml
+  # NOTE: ./externalsecret.yaml is intentionally NOT referenced yet — the 1Password item `paseo`
+  # does not exist (Connect token is read-only), so the Secret/paseo-secret was created directly
+  # in-cluster. Switch the ExternalSecret on once the vault item exists; see its header comment.
+  - ./helmrelease.yaml

@@ -11,5 +11,6 @@ resources:
   - ./memini/ks.yaml
   - ./open-webui/ks.yaml
   - ./paperless-ai/ks.yaml
+  - ./paseo/ks.yaml
   - ./searxng/ks.yaml
   - ./toolhive/ks.yaml
