@@ -56,12 +56,18 @@ spec:
             probes:
               liveness:
                 enabled: true
+                port: 8123
+                spec:
+                  periodSeconds: 10
+                  failureThreshold: 6
               readiness:
                 enabled: true
+                port: 8123
               startup:
                 enabled: true
+                port: 8123
                 spec:
-                  failureThreshold: 30
+                  failureThreshold: 60
                   periodSeconds: 10
             resources:
               requests:
@@ -91,11 +97,25 @@ spec:
                   secretKeyRef:
                     name: home-assistant-secret
                     key: HASS_TOKEN
+            probes:
+              liveness:
+                enabled: true
+                port: 12321
+                spec:
+                  initialDelaySeconds: 30
+                  periodSeconds: 15
+                  failureThreshold: 4
+              startup:
+                enabled: true
+                port: 12321
+                spec:
+                  failureThreshold: 60
+                  periodSeconds: 10
             resources:
               requests:
                 cpu: 10m
               limits:
-                memory: 512Mi
+                memory: 1Gi
     defaultPodOptions:
       securityContext:
         runAsNonRoot: true
@@ -110,6 +130,7 @@ spec:
         ports:
           http:
             port: 8123
+            primary: true
           code-server:
             port: 12321
       sonos:
