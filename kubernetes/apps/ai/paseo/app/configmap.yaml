@@ -33,7 +33,7 @@ data:
           "name": "LiteLLM OpenAI",
           "npm": "@ai-sdk/openai-compatible",
           "options": {
-            "baseURL": "http://litellm.ai/v1",
+            "baseURL": "http://litellm.ai:4000/v1",
             "apiKey": "{env:LITELLM_API_KEY}",
             "timeout": 1800000
           },
@@ -46,7 +46,7 @@ data:
           "name": "LiteLLM Anthropic",
           "npm": "@ai-sdk/anthropic",
           "options": {
-            "baseURL": "http://litellm.ai/v1",
+            "baseURL": "http://litellm.ai:4000/v1",
             "authToken": "{env:LITELLM_API_KEY}",
             "timeout": 1800000
           },
