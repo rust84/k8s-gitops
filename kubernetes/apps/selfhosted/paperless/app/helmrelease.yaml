@@ -96,7 +96,7 @@ spec:
           gotenberg:
             image:
               repository: gotenberg/gotenberg
-              tag: 8.40.0
+              tag: 9.0.0
               pullPolicy: IfNotPresent
             ports:
               - containerPort: 3000
