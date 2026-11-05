@@ -90,7 +90,7 @@ data:
         "servers": {
           "toolhive": {
             "type": "remote",
-            "url": "http://vmcp-mcp-gateway.ai/mcp",
+            "url": "http://vmcp-mcp-gateway.ai:4483/mcp",
             "enabled": true
           },
           "context7": {
