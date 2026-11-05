@@ -1,0 +1,106 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: opencode-config
+data:
+  opencode.json: |
+    {
+      "$schema": "https://opencode.ai/config.json",
+      "enabled_providers": ["litellm", "litellm-anthropic"],
+      "compaction": { "auto": true, "keep": { "tokens": 20000 }, "buffer": 16384 },
+      "tool_output": { "max_lines": 800, "max_bytes": 16384 },
+      "lsp": {
+        "typescript": {
+          "disabled": false,
+          "command": ["typescript-language-server", "--stdio"]
+        }
+      },
+      "model": "litellm-anthropic/MiniMax-M3.1-Flash",
+      "permission": "allow",
+      "plugins": [
+        {
+          "package": "@eleboucher/opencode-memini-v2",
+          "options": {
+            "base_url": "http://memini.ai:8080",
+            "namespace": "opencode"
+          }
+        }
+      ],
+      "enabled_providers": ["litellm-anthropic", "litellm"],
+      "provider": {
+        "litellm": {
+          "name": "LiteLLM OpenAI",
+          "npm": "@ai-sdk/openai-compatible",
+          "options": {
+            "baseURL": "http://litellm.ai/v1",
+            "apiKey": "{env:LITELLM_API_KEY}",
+            "timeout": 1800000
+          },
+          "models": {
+            "qwen3.8-27b": { "name": "Qwen 3.8 27B (local)", "limit": { "context": 262144, "output": 16384 } },
+            "qwen3.8-flash-next": { "name": "Qwen 3.8 Flash Next (local)", "limit": { "context": 344064, "output": 32768 } }
+          }
+        },
+        "litellm-anthropic": {
+          "name": "LiteLLM Anthropic",
+          "npm": "@ai-sdk/anthropic",
+          "options": {
+            "baseURL": "http://litellm.ai/v1",
+            "authToken": "{env:LITELLM_API_KEY}",
+            "timeout": 1800000
+          },
+          "models": {
+            "MiniMax-M3": { "name": "MiniMax M3 (proxy)", "limit": { "context": 1000000, "output": 131072 } },
+            "MiniMax-M3.1-Flash": { "name": "MiniMax M3.1 Flash (proxy)", "limit": { "context": 1000000, "output": 131072 } }
+          }
+        }
+      },
+      "agent": {
+        "coordinator": {
+          "description": "Reasoning coordinator — plans, then delegates to role subagents (explorer/coder/reviewer)",
+          "mode": "primary",
+          "model": "litellm-anthropic/MiniMax-M3.1-Flash",
+          "prompt": "You are a coordinator. Do the high-level reasoning and synthesis yourself; delegate the legwork to role subagents via the task tool.\n\nCONTRACTS: hand each sub a self-contained brief — objective, the decisions already settled (inline the exact values), the files it owns, what's out of scope, and the observable check that proves success. A sub should never have to infer scope or re-derive a decision you already made. Ask for a compact handoff back — findings, file paths, the change that matters — not a full transcript.\n\nROLES (every name below is a real subagent in this config):\n- `explorer` (litellm-anthropic/MiniMax-M3.1-Flash, 1M ctx, flat-rate): default recon, read-only — 'where/how is X', code search, mapping unfamiliar code. The one lane with real concurrency: fan out 3-4 in parallel for read-only work.\n- `coder` (litellm/qwen3.8-flash-next, 262k ctx, vision): the default coding lane. All implementation goes here — small scoped edits, multi-file refactors, long implementation runs. Can run concurrently: fan out for independent edits the way you fan out `explorer` for recon.\n- `reviewer` (litellm-anthropic/MiniMax-M3, 1M ctx, flat-rate, cloud): independent second opinion and prose review. A different model family from the coder — use it for adversarial review, not for 'is this code good' chat.\n\nROUTING:\n- Don't know the codebase or need to find something → `explorer` (fan out).\n- Need code changed → `coder` (fan out for independent edits; serialise when edits touch the same files).\n- Need an independent adversarial check on a change → `reviewer`.\n- Anything you could answer yourself with the context you already have → answer it yourself; do not delegate for the sake of delegating.\n\nQUALITY PASS (before you report done on a substantive change): dispatch a fresh `reviewer` subagent over the diff. Brief it to assume the change is broken and prove it — for every changed execution or ownership boundary, have it trace inherited authority and configuration, process and resource lifetime, normal and abnormal termination paths, and cleanup ownership, and construct a concrete failure scenario before calling anything safe. Hand it the changed files and the goal, not your reasoning; a near-zero-context reviewer is more critical and catches what you talked yourself past. Act on what it flags, then re-verify. Skip only for trivial or read-only work."
+        },
+        "vision-local": {
+          "description": "Local vision lane - Qwen3.8-Flash-Next on Strix (262k, images). Use for screenshots, diagrams, OCR and any image input; coder-local is text-only. Shares the one Strix slot with coder, so an image request queues behind whatever coding turn is running.",
+          "mode": "subagent",
+          "model": "litellm/qwen3.8-flash-next",
+          "prompt": "You read images. Answer only what was asked: transcribe text faithfully, describe layout and structure precisely, and say plainly when something is illegible rather than guessing. Keep it compact - you are feeding a coordinator, not a human reader."
+        },
+        "explorer": {
+          "description": "Default recon — codebase scouting, search, 'where/how is X', read-only. MiniMax M3.1 Flash (1M ctx, flat-rate). The one lane with real concurrency: fan out 3-4 at a time.",
+          "mode": "subagent",
+          "model": "litellm-anthropic/MiniMax-M3.1-Flash"
+        },
+        "coder": {
+          "description": "Default coding lane — qwen3.8-flash-next via litellm (262k ctx, vision). All implementation, edits, and refactors route here. Can run concurrently for independent edits.",
+          "mode": "subagent",
+          "model": "litellm/qwen3.8-flash-next"
+        },
+        "reviewer": {
+          "description": "Independent review — MiniMax-M3 (1M ctx, flat-rate, cloud, concurrent). A different family from the Qwen coders; the default second-opinion and prose lane.",
+          "mode": "subagent",
+          "model": "litellm-anthropic/MiniMax-M3",
+          "prompt": "You are an ADVERSARIAL reviewer. Assume the change is WRONG and that your job is to prove it. The author already believes it works, so agreement adds nothing - only a found defect has value.\n\nDo NOT summarise the change. Do NOT list what is good. Do NOT praise.\n\nFor every changed execution or ownership boundary, trace: inherited authority and configuration; process and resource lifetime; normal AND abnormal termination paths; and cleanup ownership. Construct a concrete failure scenario for each changed boundary BEFORE deciding it is safe - you may not conclude 'this is fine' without having tried to break it.\n\nAlso hunt: boundary and off-by-one conditions; empty, null, missing and malformed input; error paths that swallow or mask failures; ordering, concurrency and partial-failure states; and any place behaviour diverges from what callers or the surrounding code already assume. Read what the code DOES, not what its names and comments claim.\n\nEvery finding needs three things: file and line, the concrete input or state that triggers it, and the wrong result that follows. A finding you cannot make concrete is a guess - label it or drop it. Use the repository and tools; do not speculate where you can check.\n\nIf you genuinely find nothing, reply 'no defect found' and name the two or three boundaries you attacked hardest and the specific reason each holds. That is the only acceptable clean review."
+        }
+      },
+      "mcp": {
+        "servers": {
+          "toolhive": {
+            "type": "remote",
+            "url": "http://vmcp-mcp-gateway.ai/mcp",
+            "enabled": true
+          },
+          "context7": {
+            "type": "remote",
+            "url": "https://mcp.context7.com/mcp",
+            "enabled": true,
+            "headers": {
+              "CONTEXT7_API_KEY": "{env:CONTEXT7_API_KEY}"
+            }
+          }
+        }
+      }
+    }

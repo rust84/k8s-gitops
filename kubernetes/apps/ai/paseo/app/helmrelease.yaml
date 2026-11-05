@@ -37,8 +37,8 @@ spec:
         containers:
           app:
             image:
-              repository: ghcr.io/getpaseo/paseo
-              tag: 0.15.0@sha256:b2ea682ad520518f027bf6e6ed2e1c94f2de4a60b23ef31098a60dd64c09c7f8
+              repository: ghcr.io/joryirving/paseo
+              tag: 0.15.0@sha256:315deb7172996d63c717f5ab6d5db467aa7de95eed16fdd636b5a07792d94031
             env:
               TZ: ${TZ}
               PASEO_LISTEN: 0.0.0.0:6767
@@ -47,11 +47,10 @@ spec:
               PASEO_WEB_UI_ENABLED: "true"
               PASEO_RELAY_ENABLED: "false"
               PASEO_LOG_FILE_LEVEL: info
-              PASEO_PASSWORD:
-                valueFrom:
-                  secretKeyRef:
-                    name: paseo-secret
-                    key: PASEO_PASSWORD
+              GIT_CONFIG_GLOBAL: /etc/paseo/.gitconfig
+            envFrom:
+              - secretRef:
+                  name: paseo-secret
             ports:
               - name: http
                 containerPort: 6767
@@ -115,7 +114,7 @@ spec:
             namespace: network
     persistence:
       data:
-        existingClaim: paseo
+        existingClaim: *app
         advancedMounts:
           paseo:
             app:
@@ -123,6 +122,24 @@ spec:
                 subPath: home
               - path: /workspace
                 subPath: workspace
+      config:
+        type: projected
+        sources:
+          - configMap:
+              name: paseo-config
+              items:
+                - key: paseo.json
+                  path: paseo.json
+          - configMap:
+              name: opencode-config
+              items:
+                - key: opencode.json
+                  path: opencode.json
+        advancedMounts:
+          paseo:
+            app:
+              - path: /etc/paseo
+                readOnly: true
       tmp:
         type: emptyDir
         globalMounts:
