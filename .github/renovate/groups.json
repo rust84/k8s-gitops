@@ -2,6 +2,17 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "packageRules": [
     {
+      "description": "CoreDNS chart and bootstrap Helmfile pin",
+      "groupName": "CoreDNS",
+      "matchDatasources": ["docker", "helm"],
+      "matchPackageNames": [
+        "coredns",
+        "ghcr.io/coredns/charts/coredns"
+      ],
+      "group": { "commitMessageTopic": "{{{groupName}}} group" },
+      "separateMinorPatch": false
+    },
+    {
       "description": "Flux Operator and Instances",
       "groupName": "Flux",
       "matchDatasources": ["docker", "helm"],
