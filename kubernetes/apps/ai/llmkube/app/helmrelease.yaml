@@ -28,6 +28,16 @@ spec:
       replicaCount: 1
       leaderElection:
         enabled: false
+      # The chart grants leases in the leader-election Role when the watch
+      # canary is on (#2069), but only binds that Role when leader election is
+      # on too, so a leader-election-off install hits
+      # "leases.coordination.k8s.io is forbidden" from the canary's informer.
+      # Turning the canary off needs chart >= 0.10.16 (defilantech/LLMKube#2352):
+      # 0.10.11 omitted --watch-canary-interval entirely when set to 0s and the
+      # binary defaulted it back on at 60s. Revisit if upstream binds the
+      # leader-election RoleBinding whenever the canary needs it.
+      watchCanary:
+        interval: "0s"
       resources:
         requests:
           cpu: 10m
