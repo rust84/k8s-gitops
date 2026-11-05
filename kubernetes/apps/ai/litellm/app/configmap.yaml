@@ -188,6 +188,20 @@ data:
           extra_body:
             reasoning_effort: "high"
 
+    router_settings:
+      # MiniMax's own endpoints intermittently answer 503 (overloaded). Each
+      # model group here has exactly one upstream, so one overloaded route
+      # takes the whole group down with it. Chain the two other MiniMax
+      # routes behind it: the Anthropic-format M3.1-Flash first, then the
+      # OpenAI-format M3 endpoint as the last resort (LiteLLM translates it
+      # back to the Anthropic wire format, tools included).
+      # Keep the chain acyclic - LiteLLM does not break fallback cycles.
+      fallbacks:
+        - MiniMax-M3:
+            - MiniMax-M3.1-Flash
+            - MiniMax-M3-chat
+        - MiniMax-M3.1-Flash:
+            - MiniMax-M3-chat
     litellm_settings:
       success_callback: ["prometheus"]
       failure_callback: ["prometheus"]
