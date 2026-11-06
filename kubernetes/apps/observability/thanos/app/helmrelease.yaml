@@ -74,7 +74,7 @@ spec:
       persistence: &persistence
         enabled: true
         storageClass: ceph-block
-        size: 20Gi
+        size: 100Gi
     query:
       replicas: 3
       extraArgs: ["--alert.query-url=http://thanos.${SECRET_DOMAIN}"]
