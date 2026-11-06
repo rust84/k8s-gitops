@@ -114,9 +114,7 @@ spec:
           csi:
             keyRotationPolicy: KeyGeneration
             keyGeneration: 2
-            # Keeps the old key alive for already-mounted PVCs; drain each
-            # node after rotation, then drop this to 0.
-            keepPriorKeyCountMax: 1
+            keepPriorKeyCountMax: 0
             keyType: aes256k # Talos 1.14+ backports the kernel 7.0 aes256k support
           rbdMirrorPeer:
             keyRotationPolicy: KeyGeneration
