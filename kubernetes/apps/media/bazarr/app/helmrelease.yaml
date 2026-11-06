@@ -79,6 +79,13 @@ spec:
               GITSYNC_REF: master
               GITSYNC_PERIOD: 24h
               GITSYNC_ROOT: /subcleaner
+              # git-sync v4.8.0 dropped the blanket safe.directory=* it used to
+              # set itself (upstream kubernetes/git-sync#993), so git now
+              # refuses the repo: the emptyDir is owned by root while this
+              # sidecar runs as uid 568 -> "detected dubious ownership".
+              # Upstream provides --git-config-add / GITSYNC_GIT_CONFIG for
+              # exactly this. Scope it to the one directory rather than "*".
+              GITSYNC_GIT_CONFIG: safe.directory:/subcleaner
             resources:
               requests:
                 cpu: 10m
