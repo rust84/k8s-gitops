@@ -44,6 +44,14 @@ spec:
             namespace: network
     toolbox:
       enabled: true
+    # Pin the Ceph daemon image. The chart default floats with the chart
+    # version, so a chart bump can silently change the running Ceph release.
+    # v20.2.5 (Tentacle), digest-pinned so nodes cannot diverge mid-roll.
+    # Do NOT also set cephClusterSpec.cephVersion.image - the chart rejects
+    # both at once.
+    cephImage:
+      repository: quay.io/ceph/ceph
+      tag: v20.2.5@sha256:4337ac8ac81d40df136e5eac92ca53bb52360a5e039f3d1f7935e729eb5ef42c
     cephClusterSpec:
       cephConfig:
         global:
