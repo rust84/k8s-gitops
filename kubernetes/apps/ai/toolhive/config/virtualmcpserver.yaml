@@ -13,6 +13,16 @@ spec:
       conflictResolution: prefix
       conflictResolutionConfig:
         prefixFormat: "{workload}_"
+    # Backend health checking. The "slow response" threshold that marks a
+    # backend degraded is hardcoded to 5s upstream
+    # (stacklok/toolhive pkg/vmcp/health/monitor.go) and is not configurable.
+    # Health checks on the slower backends (grafana, homeassistant) take
+    # ~5.0-5.2s, so they trip it every cycle. Give the check real headroom so a
+    # slow-but-working backend lands in degraded instead of tripping the hard
+    # timeout and being marked unhealthy.
+    operational:
+      failureHandling:
+        healthCheckTimeout: 15s
     # Optimizer: replace the full backend tool list with find_tool/call_tool and
     # route via hybrid semantic+keyword search.
     optimizer:
