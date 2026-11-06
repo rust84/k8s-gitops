@@ -16,5 +16,11 @@
       "matchPackagePatterns": ["node"],
       "allowedVersions": "<20"
     },
+    {
+      "description": ["qbittorrent 5.3.0 was reverted in #7516; stay on 5.2.4 until it is fixed"],
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["ghcr.io/home-operations/qbittorrent-libtorrentv1"],
+      "allowedVersions": "5.2.4"
+    },
    ]
 }
