@@ -35,5 +35,19 @@ spec:
               value: in-cluster
             - name: PYTHONUNBUFFERED
               value: "1"
+            - name: MCP_ALLOW_UNAUTHENTICATED
+              value: "true"
+            - name: MCP_ALLOWED_HOSTS
+              value: "*"
+            - name: MCP_ALLOWED_ORIGINS
+              value: "*"
+          # The operator's default security profile runs the container as UID 1000,
+          # but this image's WORKDIR (/home/mcp) is mode 700 owned by UID 10001.
+          # pydantic-settings walks the CWD looking for .env and crashes with
+          # PermissionError when the CWD itself is not traversable. Run as the
+          # image's own user instead.
+          securityContext:
+            runAsUser: 10001
+            runAsGroup: 10001
   groupRef:
     name: mcp-tools
