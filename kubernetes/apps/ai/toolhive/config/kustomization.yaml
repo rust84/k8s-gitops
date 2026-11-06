@@ -6,3 +6,13 @@ resources:
   - ./mcpgroup.yaml
   - ./httproute.yaml
   - ./virtualmcpserver.yaml
+configMapGenerator:
+  - name: toolhive-dashboard
+    files:
+      - https://raw.githubusercontent.com/stacklok/toolhive/main/examples/otel/grafana-dashboards/toolhive-mcp-grafana-dashboard-otel-scrape.json
+generatorOptions:
+  disableNameSuffixHash: true
+  annotations:
+    kustomize.toolkit.fluxcd.io/substitute: disabled
+  labels:
+    grafana_dashboard: "true"
