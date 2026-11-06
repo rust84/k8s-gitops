@@ -71,7 +71,7 @@ spec:
         - --retention.resolution-raw=14d
         - --retention.resolution-5m=30d
         - --retention.resolution-1h=60d
-      persistence: &persistence
+      persistence:
         enabled: true
         storageClass: ceph-block
         size: 100Gi
@@ -114,7 +114,10 @@ spec:
                   for: 5m
                   labels:
                     severity: critical
-      persistence: *persistence
+      persistence: &persistence
+        enabled: true
+        storageClass: ceph-block
+        size: 20Gi
     storeGateway:
       replicas: 3
       extraEnv: *extraEnv
