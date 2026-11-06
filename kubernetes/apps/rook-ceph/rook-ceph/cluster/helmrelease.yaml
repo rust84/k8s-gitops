@@ -106,7 +106,6 @@ spec:
           # Only restrict to [aes256k] once `ceph auth dump-keys` shows no AES
           # keys; restricting early locks client.admin out of the mons.
           allowedCiphers:
-            - aes
             - aes256k
           daemon:
             keyRotationPolicy: KeyGeneration
