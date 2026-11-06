@@ -62,7 +62,10 @@ spec:
       app:
         controller: *app
         ports:
-          http:
+          # Named "http-web" so the SRV record _http-web._tcp.alertmanager.observability.svc
+          # resolves. The thanos rule discovers alertmanager through that SRV name and
+          # fails with "no such host" otherwise.
+          http-web:
             port: 9093
 
     route:
