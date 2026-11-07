@@ -6,7 +6,7 @@ metadata:
   name: homeassistant
   namespace: ai
 spec:
-  image: ghcr.io/homeassistant-ai/ha-mcp:9.1.0
+  image: ghcr.io/homeassistant-ai/ha-mcp:9.1.1
   transport: stdio
   proxyMode: streamable-http
   proxyPort: 8080
