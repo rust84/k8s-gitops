@@ -33,7 +33,7 @@ spec:
           app:
             image:
               repository: docker.io/grafana/mcp-grafana
-              tag: 2.2.0
+              tag: 2.3.0
             args:
               - "-t"
               - "sse"
