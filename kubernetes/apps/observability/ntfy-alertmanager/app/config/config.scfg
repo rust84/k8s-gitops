@@ -1,0 +1,54 @@
+# Main configuration for ntfy-alertmanager.
+#
+# The ntfy access token is not in git: it is rendered into a Secret by
+# externalsecret.yaml and pulled in with the "include" directive below.
+# Upstream parses included files first, then this file, so the values here
+# win over anything the included fragment sets.
+include /etc/ntfy-alertmanager-secrets/ntfy.scfg
+
+# Listen on all interfaces: the Service reaches the pod on 8080.
+http-address :8080
+log-level info
+log-format text
+
+# One ntfy message per alert rather than one per Alertmanager group.
+alert-mode single
+
+ntfy {
+    # In-cluster ntfy. The public hostname would also work but hairpins
+    # through the ingress; the Service address is direct and needs no DNS.
+    server http://ntfy.selfhosted.svc.cluster.local:8080
+    topic homelab-alerts
+}
+
+# Map alert severity onto ntfy priority and emoji.
+labels {
+    order "severity"
+
+    severity "critical" {
+        priority 5
+        tags "rotating_light"
+    }
+
+    severity "warning" {
+        priority 4
+        tags "warning"
+    }
+
+    severity "info" {
+        priority 3
+        tags "information_source"
+    }
+}
+
+resolved {
+    update-notification true
+    tags "white_check_mark"
+    priority 2
+}
+
+# Suppress repeat notifications for an alert that is still firing.
+cache {
+    type memory
+    duration 24h
+}

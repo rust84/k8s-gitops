@@ -1,13 +1,20 @@
 receivers:
   - name: "null"
+  - name: "ntfy"
+    webhook_configs:
+      # The ntfy-alertmanager bridge in this namespace. It republishes to the
+      # ntfy topic, mapping severity onto ntfy priority and emoji.
+      - url: "http://ntfy-alertmanager.observability.svc.cluster.local:8080/"
+        send_resolved: true
 
 route:
   group_by: ["alertname", "job"]
   group_wait: 30s
   group_interval: 5m
   repeat_interval: 6h
-  receiver: "null"
+  receiver: "ntfy"
   routes:
+    # Watchdog and InfoInhibitor always fire; they would only be noise.
     - receiver: "null"
       matchers:
         - alertname =~ "InfoInhibitor|Watchdog"

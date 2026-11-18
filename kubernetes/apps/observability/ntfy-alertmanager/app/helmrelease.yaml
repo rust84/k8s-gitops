@@ -1,0 +1,96 @@
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/bjw-s/helm-charts/main/charts/other/app-template/schemas/helmrelease-helm-v2.schema.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: &app ntfy-alertmanager
+spec:
+  interval: 1h
+  chartRef:
+    kind: OCIRepository
+    name: app-template
+    namespace: flux-system
+  install:
+    remediation:
+      retries: -1
+  upgrade:
+    cleanupOnFail: true
+    remediation:
+      retries: 3
+  values:
+    defaultPodOptions:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+        seccompProfile: { type: RuntimeDefault }
+    controllers:
+      ntfy-alertmanager:
+        annotations:
+          reloader.stakater.com/auto: "true"
+        strategy: Recreate
+        containers:
+          app:
+            image:
+              repository: docker.io/xenrox/ntfy-alertmanager
+              tag: 1.0.2@sha256:475216a9b04c68a24631a0cd7bfcddac3e6468fdd5e4b88c5172379c6fbfd055
+            args: ["--config", "/etc/ntfy-alertmanager/config.scfg"]
+            ports:
+              - name: http
+                containerPort: 8080
+            probes:
+              liveness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8080
+                  initialDelaySeconds: 5
+                  periodSeconds: 30
+                  failureThreshold: 3
+              readiness:
+                enabled: true
+                custom: true
+                spec:
+                  httpGet:
+                    path: /health
+                    port: 8080
+                  initialDelaySeconds: 5
+                  periodSeconds: 10
+                  failureThreshold: 3
+            securityContext:
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              capabilities:
+                drop: [ALL]
+            resources:
+              requests:
+                cpu: 10m
+                memory: 32Mi
+              limits:
+                memory: 128Mi
+    service:
+      app:
+        controller: ntfy-alertmanager
+        ports:
+          http:
+            port: 8080
+    persistence:
+      config:
+        type: configMap
+        name: ntfy-alertmanager-config
+        globalMounts:
+          - path: /etc/ntfy-alertmanager/config.scfg
+            subPath: config.scfg
+            readOnly: true
+      secrets:
+        type: secret
+        name: ntfy-alertmanager-secret
+        globalMounts:
+          - path: /etc/ntfy-alertmanager-secrets/ntfy.scfg
+            subPath: ntfy.scfg
+            readOnly: true
