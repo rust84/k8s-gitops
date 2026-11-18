@@ -39,7 +39,10 @@ data:
           },
           "models": {
             "qwen3.8-27b": { "name": "Qwen 3.8 27B (local)", "limit": { "context": 262144, "output": 16384 } },
-            "qwen3.8-flash-next": { "name": "Qwen 3.8 Flash Next (local)", "limit": { "context": 344064, "output": 32768 } }
+            "qwen3.8-flash-next": { "name": "Qwen 3.8 Flash Next (local)", "limit": { "context": 344064, "output": 32768 } },
+            "glm-5.3": { "name": "GLM 5.3 (z.ai)", "limit": { "context": 1000000, "output": 131072 } },
+            "glm-5.3-flash": { "name": "GLM 5.3 Flash (z.ai)", "limit": { "context": 1000000, "output": 131072 } },
+            "dsv4.1f": { "name": "DeepSeek V4.1 Flash (neuralwatt)", "limit": { "context": 1000000, "output": 393216 } }
           }
         },
         "litellm-anthropic": {
