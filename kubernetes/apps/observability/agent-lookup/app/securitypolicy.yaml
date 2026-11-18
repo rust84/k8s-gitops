@@ -1,0 +1,47 @@
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/gateway.envoyproxy.io/securitypolicy_v1alpha1.json
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: agent-lookup
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: agent-lookup
+  # Shared-secret token presented in the x-agent-token header.
+  # Secret contents: key = client id, value = token.
+  apiKeyAuth:
+    credentialRefs:
+      - name: agent-observability-token
+    extractFrom:
+      - headers:
+          - x-agent-token
+    sanitize: true
+  # Read-only, OpenClaw-box-only access.
+  authorization:
+    defaultAction: Deny
+    rules:
+      - name: alertmanager-read
+        action: Allow
+        operation:
+          methods:
+            - GET
+          path:
+            type: PathPrefix
+            value: /api/v2/
+        principal:
+          clientCIDRs:
+            - 192.168.1.191/32
+      - name: prometheus-query
+        action: Allow
+        operation:
+          methods:
+            - GET
+            - POST
+          path:
+            type: PathPrefix
+            value: /api/v1/query
+        principal:
+          clientCIDRs:
+            - 192.168.1.191/32
