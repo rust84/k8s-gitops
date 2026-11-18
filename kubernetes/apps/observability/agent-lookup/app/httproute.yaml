@@ -20,10 +20,15 @@ spec:
         - name: alertmanager
           port: 9093
     # Prometheus query API only (query + query_range).
+    # PathPrefix matches on path-element boundaries, so /api/v1/query does
+    # NOT cover /api/v1/query_range - both need their own match.
     - matches:
         - path:
             type: PathPrefix
             value: /api/v1/query
+        - path:
+            type: PathPrefix
+            value: /api/v1/query_range
       backendRefs:
         - name: prometheus-prometheus
           port: 9090

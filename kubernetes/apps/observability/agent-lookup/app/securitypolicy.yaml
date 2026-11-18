@@ -45,3 +45,17 @@ spec:
         principal:
           clientCIDRs:
             - 192.168.1.191/32
+      # PathPrefix matches on path-element boundaries, so /api/v1/query does
+      # NOT cover /api/v1/query_range - it needs its own rule.
+      - name: prometheus-query-range
+        action: Allow
+        operation:
+          methods:
+            - GET
+            - POST
+          path:
+            type: PathPrefix
+            value: /api/v1/query_range
+        principal:
+          clientCIDRs:
+            - 192.168.1.191/32
