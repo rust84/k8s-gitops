@@ -17,3 +17,12 @@ spec:
       ports:
         - protocol: TCP
           port: 6379
+    # PodMonitor admin endpoint (--admin_port=9999, serves /metrics).
+    # Unauthenticated, so scope it to Prometheus's namespace only.
+    - from:
+        - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: observability
+      ports:
+        - protocol: TCP
+          port: 9999
