@@ -1,0 +1,23 @@
+{{- /*
+  Notification body for ntfy-alertmanager.
+
+  Rendered with the Alertmanager webhook payload (Go text/template):
+    .Status .Alerts[] .GroupLabels .CommonLabels .CommonAnnotations
+    .ExternalURL .GroupKey
+  Each alert has .Labels .Annotations .GeneratorURL .Fingerprint .Status.
+
+  The upstream default body dumps every label and every annotation, which is
+  noisy on a phone. This keeps what matters: what fired, how bad, where, the
+  summary, and a link back to Prometheus.
+*/ -}}
+{{- range .Alerts }}
+**{{ .Labels.alertname }}**{{ if .Labels.severity }} · _{{ .Labels.severity }}_{{ end }}{{ if .Labels.namespace }} · `{{ .Labels.namespace }}`{{ end }}{{ with index .Labels "instance" }} · `{{ . }}`{{ end }}
+{{- with .Annotations.summary }}
+{{ . }}
+{{- else }}{{ with .Annotations.description }}
+{{ . }}
+{{- end }}{{ end }}
+{{- with .GeneratorURL }}
+[Prometheus]({{ . }})
+{{- end }}
+{{ end -}}

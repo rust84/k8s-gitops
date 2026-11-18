@@ -9,6 +9,7 @@ configMapGenerator:
   - name: ntfy-alertmanager-config
     files:
       - ./config/config.scfg
+      - ./config/notification.tmpl
 generatorOptions:
   disableNameSuffixHash: true
 configurations:

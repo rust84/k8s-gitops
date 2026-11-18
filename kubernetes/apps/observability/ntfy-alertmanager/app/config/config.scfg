@@ -11,14 +11,27 @@ http-address :8080
 log-level info
 log-format text
 
-# One ntfy message per alert rather than one per Alertmanager group.
-alert-mode single
+# One ntfy message per Alertmanager group rather than one per alert.
+# This is required by the template: upstream renders the whole payload into
+# every notification, so "single" mode would repeat the entire group in each
+# per-alert message. With "multi" a group of N alerts becomes one message
+# with N blocks.
+alert-mode multi
 
 ntfy {
     # In-cluster ntfy. The public hostname would also work but hairpins
     # through the ingress; the Service address is direct and needs no DNS.
     server http://ntfy.selfhosted.svc.cluster.local:8080
     topic homelab-alerts
+
+    # Render the body as Markdown so the ntfy client shows bold names and
+    # inline code instead of a plain wall of text.
+    markdown true
+
+    # Body template. The upstream default dumps every label and every
+    # annotation, which is unreadable on a phone; this one keeps the alert
+    # name, severity, namespace, summary and a link to Prometheus.
+    template-path "/etc/ntfy-alertmanager/notification.tmpl"
 }
 
 # Map alert severity onto ntfy priority and emoji.

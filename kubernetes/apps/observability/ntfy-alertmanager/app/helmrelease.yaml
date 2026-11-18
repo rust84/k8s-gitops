@@ -87,6 +87,9 @@ spec:
           - path: /etc/ntfy-alertmanager/config.scfg
             subPath: config.scfg
             readOnly: true
+          - path: /etc/ntfy-alertmanager/notification.tmpl
+            subPath: notification.tmpl
+            readOnly: true
       secrets:
         type: secret
         name: ntfy-alertmanager-secret
