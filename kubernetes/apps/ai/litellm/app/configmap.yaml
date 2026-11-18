@@ -106,22 +106,28 @@ data:
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
 
-      # DeepSeek V4 Flash via neuralwatt
-      - model_name: dsv4-flash
+      # DeepSeek V4.1 Flash via neuralwatt
+      - model_name: dsv4.1f
         model_info:
-          input_cost_per_token: 0.0000001400
-          cache_creation_input_token_cost: 0.0000001400
-          cache_read_input_token_cost: 0.0000000280
-          output_cost_per_token: 0.0000002800
+          input_cost_per_token: 0.0000001500
+          cache_creation_input_token_cost: 0.0000000000
+          cache_read_input_token_cost: 0.0000000150
+          output_cost_per_token: 0.0000006000
           mode: chat
           max_input_tokens: 1000000
-          max_output_tokens: 16384
+          max_output_tokens: 393216
           supports_function_calling: true
           supports_prompt_caching: true
+          supports_vision: true
         litellm_params:
-          model: openai/dsv4-flash
+          model: openai/deepseek-v4.1-flash
           api_base: https://api.neuralwatt.com/v1
           api_key: os.environ/NEURALWATT_API_KEY
+          order: 2
+          max_budget: 1.0
+          budget_duration: 1d
+          allowed_openai_params:
+          - reasoning_effort
 
       # OpenAI-compatible M3 clients
       - model_name: MiniMax-M3-chat
