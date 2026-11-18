@@ -1,156 +1,135 @@
-# TEMPORARY probe: determines whether 1Password item "ntfy" exists and which field
-# holds the ntfy credential. Delete this file once the real ExternalSecret is wired.
+# TEMPORARY probe 1: does 1Password item "ntfy" exist? A bogus property on an
+# existing item fails with a field error; a missing item fails with the title.
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: probe-exists-ntfy
+  name: probe-item-01-ntfy
 spec:
   refreshInterval: 1h
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword
   target:
-    name: probe-exists-ntfy
+    name: probe-item-01-ntfy
     creationPolicy: Owner
   data:
     - secretKey: probe
       remoteRef:
         key: ntfy
-        property: __probe__
+        property: __no_such_field__
 ---
-# TEMPORARY probe: determines whether 1Password item "ntfy-agent" exists and which field
-# holds the ntfy credential. Delete this file once the real ExternalSecret is wired.
+# TEMPORARY probe 2: does 1Password item "ntfy-agent" exist? A bogus property on an
+# existing item fails with a field error; a missing item fails with the title.
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: probe-exists-ntfy-agent
+  name: probe-item-02-ntfy-agent
 spec:
   refreshInterval: 1h
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword
   target:
-    name: probe-exists-ntfy-agent
+    name: probe-item-02-ntfy-agent
     creationPolicy: Owner
   data:
     - secretKey: probe
       remoteRef:
         key: ntfy-agent
-        property: __probe__
+        property: __no_such_field__
 ---
-# TEMPORARY probe: determines whether 1Password item "agent" exists and which field
-# holds the ntfy credential. Delete this file once the real ExternalSecret is wired.
+# TEMPORARY probe 3: does 1Password item "agent" exist? A bogus property on an
+# existing item fails with a field error; a missing item fails with the title.
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: probe-exists-agent
+  name: probe-item-03-agent
 spec:
   refreshInterval: 1h
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword
   target:
-    name: probe-exists-agent
+    name: probe-item-03-agent
     creationPolicy: Owner
   data:
     - secretKey: probe
       remoteRef:
         key: agent
-        property: __probe__
+        property: __no_such_field__
 ---
-# TEMPORARY probe: determines whether 1Password item "ntfy-alertmanager" exists and which field
-# holds the ntfy credential. Delete this file once the real ExternalSecret is wired.
+# TEMPORARY probe 4: does 1Password item "ntfy-alertmanager" exist? A bogus property on an
+# existing item fails with a field error; a missing item fails with the title.
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: probe-exists-ntfy-alertmanager
+  name: probe-item-04-ntfy-alertmanager
 spec:
   refreshInterval: 1h
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword
   target:
-    name: probe-exists-ntfy-alertmanager
+    name: probe-item-04-ntfy-alertmanager
     creationPolicy: Owner
   data:
     - secretKey: probe
       remoteRef:
         key: ntfy-alertmanager
-        property: __probe__
+        property: __no_such_field__
 ---
-# TEMPORARY probe: determines whether 1Password item "ntfy" exists and which field
-# holds the ntfy credential. Delete this file once the real ExternalSecret is wired.
+# TEMPORARY probe 5: does 1Password item "ntfy-server" exist? A bogus property on an
+# existing item fails with a field error; a missing item fails with the title.
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: probe-field-ntfy-ntfy-token
+  name: probe-item-05-ntfy-server
 spec:
   refreshInterval: 1h
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword
   target:
-    name: probe-field-ntfy-ntfy-token
+    name: probe-item-05-ntfy-server
     creationPolicy: Owner
   data:
     - secretKey: probe
       remoteRef:
-        key: ntfy
-        property: NTFY_TOKEN
+        key: ntfy-server
+        property: __no_such_field__
 ---
-# TEMPORARY probe: determines whether 1Password item "ntfy" exists and which field
-# holds the ntfy credential. Delete this file once the real ExternalSecret is wired.
+# TEMPORARY probe 6: does 1Password item "ntfy-tokens" exist? A bogus property on an
+# existing item fails with a field error; a missing item fails with the title.
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: probe-field-ntfy-token
+  name: probe-item-06-ntfy-tokens
 spec:
   refreshInterval: 1h
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword
   target:
-    name: probe-field-ntfy-token
+    name: probe-item-06-ntfy-tokens
     creationPolicy: Owner
   data:
     - secretKey: probe
       remoteRef:
-        key: ntfy
-        property: TOKEN
+        key: ntfy-tokens
+        property: __no_such_field__
 ---
-# TEMPORARY probe: determines whether 1Password item "ntfy" exists and which field
-# holds the ntfy credential. Delete this file once the real ExternalSecret is wired.
+# TEMPORARY probe 7: does item "ntfy" have a field labelled "NTFY_ACCESS_TOKEN"?
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: probe-field-ntfy-access-token
+  name: probe-field-07-ntfy-access-token
 spec:
   refreshInterval: 1h
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword
   target:
-    name: probe-field-ntfy-access-token
-    creationPolicy: Owner
-  data:
-    - secretKey: probe
-      remoteRef:
-        key: ntfy
-        property: ACCESS_TOKEN
----
-# TEMPORARY probe: determines whether 1Password item "ntfy" exists and which field
-# holds the ntfy credential. Delete this file once the real ExternalSecret is wired.
-apiVersion: external-secrets.io/v1
-kind: ExternalSecret
-metadata:
-  name: probe-field-ntfy-ntfy-access-token
-spec:
-  refreshInterval: 1h
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: onepassword
-  target:
-    name: probe-field-ntfy-ntfy-access-token
+    name: probe-field-07-ntfy-access-token
     creationPolicy: Owner
   data:
     - secretKey: probe
@@ -158,19 +137,75 @@ spec:
         key: ntfy
         property: NTFY_ACCESS_TOKEN
 ---
-# TEMPORARY probe: determines whether 1Password item "ntfy" exists and which field
-# holds the ntfy credential. Delete this file once the real ExternalSecret is wired.
+# TEMPORARY probe 8: does item "ntfy" have a field labelled "ACCESS_TOKEN"?
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: probe-field-ntfy-ntfy-token
+  name: probe-field-08-access-token
 spec:
   refreshInterval: 1h
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword
   target:
-    name: probe-field-ntfy-ntfy-token
+    name: probe-field-08-access-token
+    creationPolicy: Owner
+  data:
+    - secretKey: probe
+      remoteRef:
+        key: ntfy
+        property: ACCESS_TOKEN
+---
+# TEMPORARY probe 9: does item "ntfy" have a field labelled "NTFY_TOKEN"?
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: probe-field-09-ntfy-token
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword
+  target:
+    name: probe-field-09-ntfy-token
+    creationPolicy: Owner
+  data:
+    - secretKey: probe
+      remoteRef:
+        key: ntfy
+        property: NTFY_TOKEN
+---
+# TEMPORARY probe 10: does item "ntfy" have a field labelled "TOKEN"?
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: probe-field-10-token
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword
+  target:
+    name: probe-field-10-token
+    creationPolicy: Owner
+  data:
+    - secretKey: probe
+      remoteRef:
+        key: ntfy
+        property: TOKEN
+---
+# TEMPORARY probe 11: does item "ntfy" have a field labelled "ntfy_token"?
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: probe-field-11-ntfy-token
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword
+  target:
+    name: probe-field-11-ntfy-token
     creationPolicy: Owner
   data:
     - secretKey: probe
@@ -178,19 +213,18 @@ spec:
         key: ntfy
         property: ntfy_token
 ---
-# TEMPORARY probe: determines whether 1Password item "ntfy" exists and which field
-# holds the ntfy credential. Delete this file once the real ExternalSecret is wired.
+# TEMPORARY probe 12: does item "ntfy" have a field labelled "token"?
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: probe-field-ntfy-token
+  name: probe-field-12-token
 spec:
   refreshInterval: 1h
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword
   target:
-    name: probe-field-ntfy-token
+    name: probe-field-12-token
     creationPolicy: Owner
   data:
     - secretKey: probe
@@ -198,19 +232,18 @@ spec:
         key: ntfy
         property: token
 ---
-# TEMPORARY probe: determines whether 1Password item "ntfy" exists and which field
-# holds the ntfy credential. Delete this file once the real ExternalSecret is wired.
+# TEMPORARY probe 13: does item "ntfy" have a field labelled "access_token"?
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: probe-field-ntfy-access-token
+  name: probe-field-13-access-token
 spec:
   refreshInterval: 1h
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword
   target:
-    name: probe-field-ntfy-access-token
+    name: probe-field-13-access-token
     creationPolicy: Owner
   data:
     - secretKey: probe
@@ -218,19 +251,75 @@ spec:
         key: ntfy
         property: access_token
 ---
-# TEMPORARY probe: determines whether 1Password item "ntfy" exists and which field
-# holds the ntfy credential. Delete this file once the real ExternalSecret is wired.
+# TEMPORARY probe 14: does item "ntfy" have a field labelled "api_key"?
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: probe-field-ntfy-password
+  name: probe-field-14-api-key
 spec:
   refreshInterval: 1h
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword
   target:
-    name: probe-field-ntfy-password
+    name: probe-field-14-api-key
+    creationPolicy: Owner
+  data:
+    - secretKey: probe
+      remoteRef:
+        key: ntfy
+        property: api_key
+---
+# TEMPORARY probe 15: does item "ntfy" have a field labelled "API_KEY"?
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: probe-field-15-api-key
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword
+  target:
+    name: probe-field-15-api-key
+    creationPolicy: Owner
+  data:
+    - secretKey: probe
+      remoteRef:
+        key: ntfy
+        property: API_KEY
+---
+# TEMPORARY probe 16: does item "ntfy" have a field labelled "NTFY_PASSWORD"?
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: probe-field-16-ntfy-password
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword
+  target:
+    name: probe-field-16-ntfy-password
+    creationPolicy: Owner
+  data:
+    - secretKey: probe
+      remoteRef:
+        key: ntfy
+        property: NTFY_PASSWORD
+---
+# TEMPORARY probe 17: does item "ntfy" have a field labelled "password"?
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: probe-field-17-password
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword
+  target:
+    name: probe-field-17-password
     creationPolicy: Owner
   data:
     - secretKey: probe
@@ -238,19 +327,18 @@ spec:
         key: ntfy
         property: password
 ---
-# TEMPORARY probe: determines whether 1Password item "ntfy" exists and which field
-# holds the ntfy credential. Delete this file once the real ExternalSecret is wired.
+# TEMPORARY probe 18: does item "ntfy" have a field labelled "PASS"?
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: probe-field-ntfy-pass
+  name: probe-field-18-pass
 spec:
   refreshInterval: 1h
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword
   target:
-    name: probe-field-ntfy-pass
+    name: probe-field-18-pass
     creationPolicy: Owner
   data:
     - secretKey: probe
@@ -258,42 +346,21 @@ spec:
         key: ntfy
         property: PASS
 ---
-# TEMPORARY probe: determines whether 1Password item "ntfy" exists and which field
-# holds the ntfy credential. Delete this file once the real ExternalSecret is wired.
+# TEMPORARY probe 19: does item "ntfy" have a field labelled "ntfy_password"?
 apiVersion: external-secrets.io/v1
 kind: ExternalSecret
 metadata:
-  name: probe-field-ntfy-ntfy-password
+  name: probe-field-19-ntfy-password
 spec:
   refreshInterval: 1h
   secretStoreRef:
     kind: ClusterSecretStore
     name: onepassword
   target:
-    name: probe-field-ntfy-ntfy-password
+    name: probe-field-19-ntfy-password
     creationPolicy: Owner
   data:
     - secretKey: probe
       remoteRef:
         key: ntfy
         property: ntfy_password
----
-# TEMPORARY probe: determines whether 1Password item "ntfy" exists and which field
-# holds the ntfy credential. Delete this file once the real ExternalSecret is wired.
-apiVersion: external-secrets.io/v1
-kind: ExternalSecret
-metadata:
-  name: probe-field-ntfy-ntfy-pass
-spec:
-  refreshInterval: 1h
-  secretStoreRef:
-    kind: ClusterSecretStore
-    name: onepassword
-  target:
-    name: probe-field-ntfy-ntfy-pass
-    creationPolicy: Owner
-  data:
-    - secretKey: probe
-      remoteRef:
-        key: ntfy
-        property: ntfy_pass
