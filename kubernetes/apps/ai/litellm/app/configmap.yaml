@@ -188,6 +188,46 @@ data:
           extra_body:
             reasoning_effort: "high"
 
+      # z.ai GLM coding models
+      - model_name: glm-5.3
+        model_info:
+          mode: chat
+          input_cost_per_token: 0.0000014000
+          cache_creation_input_token_cost: 0.0000014000
+          cache_read_input_token_cost: 0.0000002600
+          output_cost_per_token: 0.0000044000
+          max_input_tokens: 1000000
+          max_output_tokens: 131072
+          supports_function_calling: true
+          supports_prompt_caching: true
+        litellm_params:
+          model: openai/glm-5.3
+          api_base: https://api.z.ai/api/coding/paas/v4
+          api_key: os.environ/ZAI_API_KEY
+          order: 1
+          allowed_openai_params:
+          - reasoning_effort
+
+      - model_name: glm-5.3-flash
+        model_info:
+          mode: chat
+          input_cost_per_token: 0.0000001500
+          cache_creation_input_token_cost: 0.0000001500
+          cache_read_input_token_cost: 0.0000000300
+          output_cost_per_token: 0.0000005000
+          max_input_tokens: 1000000
+          max_output_tokens: 131072
+          supports_function_calling: true
+          supports_prompt_caching: true
+          supports_vision: true
+        litellm_params:
+          model: openai/glm-5.3-flash
+          api_base: https://api.z.ai/api/coding/paas/v4
+          api_key: os.environ/ZAI_API_KEY
+          order: 2
+          allowed_openai_params:
+          - reasoning_effort
+
     router_settings:
       # MiniMax's own endpoints intermittently answer 503 (overloaded). Each
       # model group here has exactly one upstream, so one overloaded route
@@ -222,5 +262,6 @@ data:
       - MINIMAX_API_KEY
       - OPENAI_API_KEY
       - OPENCODE_API_KEY
+      - ZAI_API_KEY
       # - REDIS_HOST
       # - REDIS_PORT
