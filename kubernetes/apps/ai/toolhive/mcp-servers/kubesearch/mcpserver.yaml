@@ -6,7 +6,7 @@ metadata:
   name: kubesearch
   namespace: ai
 spec:
-  image: ghcr.io/rust84/kubesearch-mcp-server:latest@sha256:d3550eee6dd43a67394716106c05984c47c6aeac1ff7b6841380a8af2b314547
+  image: ghcr.io/rust84/kubesearch-mcp-server:latest@sha256:08f1e846dd3894f90745914cb69c36880c9a981f6bb22a3879d51d41c3bc9f86
   # MCP server speaks stdio natively; Toolhive proxies to streamable-http.
   transport: stdio
   proxyMode: streamable-http
