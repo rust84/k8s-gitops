@@ -72,20 +72,14 @@ data:
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
 
-      - model_name: dsv4-flash-0731
+      - model_name: embed
         model_info:
-          input_cost_per_token: 0.0000001400
-          cache_creation_input_token_cost: 0.0000001400
-          cache_read_input_token_cost: 0.0000000280
-          output_cost_per_token: 0.0000002800
-          mode: chat
-          max_input_tokens: 262144
-          max_output_tokens: 16384
-          supports_function_calling: true
-          supports_vision: false
+          mode: embedding
+          input_cost_per_token: 0.0000000100
+          output_cost_per_token: 0.0000000000
         litellm_params:
-          model: openai/dsv4-flash-0731
-          api_base: http://local-ai.russhome.xyz:8080/v1
+          model: openai/qwen3-embedding
+          api_base: http://qwen3-embedding-0-6b.ai.svc.cluster.local:8080/v1
           api_key: "dummy"
 
       # DeepSeek V4.1 Flash via neuralwatt
