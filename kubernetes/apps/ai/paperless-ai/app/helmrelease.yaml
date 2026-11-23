@@ -35,7 +35,7 @@ spec:
           app:
             image:
               repository: ghcr.io/clusterzx/paperless-ai
-              tag: 3.0.9@sha256:2b65888163fd59716f1c8285b31c5bd0b30c9c3c192c42b516688e3887d4ba60
+              tag: v4.5.1@sha256:d7b827ebfa125d50026714626a1841433452fdffe728abfc1e5ddb6b2abe1eb3
             env:
               TZ: ${TZ}
               PAPERLESS_API_URL: http://paperless.selfhosted.svc.cluster.local:8000/api
