@@ -43,6 +43,7 @@ spec:
               tag: 3.5.1
             env:
               COMPOSE_PROJECT_NAME: paperless
+              PAPERLESS_ALLOWED_HOSTS: "paperless.selfhosted.svc.cluster.local" # paperless-ai
               PAPERLESS_PORT: &port 8000
               PAPERLESS_CONSUMER_POLLING: "60"
               PAPERLESS_CONSUMER_RECURSIVE: "true"
