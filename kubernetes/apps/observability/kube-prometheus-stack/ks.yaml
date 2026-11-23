@@ -23,4 +23,4 @@ spec:
   postBuild:
     substitute:
       # renovate: datasource=docker depName=quay.io/thanos/thanos
-      THANOS_VERSION: v0.37.2
+      THANOS_VERSION: v0.42.5
