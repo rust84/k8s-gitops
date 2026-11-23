@@ -8,7 +8,7 @@
     },
     {
       "matchDatasources": ["docker"],
-      "matchPackagePatterns": ["postgresql"],
+      "matchPackagePatterns": ["postgresql", "postgres-init"],
       "allowedVersions": "<17"
     },
     {
