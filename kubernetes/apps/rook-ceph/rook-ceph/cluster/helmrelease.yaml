@@ -51,7 +51,7 @@ spec:
     # both at once.
     cephImage:
       repository: quay.io/ceph/ceph
-      tag: v20.2.5@sha256:4337ac8ac81d40df136e5eac92ca53bb52360a5e039f3d1f7935e729eb5ef42c
+      tag: v21.2.0@sha256:c9e6ed4ac3fcf67b28f38358bb9619dee4d1dfb96ddd4b9b583eee316a15f04d
     cephClusterSpec:
       cephConfig:
         global:
