@@ -39,6 +39,7 @@ spec:
             env:
               TZ: ${TZ}
               PAPERLESS_API_URL: http://paperless.selfhosted.svc.cluster.local:8000/api
+              PAPERLESS_PUBLIC_URL: "https://paperless.${SECRET_DOMAIN}"
               PROCESS_PREDEFINED_DOCUMENTS: "yes"
               USE_EXISTING_DATA: "yes"
               RESTRICT_TO_EXISTING_TAGS: "yes"
