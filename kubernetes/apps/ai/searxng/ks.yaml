@@ -20,6 +20,7 @@ spec:
     substituteFrom:
       - name: searxng
         kind: Secret
+        optional: true
   prune: true
   sourceRef:
     kind: GitRepository
