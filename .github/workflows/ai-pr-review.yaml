@@ -22,7 +22,7 @@ permissions:
 jobs:
   review-pr:
     name: AI PR Review
-    if: ${{ (github.event_name == 'pull_request' && !github.event.pull_request.draft) || github.event_name == 'workflow_dispatch' }}
+    if: ${{ (github.event_name == 'pull_request' && github.event.pull_request.head.repo.id == github.repository_id && !github.event.pull_request.draft) || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     timeout-minutes: 35
 
@@ -34,8 +34,12 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ inputs.pr_number }}
         run: |
-          sha="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.head.sha')"
-          echo "head_sha=$sha" >> "$GITHUB_OUTPUT"
+          set -euo pipefail
+          # Only numeric PR IDs reach the API; no PR-authored text reaches the shell.
+          [[ "$PR_NUMBER" =~ ^[1-9][0-9]*$ ]] || { echo "::error::Invalid PR number"; exit 1; }
+          head_sha="$(gh api "repos/${GITHUB_REPOSITORY}/pulls/${PR_NUMBER}" --jq '.head.sha // empty')"
+          [[ "$head_sha" =~ ^[[:xdigit:]]{40}$ ]] || { echo "::error::Invalid PR head SHA"; exit 1; }
+          echo "head_sha=$head_sha" >> "$GITHUB_OUTPUT"
 
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -53,17 +57,24 @@ jobs:
       - name: Analyze PR with reusable AI reviewer
         id: analyze
         uses: misospace/pr-reviewer-action@3d354d4ccf6ccdeaf1ad7a9547775426f25a0216 # v3.10.0
+        env:
+          # Pin the stale-review gate to the resolved head SHA.
+          PR_REVIEWER_GATE_HEAD_SHA: ${{ github.event.pull_request.head.sha || steps.prctx.outputs.head_sha }}
         with:
           github-token: ${{ steps.app-token.outputs.token }}
           pr-number: ${{ github.event.pull_request.number || inputs.pr_number }}
           force-review: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}
-          ai-primary-retries: "3"
-          ai-primary-retry-delay-sec: "15"
+          # Per-run session id for LiteLLM request correlation.
+          ai-extra-headers: |
+            x-litellm-session-id: prreview-${{ github.run_id }}-${{ github.run_attempt }}
           ai-base-url: ${{ vars.LITELLM_URL }}
           ai-api-format: openai
           ai-model: qwen3.8-flash-next
           ai-api-key: ${{ secrets.LITELLM_API_KEY }}
-          ai-response-format: json_object
+          # qwen3.8-flash-next rejects response_format; schema enforcement
+          # returns per-profile upstream. Avoids non-streamed calls that
+          # Cloudflare kills with 524 before ai-request-timeout can apply.
+          ai-response-format: off
           ai-max-tokens: "16000"
           ai-fallback-base-url: ${{ vars.LITELLM_URL }}
           ai-fallback-api-format: openai

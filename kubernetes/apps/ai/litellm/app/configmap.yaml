@@ -223,11 +223,32 @@ data:
           model: openai/glm-5.3-flash
           api_base: https://api.z.ai/api/coding/paas/v4
           api_key: os.environ/ZAI_API_KEY
-          order: 2
+          order: 1
           allowed_openai_params:
           - reasoning_effort
 
+      # rung 2 of the glm-5.3-flash group (see rung 1 above). One-way
+      # fallback chain: qwen (action primary) -> glm (action fallback) ->
+      # DSV4.1F here. Never add a return rung behind qwen3.8-flash-next.
+      - model_name: glm-5.3-flash
+        litellm_params:
+          model: openai/deepseek-v4.1-flash
+          api_base: https://api.neuralwatt.com/v1
+          api_key: os.environ/NEURALWATT_API_KEY
+          order: 2
+          allowed_openai_params:
+          - reasoning_effort
+          max_budget: 1.0
+          budget_duration: 1d
+
     router_settings:
+      # Pin a session to its first deployment. session_id comes from the
+      # x-litellm-session-id header (set by the AI PR review workflow), so a
+      # multi-turn review keeps hitting the same upstream rung and its
+      # provider-side prompt cache instead of flapping between deployments.
+      optional_pre_call_checks:
+        - session_affinity
+      session_affinity_ttl_seconds: 3600
       # MiniMax's own endpoints intermittently answer 503 (overloaded). Each
       # model group here has exactly one upstream, so one overloaded route
       # takes the whole group down with it. Chain the two other MiniMax
