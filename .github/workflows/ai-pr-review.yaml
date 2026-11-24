@@ -75,6 +75,12 @@ jobs:
           # returns per-profile upstream. Avoids non-streamed calls that
           # Cloudflare kills with 524 before ai-request-timeout can apply.
           ai-response-format: off
+          # Engine window is 261,888 total (see litellm configmap); declare
+          # the input cap so corpus/diff budgets are sized deterministically.
+          primary-model-context-tokens: "245760"
+          # Z.AI coding endpoint (1M window, 5h rolling quota); conservative
+          # floor keeps fallback-run corpus budgets sane.
+          fallback-model-context-tokens: "131072"
           ai-max-tokens: "16000"
           ai-fallback-base-url: ${{ vars.LITELLM_URL }}
           ai-fallback-api-format: openai
