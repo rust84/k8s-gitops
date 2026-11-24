@@ -80,6 +80,12 @@ spec:
         parentRefs:
           - name: envoy-external
             namespace: network
+      internal:
+        hostnames:
+          - "searxng-int.${SECRET_DOMAIN}"
+        parentRefs:
+          - name: envoy-internal
+            namespace: network
 
     persistence:
       config:
