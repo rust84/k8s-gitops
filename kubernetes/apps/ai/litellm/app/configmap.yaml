@@ -47,8 +47,10 @@ data:
           cache_creation_input_token_cost: 0.0000001250
           cache_read_input_token_cost: 0.0000000125
           output_cost_per_token: 0.0000004999
-          max_input_tokens: 262144
-          max_output_tokens: 20480
+          # Engine (llama.cpp on the Strix box) runs a 261,888-token window;
+          # keep input + output inside it.
+          max_input_tokens: 245760
+          max_output_tokens: 16128
           supports_function_calling: true
           supports_vision: true
         litellm_params:
