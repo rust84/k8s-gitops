@@ -23,6 +23,7 @@ data:
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
           max_parallel_requests: 1
+          additional_drop_params: ["reasoning_effort"]
 
       - model_name: qwen3.8-27b
         model_info:
@@ -39,6 +40,7 @@ data:
           model: openai/qwen3.8-27b
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
+          additional_drop_params: ["reasoning_effort"]
 
       - model_name: qwen3.8-flash-next
         model_info:
@@ -57,6 +59,7 @@ data:
           model: openai/qwen3.8-flash-next
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
+          additional_drop_params: ["reasoning_effort"]
 
       - model_name: qwen3.5-9b
         model_info:
@@ -73,6 +76,7 @@ data:
           model: openai/qwen3.5-9b
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
+          additional_drop_params: ["reasoning_effort"]
 
       - model_name: embed
         model_info:
@@ -169,8 +173,7 @@ data:
           max_input_tokens: 1050000
         litellm_params:
           model: openai/gpt-6-luna
-          additional_drop_params:
-          - temperature
+          additional_drop_params: ["temperature"]
           api_key: os.environ/OPENAI_API_KEY
 
       - model_name: gpt-6-sol
@@ -183,8 +186,7 @@ data:
           max_input_tokens: 1050000
         litellm_params:
           model: openai/gpt-6-sol
-          additional_drop_params:
-          - temperature
+          additional_drop_params: ["temperature"]
           api_key: os.environ/OPENAI_API_KEY
           extra_body:
             reasoning_effort: "high"
@@ -206,8 +208,7 @@ data:
           api_base: https://api.z.ai/api/coding/paas/v4
           api_key: os.environ/ZAI_API_KEY
           order: 1
-          allowed_openai_params:
-          - reasoning_effort
+          allowed_openai_params: ["reasoning_effort"]
 
       - model_name: glm-5.3-flash
         model_info:
@@ -226,8 +227,7 @@ data:
           api_base: https://api.z.ai/api/coding/paas/v4
           api_key: os.environ/ZAI_API_KEY
           order: 1
-          allowed_openai_params:
-          - reasoning_effort
+          allowed_openai_params: [ "reasoning_effort" ]
 
       # rung 2 of the glm-5.3-flash group (see rung 1 above). One-way
       # fallback chain: qwen (action primary) -> glm (action fallback) ->
@@ -238,8 +238,7 @@ data:
           api_base: https://api.neuralwatt.com/v1
           api_key: os.environ/NEURALWATT_API_KEY
           order: 2
-          allowed_openai_params:
-          - reasoning_effort
+          allowed_openai_params: ["reasoning_effort"]
           max_budget: 1.0
           budget_duration: 1d
 
