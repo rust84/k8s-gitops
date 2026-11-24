@@ -47,6 +47,7 @@ spec:
                 REDIS_PORT: "6379"
                 REDIS_DBINDEX: 3
               IMMICH_TELEMETRY_INCLUDE: all
+              IMMICH_METRICS: "true"
               IMMICH_WORKERS_INCLUDE: &server-include 'api'
             envFrom: *ef
             securityContext: &sc
@@ -87,6 +88,7 @@ spec:
             image: *img
             env:
               <<: *env-common
+              IMMICH_METRICS: "true"
               IMMICH_WORKERS_EXCLUDE: *server-include
             envFrom: *ef
             securityContext: *sc
@@ -225,7 +227,7 @@ spec:
             interval: 1m
             scrapeTimeout: 30s
       microservices:
-        serviceName: microservices
+        serviceName: immich-microservices
         endpoints:
           - port: metrics
             scheme: http
