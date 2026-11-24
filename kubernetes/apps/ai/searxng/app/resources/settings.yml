@@ -16,31 +16,32 @@ ui:
   url_formatting: pretty
   infinite_scroll: true
   query_in_title: true
-  search_on_category_select: true
   static_use_hash: true
   theme_args:
     simple_style: dark
 
 search:
-  autocomplete: duckduckgo
-  autocomplete_min: 4
-  favicon_resolver: duckduckgo
-  ban_time_on_fail: 5
-  prefer_configured_language: true
-  default_lang: en
+  # Autocomplete and favicon resolvers were set to duckduckgo, which fires one
+  # upstream request per keystroke and per result row. For a private instance
+  # driven by automated agents (open-webui RAG, openclaw) these
+  # generate zero value and were the dominant source of DDG captcha/rate-limits.
+  # Disabling them cuts most wasted upstream calls. Set back to "duckduckgo" if
+  # interactive UI usage on search.jory.dev wants them back.
+  autocomplete: ""
+  favicon_resolver: ""
+  languages:
+    - all
+    - en
+    - en-US
   formats:
     - html
     - json
-    - csv
-    - rss
-  max_ban_time_on_fail: 120
-  safe_search: 0
 
 server:
   # base_url, port, secret_key set via env vars
   image_proxy: true
   limiter: true
-  method: POST
+  method: GET # https://github.com/searxng/searxng/pull/3619
   public_instance: false
   default_http_headers:
     X-Content-Type-Options: nosniff
@@ -69,74 +70,33 @@ doi_resolvers:
 
 default_doi_resolver: sci-hub.se
 
-# Engine configurations
+# Engines disabled because they were rate-limiting / captcha-ing this instance's
+# single egress IP. Merged by `name` against use_default_settings. If an engine
+# stops failing after traffic drops, it can be re-enabled here.
 engines:
-  # General
-  - name: bing
+  - name: startpage
+    disabled: true
+  - name: karmasearch
+    disabled: true
+  - name: duckduckgo
+    disabled: true
+  - name: duckduckgo web
     disabled: false
+  - name: brave
+    disabled: true
+  - name: braveapi
+    disabled: false
+    inactive: false
+    api_key: ${BRAVE_API_KEY}
 
-  # Files
-  - name: bt4g
-    disabled: true
-  - name: kickass
-    disabled: true
-  - name: piratebay
-    disabled: true
-  - name: solidtorrents
-    disabled: true
-  - name: wikicommons.files
-    disabled: true
-  - name: z-library
-    disabled: false
-  - name: annas archive
-    disabled: false
-  - name: library genesis
-    disabled: false
-
-  # Images
-  - name: tineye
-    disabled: false
-    timeout: 9
-    paging: true
-  - name: duckduckgo images
-    disabled: false
-  - name: material icons
-    disabled: false
-  - name: artic
-    disabled: true
-  - name: library of congress
-    disabled: true
-
-  # Videos
-  - name: duckduckgo videos
-    disabled: false
-
-  # Social Media
-  - name: reddit
-    disabled: false
-
-  # Other
-  - name: goodreads
-    disabled: false
-  - name: chefkoch
-    disabled: true
-  - name: openlibrary
-    disabled: false
-  - name: imdb
-    disabled: false
-  - name: rottentomatoes
-    disabled: false
-  - name: tmdb
-    disabled: false
-
-  # IT
-  - name: hackernews
-    disabled: false
-  - name: lobste.rs
-    disabled: false
-
-# Hostnames plugin configuration
 hostnames:
-  remove: hostnames-remove.yml
-  high_priority: hostnames-high.yml
-  low_priority: hostnames-low.yml
+  high_priority:
+    - (.*)\/blog\/(.*)
+    - (.*\.)?wikipedia.org$
+    - (.*\.)?github.com$
+    - (.*\.)?reddit.com$
+    - (.*\.)?docker.com$
+    - (.*\.)?archlinux.org$
+    - (.*\.)?stackoverflow.com$
+    - (.*\.)?askubuntu.com$
+    - (.*\.)?superuser.com$
