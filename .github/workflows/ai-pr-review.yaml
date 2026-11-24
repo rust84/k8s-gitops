@@ -71,9 +71,7 @@ jobs:
           ai-api-format: openai
           ai-model: qwen3.8-flash-next
           ai-api-key: ${{ secrets.LITELLM_API_KEY }}
-          # qwen3.8-flash-next rejects response_format; schema enforcement
-          # returns per-profile upstream. Avoids non-streamed calls that
-          # Cloudflare kills with 524 before ai-request-timeout can apply.
+          # qwen3.8-flash-next rejects response_format
           ai-response-format: off
           # Engine window is 261,888 total (see litellm configmap); declare
           # the input cap so corpus/diff budgets are sized deterministically.
@@ -87,6 +85,7 @@ jobs:
           ai-fallback-model: glm-5.3-flash
           ai-fallback-api-key: ${{ secrets.LITELLM_API_KEY }}
           review-routing-mode: auto
+          review-verbosity: concise
           ai-smart-base-url: ${{ vars.LITELLM_URL }}
           ai-smart-api-format: openai
           ai-smart-model: glm-5.3-flash
@@ -95,18 +94,10 @@ jobs:
           context-limit-mode: normal
           ci-status-check: "true"
           ci-timeout-sec: "600"
+          claim-falsification: "true"
+          deep-review: auto
           search-url: "https://search.roswellian.dev/search"
-          tool-mode: native_loop
-          tool-max-rounds: "2"
-          tool-max-requests: "4"
-          tool-loop-wall-clock-sec: "600"
-          tool-turn-timeout-sec: "300"
-          tool-corpus-max-bytes: "15000"
-          tool-max-tokens-per-turn: "16000"
-          tool-max-response-bytes: "12000"
           tool-allowed-gh-api-repos: "*"
-          tool-request-timeout-sec: "15"
-          tool-enable-for-forks: "false"
           tool-mcp-servers: "konflate=${{ vars.KONFLATE_URL }}"
           system-prompt-file: .agents/instructions/pr-review.instructions.md
           system-prompt-mode: append
@@ -114,4 +105,6 @@ jobs:
           evidence-providers-file: .github/konflate-evidence-providers.json
           on-model-failure: notice
           inline-findings: "true"
-          publish-mode: review_comment
+          publish-mode: comment
+          repository-skills: "true"
+          upstream-link-mode: togithub
