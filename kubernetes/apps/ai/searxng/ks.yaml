@@ -3,6 +3,32 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
+  name: &app searxng-secret
+  namespace: &namespace ai
+spec:
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: searxng
+  dependsOn:
+    - name: external-secrets
+      namespace: external-secrets
+  interval: 30m
+  path: ./kubernetes/apps/ai/searxng/secret
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *namespace
+  timeout: 5m
+  # wait so the ExternalSecret reports Ready (secret synced by ESO) before
+  # the app Kustomization builds with postBuild.substituteFrom searxng
+  wait: true
+---
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
   name: &app searxng
   namespace: &namespace ai
 spec:
@@ -10,8 +36,8 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   dependsOn:
-    - name: external-secrets
-      namespace: external-secrets
+    - name: searxng-secret
+      namespace: *namespace
     - name: rook-ceph-cluster
       namespace: rook-ceph
   interval: 30m
@@ -20,7 +46,6 @@ spec:
     substituteFrom:
       - name: searxng
         kind: Secret
-        optional: true
   prune: true
   sourceRef:
     kind: GitRepository
