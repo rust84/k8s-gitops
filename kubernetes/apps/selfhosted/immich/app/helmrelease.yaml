@@ -47,7 +47,8 @@ spec:
                 REDIS_PORT: "6379"
                 REDIS_DBINDEX: 3
               IMMICH_TELEMETRY_INCLUDE: all
-              IMMICH_METRICS: "true"
+              IMMICH_HOST: "0.0.0.0"
+              IMMICH_API_METRICS_PORT: "8081"
               IMMICH_WORKERS_INCLUDE: &server-include 'api'
             envFrom: *ef
             securityContext: &sc
@@ -88,7 +89,9 @@ spec:
             image: *img
             env:
               <<: *env-common
-              IMMICH_METRICS: "true"
+              IMMICH_TELEMETRY_INCLUDE: all
+              IMMICH_HOST: "0.0.0.0"
+              IMMICH_MICROSERVICES_METRICS_PORT: "8081"
               IMMICH_WORKERS_EXCLUDE: *server-include
             envFrom: *ef
             securityContext: *sc
