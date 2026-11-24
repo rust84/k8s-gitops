@@ -23,7 +23,6 @@ data:
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
           max_parallel_requests: 1
-          additional_drop_params: ["reasoning_effort"]
 
       - model_name: qwen3.8-27b
         model_info:
@@ -40,7 +39,6 @@ data:
           model: openai/qwen3.8-27b
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
-          additional_drop_params: ["reasoning_effort"]
 
       - model_name: qwen3.8-flash-next
         model_info:
@@ -54,12 +52,12 @@ data:
           max_input_tokens: 245760
           max_output_tokens: 16128
           supports_function_calling: true
+          supports_reasoning: true
           supports_vision: true
         litellm_params:
           model: openai/qwen3.8-flash-next
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
-          additional_drop_params: ["reasoning_effort"]
 
       - model_name: qwen3.5-9b
         model_info:
@@ -76,7 +74,6 @@ data:
           model: openai/qwen3.5-9b
           api_base: http://local-ai.russhome.xyz:8080/v1
           api_key: "dummy"
-          additional_drop_params: ["reasoning_effort"]
 
       - model_name: embed
         model_info:
