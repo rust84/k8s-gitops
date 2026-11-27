@@ -290,6 +290,14 @@ data:
             - MiniMax-M3-chat
         - MiniMax-M3.1-Flash:
             - MiniMax-M3-chat
+        # Review-storm overflow: a Renovate rebase fires a dozen reviews
+        # at once and the -chat deployment only holds 2 parallel slots
+        # (engine limit), so spill the excess to the cloud glm rung
+        # instead of failing the calls (tool loop request-error ->
+        # partial/INCOMPLETE reviews). One-way only: never add a return
+        # rung behind the qwen groups.
+        - qwen3.8-flash-next-chat:
+            - glm-5.3-flash
     litellm_settings:
       success_callback: ["prometheus"]
       failure_callback: ["prometheus"]
