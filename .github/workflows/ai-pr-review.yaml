@@ -105,6 +105,19 @@ jobs:
           ci-status-check: "true"
           ci-timeout-sec: "600"
           claim-falsification: "true"
+          # Renovate bumps dominate this repo and the classifier's
+          # dependency must_check rows (image provenance, upstream
+          # release delta, advisories) fired on nearly every PR and
+          # never settled (fail-closed missing-source-evidence), so
+          # every review published as partial with the "Unresolved
+          # Required Review Evidence" block and withheld trusted
+          # approval. False is the documented operator opt-out that
+          # removes them from the obligation contract at both harness
+          # and engine. If dependency-evidence settlement is ever
+          # fixed, prefer required-check-validation-mode:
+          # metadata_only to keep the rows tracked without letting
+          # them alter published reviews.
+          validate-required-checks: "false"
           deep-review: auto
           search-url: "https://search.roswellian.dev/search"
           tool-allowed-gh-api-repos: "*"
