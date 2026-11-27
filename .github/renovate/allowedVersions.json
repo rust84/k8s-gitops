@@ -21,6 +21,12 @@
       "matchDatasources": ["docker"],
       "matchPackagePatterns": ["gotenberg"],
       "allowedVersions": "<9"
+    },
+    {
+      "description": ["Whisper ASR webservice 2.0 is breaking (PyAV replaces ffmpeg, /asr JSON output and default engine change); hold on major 1"],
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["onerahmet/openai-whisper-asr-webservice"],
+      "allowedVersions": "<2"
     }
   ]
 }
