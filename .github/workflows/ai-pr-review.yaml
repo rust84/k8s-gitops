@@ -73,9 +73,14 @@ jobs:
           ai-api-key: ${{ secrets.LITELLM_API_KEY }}
           # qwen3.8-flash-next rejects response_format
           ai-response-format: off
-          # Engine window is 261,888 total (see litellm configmap); declare
-          # the input cap so corpus/diff budgets are sized deterministically.
-          primary-model-context-tokens: "245760"
+          # Cap well below the engine window (261,888 total, see litellm
+          # configmap) so worst-case prompt prefill finishes inside the
+          # Cloudflare ~100s origin timeout on litellm.roswellian.dev: the
+          # local engine prefills at ~1200 tok/s, so anything >= ~120k
+          # tokens returns HTTP 524 before the first response byte.
+          # 92160 = 90 * 1024 -> ~75s worst-case prefill + margin. Keeps
+          # corpus/diff budgets deterministic.
+          primary-model-context-tokens: "92160"
           # Z.AI coding endpoint (1M window, 5h rolling quota); conservative
           # floor keeps fallback-run corpus budgets sane.
           fallback-model-context-tokens: "131072"
