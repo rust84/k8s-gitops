@@ -69,9 +69,12 @@ jobs:
             x-litellm-session-id: prreview-${{ github.run_id }}-${{ github.run_attempt }}
           ai-base-url: ${{ vars.LITELLM_URL }}
           ai-api-format: openai
-          ai-model: qwen3.8-flash-next
+          # No-think local qwen (qwen3.8-flash-next-chat in the litellm
+          # configmap): same engine, thinking disabled so the reasoning
+          # pass stops consuming output budget and review latency.
+          ai-model: qwen3.8-flash-next-chat
           ai-api-key: ${{ secrets.LITELLM_API_KEY }}
-          # qwen3.8-flash-next rejects response_format
+          # qwen3.8-flash-next-chat (same engine) rejects response_format
           ai-response-format: off
           # Cap well below the engine window (261,888 total, see litellm
           # configmap) so worst-case prompt prefill finishes inside the
