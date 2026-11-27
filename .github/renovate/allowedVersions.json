@@ -17,9 +17,10 @@
       "allowedVersions": "<20"
     },
     {
+      "description": ["Gotenberg 9 is a breaking rewrite (litho PDF engine, new routes/stages); hold on major 8"],
       "matchDatasources": ["docker"],
       "matchPackagePatterns": ["gotenberg"],
-      "allowedVersions": "<19"
+      "allowedVersions": "<9"
     }
   ]
 }
